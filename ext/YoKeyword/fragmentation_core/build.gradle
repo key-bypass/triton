@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'bintray-release'
+
+android {
+    namespace 'me.yokeyword.fragmentation'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 23
+
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 23
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+    lint {
+        abortOnError false
+    }
+
+
+}
+
+dependencies {
+    implementation libs.appcompat.v7
+}

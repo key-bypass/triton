@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_item_keyselect"
+    android:layout_width="match_parent"
+    android:layout_height="70px">
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40px"
+        android:layout_weight="2">
+        <com.kkkcut.e20j.AlignTextView
+            android:textSize="22px"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:textColor="@color/white"
+            android:layout_gravity="bottom|right"
+            android:id="@+id/tv_time"
+            android:background="@color/color_2a2b40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <ImageView
+        android:id="@+id/iv_export"
+        android:layout_width="100px"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_export_to_custom_key"/>
+    <ImageView
+        android:id="@+id/iv_edit"
+        android:layout_width="100px"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/icon_edit"/>
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="100px"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_delete"
+        android:scaleType="centerInside"/>
+</LinearLayout>

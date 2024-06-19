@@ -1,0 +1,144 @@
+{
+"S2-A": [
+{
+"S":"步骤1：移动到夹具上方(S2单边夹具A面定位钥匙)",
+"T":0,
+"X":0,
+"Y":2109,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"移动到夹具上方&Move to the upward side of the jaw error"
+},
+{
+"S":"步骤2：探测Z轴向下",
+"T":1,
+"X":0,
+"Y":0,
+"Z":1500,
+"V":"4000,4000,3000",
+"Rule":"S:1,Z",
+"Des":"探测夹具上表面错误&Decode the upward surface of the jaw error"
+},
+{
+"S":"步骤3：离开Z轴向上Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-49,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z;C:3,U,Z-2",
+"Des":"离开夹具上表面错误&Leave the upward surface of the jaw error"
+},
+{
+"S":"步骤4：移动到2号点位Y",
+"T":0,
+"X":0,
+"Y":-1172,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:2,Y",
+"Des":"移动到夹具前端错误&Move to the tip of the jaw error"
+},
+{
+"S":"步骤5：移动Z轴向下Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":686,
+"V":"8000,8000,3000",
+"Rule":"S:4,Z",
+"Des":"移动到夹具前端错误&Move to the tip of the jaw error"
+},
+{
+"S":"步骤6：探测2号点位Y",
+"T":1,
+"X":0,
+"Y":938,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:5,Y",
+"Des":"探测夹具前端错误&Decode the tip of the jaw error"
+},
+{
+"S":"步骤7：离开2号点位Y",
+"T":0,
+"X":0,
+"Y":-188,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:6,Y;C:3,T,Y-6",
+"Des":"探测夹具前端错误&Decode the tip of the jaw error"
+},
+{
+"S":"步骤8：Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-200,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z;C:3,S,Y-6",
+"Des":"探测夹具前端错误&Decode the tip of the jaw error"
+},
+{
+"S":"步骤9：移动到夹具左边",
+"T":0,
+"X":1500,
+"Y":1300,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:2,X;S:6,Y",
+"Des":"移动到夹具左边错误&Move to the left side of the jaw error"
+},
+{
+"S":"步骤10：Z轴向下",
+"T":0,
+"X":0,
+"Y":0,
+"Z":350,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"移动到夹具左边错误&Move to the left side of the jaw error"
+},
+{
+"S":"步骤11：探测夹具左边",
+"T":1,
+"X":-1000,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:10,X",
+"Des":"探测夹具左边错误&Decode the left side of the jaw error"
+},
+{
+"S":"步骤12：离开夹具左边",
+"T":0,
+"X":200,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:11,X;C:3,L,X-11",
+"Des":"探测夹具左边错误&Decode the left side of the jaw error"
+},
+{
+"S":"步骤13：Z轴向上",
+"T":998,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤14：X-Y-Z回到原点",
+"T":999,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"三轴回原点错误&Three axises going back to origin error"
+}
+]
+}

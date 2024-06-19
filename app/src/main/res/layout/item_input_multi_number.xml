@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="25px"
+    android:textColor="@color/textcolor_number_input_multi"
+    android:gravity="center"
+    android:id="@+id/bt_number"
+    android:background="@drawable/bg_number_input_multi"
+    android:layout_width="76px"
+    android:layout_height="66px"
+    android:layout_margin="6px"
+    android:button="@null"
+    android:textAllCaps="false"/>

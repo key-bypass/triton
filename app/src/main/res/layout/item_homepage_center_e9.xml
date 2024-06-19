@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="20px"
+    android:textColor="@color/white"
+    android:gravity="center_horizontal"
+    android:id="@+id/button"
+    android:paddingTop="95px"
+    android:layout_width="152px"
+    android:layout_height="162px"
+    android:text="Motorcycle"
+    android:textAllCaps="false"/>

@@ -1,0 +1,464 @@
+{
+  "S1-B": [
+    {
+      "S": "步骤1：移动到夹具上方",
+      "T": 0,
+      "X": 47,
+      "Y": 1406,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "",
+      "Des": "移动到夹具上方错误&Move to the upward side of the jaw error"
+    },
+    {
+      "S": "步骤2：探测Z轴向下",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 1960,
+      "V": "4000,4000,3000",
+      "Rule": "S:1,Z",
+      "Des": "探测夹具上表面错误&Decode the upward surface of the jaw error"
+    },
+    {
+      "S": "步骤3：离开Z轴向上",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -80,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "离开夹具上表面错误&Leave the upward surface of the jaw error"
+    },
+    {
+      "S": "步骤4：探测凸出面第一条线Y",
+      "T": 1,
+      "X": 0,
+      "Y": 1000,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:3,Y",
+      "Des": "探测凸出面第一条线错误&Decode the first line of convex surface error"
+    },
+    {
+      "S": "步骤5：离开凸出面第一条线Y",
+      "T": 0,
+      "X": 0,
+      "Y": -375,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "离开凸出面第一条线错误&Leave  the first line of convex surface error"
+    },
+    {
+      "S": "步骤6：移动到夹具右夹块左边线正上方X",
+      "T": 0,
+      "X": 1000,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:5,X",
+      "Des": "移动到夹具右夹块左边线正上方错误&Move to the upward side of left line at right block of the jaw error"
+    },
+    {
+      "S": "步骤7：Z轴向下",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 74,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "移动中间槽错误&Move to the middle slot error"
+    },
+    {
+      "S": "步骤8：探测夹具右夹块左边线3号点位X",
+      "T": 1,
+      "X": -469,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:7,X",
+      "Des": "探测夹具右夹块左边线错误&Decode the left line at the right block of the jaw error"
+    },
+    {
+      "S": "步骤9：离开夹具右夹块左边线3号点位X",
+      "T": 0,
+      "X": 188,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "离开夹具右夹块左边线错误&Leave the left line at the right block of the jaw error"
+    },
+    {
+      "S": "步骤10：移动到4号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 300,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "在中间槽中移动错误&Move in the range of middle slot error"
+    },
+    {
+      "S": "步骤11：探测4号点位的高度Z",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 490,
+      "V": "4000,4000,3000",
+      "Rule": "S:2,Z",
+      "Des": "探测槽深错误&Decode the slot depth error"
+    },
+    {
+      "S": "步骤12：Z轴向上Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -196,
+      "V": "8000,8000,3000",
+      "Rule": "S:11,Z;DFC:Z-11,Z-2,360,-50,50,80",
+      "Des": "主轴向上移动错误&Spindle moving up error"
+    },
+    {
+      "S": "步骤13：移动到5号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 2344,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "移动中间槽错误&Move to the middle slot error"
+    },
+    {
+      "S": "步骤14：探测5号点位X",
+      "T": 1,
+      "X": -188,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:8,X",
+      "Des": "探测夹具右夹块左边线错误&Decode the left line at the right block of the jaw error"
+    },
+    {
+      "S": "步骤15：离开5号点位X",
+      "T": 0,
+      "X": 188,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "离开夹具右夹块左边线错误&Leave the left line at the right block of the jaw error"
+    },
+    {
+      "S": "步骤16：移动到6号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 3047,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "移到到下夹块肩膀错误&Move to the shoulder of bottom block error"
+    },
+    {
+      "S": "步骤17：Z轴向下",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 49,
+      "V": "8000,8000,3000",
+      "Rule": "S:11,Z",
+      "Des": "移到到下夹块肩膀错误&Move to the shoulder of bottom block error"
+    },
+    {
+      "S": "步骤18：探测6号点位Y",
+      "T": 1,
+      "X": 0,
+      "Y": -1406,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:17,Y",
+      "Des": "探测下夹块肩膀错误&Decodet the shoulder of bottom block error"
+    },
+    {
+      "S": "步骤19：离开6号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 3047,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "离开下夹块肩膀错误&Leave the shoulder of bottom block error"
+    },
+    {
+      "S": "步骤20：Z轴向上Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "移到到上夹块肩膀错误&Move to the shoulder of top block error"
+    },
+    {
+      "S": "步骤21：移动到7号点位X",
+      "T": 0,
+      "X": -469,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "移到到上夹块肩膀错误&Move to the shoulder of top block error"
+    },
+    {
+      "S": "步骤22：探测7号点位Y",
+      "T": 1,
+      "X": 0,
+      "Y": -500,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:21,Y",
+      "Des": "探测上夹块肩膀错误&Decode the shoulder of top block error"
+    },
+    {
+      "S": "步骤23：离开7号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 94,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:22,Y;DFC:Y-22,Y-4,2790,-50,50,83",
+      "Des": "离开上夹块肩膀错误&Leave the shoulder of top block error"
+    },
+    {
+      "S": "步骤24：Z轴向上Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -490,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "离开上夹块肩膀错误&Leave the shoulder of top block error"
+    },
+    {
+      "S": "步骤25：移动到8号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 2345,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "移到到夹块上表面错误&Move to the upward surface of the block error"
+    },
+    {
+      "S": "步骤26：Z轴向下探测8号点位高度Z",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:2,Z",
+      "Des": "探测夹块上表面错误&Decode the upward surface of the block error"
+    },
+    {
+      "S": "步骤27：Z轴向上离开8号点位Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -49,
+      "V": "8000,8000,3000",
+      "Rule": "S:26,Z",
+      "Des": "离开夹块上表面错误&Leave the upward surface of the block error"
+    },
+    {
+      "S": "步骤28：移动到9号点位X",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "移到到右夹块槽错误&Move to the slot of right block error"
+    },
+    {
+      "S": "步骤29：Z轴向下到9号点位Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -20,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "移到到右夹块槽错误&Move to the slot of right block error"
+    },
+    {
+      "S": "步骤30：探测9号点位X",
+      "T": 1,
+      "X": -469,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:8,X",
+      "Des": "探测右夹块槽错误&Decode the slot of right block error"
+    },
+    {
+      "S": "步骤31：离开9号点位X",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "离开右夹块槽错误&Leave the slot of right block error"
+    },
+    {
+      "S": "步骤32：移动到10号点位Y",
+      "T": 0,
+      "X": 0,
+      "Y": 300,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:4,Y",
+      "Des": "移到到右夹块槽错误&Move to the slot of right block error"
+    },
+    {
+      "S": "步骤33：探测10号点位X",
+      "T": 1,
+      "X": -469,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:8,X",
+      "Des": "探测右夹块槽错误&Decode the slot of right block error"
+    },
+    {
+      "S": "步骤34：离开10号点位X",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X;DFC:X-30,X-33,0,-20,20,92",
+      "Des": "离开右夹块槽错误&Leave the slot of right block error"
+    },
+    {
+      "S": "步骤35：Z轴向上",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -490,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "移到到夹块上表面错误&Move to the upward surface of the block error"
+    },
+    {
+      "S": "步骤36：移动到11号点位X",
+      "T": 0,
+      "X": -469,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:8,X",
+      "Des": "移到到夹块上表面错误&Move to the upward surface of the block error"
+    },
+    {
+      "S": "步骤37：Z轴向下探测11号点位高度Z",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "S:2,Z",
+      "Des": "探测夹块上表面错误&Decode the upward surface of the block error"
+    },
+    {
+      "S": "步骤38：Z轴向上离开11号点位Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -49,
+      "V": "8000,8000,3000",
+      "Rule": "S:37,Z;DFC:Z-2,Z-37,165,-20,20,89;DFC:Z-37,Z-26,0,-20,20,79",
+      "Des": "离开夹块上表面错误&Leave the upward surface of the block error"
+    },
+    {
+      "S": "步骤39：移动到9号点位",
+      "T": 0,
+      "X": 100,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:30,X;S:30,Y",
+      "Des": "&Move error"
+    },
+    {
+      "S": "步骤40：探测9号点位下夹块高度",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 100,
+      "V": "4000,4000,3000",
+      "Rule": "S:2,Z",
+      "Des": "&Decode error"
+    },
+    {
+      "S": "步骤41：Z轴向上离开9号点位",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -50,
+      "V": "8000,8000,3000",
+      "Rule": "S:40,Z",
+      "Des": "&Move error"
+    },
+    {
+      "S": "步骤42：移动到10号点位",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "S:33,Y",
+      "Des": "&Move error"
+    },
+    {
+      "S": "步骤43：探测10号点位下夹块高度",
+      "T": 1,
+      "X": 0,
+      "Y": 0,
+      "Z": 100,
+      "V": "4000,4000,3000",
+      "Rule": "S:2,Z",
+      "Des": "&Decode error"
+    },
+    {
+      "S": "步骤44：Z轴向上离开10号点位Z",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -200,
+      "V": "8000,8000,3000",
+      "Rule": "S:2,Z",
+      "Des": "&Move error"
+    },
+    {
+      "S": "步骤39：Z轴向上",
+      "T": 998,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "",
+      "Des": "主轴向上移动错误&Spindle moving up error"
+    },
+    {
+      "S": "步骤40：X-Y-Z回到原点",
+      "T": 999,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "8000,8000,3000",
+      "Rule": "D:2|4|8|11|14|18|22|26|30|33|37|40|43",
+      "Des": "三轴回原点错误&Three axises going back to origin error"
+    }
+  ]
+}

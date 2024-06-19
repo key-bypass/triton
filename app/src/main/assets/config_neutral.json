@@ -1,0 +1,77 @@
+{
+  "id": "45",
+  "language": "en,zh,cs,fr,de,it,es,ko,pt,ru,tr,hb",
+  "company": "Copyright(c) 2019 Hunan Kukai Electromechanical co.,ltd.  All rights reserved",
+  "welcome_logo": "welcome_kukai",
+  "title_layout": {
+    "model": {
+      "name": "Key Machine",
+      "margin_left": "20"
+    },
+    "logo": {
+      "img": "logo_kukai",
+      "margin_left": "20"
+    }
+  },
+  "center_layout": [
+    {
+      "keytype": [
+        {
+          "name": "Automobile",
+          "img": "homepage_automobile"
+        },
+        {
+          "name": "Domestic car",
+          "img": "homepage_domestic_car"
+        },
+        {
+          "name": "Motorcycle",
+          "img": "homepage_motorcycle"
+        }
+      ]
+    },
+    {
+      "keytype": [
+        {
+          "name": "Standard",
+          "img": "homepage_standard"
+        },
+        {
+          "name": "Tubular",
+          "img": "homepage_tubular"
+        },
+        {
+          "name": "Dimple",
+          "img": "homepage_dimple"
+        }
+      ]
+    }
+  ],
+  "bottom_layout": [
+    {
+      "name": "Calibration",
+      "img": "homepage_calibration"
+    },
+    {
+      "name": "Cut History",
+      "img": "homepage_cut_history"
+    },
+    {
+      "name": "Duplicating Key",
+      "img": "homepage_duplicate_key"
+    },
+    {
+      "name": "Key Marking",
+      "img": "homepage_key_marking"
+    },
+    {
+      "name": "My Key Info",
+      "img": "homepage_customkey"
+    },
+    {
+      "name": "Favorite",
+      "img": "homepage_favorite"
+    }
+  ],
+  "database": "Mobile_45.db"
+}

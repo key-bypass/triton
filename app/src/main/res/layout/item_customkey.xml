@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_item_keyselect"
+    android:layout_width="match_parent"
+    android:layout_height="60px">
+    <TextView
+        android:textSize="24px"
+        android:textColor="?attr/textColor_ffffff_333333"
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40px"
+        android:layout_weight="1"/>
+    <ImageView
+        android:id="@+id/iv_synchronize"
+        android:visibility="visible"
+        android:layout_width="90px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20px"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/synchronize"/>
+    <ImageView
+        android:id="@+id/iv_edit"
+        android:visibility="visible"
+        android:layout_width="90px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/icon_edit"/>
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="90px"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_delete"
+        android:scaleType="centerInside"/>
+</LinearLayout>

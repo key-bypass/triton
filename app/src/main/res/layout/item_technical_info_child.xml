@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?attr/color_blackDark_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_key_blanks"
+        android:paddingTop="14px"
+        android:paddingBottom="4px"
+        android:layout_width="940px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5px"
+        android:layout_marginBottom="5px">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_series_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</FrameLayout>

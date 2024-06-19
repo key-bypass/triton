@@ -1,0 +1,56 @@
+{
+  "id": "37",
+  "language": "en,cs,fr,de,it,es,ko,pt,ru,tr",
+  "welcome_logo": "welcome_alpha_easy",
+  "title_layout": {
+    "model": {
+      "name": "Alpha Easy",
+      "margin_left": "20"
+    },
+    "logo": {
+      "img": "logo_alpha_easy",
+      "margin_left": "20"
+    }
+  },
+  "center_layout": [
+    {
+      "keytype": [
+        {
+          "name": "Automobile",
+          "img": "homepage_automobile"
+        },
+        {
+          "name": "Domestic car",
+          "img": "homepage_domestic_car"
+        },
+        {
+          "name": "Motorcycle",
+          "img": "homepage_motorcycle"
+        }
+      ]
+    }
+  ],
+  "bottom_layout": [
+    {
+      "name": "Calibration",
+      "img": "homepage_calibration"
+    },
+    {
+      "name": "Cut History",
+      "img": "homepage_cut_history"
+    },
+    {
+      "name": "Duplicating Key",
+      "img": "homepage_duplicate_key"
+    },
+    {
+      "name": "My Key Info",
+      "img": "homepage_customkey"
+    },
+    {
+      "name": "Favorite",
+      "img": "homepage_favorite"
+    }
+  ],
+  "database": "Mobile_37.db"
+}

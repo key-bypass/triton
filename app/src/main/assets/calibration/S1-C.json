@@ -1,0 +1,334 @@
+{
+"S1-C": [
+{
+"S":"步骤1：移动到夹具上方",
+"T":0,
+"X":0,
+"Y":1406,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"移动到夹具上方错误&Move to the upward side of the jaw error"
+},
+{
+"S":"步骤2：探测Z轴向下",
+"T":1,
+"X":0,
+"Y":0,
+"Z":1960,
+"V":"4000,4000,3000",
+"Rule":"S:1,Z",
+"Des":"探测夹具上表面错误&Decode the upward surface of the jaw error"
+},
+{
+"S":"步骤3：离开Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-80,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"离开夹具上表面错误&Leave the upward surface of the jaw error"
+},
+{
+"S":"步骤4：探测凸出面第一条线Y",
+"T":1,
+"X":0,
+"Y":1000,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:3,Y",
+"Des":"探测凸出面第一条线错误&Decode the first line of convex surface error"
+},
+{
+"S":"步骤5：离开凸出面第一条线Y",
+"T":0,
+"X":0,
+"Y":-375,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:4,Y",
+"Des":"离开凸出面第一条线错误&Leave  the first line of convex surface error"
+},
+{
+"S":"步骤6：Z轴向上Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-350,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤7：探测5号点位X",
+"T":1,
+"X":703,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:6,X",
+"Des":"探测校准片右边错误&Decode the right side of calibration block error"
+},
+{
+"S":"步骤8：离开5号点位X",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"C:1,X,X-7,X-7",
+"Des":"离开校准片右边错误&Leave the right side of calibration block error"
+},
+{
+"S":"步骤9：移动到4号点位Y",
+"T":0,
+"X":0,
+"Y":1900,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:4,Y",
+"Des":"移动到校准片右边错误&Move to the right side of calibration block error"
+},
+{
+"S":"步骤10：探测4号点位X",
+"T":1,
+"X":703,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:9,X",
+"Des":"探测校准片右边错误&Decode the right side of calibration block error"
+},
+{
+"S":"步骤11：离开5号点位X",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"C:1,X,X-10,X-10",
+"Des":"离开校准片右边错误&Leave the right side of calibration block error"
+},
+{
+"S":"步骤12：Z轴向上Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-980,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤13：探测3号点位Y",
+"T":1,
+"X":0,
+"Y":2812,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:4,Y",
+"Des":"探测夹具肩膀错误&Decode the shoulder of the jaw error"
+},
+{
+"S":"步骤14：离开3号点位Y",
+"T":0,
+"X":0,
+"Y":-234,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:13,Y;DFC:Y-13,Y-4,2350,-50,50,82",
+"Des":"离开夹具肩膀错误&Leave the shoulder of the jaw error"
+},
+{
+"S":"步骤15：移动到左边肩膀(6-7)点位正前方X-Z",
+"T":0,
+"X":1641,
+"Y":0,
+"Z":-980,
+"V":"8000,8000,3000",
+"Rule":"S:10,X;S:10,Z",
+"Des":"移动到肩膀左侧上台阶错误&Move to the up stair of left shoulder  error"
+},
+{
+"S":"步骤16：移动到左边肩膀(6-7)正上方Y",
+"T":0,
+"X":0,
+"Y":234,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:13,Y",
+"Des":"移动到肩膀左侧上台阶错误&Move to the up stair of left shoulder  error"
+},
+{
+"S":"步骤17：探测Z轴向下Z",
+"T":1,
+"X":0,
+"Y":0,
+"Z":800,
+"V":"4000,4000,3000",
+"Rule":"S:16,Z",
+"Des":"探测左肩膀上台阶错误&Decode the up stair of left shoulder  error"
+},
+{
+"S":"步骤18：Z轴向上Z(离开)",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-50,
+"V":"8000,8000,3000",
+"Rule":"S:17,Z",
+"Des":"离开左肩膀上台阶错误&Leave the up stair of left shoulder  error"
+},
+{
+"S":"步骤19：探测6号点位X",
+"T":1,
+"X":-469,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:18,X",
+"Des":"探测左肩膀上台阶错误&Decode the up stair of left shoulder  error"
+},
+{
+"S":"步骤20：离开6号点位X",
+"T":0,
+"X":703,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:19,X;DFC:X-19,X-10,1320,-50,50,87",
+"Des":"离开左肩膀上台阶错误&Leave the up stair of left shoulder  error"
+},
+{
+"S":"步骤21：Z轴向下",
+"T":0,
+"X":0,
+"Y":0,
+"Z":150,
+"V":"8000,8000,3000",
+"Rule":"S:17,Z",
+"Des":"移动到左肩膀下台阶错误&Move to the down stair of left shoulder  error"
+},
+{
+"S":"步骤22：探测7号点位X",
+"T":1,
+"X":-469,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:21,X",
+"Des":"探测左肩膀下台阶错误&Decode the down stair of left shoulder  error"
+},
+{
+"S":"步骤23：离开7号点位X",
+"T":0,
+"X":94,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:22,X",
+"Des":"离开左肩膀下台阶错误&Leave the down stair of left shoulder  error"
+},
+{
+"S":"步骤24：移动到8号点位Y",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:10,Y",
+"Des":"移动到校准片左边错误&Move to the left side of calibration block error"
+},
+{
+"S":"步骤25：移动X轴到8号点位",
+"T":0,
+"X":-400,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:24,X",
+"Des":"移动到校准片左边错误&Move to the left side of calibration block error"
+},
+{
+"S":"步骤26：Z轴向下",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:10,Z",
+"Des":"移动到校准片左边错误&Move to the left side of calibration block error"
+},
+{
+"S":"步骤27：探测8号点位X",
+"T":1,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:10,X",
+"Des":"探测校准片左边错误&Decode the left side of calibration block error"
+},
+{
+"S":"步骤28：离开8号点位X",
+"T":0,
+"X":141,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:27,X;DFC:X-22,X-27,1150,-50,50,88",
+"Des":"离开校准片左边错误&Leave the left side of calibration block error"
+},
+{
+"S":"步骤29：移动到9号点位Y",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:5,Y",
+"Des":"移动到校准片左边错误&Move to the left side of calibration block error"
+},
+{
+"S":"步骤30：探测9号点位X",
+"T":1,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:5,X",
+"Des":"探测校准片左边错误&Decode the left side of calibration block error"
+},
+{
+"S":"步骤31：离开9号点位X",
+"T":0,
+"X":141,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:30,X",
+"Des":"离开校准片左边错误&Leave the left side of calibration block error"
+},
+{
+"S":"步骤32：Z轴向上",
+"T":998,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤33：X-Y-Z回到原点",
+"T":999,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"D:4|7|10|13|19|22|27|30",
+"Des":"三轴回原点错误&Three axises going back to origin error"
+}
+]
+}

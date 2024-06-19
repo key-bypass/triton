@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+static def gitLatestTag() {
+    try {
+        def cmd = 'git describe --abbrev=0 --tags'
+        def result = cmd.execute().text.trim()
+        return result
+    } catch (Exception e) {
+        return '1.0.0'
+    }
+}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        applicationId "me.yokeyword.sample"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName gitLatestTag()
+    }
+
+    signingConfigs {
+        releaseConfig {
+            storeFile file("./fragmentation.jks")
+            storePassword System.getenv("KEYSTORE_PASS")
+            keyAlias System.getenv("ALIAS_NAME")
+            keyPassword System.getenv("ALIAS_PASS")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+
+            signingConfig signingConfigs.releaseConfig
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.buildType.name == 'release') {
+                outputFileName = "fragmentation.apk"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    api "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    api project(':fragmentation')
+    api project(':fragmentation_swipeback')
+    // EventBus
+    api project(':eventbus_activity_scope')
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    //    apt 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+}
+

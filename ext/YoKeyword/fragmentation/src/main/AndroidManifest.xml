@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+          package="me.yokeyword.fragmentation_components">
+
+    <uses-sdk android:minSdkVersion="21" tools:overrideLibrary="androidx.appcompat, androidx.legacy.coreui, androidx.vectordrawable, androidx.multidex.instrumentation, androidx.fragment" />
+
+</manifest>

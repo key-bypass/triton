@@ -1,0 +1,84 @@
+{
+"S4": [
+{
+"S":"步骤1：移动到夹具上方1号点位(S4夹具凸出块上面)",
+"T":0,
+"X":1406,
+"Y":1406,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"移动到夹具上方错误&Move to the upward side of the jaw error"
+},
+{
+"S":"步骤2：探测Z轴向下",
+"T":2,
+"X":0,
+"Y":0,
+"Z":2000,
+"V":"4000,4000,2000",
+"Rule":"S:1,Z",
+"Des":"铣刀探测夹具上表面错误&Cutter decoding the upward surface of the jaw error"
+},
+{
+"S":"步骤3：离开Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-200,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"铣刀离开夹具上表面错误&Cutter leaving the upward surface of the jaw error"
+},
+{
+"S":"步骤4：移动到钥匙上方XY",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"C:6",
+"Des":"铣刀在移动的过程中发生错误&Cutter occures error during movement"
+},
+{
+"S":"步骤5：探测钥匙上表面Z",
+"T":2,
+"X":0,
+"Y":0,
+"Z":500,
+"V":"4000,4000,2000",
+"Rule":"S:2,Z",
+"Des":"铣刀探测钥匙上表面错误&Cutter decoding the upward surface of the key error"
+},
+{
+"S":"步骤6：离开钥匙上表面Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"C:1,Z,Z-5,Z-5;C:3,K,Z-5",
+"Des":"铣刀离开钥匙上表面错误&Cutter leaving the upward surface of the key error"
+},
+{
+"S":"步骤7：Z轴向上回到原点",
+"T":998,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤8：X-Y-Z回到原点",
+"T":999,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"三轴回原点错误&Three axises going back to origin error"
+}
+]
+}

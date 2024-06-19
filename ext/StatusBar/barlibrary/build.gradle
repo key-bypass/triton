@@ -1,0 +1,43 @@
+plugins {
+    alias(libs.plugins.jetbrains.kotlin.android)
+}
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.gyf.barlibrary'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 23
+        //noinspection ExpiredTargetSdkVersion
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildToolsVersion '34.0.0'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation libs.appcompat.v7
+    implementation libs.core.ktx
+}

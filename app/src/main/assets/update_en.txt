@@ -1,0 +1,235 @@
+Soft Version：75
+Newly added key data includes:
+1.Yamaha basic data (ID 1738)
+2.Yamaha basic data (ID 1013)
+3.Skoda basic data(ID 430)
+4.Skoda basic data(ID 433)
+5.Lada basic data(ID 297)
+
+Improved key code and menu includes:
+1.Improve Proton:
+(Wira add IC Card 2&3&4 0~0)
+(Saga add IC Card 1&6 0~0)
+2.Improve Perodua:
+(A key 10 bits add IC Card 627 0~0)
+(DH key 8 bits add IC Card 2 0~0)
+3.Improve Audi:
+(A3 add IC Card 1309 2003~2009)
+(A4 add IC Card 1421 2015~0)
+(A5 add IC Card 909 2008~0)
+(A7 add IC Card 1421 2015~0)
+(Q3 add IC Card 1421 2015~0)
+(Q5 add IC Card 1421 2015~0)
+(S2 add IC Card 69 1990~1996)
+(S5 add IC Card 909 2007~0)
+(S8 add IC Card 132 1995~1996)
+(TT add IC Card 1421&1424 2015~0)
+(TT add IC Card 1309 2005~2014)
+4.Improve Buick:
+(LaCrosse add IC Card 1097 2009~2016)
+(Somerset add IC Card 10 1991~1991&1985&1990)
+(Verano add IC Card 1097 2011~2017)
+5.Improve Chrysler:
+(Crossfire add IC Card 1017 2003~2008/IC Card 1369 2003~2008)
+(Fifth Avenue add IC Card 301 1987~1989/IC Card 302 1987~1989/IC Card 217 1987~1989 )
+(LeBaron add IC Card 301 1987~1989/IC Card 302 1987~1989/IC Card 217 1987~1989 )
+(New Yorker add IC Card 301 1987~1989/IC Card 302 1987~1989)
+(Sebring add IC Card 2 1995~2000/IC Card 161 1995~2011/IC Card 68 1996~1997/IC Card 304 2001~2005)
+(Stratus 4dr Sedan IC Card 68 1995~1997)
+6.Improve Honda:
+(Accord IC Card 22 0~1994/IC Card 13 1976~1981/IC Card 17 1982~1989)
+(Airwave IC Card 982 2005~2010/IC Card 1341 2005~2010)
+(Avancier IC Card 982 1999~2003/IC Card 1341 1999~2003)
+(Civic IC Card 22 1995~2002/IC Card 19 1988~2002/IC Card 17 1984~1988/IC Card 13 1975~1983/IC Card 16 1972~1975/IC Card 190 1972~1975)
+(Concerto IC Card 19 1987~1992)
+(Edix IC Card 892 2004~0/IC Card 1341 2004~0)
+(Elysion  IC Card 982 2004~2012/IC Card 1341 2004~2012)
+(Fit IC Card 982 2001~2014/IC Card 1341 2001~0)
+(HRV IC Card 982 2005~2006/IC Card 1341 2005~2006)
+(Inspire IC Crd 982 2007~2012/IC Card 1341 2007~2012)
+(Jazz IC Card 13 1982~1986/IC Card 2 1988~1997)
+(Legend IC Card 611 1991~1994/IC Card 19 1994~2004/IC Card 982 2004~2012/IC Card 1341 2004~2012)
+(S2000 IC Card 982 2004~2005/IC Card 1341 2004~2005)
+7.Improve Jaguar:
+(EVR IC Card 6 0~0)
+(FTS Truck IC Card 73 1984~2007)
+(I-290 Pickup IC Card 903 2006~2008)
+(KB Pickup IC Card 1 1972~1987)
+(Pickup IC Card 3 1990~1995/IC Card 1 1981~1987)
+(XJ-R IC Card 252 2003~2009)
+(XK IC Card 894 1997~0/IC Card 998 2006~2010)
+(X-Type IC Card 252 2001~2009)
+8.Improve Lexus:
+(CT IC Card 1510 2010~0)
+(ES IC Card 812 1989~2001/IC Card 872 2002~2008/IC Card 1510 2009~2012)
+9.Improve LincoIn
+(Mark IC Card 70 1966~1996/IC Card 28 1985~1996/IC Card 157 1996~0)
+(MKC IC Card 998 2014~0)
+(MKS IC Card 157 2009~2016)
+(MKT IC Card 157 2010~2017)
+(MKX IC Card 998 2015~0)
+(MKZ IC Card 998 2013~0)
+10.Improve Volkswagen:
+(412 IC Card 182 0~0)
+(Amarok IC Card 909 2011~0)
+(CC IC Card 909 2008~2010/IC Card 909 2010~0)
+(Gol IC Card 909 2004~2009)
+(Golf IC Card 909 2008~2014&2012~0/IC Card 1424 2014~0/IC Card 555 1983~1992)
+(LT31 IC Card 152 1996~2006)
+(LT35 IC Card 152 1996~2006)
+(Passat IC Card 1421 2015~0)
+(Passat CC IC Card 1421 2015~0/IC Card 909 2008~2012)
+(Polo IC Card 1424 2014~0)
+(Routan IC Card 161 2008~0)
+(Tiguan IC Card 909 2006~2014)
+(Touran IC Card 1424 2015~0)
+11.Improve Hyundai:
+(Solaris IC Card 1311 2010~2016/IC Card 1418 2017~2021/IC Card 1453 2017~2021)
+12.Improve Lada:
+(lada[5] IC Card 455 0~0)
+(Granta IC Card 297 0~0)
+13.Improve BMW:
+(3 series  IC Card 81 0~1993(10)/IC Card 94 0~1993(8.10.11)/IC Card 815 0~1993-2000(6-6)/IC Card 1096 0~1998(8)/IC Card 5509 0~2010(8))
+14.Improve Motorcycle:
+IC Card 17,Skoda IC card 430/IC Card 433,ASSA IC Card 950.Lada IC Card 297,BMW IC 815 key code.
+15.Change the Space Width(IC Card 1125)
+16.Change the Incise depth to 1.25mm(IC Card 800)
+
+Soft Version：74
+1、Software optimization
+
+Soft Version：73
+1、Software optimization
+
+Soft Version：72
+1、Software optimization
+
+Soft Version：71
+1、Software optimization
+
+Soft Version：70
+1、Software optimization
+
+Soft Version：69
+1、Software optimization
+
+Soft Version：68
+1、Software optimization
+
+Soft Version：67
+Newly added key data includes:
+1.Hyundai basic data (ID 1414)
+2.Toyota basic data (ID 1863)
+
+Improved key data includes:
+1.Improve Hyundai,Chevrolet,Acura,Dodge,BMW,Renault menu.
+2.Improve Hyundai, Toyota, Yamaha, Hino Truck key code.
+
+Soft Version：66
+1、Software optimization
+
+Soft Version：65
+1、Software optimization
+
+Soft Version：64
+1、Software optimization
+
+Soft Version：63
+1、Software optimization
+
+Soft Version：62
+1、Software optimization
+
+Soft Version：61
+1、Software optimization
+
+Soft Version：60
+1、Software optimization
+
+Soft Version：58
+Newly added key data includes:
+1.Mazda basic data(ID 1915)and key code.
+Improved key data includes:
+1.Improve Hyundai,Kia,Toyota,menu.
+2.Improve ASSA,Mazda,Hyundai,Kia,Chevrolet,key code.
+
+Soft Version：57
+1、Software optimization
+
+Soft Version：56
+1、Software optimization
+
+Soft Version：55
+1、Software optimization
+
+Soft Version：54
+1、Software optimization
+
+Soft Version：53
+Newly added key data includes:
+1.Volvo basic data(ID 1420)and key code
+2.ASSA basic data (IC Card 330)and key code
+Improved key data includes:
+1.Improve GMC,Jeep ,Fiat,Volvo,Cadillac,Citeron,Chevrolet, Peugeot,menu and code data.
+2.Improve Schlage,Volvo,BMW(IC Card815),Chevrolet,GMC key code.
+
+Soft Version：52
+1、Software optimization
+
+Soft Version：51
+1、Software optimization
+
+Soft Version：50
+1、Software optimization
+
+Soft Version：49
+1.Add screen usage hints on the software startup page;
+2.Add clamp switching function in the key page;
+
+Newly added key data includes:
+1 Ford HU101(7) Emergency key(ID 21167)
+2 Kia KK12 key blank(IC card 1453)
+3 Dacia HU179 blank(IC card 1891)
+4 Chinese cars, including HAIMA,GEELY.
+5 SC1(Experimental) IC Card 622200
+
+Improved key data includes:
+1.Improve Ford,Peugeot ,Citroen menu:add new choice of manufacture year in and after 2015.
+2.Improve Ford,Peugeot,Citroen,ASSA key code.
+3.Chang the cuts depth(IC Card 8.IC Card 828.IC Card 1141)
+
+
+Soft Version：48
+1、Software optimization
+2、Add "Move" function in other settings.
+
+Soft Version：47
+1、Software optimization
+
+Soft Version：46
+1、change default cutter into 1.5mm for HU198T ID1434
+2、Change data for ID828
+3、Add a new key profile 21167 for HU101 (7) smart key
+4、Update firmware
+5、Add a percentage complete bar for the engraving feature
+
+
+Soft Version：44
+1、Add "Upload SerialLog" function in other settings.
+2、Add "Reset" function in other settings.
+
+Soft Version:43
+1、Bug fix.
+2、Key Marking function optimization.
+
+Soft Version:41
+1、Bug fix.
+2、Software optimization
+
+Soft Version:40
+1 optimize the lead of HON66 key;
+2 Optimize interface;
+3 Optimize cutting steps for S4 clamp ;
+4 Add KK12,HU136,S1,S4,KW1 and KW5 key blank;
+5 Optimize system prompt message
+

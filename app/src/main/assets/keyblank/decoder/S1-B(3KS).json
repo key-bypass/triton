@@ -1,0 +1,234 @@
+{
+"S1-B(3KS)": [
+{
+"S":"步骤1：移动到夹具上方1号点位(S1-B面钥匙3KS钥匙表面定位)",
+"T":0,
+"X":46,
+"Y":1406,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"移动到夹具上方错误&Move to the upward side of the jaw error"
+},
+{
+"S":"步骤2：探测Z轴向下",
+"T":1,
+"X":0,
+"Y":0,
+"Z":1960,
+"V":"4000,4000,3000",
+"Rule":"S:1,Z",
+"Des":"探测夹具上表面错误&Decode the upward surface of the jaw error"
+},
+{
+"S":"步骤3：离开Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-80,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z;C:3,Z,Z-2",
+"Des":"离开夹具上表面错误&Leave the upward surface of the jaw error"
+},
+{
+"S":"步骤4：探测凸出面第一条线2号点位Y",
+"T":1,
+"X":0,
+"Y":1000,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:3,Y",
+"Des":"探测凸出面第一条线错误&Decode the first line of convex surface error"
+},
+{
+"S":"步骤5：离开凸出面第一条线2号点位Y",
+"T":0,
+"X":0,
+"Y":-200,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:4,Y;C:3,S,Y-4",
+"Des":"离开凸出面第一条线错误&Leave  the first line of convex surface error"
+},
+{
+"S":"步骤6：Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-500,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤7：移动到夹具肩膀",
+"T":0,
+"X":0,
+"Y":2900,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:4,Y",
+"Des":"移动到夹具中间槽错误&Move to the middle slot of the jaw error"
+},
+{
+"S":"步骤8：Z轴向下",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-50,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"移动到夹具中间槽错误&Move to the middle slot of the jaw error"
+},
+{
+"S":"步骤9：探测夹具肩膀",
+"T":1,
+"X":0,
+"Y":-200,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:8,Y",
+"Des":"探测钥匙右边错误&Decode the right side of the key error"
+},
+{
+"S":"步骤10：离开夹具肩膀",
+"T":0,
+"X":0,
+"Y":150,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:9,Y",
+"Des":"离开钥匙右边错误&Leave the right side of the key error"
+},
+{
+"S":"步骤11：探测钥匙右边",
+"T":1,
+"X":400,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:10,X",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤12：离开钥匙右边",
+"T":0,
+"X":-200,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:11,X;C:3,R,X-11",
+"Des":"移动到夹具中间槽错误&Move to the middle slot of the jaw error"
+},
+{
+"S":"步骤13：Z轴向上",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-350,
+"V":"8000,8000,3000",
+"Rule":"S:2,Z",
+"Des":"移动到夹具中间槽错误&Move to the middle slot of the jaw error"
+},
+{
+"S":"步骤14：移动到钥匙左边",
+"T":0,
+"X":1700,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:13,X",
+"Des":"探测钥匙左边错误&Decode the left side of the key error"
+},
+{
+"S":"步骤15：Z轴向下",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:8,Z",
+"Des":"离开钥匙左边错误&Leave the left side of the key error"
+},
+{
+"S":"步骤16：探测钥匙左边",
+"T":1,
+"X":-500,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:15,X",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤17：离开钥匙左边",
+"T":0,
+"X":200,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:16,X;C:3,L,X-16",
+"Des":"移动到钥匙前端错误&Move to the tip of the key error"
+},
+{
+"S":"步骤18：Z轴向上Z",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"S:13,Z",
+"Des":"移动到钥匙前端错误&Move to the tip of the key error"
+},
+{
+"S":"步骤19：移动到钥匙上面",
+"T":0,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"C:2,X,X-16,X-11",
+"Des":"探测钥匙前端错误&Decode the tip of the key error"
+},
+{
+"S":"步骤20：探测钥匙上表面",
+"T":1,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"4000,4000,3000",
+"Rule":"S:2,Z",
+"Des":"离开钥匙前端错误&Leave the tip of the key error"
+},
+{
+"S":"步骤21：离开钥匙上表面",
+"T":0,
+"X":0,
+"Y":0,
+"Z":-1000,
+"V":"8000,8000,3000",
+"Rule":"C:1,Z,Z-20,Z-20;C:3,U,Z-20",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤22：Z轴向上回到原点",
+"T":998,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"主轴向上移动错误&Spindle moving up error"
+},
+{
+"S":"步骤23：X-Y-Z回到原点",
+"T":999,
+"X":0,
+"Y":0,
+"Z":0,
+"V":"8000,8000,3000",
+"Rule":"",
+"Des":"三轴回原点错误&Three axises going back to origin error"
+}
+]
+}

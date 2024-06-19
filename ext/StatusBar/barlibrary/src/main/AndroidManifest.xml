@@ -1,0 +1,5 @@
+<manifest package="com.gyf.barlibrary"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-sdk android:minSdkVersion="21" tools:overrideLibrary="androidx.appcompat, androidx.legacy.coreui, androidx.vectordrawable, androidx.multidex.instrumentation, androidx.fragment" />
+</manifest>

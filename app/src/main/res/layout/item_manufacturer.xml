@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:id="@+id/content"
+    android:background="@drawable/selector_item_keyselect"
+    android:layout_width="match_parent"
+    android:layout_height="60px">
+    <ImageView
+        android:id="@+id/manuLogo"
+        android:visibility="gone"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_marginLeft="40px"
+        android:scaleType="centerInside"/>
+    <TextView
+        android:textSize="28px"
+        android:textColor="?attr/textColor_ffffff_333333"
+        android:gravity="center_vertical"
+        android:id="@+id/tvManufacturer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40px"/>
+    <View
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="46px"
+        android:src="@drawable/arrow_key_select"/>
+</LinearLayout>

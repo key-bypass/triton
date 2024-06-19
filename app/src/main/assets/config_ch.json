@@ -1,0 +1,67 @@
+{
+  "id": "44",
+  "language": "en,cs,fr,de,it,es,ko,pt,ru,tr,zh",
+  "title_layout": {
+    "model": {
+      "name": "阿尔法",
+      "margin_left": "20"
+    },
+    "logo": {
+      "img": "logo_kukai",
+      "margin_left": "20"
+    }
+  },
+  "center_layout": [
+    {
+      "keytype": [
+        {
+          "name": "Automobile",
+          "img": "homepage_automobile"
+        },
+        {
+          "name": "Domestic car",
+          "img": "homepage_domestic_car"
+        },
+        {
+          "name": "Motorcycle",
+          "img": "homepage_motorcycle"
+        }
+      ]
+    }
+  ],
+  "bottom_layout": [
+    {
+      "name": "Calibration",
+      "img": "homepage_calibration"
+    },
+    {
+      "name": "Cut History",
+      "img": "homepage_cut_history"
+    },
+    {
+      "name": "Duplicating Key",
+      "img": "homepage_duplicate_key"
+    },
+    {
+      "name": "My Key Info",
+      "img": "homepage_customkey"
+    },
+    {
+      "name": "Favorite",
+      "img": "homepage_favorite"
+    },
+    {
+      "name": "Service",
+      "img": "homepage_service"
+    },
+    {
+      "name": "Technical Information",
+      "img": "homepage_technical_information"
+    },
+    {
+      "name": "Blank Cut",
+      "img": "homepage_technical_information"
+    }
+  ],
+  "database": "Mobile_44.db"
+}

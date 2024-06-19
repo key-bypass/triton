@@ -1,0 +1,64 @@
+{
+  "S1-B(No)": [
+    {
+      "S": "步骤1：移动到夹具上方1号点位(S1-B面铣刀探测钥匙表面)",
+      "T": 0,
+      "X": 1400,
+      "Y": 3600,
+      "Z": 0,
+      "V": "7000,7000,3000",
+      "Rule": "",
+      "Des": "移动到夹具上方错误&Move to the upward side of the jaw error"
+    },
+    {
+      "S": "步骤2：移动到夹具上方左夹块",
+      "T": 0,
+      "X": 300,
+      "Y": 0,
+      "Z": 0,
+      "V": "4000,4000,3000",
+      "Rule": "SL:L,X",
+      "Des": "移动到夹具左夹块错误&Move to the left block of the jaw error"
+    },
+    {
+      "S": "步骤3：探测Z轴向下",
+      "T": 2,
+      "X": 0,
+      "Y": 0,
+      "Z": 1960,
+      "V": "4000,4000,2000",
+      "Rule": "S:1,Z",
+      "Des": "铣刀探测夹具上表面错误&Cutter decoding the upward surface of the jaw error"
+    },
+    {
+      "S": "步骤4：离开Z轴向上",
+      "T": 0,
+      "X": 0,
+      "Y": 0,
+      "Z": -1000,
+      "V": "7000,7000,3000",
+      "Rule": "S:3,Z;C:3,Z,Z-3",
+      "Des": "铣刀离开夹具上表面错误&Cutter leaving the upward surface of the jaw error"
+    },
+    {
+      "S": "步骤5：Z轴向上回到原点",
+      "T": 998,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "7000,7000,3000",
+      "Rule": "",
+      "Des": "主轴向上移动错误&Spindle moving up error"
+    },
+    {
+      "S": "步骤6：X-Y-Z回到原点",
+      "T": 999,
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "V": "7000,7000,3000",
+      "Rule": "",
+      "Des": "三轴回原点错误&Three axises going back to origin error"
+    }
+  ]
+}

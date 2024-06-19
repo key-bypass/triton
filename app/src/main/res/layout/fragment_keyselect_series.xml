@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="?attr/color_blackDark_gray"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:textSize="20px"
+        android:textColor="?attr/textColor_ffffff_333333"
+        android:textColorHint="?attr/textColor_ffffff_333333"
+        android:id="@+id/et_search"
+        android:background="@drawable/bg_edittext"
+        android:paddingLeft="20px"
+        android:paddingRight="50px"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="40px"
+        android:layout_marginLeft="46px"
+        android:layout_marginTop="8px"
+        android:layout_marginRight="46px"
+        android:layout_marginBottom="8px"
+        android:hint="@string/enter_search_content"
+        android:drawableLeft="@drawable/search_key_select"
+        android:drawablePadding="10px"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10px"/>
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="advance_search_type">
+        <item>@string/card</item>
+        <item>@string/silca_card</item>
+        <item>@string/silca_sn</item>
+    </array>
+</resources>

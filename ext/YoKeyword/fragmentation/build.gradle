@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'me.yokeyword.fragmentation_components'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 23
+//noinspection ExpiredTargetSdkVersion
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation libs.appcompat.v7
+    api project(':ext:YoKeyword:fragmentation_core')
+}

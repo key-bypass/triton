@@ -1,0 +1,77 @@
+{
+  "id": "48",
+  "language": "en,zh,cs,fr,de,it,es,ko,pt,ru,tr,hb,fa,vi",
+  "company": "Copyright(c) 2020 Hunan Kukai Electromechanical co.,ltd.  All rights reserved",
+  "welcome_logo": "welcome_kukai",
+  "title_layout": {
+    "model": {
+      "name": "SEC-X",
+      "margin_left": "20"
+    },
+    "logo": {
+      "img": "logo_kukai",
+      "margin_left": "20"
+    }
+  },
+  "center_layout":[
+    {
+      "name":"Automobile",
+      "img":"icon_automobile"
+    },
+    {
+      "name":"Dimple",
+      "img":"icon_dimple"
+    },
+    {
+      "name":"Motorcycle",
+      "img":"icon_motorcycle"
+    },
+    {
+      "name":"Tubular",
+      "img":"icon_tubular"
+    },
+    {
+      "name":"Standard",
+      "img":"icon_standard"
+    },
+    {
+      "name":"Search",
+      "img":"icon_search"
+    },
+    {
+      "name":"Domestic Car",
+      "img":"icon_domestic_car"
+    },
+    {
+      "name":"Calibration",
+      "img":"icon_setup"
+    }
+  ],
+  "bottom_layout":[
+    {
+      "name":"Cut History",
+      "img":"btn_cut_history"
+    },
+    {
+      "name":"Duplicating Key",
+      "img":"btn_duplicating_key"
+    },
+    {
+      "name":"My Key Info",
+      "img":"btn_my_key_info"
+    },
+    {
+      "name":"Last Key",
+      "img":"btn_last_key"
+    },
+    {
+      "name":"Favorite",
+      "img":"btn_favorite"
+    },
+    {
+      "name":"Key Marking",
+      "img":"btn_key_marking"
+    }
+  ],
+  "database": "Mobile_43.db"
+}

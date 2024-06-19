@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:textSize="16px"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/cb_black_cut"
+        android:background="@drawable/selector_item_blank_cut"
+        android:padding="2px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:button="@null"
+        android:text="asdbaaa"
+        android:lines="2"/>
+</LinearLayout>

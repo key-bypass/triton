@@ -1,0 +1,9 @@
+[submodule "ext/StatusBar"]
+	path = ext/StatusBar
+	url = https://github.com/l6yang/StatusBar.git
+[submodule "ext/YoKeyword"]
+	path = ext/YoKeyword
+	url = https://github.com/YoKeyword/Fragmentation.git
+[submodule "ext/cymchad.viewadapter"]
+	path = ext/cymchad.viewadapter
+	url = https://github.com/CymChad/BaseRecyclerViewAdapterHelper.git

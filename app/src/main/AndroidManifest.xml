@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="20240229"
+    android:versionName="77.0"
+    package="com.kkkcut.e20j.us">
+    <uses-sdk android:minSdkVersion="26" tools:overrideLibrary="com.gyf.barlibrary, androidx.asynclayoutinflater, androidx.swiperefreshlayout, androidx.customview, androidx.slidingpanelayout, androidx.drawerlayout, androidx.coordinatorlayout, androidx.media, androidx.multidex.instrumentation, androidx.recyclerview, me.yokeyword.fragmentation, me.yokeyword.fragmentation_components, androidx.legacy.coreui, androidx.legacy.v4, androidx.appcompat" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-feature android:name="android.hardware.usb.host"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <application
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name_us"
+        android:icon="@mipmap/ic_launcher_us"
+        android:name="com.kkkcut.e20j.MyApplication"
+        android:allowBackup="true"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory">
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.WelcomeActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter"/>
+        </activity>
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.FrameActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.RegisterActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.E9RegisterActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.FirmwareUpdateActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <activity
+            android:theme="@style/TranslucentTheme"
+            android:name="com.kkkcut.e20j.ui.activity.LookPicActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <activity
+            android:name="com.kkkcut.e20j.ui.activity.BarCodeRemindActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <activity
+            android:name="com.kkkcut.e20j.ui.fragment.search.SearchResultActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden|locale"/>
+        <meta-data
+            android:name="design_width"
+            android:value="1024"/>
+        <meta-data
+            android:name="design_height"
+            android:value="600"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4"/>
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true"/>
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape"/>
+        <provider
+            android:name="pgyersdk.PgyerProvider"
+            android:exported="false"
+            android:authorities="com.kkkcut.e20j.us.com.pgyer.provider"/>
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="c1f9383cef7234fb98458a418ad173c6"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.uuzuche.lib_zxing.activity.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <service android:name="com.liulishuo.filedownloader.services.FileDownloadService.SharedMainProcessService"/>
+        <service
+            android:name="com.liulishuo.filedownloader.services.FileDownloadService.SeparateProcessService"
+            android:process=":filedownloader"/>
+    </application>
+</manifest>

@@ -1,0 +1,64 @@
+{
+  "id": "49",
+  "language": "en,cs,fr,de,it,es,ko,pt,ru,tr,zh",
+  "title_layout": {
+    "model": {
+      "name": "SEC-X",
+      "margin_left": "20"
+    },
+    "logo": {
+      "img": "logo_kukai",
+      "margin_left": "20"
+    }
+  },
+  "center_layout":[
+    {
+      "name":"Domestic Car",
+      "img":"icon_domestic_car"
+    },
+    {
+      "name":"Automobile",
+      "img":"icon_automobile"
+    },
+    {
+      "name":"Motorcycle",
+      "img":"icon_motorcycle"
+    },
+    {
+      "name":"Search",
+      "img":"icon_search"
+    },
+    {
+      "name":"Calibration",
+      "img":"icon_setup"
+    },
+    {
+     "name":"Support",
+     "img":"icon_support"
+    }
+  ]
+,
+  "bottom_layout":[
+    {
+      "name":"Cut History",
+      "img":"btn_cut_history"
+    },
+    {
+      "name":"Duplicating Key",
+      "img":"btn_duplicating_key"
+    },
+    {
+          "name":"My Key Info",
+          "img":"btn_my_key_info"
+        },
+    {
+      "name":"Last Key",
+      "img":"btn_last_key"
+    },
+    {
+      "name":"Favorite",
+      "img":"btn_favorite"
+    }
+  ],
+  "database": "Mobile_44.db"
+}
