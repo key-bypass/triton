@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.userDB.CollectionData;
@@ -29,17 +28,19 @@ import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
@@ -49,14 +50,11 @@ public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapt
     private static final String TYPE = "type";
     BaseQuickAdapter adapter;
 
-    @BindView(R.id.bt_get_test_data)
     Button btGetTestData;
 
-    @BindView(R.id.et_search)
     EditText etSearch;
     private int pageIndex;
 
-    @BindView(R.id.rv_user_data)
     RecyclerView rvUserData;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -224,7 +222,6 @@ public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapt
         return getString(R.string.favorites);
     }
 
-    @OnClick({R.id.bt_delete_all, R.id.bt_get_test_data})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id != R.id.bt_delete_all) {
@@ -265,7 +262,7 @@ public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapt
                 @Override // io.reactivex.functions.Consumer
                 public void accept(CollectionData collectionData) throws Exception {
                     Log.i(UserDataFragment.TAG, "accept: " + collectionData.getTitle());
-                    UserDataFragment.this.adapter.addData((BaseQuickAdapter) collectionData);
+                    UserDataFragment.this.adapter.addData(collectionData);
                 }
             }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.5
                 @Override // io.reactivex.functions.Consumer
@@ -310,7 +307,6 @@ public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapt
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
         this.pageIndex = 0;
         getDataList(0, 50, true);

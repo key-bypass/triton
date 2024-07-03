@@ -1,9 +1,9 @@
 package com.kkkcut.e20j.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import androidx.appcompat.app.AlertDialog;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.us.R;

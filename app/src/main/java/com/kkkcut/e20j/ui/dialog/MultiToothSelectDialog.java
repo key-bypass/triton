@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.adapter.ToothKeyboardRvAdapter;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;

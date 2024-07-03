@@ -9,10 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
-import butterknife.OnFocusChange;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.dao.UserDataDaoManager;
@@ -20,81 +18,58 @@ import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
-import com.liying.core.MachineInfo;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
 public class KeyShapeSetFragment extends BaseBackFragment {
     private static final String CUSTOMKEY = "CUSTOMKEY";
 
-    @BindView(R.id.cb_extra_cut)
     CheckBox cbExtraCut;
     private CustomKey customKey;
 
-    @BindView(R.id.et_angle)
     EditText etAngle;
 
-    @BindView(R.id.et_cut_depth)
     EditText etCutDepth;
 
-    @BindView(R.id.et_groove)
     EditText etGroove;
 
-    @BindView(R.id.et_guide)
     EditText etGuide;
 
-    @BindView(R.id.et_nose)
     EditText etNose;
 
-    @BindView(R.id.et_thickness)
     EditText etThickness;
 
-    @BindView(R.id.et_width)
     EditText etWidth;
 
-    @BindView(R.id.iv_angle)
     ImageView ivAngle;
 
-    @BindView(R.id.iv_cut_depth)
     ImageView ivCutDepth;
 
-    @BindView(R.id.iv_groove)
     ImageView ivGroove;
 
-    @BindView(R.id.iv_guide)
     ImageView ivGuide;
 
-    @BindView(R.id.iv_nose)
     ImageView ivNose;
 
-    @BindView(R.id.iv_thick)
     ImageView ivThick;
 
-    @BindView(R.id.iv_width)
     ImageView ivWidth;
 
-    @BindView(R.id.ll_angle)
     LinearLayout llAngle;
 
-    @BindView(R.id.ll_cut_depth)
     LinearLayout llCutDepth;
 
-    @BindView(R.id.ll_groove)
     LinearLayout llGroove;
 
-    @BindView(R.id.ll_guide)
     LinearLayout llGuide;
 
-    @BindView(R.id.ll_nose)
     LinearLayout llNose;
 
-    @BindView(R.id.ll_thickness)
     LinearLayout llThickness;
 
-    @BindView(R.id.ll_width)
     LinearLayout llWidth;
 
-    @BindView(R.id.tv_unit)
     TextView tvUnit;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -289,7 +264,6 @@ public class KeyShapeSetFragment extends BaseBackFragment {
         }
     }
 
-    @OnFocusChange({R.id.et_guide, R.id.et_nose})
     public void onFocusChanged(View view, boolean z) {
         int id = view.getId();
         if (id == R.id.et_guide) {
@@ -301,7 +275,6 @@ public class KeyShapeSetFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.bt_last, R.id.bt_next})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_last) {
@@ -435,7 +408,6 @@ public class KeyShapeSetFragment extends BaseBackFragment {
         editDialog.show();
     }
 
-    @OnCheckedChanged({R.id.cb_extra_cut})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         if (compoundButton.getId() != R.id.cb_extra_cut) {
             return;

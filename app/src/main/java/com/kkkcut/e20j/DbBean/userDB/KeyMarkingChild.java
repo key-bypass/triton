@@ -1,15 +1,35 @@
 package com.kkkcut.e20j.DbBean.userDB;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.io.Serializable;
 
+@Entity
 /* loaded from: classes.dex */
 public class KeyMarkingChild implements Serializable {
-    public static final int IMAGE = 2;
-    public static final int TEXT = 1;
+    @Id
+    Long id;
+
     private static final long serialVersionUID = 7469059693947474974L;
     private float fontSize;
     private int height;
-    Long id;
+
+    @Generated(hash = 439588204)
+    public KeyMarkingChild(Long id, float fontSize, int height, byte[] imageByte, int marginLeft, int marginTop,
+            Long parentId, String text, int type, int width) {
+        this.id = id;
+        this.fontSize = fontSize;
+        this.height = height;
+        this.imageByte = imageByte;
+        this.marginLeft = marginLeft;
+        this.marginTop = marginTop;
+        this.parentId = parentId;
+        this.text = text;
+        this.type = type;
+        this.width = width;
+    }
     private byte[] imageByte;
     private int marginLeft;
     private int marginTop;
@@ -32,6 +52,11 @@ public class KeyMarkingChild implements Serializable {
     }
 
     public KeyMarkingChild() {
+    }
+
+    public enum Identifier {
+        TEXT,
+        IMAGE
     }
 
     public Long getId() {

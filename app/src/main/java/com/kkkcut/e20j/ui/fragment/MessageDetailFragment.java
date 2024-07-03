@@ -2,7 +2,6 @@ package com.kkkcut.e20j.ui.fragment;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import butterknife.BindView;
 import com.kkkcut.e20j.DbBean.userDB.JpushMsg;
 import com.kkkcut.e20j.us.R;
 
@@ -10,10 +9,8 @@ import com.kkkcut.e20j.us.R;
 public class MessageDetailFragment extends BaseBackFragment {
     private static final String JPUSH_MSG = "jpushMsg";
 
-    @BindView(R.id.tv_content)
     TextView tvContent;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.ui.fragment.customkey;
 
+import static io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread;
+import static io.reactivex.rxjava3.schedulers.Schedulers.io;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.Editable;
@@ -10,9 +12,6 @@ import android.widget.EditText;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.KeyBasicData;
@@ -35,24 +34,23 @@ import com.kkkcut.e20j.ui.fragment.KeyOperateFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
+import com.cutting.machine.MachineInfo;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 
 /* loaded from: classes.dex */
 public class CustomKeyListFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
-    @BindView(R.id.bt_create_key)
     Button btCreateKey;
     private CustomKeyAdapter customKeyAdapter;
 
-    @BindView(R.id.rv_custom_key)
     RecyclerView rvCustomKey;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -100,7 +98,6 @@ public class CustomKeyListFragment extends BaseBackFragment implements BaseQuick
         }));
     }
 
-    @OnClick({R.id.bt_create_key, R.id.bt_load_from_id})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_create_key) {
@@ -196,7 +193,7 @@ public class CustomKeyListFragment extends BaseBackFragment implements BaseQuick
 
     private void syncData(CustomKey customKey) {
         showLoadingDialog(getString(R.string.waitting), false);
-        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).uploadCustomkey(TUitls.uploadCustomkey(SPUtils.getString("series"), GetUUID.getUUID(), customKey)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<UploadCustomKey>() { // from class: com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment.9
+        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).uploadCustomkey(TUitls.uploadCustomkey(SPUtils.getString("series"), GetUUID.getUUID(), customKey)).subscribeOn(io()).observeOn(mainThread()).subscribe(new Consumer<UploadCustomKey>() { // from class: com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment.9
             @Override // io.reactivex.functions.Consumer
             public void accept(UploadCustomKey uploadCustomKey) throws Exception {
                 String str;
@@ -233,14 +230,13 @@ public class CustomKeyListFragment extends BaseBackFragment implements BaseQuick
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(final Editable editable) {
         Disposable subscribe = Observable.fromCallable(new Callable<List>() { // from class: com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment.12
             @Override // java.util.concurrent.Callable
             public List call() throws Exception {
                 return UserDataDaoManager.getInstance(CustomKeyListFragment.this.getContext()).fuzzyQueryCustomKeys(editable.toString());
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List>() { // from class: com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment.11
+        }).subscribeOn(Schedulers.io()).observeOn(mainThread()).subscribe(new Consumer<List>() { // from class: com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment.11
             @Override // io.reactivex.functions.Consumer
             public void accept(List list) throws Exception {
                 CustomKeyListFragment.this.customKeyAdapter.setNewData(list);

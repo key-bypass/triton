@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 import com.kkkcut.e20j.DbBean.technical.DataList;
 import com.kkkcut.e20j.DbBean.technical.DataListBean;
 import com.kkkcut.e20j.adapter.TechnicalInfoDataAdapter;
@@ -12,11 +11,12 @@ import com.kkkcut.e20j.customView.ItemDecorationPowerful;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -25,11 +25,9 @@ import java.util.concurrent.Callable;
 public class TechnicalInfoFragment extends BaseBackFragment {
     private String[] names = {"遥控拷贝", "遥控类型", "芯片拷贝", "是否拆读", "钥匙匹配", "OBD位置", "码片类型", "钥匙坯号", "锁片差位", "匹配设备", "防盗类型", "开锁工具", "匹配密码", "芯片型号", "遥控生成", "遥控匹配", "芯片生成", "注意事项", "密码获取", "零件位置", "开锁方向"};
 
-    @BindView(R.id.rv_data_list)
     RecyclerView rvDataList;
     private TechnicalInfoDataAdapter technicalInfoDataAdapter;
 
-    @BindView(R.id.tv_info)
     TextView tvInfo;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

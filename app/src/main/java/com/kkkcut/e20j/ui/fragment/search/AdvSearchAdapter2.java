@@ -4,6 +4,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.kkkcut.e20j.DbBean.search.MenuSummary;
 import com.kkkcut.e20j.us.R;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

@@ -1,6 +1,6 @@
 package com.kkkcut.e20j.ui.fragment.clampswitch;
 
-import com.liying.core.bean.ClampBean;
+import com.cutting.machine.bean.ClampBean;
 
 /* loaded from: classes.dex */
 public class ClampDisplayBean {

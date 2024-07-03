@@ -13,10 +13,11 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.kkkcut.e20j.R;
+
 import com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.helper.IIndexBarDataHelper;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.helper.IndexBarDataHelperImpl;
+import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import java.util.ArrayList;
 import java.util.Arrays;

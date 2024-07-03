@@ -5,37 +5,34 @@ import android.text.TextUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
+
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.clamp.S8;
+import com.cutting.machine.clamp.ClampF;
+import com.cutting.machine.clamp.S1B;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.error.ErrorHelper;
+import com.cutting.machine.utils.UnitConvertUtil;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutType;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import com.liying.core.clamp.ClampF;
-import com.liying.core.clamp.S1B;
-import com.liying.core.clamp.S8;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.error.ErrorHelper;
-import com.liying.core.utils.UnitConvertUtil;
+import com.spl.key.mdKeyBlankClass;
+
 
 /* loaded from: classes.dex */
 public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
-
-    @BindView(R.id.cb_cut_more_thick)
     CheckBox cbCutMoreThick;
     private int diameter;
 
-    @BindView(R.id.et_key_thickness)
     EditText etThickness;
     private boolean isSecondSide;
 
-    @BindView(R.id.iv_width)
     ImageView ivWidth;
     private int thickness;
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_blank_cut_thickness;
     }
@@ -49,7 +46,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
     }
 
     /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     public void initViewsAndEvents() {
         if (getBlankCutType() == BlankCutType.WIDTH) {
             this.ivWidth.setImageResource(R.drawable.blank_cut_width);
@@ -58,7 +55,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public boolean checkHaveRiskCutClamp(ClampF clampF) {
         int high1;
         boolean z = clampF instanceof S8;
@@ -85,7 +82,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
         return true;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public void setMdKeyBlankClass(mdKeyBlankClass mdkeyblankclass) {
         mdkeyblankclass.setKeyBlankThick(this.thickness);
         if (getBlankCutType() == BlankCutType.THICKNESS) {
@@ -100,7 +97,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public void onCutFinish() {
         if (!this.isSecondSide) {
             RemindDialog remindDialog = new RemindDialog(getContext());
@@ -125,7 +122,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
         this.isSecondSide = false;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public boolean readyStartCut() {
         String trim = this.etThickness.getText().toString().trim();
         if (TextUtils.isEmpty(trim)) {
@@ -139,7 +136,7 @@ public class BlankCutThicknessFragment extends BaseBlankCutParamSetFragment {
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public String setKeyLocationPath() {
         return MachineInfo.isChineseMachine() ? "duplicate/decoder/S1-B(ThreeendsTop).json" : "keyblank/decoder/S8-1.json";
     }

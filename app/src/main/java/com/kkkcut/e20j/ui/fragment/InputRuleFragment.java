@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.us.R;
@@ -22,10 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 public class InputRuleFragment extends BaseBackFragment {
     private EditText currentEdit;
 
-    @BindView(R.id.ll_A)
     LinearLayout llA;
 
-    @BindView(R.id.ll_B)
     LinearLayout llB;
     private int textColorDefault = -1;
     private MyOnfocusChanged myOnfocusChanged = new MyOnfocusChanged();
@@ -187,7 +183,6 @@ public class InputRuleFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tvX, R.id.btn_ok, R.id.btn_cancel})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.btn_cancel) {

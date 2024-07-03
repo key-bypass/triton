@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.kkkcut.e20j.androidquick.tool.StringUtil;
+import com.cutting.machine.DialogBtnCallBack;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.DialogBtnCallBack;
 
 /* loaded from: classes.dex */
 public class ErrorDialog extends Dialog implements View.OnClickListener {

@@ -9,12 +9,13 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.DbBean.userDB.DuplicateDimple;
 import com.kkkcut.e20j.adapter.DimpleDataAdapter;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
@@ -23,43 +24,35 @@ import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class DuplicateDimpleAlignFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
     DimpleDataAdapter adapter;
 
-    @BindView(R.id.cb_side)
     CheckBox cbSide;
 
-    @BindView(R.id.cb_zimuzhu)
     CheckBox cbZiMuZhu;
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
     private KeyInfo keyInfo;
 
-    @BindView(R.id.rb_shoulder)
     RadioButton rbShoulder;
 
-    @BindView(R.id.rb_tip)
     RadioButton rbTip;
 
-    @BindView(R.id.rv_data)
     RecyclerView rvData;
     private boolean side;
 
-    @BindView(R.id.tv_number)
     TextView tvNumber;
 
-    @BindView(R.id.tv_row_number)
     TextView tvRowNumber;
     private boolean ziMuZhu;
     private int bittingCount = 5;
@@ -107,7 +100,6 @@ public class DuplicateDimpleAlignFragment extends BaseBackFragment implements Ba
         }));
     }
 
-    @OnCheckedChanged({R.id.rb_shoulder, R.id.rb_tip, R.id.cb_side, R.id.cb_zimuzhu})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.cb_side /* 2131362032 */:
@@ -158,7 +150,6 @@ public class DuplicateDimpleAlignFragment extends BaseBackFragment implements Ba
         }
     }
 
-    @OnClick({R.id.tv_number_reduce, R.id.tv_number_add, R.id.tv_row_reduce, R.id.tv_row_add, R.id.bt_ok})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.bt_ok /* 2131361962 */:

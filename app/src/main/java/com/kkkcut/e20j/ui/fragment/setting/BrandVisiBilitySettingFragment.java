@@ -5,11 +5,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.Manufacturer;
 import com.kkkcut.e20j.DbBean.userDB.ManufacturerHidden;
@@ -19,39 +19,35 @@ import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /* loaded from: classes.dex */
 public class BrandVisiBilitySettingFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
     BrandVisibilityAdapter hideBrandAdapter;
 
-    @BindView(R.id.indexBar_brand_hide)
     IndexBar indexBarBrandHide;
 
-    @BindView(R.id.indexBar_brand_show)
     IndexBar indexBarBrandShow;
 
-    @BindView(R.id.rv_brand_hidden)
     RecyclerView rvBrandHidden;
 
-    @BindView(R.id.rv_brand_show)
     RecyclerView rvBrandShow;
     BrandVisibilityAdapter showBrandAdapter;
 
-    @BindView(R.id.tvSideBarHint_brad_hide)
     TextView tvSideBarHintBradHide;
 
-    @BindView(R.id.tvSideBarHint_brad_show)
     TextView tvSideBarHintBradShow;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -139,7 +135,6 @@ public class BrandVisiBilitySettingFragment extends BaseBackFragment implements 
         }));
     }
 
-    @OnClick({R.id.iv_hide, R.id.iv_show})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.iv_hide) {

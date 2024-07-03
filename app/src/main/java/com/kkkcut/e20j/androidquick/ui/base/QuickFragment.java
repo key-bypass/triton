@@ -9,24 +9,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
+import com.cutting.machine.DialogBtnCallBack;
+import com.cutting.machine.error.ErrorBean;
 import com.kkkcut.e20j.androidquick.tool.StringUtil;
-import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.androidquick.ui.viewstatus.VaryViewHelperController;
 import com.kkkcut.e20j.ui.dialog.ErrorDialog;
 import com.kkkcut.e20j.ui.dialog.LoadingDialog;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.DialogBtnCallBack;
-import com.liying.core.error.ErrorBean;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
+
 
 /* loaded from: classes.dex */
 public abstract class QuickFragment extends Fragment {
@@ -34,7 +37,6 @@ public abstract class QuickFragment extends Fragment {
     private ErrorDialog errorDialog;
     private boolean isPrepared;
     private LoadingDialog loadingDialog;
-    private Unbinder mUnbinder;
     public View mainLayout;
     protected Context mContext = null;
     protected int mScreenWidth = 0;
@@ -55,7 +57,7 @@ public abstract class QuickFragment extends Fragment {
 
     protected abstract void initViewsAndEvents();
 
-    protected abstract void onEventComing(EventCenter eventCenter);
+    protected abstract void onEventComing(EventCenter<?> eventCenter);
 
     protected abstract void onFirstUserVisible();
 
@@ -90,7 +92,6 @@ public abstract class QuickFragment extends Fragment {
     @Override // androidx.fragment.app.Fragment
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
-        this.mUnbinder = ButterKnife.bind(this, view);
         if (getLoadingTargetView() != null) {
             this.mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
         }
@@ -110,10 +111,6 @@ public abstract class QuickFragment extends Fragment {
     @Override // androidx.fragment.app.Fragment
     public void onDestroy() {
         super.onDestroy();
-        Unbinder unbinder = this.mUnbinder;
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
         clearDisposable();
         EventBus.getDefault().unregister(this);
     }

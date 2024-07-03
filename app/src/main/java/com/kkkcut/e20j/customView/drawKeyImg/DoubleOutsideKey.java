@@ -8,12 +8,15 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
+
 import androidx.core.internal.view.SupportMenu;
+
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.utils.UnitUtils;
-import com.liying.core.bean.KeyInfo;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

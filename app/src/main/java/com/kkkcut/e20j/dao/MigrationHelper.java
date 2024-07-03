@@ -1,7 +1,9 @@
 package com.kkkcut.e20j.dao;
 
 import android.text.TextUtils;
+
 import com.kkkcut.e20j.DbBean.DaoMaster;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.greenrobot.greendao.AbstractDao;

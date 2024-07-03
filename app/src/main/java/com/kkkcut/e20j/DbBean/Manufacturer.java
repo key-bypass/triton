@@ -2,9 +2,12 @@ package com.kkkcut.e20j.DbBean;
 
 import android.text.TextUtils;
 import com.kkkcut.e20j.DbBean.userDB.ManufacturerHidden;
-import com.liying.core.MachineInfo;
+import com.cutting.machine.MachineInfo;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class Manufacturer extends KeyInfoBase {
     String description;
     String distributorNum;
@@ -57,6 +60,26 @@ public class Manufacturer extends KeyInfoBase {
     }
 
     public Manufacturer() {
+    }
+
+    @Generated(hash = 1228751705)
+    public Manufacturer(String description, String distributorNum, boolean isChecked, int is_automobile, int is_automobile_chs, int is_dimple,
+            int is_motorcycle, int is_standard, int is_tubular, int is_visible, int manufacturerId, byte[] manufacturerLogoImage, String manufacturerName,
+            String manufacturerNameCN) {
+        this.description = description;
+        this.distributorNum = distributorNum;
+        this.isChecked = isChecked;
+        this.is_automobile = is_automobile;
+        this.is_automobile_chs = is_automobile_chs;
+        this.is_dimple = is_dimple;
+        this.is_motorcycle = is_motorcycle;
+        this.is_standard = is_standard;
+        this.is_tubular = is_tubular;
+        this.is_visible = is_visible;
+        this.manufacturerId = manufacturerId;
+        this.manufacturerLogoImage = manufacturerLogoImage;
+        this.manufacturerName = manufacturerName;
+        this.manufacturerNameCN = manufacturerNameCN;
     }
 
     public int getManufacturerId() {
@@ -169,5 +192,13 @@ public class Manufacturer extends KeyInfoBase {
             return getManufacturerNameCN();
         }
         return getManufacturerName();
+    }
+
+    public boolean getIsChecked() {
+        return this.isChecked;
+    }
+
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 }

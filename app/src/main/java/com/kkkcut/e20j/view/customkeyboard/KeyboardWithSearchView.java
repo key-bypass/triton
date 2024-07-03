@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.kkkcut.e20j.us.R;
 
 /* loaded from: classes.dex */

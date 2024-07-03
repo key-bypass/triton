@@ -4,23 +4,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.BindView;
 import com.kkkcut.e20j.androidquick.tool.FileUtil;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.File;
 import java.util.concurrent.Callable;
 
 /* loaded from: classes.dex */
 public class SerialLogFragment extends BaseBackFragment {
 
-    @BindView(R.id.bt_clear)
     Button btClear;
 
-    @BindView(R.id.tv_log)
     TextView tvLog;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

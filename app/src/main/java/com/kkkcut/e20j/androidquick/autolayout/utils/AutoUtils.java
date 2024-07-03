@@ -1,6 +1,7 @@
 package com.kkkcut.e20j.androidquick.autolayout.utils;
 
 import android.view.View;
+
 import com.kkkcut.e20j.androidquick.autolayout.AutoLayoutInfo;
 import com.kkkcut.e20j.androidquick.autolayout.config.AutoLayoutConifg;
 import com.kkkcut.e20j.us.R;

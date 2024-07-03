@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kkkcut.e20j.DbBean.technical.DataModel;
 import com.kkkcut.e20j.us.R;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

@@ -13,9 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
@@ -24,99 +21,72 @@ import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.error.ErrorCode;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.error.ErrorCode;
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
 public class DimpleDuplicateCutDialog extends BottomInDialog {
     private static final String TAG = "CutDialog";
 
-    @BindView(R.id.bt_1_5mm)
     Button bt15mm;
 
-    @BindView(R.id.bt_2_0mm)
     Button bt20mm;
 
-    @BindView(R.id.bt_2_5mm)
     Button bt25mm;
 
-    @BindView(R.id.cb_fast)
     CheckBox cbFast;
 
-    @BindView(R.id.cb_plastic_key)
     CheckBox cbPlasticKey;
     private int cutDepth;
     private int cutSpeed;
     private int cutter_size;
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
 
-    @BindView(R.id.iv_cutter)
     ImageView ivCutter;
 
-    @BindView(R.id.iv_depth)
     ImageView ivDepth;
     private KeyInfo ki;
 
-    @BindView(R.id.ll_cut_depth)
     LinearLayout llCutDepth;
 
-    @BindView(R.id.ll_cut_speed)
     LinearLayout llCutSpeed;
 
-    @BindView(R.id.ll_cutter_size)
     LinearLayout llCutterSize;
 
-    @BindView(R.id.ll_plastic_key)
     LinearLayout llPlasticKey;
 
-    @BindView(R.id.rb_layer_1)
     RadioButton rbLayer1;
 
-    @BindView(R.id.rb_layer_2)
     RadioButton rbLayer2;
 
-    @BindView(R.id.rb_layer_3)
     RadioButton rbLayer3;
 
-    @BindView(R.id.rb_shape_gentle)
     RadioButton rbShapeGentle;
 
-    @BindView(R.id.rb_shape_jagged)
     RadioButton rbShapeJagged;
 
-    @BindView(R.id.rg_cut_shape)
     RadioGroup rgCutShape;
 
-    @BindView(R.id.rg_layer_cut)
     RadioGroup rgLayerCut;
 
-    @BindView(R.id.tv_cut_depth)
     TextView tvCutDepth;
 
-    @BindView(R.id.tv_cut_shape)
     TextView tvCutShape;
 
-    @BindView(R.id.tv_cut_speed)
     TextView tvCutSpeed;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvCutterSize;
 
-    @BindView(R.id.tv_cutter_size_remind)
     TextView tvCutterSizeRemind;
 
-    @BindView(R.id.tv_depth_value)
     TextView tvDepthValue;
 
-    @BindView(R.id.tv_layer_cut)
     TextView tvLayerCut;
 
-    @BindView(R.id.tv_speed_value)
     TextView tvSpeedValue;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
@@ -275,7 +245,6 @@ public class DimpleDuplicateCutDialog extends BottomInDialog {
         this.tvCutterSize.setText(String.format("%.1fmm", Float.valueOf(this.cutter_size / 100.0f)));
     }
 
-    @OnClick({R.id.iv_size_add, R.id.iv_size_reduce, R.id.iv_depth_add, R.id.iv_depth_reduce, R.id.iv_speed_add, R.id.iv_speed_reduce, R.id.bt_cancle, R.id.bt_cut, R.id.iv_close, R.id.bt_1_5mm, R.id.bt_2_0mm, R.id.bt_2_5mm, R.id.cb_fast})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_1_5mm /* 2131361901 */:
@@ -476,7 +445,6 @@ public class DimpleDuplicateCutDialog extends BottomInDialog {
         return 0;
     }
 
-    @OnCheckedChanged({R.id.rb_layer_1, R.id.rb_layer_2, R.id.rb_layer_3, R.id.rb_shape_gentle, R.id.rb_shape_jagged, R.id.cb_plastic_key})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.cb_plastic_key /* 2131362029 */:

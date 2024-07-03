@@ -3,8 +3,9 @@ package com.kkkcut.e20j.customView.drawKeyImg.duplicating;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import com.kkkcut.e20j.customView.drawKeyImg.duplicating.CopyKey;
-import com.liying.core.bean.DestPoint;
+
+import com.cutting.machine.bean.DestPoint;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

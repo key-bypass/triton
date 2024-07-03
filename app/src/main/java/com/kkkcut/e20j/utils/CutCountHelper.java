@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
 import com.kkkcut.e20j.androidquick.tool.FileUtil;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.bean.KeyType;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.KeyType;
 import java.io.File;
 
 /* loaded from: classes.dex */
@@ -113,7 +113,7 @@ public class CutCountHelper {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    public void addCutCount(com.liying.core.bean.KeyType r3, boolean r4) {
+    public void addCutCount(com.cutting.machine.bean.KeyType r3, boolean r4) {
         /*
             r2 = this;
             int[] r0 = com.kkkcut.e20j.utils.CutCountHelper.AnonymousClass1.$SwitchMap$com$liying$core$bean$KeyType
@@ -157,7 +157,7 @@ public class CutCountHelper {
             r3.execute(r4)
             return
         */
-        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.utils.CutCountHelper.addCutCount(com.liying.core.bean.KeyType, boolean):void");
+        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.utils.CutCountHelper.addCutCount(com.cutting.machine.bean.KeyType, boolean):void");
     }
 
     public void getCutCount(ReadCutCountListener readCutCountListener) {

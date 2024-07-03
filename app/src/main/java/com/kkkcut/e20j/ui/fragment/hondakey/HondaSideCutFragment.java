@@ -6,25 +6,24 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.operation.cut.DataParam;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.CuttingMachine;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.operation.cut.DataParam;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 
 /* loaded from: classes.dex */
@@ -32,22 +31,18 @@ public class HondaSideCutFragment extends BaseBackFragment {
     public static final int SIDE_A = 0;
     public static final int SIDE_B = 1;
 
-    @BindView(R.id.bt_cut)
     TextView btCut;
     private int cutter_size = 200;
     private DataParam dataParam = new DataParam();
 
-    @BindView(R.id.rb_honda_2020)
+
     RadioButton rbHonda2020;
 
-    @BindView(R.id.rb_honda_2021)
     RadioButton rbHonda2021;
 
-    @BindView(R.id.rg_year)
     RadioGroup rgYear;
     private int side;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvCutterSize;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -66,11 +61,8 @@ public class HondaSideCutFragment extends BaseBackFragment {
     protected void initViewsAndEvents() {
         this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
         this.btCut.setVisibility(0);
-        addDisposable(RxView.clicks(this.btCut).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.hondakey.HondaSideCutFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                HondaSideCutFragment.this.startCut();
-            }
+        addDisposable((Disposable) RxView.clicks(this.btCut).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
+            HondaSideCutFragment.this.startCut();
         }));
         if (getArguments() == null) {
             return;
@@ -115,7 +107,6 @@ public class HondaSideCutFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.iv_size_reduce, R.id.iv_size_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_size_add /* 2131362335 */:
@@ -139,7 +130,6 @@ public class HondaSideCutFragment extends BaseBackFragment {
         }
     }
 
-    @OnCheckedChanged({R.id.rb_honda_a, R.id.rb_honda_b, R.id.rb_honda_2020, R.id.rb_honda_2021})
     public void onCheckChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.rb_honda_a /* 2131362619 */:

@@ -15,18 +15,14 @@ import com.kkkcut.e20j.DbBean.ManufacturerDao;
 import com.kkkcut.e20j.DbBean.Model;
 import com.kkkcut.e20j.DbBean.ModelDao;
 import com.kkkcut.e20j.DbBean.ModelSeries;
-import com.kkkcut.e20j.DbBean.ModelSeriesDao;
 import com.kkkcut.e20j.DbBean.ModelYear;
 import com.kkkcut.e20j.DbBean.ModelYearDao;
 import com.kkkcut.e20j.DbBean.china.ModelChina;
 import com.kkkcut.e20j.DbBean.china.ModelChinaDao;
 import com.kkkcut.e20j.DbBean.china.ModelSeriesChina;
-import com.kkkcut.e20j.DbBean.china.ModelSeriesChinaDao;
 import com.kkkcut.e20j.DbBean.china.ModelYearChina;
-import com.kkkcut.e20j.DbBean.china.ModelYearChinaDao;
 import com.kkkcut.e20j.DbBean.search.BarCodeSearch;
 import com.kkkcut.e20j.DbBean.search.CardsSystem;
-import com.kkkcut.e20j.DbBean.search.CardsSystemDao;
 import com.kkkcut.e20j.DbBean.search.ChinaNumSearch;
 import com.kkkcut.e20j.DbBean.search.KeyBlankItemSearch;
 import com.kkkcut.e20j.DbBean.search.MenuSummary;
@@ -39,18 +35,16 @@ import com.kkkcut.e20j.DbBean.technical.DataModelDao;
 import com.kkkcut.e20j.DbBean.technical.DataModelSeries;
 import com.kkkcut.e20j.DbBean.technical.DataModelSeriesDao;
 import com.kkkcut.e20j.DbBean.technical.DataModelSeriesYear;
-import com.kkkcut.e20j.DbBean.technical.DataModelSeriesYearDao;
 import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity;
 import com.kkkcut.e20j.ui.fragment.search.SearchCondition;
 import com.kkkcut.e20j.utils.DesUtil;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
-import com.liying.core.MachineInfo;
 import java.util.ArrayList;
 import java.util.List;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.greenrobot.greendao.query.WhereCondition;
+import com.cutting.machine.MachineInfo;
 
 /* loaded from: classes.dex */
 public class KeyInfoDaoManager {
@@ -116,7 +110,7 @@ public class KeyInfoDaoManager {
     }
 
     public List<Manufacturer> getManufacturers(int i, List<Integer> list) {
-        QueryBuilder queryBuilder = getDaoSession().queryBuilder(Manufacturer.class);
+        var queryBuilder = getDaoSession().queryBuilder(Manufacturer.class);
         switch (i) {
             case 1:
                 return MachineInfo.isChineseMachine() ? queryBuilder.where(ManufacturerDao.Properties.Is_automobile.eq(1), ManufacturerDao.Properties.Is_visible.eq(1), ManufacturerDao.Properties.ManufacturerId.notIn(list)).list() : queryBuilder.where(ManufacturerDao.Properties.Is_automobile.eq(1), ManufacturerDao.Properties.Is_visible.eq(1), ManufacturerDao.Properties.ManufacturerId.notIn(list)).list();
@@ -148,15 +142,15 @@ public class KeyInfoDaoManager {
     }
 
     public List<ModelYearChina> getChinaModelYears(int i) {
-        return getDaoSession().queryBuilder(ModelYearChina.class).where(ModelYearChinaDao.Properties.FK_ModelChinaID.eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelYearChinaDao.Properties.Sort).list();
+        return getDaoSession().queryBuilder(ModelYearChina.class).where(ModelYearChinaDao.Properties.FK_ModelChinaID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelYearChinaDao.Properties.Sort).list();
     }
 
     public List<ModelSeries> getModelSeries(int i) {
-        return getDaoSession().queryBuilder(ModelSeries.class).where(ModelSeriesDao.Properties.FK_ModelYearID.eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelSeriesDao.Properties.Sort).list();
+        return getDaoSession().queryBuilder(ModelSeries.class).where(ModelSeriesDao.Properties.FK_ModelYearID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelSeriesDao.Properties.Sort).list();
     }
 
     public List<ModelSeriesChina> getChinaModelSeries(int i) {
-        return getDaoSession().queryBuilder(ModelSeriesChina.class).where(ModelSeriesChinaDao.Properties.FK_ModelYearChinaID.eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelSeriesChinaDao.Properties.Sort).list();
+        return getDaoSession().queryBuilder(ModelSeriesChina.class).where(ModelSeriesChinaDao.Properties.FK_ModelYearChinaID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).orderAsc(ModelSeriesChinaDao.Properties.Sort).list();
     }
 
     public KeyBasicData getBasicData(int i) {
@@ -168,7 +162,7 @@ public class KeyInfoDaoManager {
     }
 
     public KeyBasicDataItem getBasicDataSide(int i) {
-        List list = getDaoSession().queryBuilder(KeyBasicDataItem.class).where(KeyBasicDataItemDao.Properties.Id.eq(Integer.valueOf(i)), new WhereCondition[0]).list();
+        List list = getDaoSession().queryBuilder(KeyBasicDataItem.class).where(KeyBasicDataItemDao.Properties.Id.eq(Long.valueOf(i)), new WhereCondition[0]).list();
         if (list.size() == 0) {
             return null;
         }
@@ -187,7 +181,7 @@ public class KeyInfoDaoManager {
 
     public List<CardsSystem> searchID(String str) {
         QueryBuilder<CardsSystem> queryBuilder = getDaoSession().getCardsSystemDao().queryBuilder();
-        queryBuilder.where(CardsSystemDao.Properties.KeyID.eq(str), new WhereCondition[0]);
+        queryBuilder.where(CardsSystemDao.Properties.KeyID.m466eq(str), new WhereCondition[0]);
         return queryBuilder.orderAsc(CardsSystemDao.Properties.KeyID).list();
     }
 
@@ -195,7 +189,7 @@ public class KeyInfoDaoManager {
         ArrayList arrayList = new ArrayList();
         Cursor rawQuery = getDaoSession().getDatabase().rawQuery("SELECT T.KeyChinaNum,T.FK_KeyID,T.Cuts,T.CodeSeries,T.ID,J.ModelName,J.ModelName_CN,K.Name,K.Name_CN,Q.FromYear,Q.ToYear FROM ModelSeriesChina T , ModelChina J,Manufacturer K,ModelYearChina Q WHERE K.ID=J.FK_ManufacturerID and J.ID=Q.FK_ModelChinaID  and T.FK_ModelYearChinaID=Q.ID and T.KeyChinaNum like '" + str + "%' order by T.KeyChinaNum asc", null);
         while (rawQuery.moveToNext()) {
-            arrayList.add(new ChinaNumSearch(rawQuery.getString(rawQuery.getColumnIndexOrThrow("KeyChinaNum")), rawQuery.getInt(rawQuery.getColumnIndexOrThrow("FK_KeyID")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("CodeSeries")), rawQuery.getInt(rawQuery.getColumnIndexOrThrow(BarCodeRemindActivity.ID)), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Cuts")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Name")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Name_CN")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ModelName")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ModelName_CN")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("FromYear")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ToYear"))));
+            arrayList.add(new ChinaNumSearch(rawQuery.getString(rawQuery.getColumnIndexOrThrow("KeyChinaNum")), rawQuery.getInt(rawQuery.getColumnIndexOrThrow("FK_KeyID")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("CodeSeries")), rawQuery.getInt(rawQuery.getColumnIndexOrThrow(BarCodeRemindActivity.f311ID)), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Cuts")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Name")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("Name_CN")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ModelName")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ModelName_CN")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("FromYear")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ToYear"))));
         }
         rawQuery.close();
         return arrayList;
@@ -222,19 +216,19 @@ public class KeyInfoDaoManager {
     }
 
     public List<DataModel> getTechnicalInfoModels(int i) {
-        return getDaoSession().queryBuilder(DataModel.class).where(DataModelDao.Properties.FK_ManufacturerID.eq(Integer.valueOf(i)), new WhereCondition[0]).list();
+        return getDaoSession().queryBuilder(DataModel.class).where(DataModelDao.Properties.FK_ManufacturerID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).list();
     }
 
     public List<DataModelSeries> getTechnicalInfoModelSeries(int i) {
-        return getDaoSession().queryBuilder(DataModelSeries.class).where(DataModelSeriesDao.Properties.FK_ModelID.eq(Integer.valueOf(i)), new WhereCondition[0]).list();
+        return getDaoSession().queryBuilder(DataModelSeries.class).where(DataModelSeriesDao.Properties.FK_ModelID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).list();
     }
 
     public List<DataModelSeriesYear> getTechnicalInfoModelSeriesYear(int i) {
-        return getDaoSession().queryBuilder(DataModelSeriesYear.class).where(DataModelSeriesYearDao.Properties.FK_ModelSeries.eq(Integer.valueOf(i)), new WhereCondition[0]).list();
+        return getDaoSession().queryBuilder(DataModelSeriesYear.class).where(DataModelSeriesYearDao.Properties.FK_ModelSeries.m466eq(Integer.valueOf(i)), new WhereCondition[0]).list();
     }
 
     public DataList getTechnicalDataList(int i) {
-        List list = getDaoSession().queryBuilder(DataList.class).where(DataListDao.Properties.FK_ModelSeriesYearID.eq(Integer.valueOf(i)), new WhereCondition[0]).list();
+        List list = getDaoSession().queryBuilder(DataList.class).where(DataListDao.Properties.FK_ModelSeriesYearID.m466eq(Integer.valueOf(i)), new WhereCondition[0]).list();
         if (list.size() == 0) {
             return null;
         }
@@ -259,7 +253,7 @@ public class KeyInfoDaoManager {
     }
 
     public List<Manufacturer> getManufacturersExceptKeys(List<Integer> list) {
-        return getDaoSession().queryBuilder(Manufacturer.class).where(ManufacturerDao.Properties.Is_visible.eq(1), ManufacturerDao.Properties.Is_automobile.eq(1), ManufacturerDao.Properties.ManufacturerId.notIn(list)).list();
+        return getDaoSession().queryBuilder(Manufacturer.class).where(ManufacturerDao.Properties.Is_visible.m466eq(1), ManufacturerDao.Properties.Is_automobile.m466eq(1), ManufacturerDao.Properties.ManufacturerId.notIn(list)).list();
     }
 
     public String getUpdateInfo() {

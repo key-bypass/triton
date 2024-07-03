@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 import com.kkkcut.e20j.us.R;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.ListCompositeDisposable;
 
 /* loaded from: classes.dex */
 public abstract class BottomInDialog {
     private Activity activity;
-    private Unbinder bind;
     private ViewGroup contentContainer;
     private ViewGroup decorView;
     private Animation inAnim;
@@ -95,7 +94,6 @@ public abstract class BottomInDialog {
         View inflate = layoutInflater.inflate(getContentLayoutID(), (ViewGroup) null);
         inflate.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
         this.contentContainer.addView(inflate);
-        this.bind = ButterKnife.bind(this, inflate);
     }
 
     private void initCancelable() {
@@ -137,7 +135,6 @@ public abstract class BottomInDialog {
                     @Override // java.lang.Runnable
                     public void run() {
                         BottomInDialog.this.decorView.removeView(BottomInDialog.this.rootView);
-                        BottomInDialog.this.bind.unbind();
                         BottomInDialog.this.isDismissing = false;
                         if (BottomInDialog.this.onDismissListener != null) {
                             BottomInDialog.this.onDismissListener.onDismiss();

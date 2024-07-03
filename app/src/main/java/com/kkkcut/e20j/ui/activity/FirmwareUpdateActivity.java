@@ -6,14 +6,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import butterknife.BindView;
+
+import com.cutting.machine.Command;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.communication.OperationManager;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.base.BaseFActivity;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.AssetVersionUtil;
-import com.liying.core.Command;
-import com.liying.core.OperateType;
-import com.liying.core.communication.OperationManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,16 +28,12 @@ public class FirmwareUpdateActivity extends BaseFActivity {
     List<byte[]> data = new ArrayList();
     private int index;
 
-    @BindView(R.id.progress)
     ProgressBar progressBar;
 
-    @BindView(R.id.tv_current_version)
     TextView tvCurrentVersion;
 
-    @BindView(R.id.tv_new_version)
     TextView tvNewVersion;
 
-    @BindView(R.id.tv_progress)
     TextView tvProgress;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
@@ -99,7 +96,7 @@ public class FirmwareUpdateActivity extends BaseFActivity {
     }
 
     @Override // com.kkkcut.e20j.base.BaseActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
         int eventCode = eventCenter.getEventCode();
         if (eventCode == 16) {
             setProgress((this.index * 100.0f) / this.data.size());

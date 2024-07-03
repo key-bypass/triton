@@ -1,12 +1,14 @@
 package com.kkkcut.e20j.androidquick.autolayout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.fragment.app.FragmentActivity;
 
 /* loaded from: classes.dex */
-public class AutoLayoutActivity extends AppCompatActivity {
+public class AutoLayoutActivity extends FragmentActivity {
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
     private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
     private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";

@@ -1,11 +1,13 @@
 package com.kkkcut.e20j.ui.fragment.clampswitch;
 
 import android.text.TextUtils;
+
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 

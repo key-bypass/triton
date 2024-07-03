@@ -1,17 +1,25 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-parcelize'
+
     alias(libs.plugins.jetbrains.kotlin.android)
 }
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdk 34
     namespace 'com.kkkcut.e20j.us'
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId 'com.kkkcut.e20j.us'
-        minSdk 26
+        minSdk 28
+        //noinspection EditedTargetSdkVersion
+        targetSdk 28
         //noinspection ExpiredTargetSdkVersion
-        targetSdk 26
         versionCode 20240229
         versionName "77.0"
         multiDexEnabled true
@@ -50,13 +58,11 @@ android {
 }
 
 dependencies {
-    implementation project(':lib:cutting_machine')
-    annotationProcessor libs.butterknife.compiler
+    implementation project(':lib:spl_key_sdk')
+
 
     implementation libs.reactive.streams
-    implementation libs.butterknife
     implementation libs.relinker
-    implementation libs.appcompat.v7
     implementation libs.sqlcipher.android
     implementation libs.androidx.sqlite
     implementation libs.okio
@@ -64,11 +70,11 @@ dependencies {
     implementation libs.poi.ooxml
     implementation libs.rxandroid
     implementation libs.mmkv
-    implementation libs.core
+    implementation 'fm.jiecao:jiecaovideoplayer:5.8.1'
     implementation libs.multidex
     implementation libs.rxjava
     implementation libs.okhttp
-    implementation libs.greendao
+    implementation 'org.greenrobot:greendao:3.3.0'
     implementation libs.eventbus
     implementation libs.commons.collections4
     implementation libs.gson
@@ -83,6 +89,9 @@ dependencies {
     implementation libs.largeimageview
     implementation libs.zip4j
     implementation libs.retrofit
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.zxing.core
 
     runtimeOnly libs.material
 

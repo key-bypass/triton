@@ -1,6 +1,6 @@
 package com.kkkcut.e20j.driver.communication;
 
-import com.liying.core.OperateType;
+import com.cutting.machine.OperateType;
 
 /* loaded from: classes.dex */
 public interface OnSerialMessageComingListener {

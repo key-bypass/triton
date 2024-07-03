@@ -16,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
@@ -35,53 +32,38 @@ public class KeySpaceSetFragment extends BaseBackFragment {
     private EditText currentEdit;
     private CustomKey customKey;
 
-    @BindView(R.id.fl_row_tool)
     FrameLayout flRowTool;
     private boolean isDimple;
 
-    @BindView(R.id.iv_space)
     ImageView ivSpace;
 
-    @BindView(R.id.ll_index)
     LinearLayout llIndex;
 
-    @BindView(R.id.ll_side)
     LinearLayout llSide;
 
-    @BindView(R.id.ll_space)
     LinearLayout llSpace;
 
-    @BindView(R.id.ll_space_tool)
     LinearLayout llSpaceTool;
     private MyOnfocusChanged myOnfocusChanged = new MyOnfocusChanged();
 
-    @BindView(R.id.rb_imperial)
     RadioButton rbInch;
 
-    @BindView(R.id.rb_metric)
     RadioButton rbMetric;
 
-    @BindView(R.id.rb_sideA)
     RadioButton rbSideA;
 
-    @BindView(R.id.rb_sideB)
     RadioButton rbSideB;
     private int rowCount;
     private String side;
 
-    @BindView(R.id.tv_row_add)
     ImageView tvRowAdd;
 
-    @BindView(R.id.tv_row_reduce)
     ImageView tvRowReduce;
 
-    @BindView(R.id.tv_rows)
     TextView tvRows;
 
-    @BindView(R.id.tv_side_row)
     TextView tvSideRow;
 
-    @BindView(R.id.tv_unit)
     TextView tvUnit;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -107,7 +89,7 @@ public class KeySpaceSetFragment extends BaseBackFragment {
         CustomKey customKey = (CustomKey) getArguments().getParcelable(CUSTOMKEY);
         this.customKey = customKey;
         String space = customKey.getSpace();
-        Object[] split2 = !TextUtils.isEmpty(space) ? space.split(";") : null;
+        String[] split2 = !TextUtils.isEmpty(space) ? space.split(";") : null;
         String row_pos = this.customKey.getRow_pos();
         String[] split3 = !TextUtils.isEmpty(row_pos) ? row_pos.split(";") : null;
         switch (this.customKey.getType()) {
@@ -367,7 +349,6 @@ public class KeySpaceSetFragment extends BaseBackFragment {
         return getString(R.string.space_loacation);
     }
 
-    @OnClick({R.id.bt_number_1, R.id.bt_number_2, R.id.bt_number_3, R.id.bt_delete, R.id.bt_number_4, R.id.bt_number_5, R.id.bt_number_6, R.id.bt_number_next, R.id.bt_number_7, R.id.bt_number_8, R.id.bt_number_9, R.id.bt_number_last, R.id.bt_number_0, R.id.bt_next, R.id.bt_last, R.id.tv_row_reduce, R.id.tv_row_add, R.id.iv_add, R.id.iv_reduce, R.id.tv_auto})
     public void onViewClicked(View view) {
         String str;
         String str2;
@@ -679,7 +660,6 @@ public class KeySpaceSetFragment extends BaseBackFragment {
         }
     }
 
-    @OnCheckedChanged({R.id.rb_sideB, R.id.rb_sideA, R.id.rb_metric, R.id.rb_imperial})
     public void oncheckChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.rb_imperial /* 2131362622 */:
@@ -800,7 +780,8 @@ public class KeySpaceSetFragment extends BaseBackFragment {
             LinearLayout linearLayout = (LinearLayout) this.llSpace.getChildAt(i);
             for (int i2 = 0; i2 < linearLayout.getChildCount(); i2++) {
                 EditText editText = (EditText) linearLayout.getChildAt(i2);
-                if (!TextUtils.isEmpty(editText.getText())) {
+                var r7 = editText.getText();
+                if (!TextUtils.isEmpty(r7)) {
                     try {
                         editText.setText(String.valueOf(Math.round(Integer.parseInt(r7.toString()) * 2.54d)));
                     } catch (Exception unused) {
@@ -811,11 +792,10 @@ public class KeySpaceSetFragment extends BaseBackFragment {
         if (this.customKey.getType() == 6) {
             for (int i3 = 0; i3 < this.llIndex.getChildCount(); i3++) {
                 EditText editText2 = (EditText) this.llIndex.getChildAt(i3);
-                if (!TextUtils.isEmpty(editText2.getText().toString().trim())) {
-                    try {
-                        editText2.setText(String.valueOf(Math.round(Integer.parseInt(r2) * 2.54d)));
-                    } catch (Exception unused2) {
-                    }
+                var r2 = editText2.getText().toString().trim();
+                if (!TextUtils.isEmpty(r2)) {
+                    editText2.setText(String.valueOf(Math.round(Integer.parseInt(r2) * 2.54d)));
+
                 }
             }
         }
@@ -826,22 +806,20 @@ public class KeySpaceSetFragment extends BaseBackFragment {
             LinearLayout linearLayout = (LinearLayout) this.llSpace.getChildAt(i);
             for (int i2 = 0; i2 < linearLayout.getChildCount(); i2++) {
                 EditText editText = (EditText) linearLayout.getChildAt(i2);
-                if (!TextUtils.isEmpty(editText.getText())) {
-                    try {
+                var r7 = editText.getText();
+                if (!TextUtils.isEmpty(r7)) {
                         editText.setText(String.valueOf(Math.round(Integer.parseInt(r7.toString()) / 2.54d)));
-                    } catch (Exception unused) {
-                    }
                 }
             }
         }
         if (this.customKey.getType() == 6) {
             for (int i3 = 0; i3 < this.llIndex.getChildCount(); i3++) {
                 EditText editText2 = (EditText) this.llIndex.getChildAt(i3);
-                if (!TextUtils.isEmpty(editText2.getText().toString().trim())) {
-                    try {
-                        editText2.setText(String.valueOf(Math.round(Integer.parseInt(r2) / 2.54d)));
-                    } catch (Exception unused2) {
-                    }
+                var r2 = editText2.getText().toString().trim();
+                if (!TextUtils.isEmpty(r2)) {
+
+                    editText2.setText(String.valueOf(Math.round(Integer.parseInt(r2) / 2.54d)));
+
                 }
             }
         }

@@ -11,9 +11,12 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
 import androidx.core.internal.view.SupportMenu;
 import androidx.viewpager.widget.ViewPager;
-import com.kkkcut.e20j.R;
+
+import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

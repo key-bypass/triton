@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.search.MenuSummary;
@@ -17,13 +16,14 @@ import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity;
 import com.kkkcut.e20j.ui.fragment.KeyOperateFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,10 +34,8 @@ public class SearchResultActivity extends BaseCustomKeyBoardActivity implements 
     private static final String CONDITION = "condition";
     AdvSearchAdapter1 advSearchAdapter1;
 
-    @BindView(R.id.rv_search_result_1)
     RecyclerView rvSearchResult1;
 
-    @BindView(R.id.tv_title)
     TextView tvTile;
 
     private Context getContext() {
@@ -80,18 +78,18 @@ public class SearchResultActivity extends BaseCustomKeyBoardActivity implements 
         }).map(new Function<List<MenuSummary>, List<AdvSearchResult>>() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.4
             @Override // io.reactivex.functions.Function
             public List<AdvSearchResult> apply(List<MenuSummary> list) throws Exception {
-                LinkedHashMap linkedHashMap = new LinkedHashMap();
+                var linkedHashMap = new LinkedHashMap<Integer, List<MenuSummary>>();
                 for (MenuSummary menuSummary : list) {
                     if (linkedHashMap.containsKey(Integer.valueOf(menuSummary.getFK_KeyID()))) {
                         ((List) linkedHashMap.get(Integer.valueOf(menuSummary.getFK_KeyID()))).add(menuSummary);
                     } else {
-                        ArrayList arrayList = new ArrayList();
+                        var arrayList = new ArrayList<MenuSummary>();
                         arrayList.add(menuSummary);
                         linkedHashMap.put(Integer.valueOf(menuSummary.getFK_KeyID()), arrayList);
                     }
                 }
                 ArrayList arrayList2 = new ArrayList();
-                for (Integer num : linkedHashMap.keySet()) {
+                for (var num : linkedHashMap.keySet()) {
                     List<MenuSummary> list2 = (List) linkedHashMap.get(num);
                     AdvSearchResult advSearchResult = new AdvSearchResult();
                     advSearchResult.setChildList(list2);
@@ -179,7 +177,6 @@ public class SearchResultActivity extends BaseCustomKeyBoardActivity implements 
         return sb.toString();
     }
 
-    @OnClick({R.id.tv_back})
     public void onClick(View view) {
         if (view.getId() != R.id.tv_back) {
             return;

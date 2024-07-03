@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.androidquick.autolayout.widget.AutoRadioGroup;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
@@ -17,13 +15,10 @@ public class KeyAlignSelectFragment extends BaseBackFragment {
     private static final String CUSTOMKEY = "CUSTOMKEY";
     CustomKey customKey;
 
-    @BindView(R.id.rb_shoulder)
     RadioButton rbShoulder;
 
-    @BindView(R.id.rb_tip)
     RadioButton rbTip;
 
-    @BindView(R.id.rg1)
     AutoRadioGroup rg1;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -98,7 +93,6 @@ public class KeyAlignSelectFragment extends BaseBackFragment {
         });
     }
 
-    @OnClick({R.id.bt_last, R.id.bt_next})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_last) {

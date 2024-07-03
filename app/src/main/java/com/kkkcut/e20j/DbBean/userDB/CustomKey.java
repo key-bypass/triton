@@ -4,11 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.kkkcut.e20j.DbBean.KeyBasicData;
 import com.kkkcut.e20j.utils.DesUtil;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.utils.KeyDataUtils;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.utils.KeyDataUtils;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class CustomKey implements Parcelable {
     public static final Parcelable.Creator<CustomKey> CREATOR = new Parcelable.Creator<CustomKey>() { // from class: com.kkkcut.e20j.DbBean.userDB.CustomKey.1
         /* JADX WARN: Can't rename method to resolve collision */
@@ -340,6 +343,18 @@ public class CustomKey implements Parcelable {
         this.time = j;
     }
 
+    public boolean getAbSame() {
+        return this.abSame;
+    }
+
+    public boolean getIsInch() {
+        return this.isInch;
+    }
+
+    public void setIsInch(boolean isInch) {
+        this.isInch = isInch;
+    }
+
     protected CustomKey(Parcel parcel) {
         this.icCard = (Long) parcel.readValue(Long.class.getClassLoader());
         this.KeyTypeItemID = parcel.readInt();
@@ -360,5 +375,32 @@ public class CustomKey implements Parcelable {
         this.ClampNum = parcel.readString();
         this.ClampSide = parcel.readString();
         this.ClampSlot = parcel.readString();
+    }
+
+    @Generated(hash = 716185227)
+    public CustomKey(String ClampNum, String ClampSide, String ClampSlot, int KeyTypeItemID, boolean abSame, int align, String depth, String depth_name, int face, Long icCard, boolean isInch, String keyname, int length,
+            String parameter_info, int row_count, String row_pos, String space, String space_width, int thick, long time, int type, int width) {
+        this.ClampNum = ClampNum;
+        this.ClampSide = ClampSide;
+        this.ClampSlot = ClampSlot;
+        this.KeyTypeItemID = KeyTypeItemID;
+        this.abSame = abSame;
+        this.align = align;
+        this.depth = depth;
+        this.depth_name = depth_name;
+        this.face = face;
+        this.icCard = icCard;
+        this.isInch = isInch;
+        this.keyname = keyname;
+        this.length = length;
+        this.parameter_info = parameter_info;
+        this.row_count = row_count;
+        this.row_pos = row_pos;
+        this.space = space;
+        this.space_width = space_width;
+        this.thick = thick;
+        this.time = time;
+        this.type = type;
+        this.width = width;
     }
 }

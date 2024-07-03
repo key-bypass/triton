@@ -9,9 +9,12 @@ import android.graphics.Rect;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
 import androidx.core.internal.view.SupportMenu;
+
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
-import com.liying.core.bean.KeyInfo;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

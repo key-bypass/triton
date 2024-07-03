@@ -1,11 +1,11 @@
 package com.pgyersdk.crash;
 
-import com.pgyersdk.p016f.C2036a;
-import com.pgyersdk.p016f.C2041f;
-import java.lang.Thread;
+import com.kkkcut.e20j.pyger.C2028c;
+import com.pgyersdk.utils.AsyncTaskUtils;
+import com.pgyersdk.utils.LogUtils;
 
 /* loaded from: classes2.dex */
-public class PgyerCrashObservable extends C2030e {
+public class PgyerCrashObservable extends PgyerObservable {
 
     /* renamed from: b */
     PgyerObserver f484b;
@@ -27,12 +27,12 @@ public class PgyerCrashObservable extends C2030e {
     private void m155b() {
         Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         if (defaultUncaughtExceptionHandler != null) {
-            C2041f.m216a("PgyerSDK", "Current handler class = " + defaultUncaughtExceptionHandler.getClass().getName());
+            LogUtils.m216a("PgyerSDK", "Current handler class = " + defaultUncaughtExceptionHandler.getClass().getName());
         }
-        if (defaultUncaughtExceptionHandler instanceof C2026a) {
-            C2041f.m216a("PgyerSDK", "ExceptionHandler is already reset");
+        if (defaultUncaughtExceptionHandler instanceof ExceptionHandlerThread) {
+            LogUtils.m216a("PgyerSDK", "ExceptionHandler is already reset");
         } else {
-            Thread.setDefaultUncaughtExceptionHandler(new C2026a(defaultUncaughtExceptionHandler, this));
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandlerThread(defaultUncaughtExceptionHandler, this));
         }
     }
 
@@ -42,7 +42,7 @@ public class PgyerCrashObservable extends C2030e {
 
     /* renamed from: a */
     public void m156a() {
-        C2036a.m194a(new AsyncTaskC2031f());
+        AsyncTaskUtils.m194a(new ReportAsynTask());
         m155b();
     }
 
@@ -56,7 +56,7 @@ public class PgyerCrashObservable extends C2030e {
         if (!pgyerObserver.equals(this.f484b)) {
             super.detach(pgyerObserver);
         } else {
-            C2041f.m220d("PgyerSDK", "Can't detach pgyer default observer.");
+            LogUtils.m220d("PgyerSDK", "Can't detach pgyer default observer.");
         }
     }
 
@@ -66,8 +66,8 @@ public class PgyerCrashObservable extends C2030e {
     }
 
     private PgyerCrashObservable() {
-        C2029d c2029d = new C2029d();
-        this.f484b = c2029d;
-        attach(c2029d);
+        PgyerCrashObserver pgyerCrashObserver = new PgyerCrashObserver();
+        this.f484b = pgyerCrashObserver;
+        attach(pgyerCrashObserver);
     }
 }

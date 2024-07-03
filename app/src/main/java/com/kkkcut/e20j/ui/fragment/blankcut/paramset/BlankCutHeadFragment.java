@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 
+import com.cutting.machine.utils.UnitConvertUtil;
+import com.spl.key.KeyBlankCutPathClass;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,13 +11,23 @@ import android.view.ViewStub;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.OnClick;
-import com.example.spl_key_sdklibrary.JawClass;
-import com.example.spl_key_sdklibrary.Key;
-import com.example.spl_key_sdklibrary.KeyBlankCutPathClass;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
-import com.example.spl_key_sdklibrary.mdKeyLocationPointClass;
+
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.S8;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.clamp.S1B;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.error.ErrorBeanFactory;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.error.ErrorHelper;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.tool.LogUtil;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
@@ -28,27 +40,15 @@ import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutSpeedUtils;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutType;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.clamp.S1B;
-import com.liying.core.clamp.S8;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.error.ErrorBeanFactory;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.error.ErrorHelper;
-import com.liying.core.utils.UnitConvertUtil;
-import io.reactivex.Observable;
+import com.spl.key.JawClass;
+import com.spl.key.Key;
+import com.spl.key.mdKeyBlankClass;
+import com.spl.key.mdKeyLocationPointClass;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -57,29 +57,22 @@ import java.util.concurrent.TimeUnit;
 public class BlankCutHeadFragment extends BaseBackFragment {
     public static final String MODIFY_TYPE = "modifyType";
 
-    @BindView(R.id.blank_cut_head)
     ViewGroup blankCutHead;
 
-    @BindView(R.id.blank_cut_thickness)
     ViewStub blankCutThickness;
+
     private BlankCutType blankCutType;
 
-    @BindView(R.id.blank_cut_width)
     ViewStub blankCutWidth;
 
-    @BindView(R.id.et_head_groove_location)
     EditText etHeadGrooveLocation;
 
-    @BindView(R.id.et_head_groove_thickness)
     EditText etHeadGrooveThickness;
 
-    @BindView(R.id.et_head_length)
     EditText etHeadLength;
 
-    @BindView(R.id.et_head_thickness)
     EditText etHeadThickness;
 
-    @BindView(R.id.et_head_width)
     EditText etHeadWidth;
     private boolean isSecondSide;
     private int keyBlankThick;
@@ -89,7 +82,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
     private int keyHeadThick;
     private int keyHeadWidth;
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_modify_key_blank;
     }
@@ -102,21 +95,21 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         return blankCutHeadFragment;
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected void initViewsAndEvents() {
         this.blankCutType = ((BlankCutBean) getArguments().getParcelable(MODIFY_TYPE)).getBlankCutType();
-        int i = AnonymousClass5.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()];
+        int i = C14825.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()];
         if (i == 1) {
-            this.blankCutHead.setVisibility(0);
-            this.blankCutThickness.setVisibility(8);
-            this.blankCutWidth.setVisibility(8);
+            this.blankCutHead.setVisibility(View.VISIBLE);
+            this.blankCutThickness.setVisibility(View.GONE);
+            this.blankCutWidth.setVisibility(View.GONE);
             return;
         }
         if (i == 2) {
-            this.blankCutHead.setVisibility(8);
-            this.blankCutThickness.setVisibility(0);
-            this.blankCutWidth.setVisibility(8);
-            final CheckBox checkBox = (CheckBox) getView().findViewById(R.id.cb_cut_more_thick);
+            this.blankCutHead.setVisibility(View.GONE);
+            this.blankCutThickness.setVisibility(View.VISIBLE);
+            this.blankCutWidth.setVisibility(View.GONE);
+            CheckBox checkBox = (CheckBox) getView().findViewById(R.id.cb_cut_more_thick);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.1
                 @Override // android.widget.CompoundButton.OnCheckedChangeListener
                 public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
@@ -136,14 +129,26 @@ public class BlankCutHeadFragment extends BaseBackFragment {
                         warningDialog.show();
                     }
                 }
+
+                /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$1$1 */
+                /* loaded from: classes.dex */
+                class AnonymousClass1 implements WarningDialog.DialogBtnCallBack {
+                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    public void onDialogButClick(boolean z2) {
+                        if (z2) {
+                            return;
+                        }
+                        checkBox.setChecked(false);
+                    }
+                }
             });
             return;
         }
         if (i == 3 || i == 4 || i == 5) {
-            this.blankCutHead.setVisibility(8);
-            this.blankCutThickness.setVisibility(8);
-            this.blankCutWidth.setVisibility(0);
-            final CheckBox checkBox2 = (CheckBox) getView().findViewById(R.id.cb_cut_more_width);
+            this.blankCutHead.setVisibility(View.GONE);
+            this.blankCutThickness.setVisibility(View.GONE);
+            this.blankCutWidth.setVisibility(View.VISIBLE);
+            CheckBox checkBox2 = (CheckBox) getView().findViewById(R.id.cb_cut_more_width);
             checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.2
                 @Override // android.widget.CompoundButton.OnCheckedChangeListener
                 public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
@@ -163,6 +168,18 @@ public class BlankCutHeadFragment extends BaseBackFragment {
                         warningDialog.show();
                     }
                 }
+
+                /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$2$1 */
+                /* loaded from: classes.dex */
+                class AnonymousClass1 implements WarningDialog.DialogBtnCallBack {
+                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    public void onDialogButClick(boolean z2) {
+                        if (z2) {
+                            return;
+                        }
+                        checkBox2.setChecked(false);
+                    }
+                }
             });
             if (this.blankCutType == BlankCutType.k9ToLxp90) {
                 ((EditText) getView().findViewById(R.id.et_key_width)).setText("690");
@@ -172,10 +189,9 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$5, reason: invalid class name */
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$5 */
     /* loaded from: classes.dex */
-    public static /* synthetic */ class AnonymousClass5 {
+    public static /* synthetic */ class C14825 {
         static final /* synthetic */ int[] $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType;
 
         static {
@@ -204,11 +220,93 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         }
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$1 */
+    /* loaded from: classes.dex */
+    public class C14781 implements CompoundButton.OnCheckedChangeListener {
+        final /* synthetic */ CheckBox r2;
+
+        C14781(CheckBox checkBox2) {
+            r2 = checkBox2;
+        }
+
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
+        public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+            if (z) {
+                WarningDialog warningDialog = new WarningDialog(BlankCutHeadFragment.this.getContext());
+                warningDialog.setRemind(BlankCutHeadFragment.this.getString(R.string.blankcut_thick_width_extra_cut));
+                warningDialog.setCancelBtVisible(true);
+                warningDialog.setDialogBtnCallback(new WarningDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.1.1
+                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    public void onDialogButClick(boolean z2) {
+                        if (z2) {
+                            return;
+                        }
+                        r2.setChecked(false);
+                    }
+                });
+                warningDialog.show();
+            }
+        }
+
+        /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$1$1 */
+        /* loaded from: classes.dex */
+        class AnonymousClass1 implements WarningDialog.DialogBtnCallBack {
+            @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+            public void onDialogButClick(boolean z2) {
+                if (z2) {
+                    return;
+                }
+                r2.setChecked(false);
+            }
+        }
+    }
+
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$2 */
+    /* loaded from: classes.dex */
+    public class C14792 implements CompoundButton.OnCheckedChangeListener {
+        final /* synthetic */ CheckBox r2;
+
+        C14792(CheckBox checkBox22) {
+            r2 = checkBox22;
+        }
+
+        @Override // android.widget.CompoundButton.OnCheckedChangeListener
+        public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+            if (z) {
+                WarningDialog warningDialog = new WarningDialog(BlankCutHeadFragment.this.getContext());
+                warningDialog.setRemind(BlankCutHeadFragment.this.getString(R.string.blankcut_thick_width_extra_cut));
+                warningDialog.setCancelBtVisible(true);
+                warningDialog.setDialogBtnCallback(new WarningDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.2.1
+                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    public void onDialogButClick(boolean z2) {
+                        if (z2) {
+                            return;
+                        }
+                        r2.setChecked(false);
+                    }
+                });
+                warningDialog.show();
+            }
+        }
+
+        /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$2$1 */
+        /* loaded from: classes.dex */
+        class AnonymousClass1 implements WarningDialog.DialogBtnCallBack {
+            @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+            public void onDialogButClick(boolean z2) {
+                if (z2) {
+                    return;
+                }
+                r2.setChecked(false);
+            }
+        }
+    }
+
+    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected void onEventComing(EventCenter eventCenter) {
         float f;
         int i;
-        final KeyInfo keyInfo = new KeyInfo();
+        KeyInfo keyInfo = new KeyInfo();
         keyInfo.setType(3);
         int eventCode = eventCenter.getEventCode();
         if (eventCode == 1) {
@@ -241,7 +339,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
             mdKeyLocationPointClass mdkeylocationpointclass = new mdKeyLocationPointClass();
             KeyAlignInfo keyAlignInfo = OperationManager.getInstance().getKeyAlignInfo();
             int i2 = ClampManager.getInstance().getDC().getxDistance();
-            LogUtil.i(TAG, "xDistance: " + i2);
+            LogUtil.d(TAG, "xDistance: " + i2);
             int i3 = ClampManager.getInstance().getDC().getyDistance();
             if (this.blankCutType == BlankCutType.THICKNESS) {
                 if (((CheckBox) getView().findViewById(R.id.cb_cut_more_thick)).isChecked()) {
@@ -281,7 +379,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
                 mdkeyblankclass.setCutFaceSettingType(0);
                 mdkeyblankclass.setRepairKeyBlakType(0);
                 mdkeylocationpointclass.setSideTip((keyAlignInfo.getShoulder() - s8.getLength()) + i3);
-                strArr = KeyBlankCutPathClass.GetKeyBlankCut_TopPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_TopPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
             } else if (this.blankCutType == BlankCutType.THICKNESS) {
                 mdkeyblankclass.setRepairKeyBlakType(1);
                 if (this.isSecondSide) {
@@ -290,7 +388,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
                     mdkeyblankclass.setCutFaceSettingType(1);
                 }
                 mdkeylocationpointclass.setSideTip(keyAlignInfo.getTip() + i3);
-                strArr = KeyBlankCutPathClass.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
             } else if (((this.blankCutType == BlankCutType.WIDTH) | (this.blankCutType == BlankCutType.k9ToLxp90)) || this.blankCutType == BlankCutType.Toyota80K) {
                 mdkeyblankclass.setRepairKeyBlakType(2);
                 if (this.isSecondSide) {
@@ -299,7 +397,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
                     mdkeyblankclass.setCutFaceSettingType(1);
                 }
                 mdkeylocationpointclass.setSideTip(keyAlignInfo.getTip() + i3);
-                strArr = KeyBlankCutPathClass.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(this.blankCutType), mdkeylocationpointclass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
             }
             ArrayList arrayList = new ArrayList();
             for (String[] strArr2 : strArr) {
@@ -346,13 +444,43 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         this.isSecondSide = false;
     }
 
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$3 */
+    /* loaded from: classes.dex */
+    class C14803 implements Consumer<Long> {
+        @Override // io.reactivex.functions.Consumer
+        public void accept(Long l) throws Exception {
+            BlankCutHeadFragment.this.dismissLoadingDialog();
+        }
+    }
+
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment$4 */
+    /* loaded from: classes.dex */
+    class C14814 implements RemindDialog.DialogBtnCallBack {
+        final /* synthetic */ KeyInfo r2;
+
+        C14814(KeyInfo keyInfo2) {
+            r2 = keyInfo2;
+        }
+
+        @Override // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
+        public void onDialogButClick(boolean z) {
+            if (z) {
+                BlankCutHeadFragment.this.isSecondSide = true;
+                BlankCutHeadFragment blankCutHeadFragment = BlankCutHeadFragment.this;
+                blankCutHeadFragment.showLoadingDialog(blankCutHeadFragment.getString(R.string.cutting), true);
+                OperationManager operationManager = OperationManager.getInstance();
+                BlankCutHeadFragment blankCutHeadFragment2 = BlankCutHeadFragment.this;
+                operationManager.start(blankCutHeadFragment2.getDecoderLocationPath(blankCutHeadFragment2.blankCutType), r2, OperateType.MODIFY_KEY_BLANK_LOCATION);
+            }
+        }
+    }
+
     private String setCutterLocationPath() {
         return MachineInfo.isChineseMachine() ? "keyblank/cutter/S1-B(Top).json" : "keyblank/cutter/S8.json";
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public String getDecoderLocationPath(BlankCutType blankCutType) {
-        int i = AnonymousClass5.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[blankCutType.ordinal()];
+        int i = C14825.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[blankCutType.ordinal()];
         return i != 1 ? i != 2 ? (i == 3 || i == 4 || i == 5) ? MachineInfo.isChineseMachine() ? "duplicate/decoder/S1-B-D(ThreeendsTop).json" : "keyblank/decoder/S8-3.json" : "" : MachineInfo.isChineseMachine() ? "duplicate/decoder/S1-B(ThreeendsTop).json" : "keyblank/decoder/S8-2.json" : "keyblank/decoder/S8-1.json";
     }
 
@@ -424,7 +552,6 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         return jaw_s8;
     }
 
-    @OnClick({R.id.bt_cut})
     public void onClick(View view) {
         if (view.getId() != R.id.bt_cut) {
             return;
@@ -439,7 +566,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
             }
         }
         ToolSizeManager.setDecoderSize(100);
-        int i = AnonymousClass5.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()];
+        int i = C14825.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()];
         if (i == 1) {
             String trim = this.etHeadWidth.getText().toString().trim();
             String trim2 = this.etHeadLength.getText().toString().trim();
@@ -480,7 +607,7 @@ public class BlankCutHeadFragment extends BaseBackFragment {
         new BlankCutDialog(getActivity(), this.blankCutType).show();
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
     public String setTitleStr() {
         return getString(R.string.blank_cut);
     }

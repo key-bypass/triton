@@ -5,8 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import com.kkkcut.e20j.customView.drawKeyImg.duplicating.CopyKey;
-import com.liying.core.bean.DestPoint;
-import com.liying.core.clamp.MachineData;
+import com.cutting.machine.bean.DestPoint;
+import com.cutting.machine.clamp.MachineData;
 import java.util.List;
 
 /* loaded from: classes.dex */

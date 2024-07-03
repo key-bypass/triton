@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
@@ -17,7 +15,7 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.kkkcut.e20j.utils.UnitUtils;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.bean.KeyInfo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,21 +25,16 @@ import org.greenrobot.eventbus.EventBus;
 public class SizeAdjustFragment extends BaseBackFragment {
     private static final String KEYINFO = "SizeAdjustFragment";
 
-    @BindView(R.id.cb_all_space)
     CheckBox cbAllSpace;
 
-    @BindView(R.id.cb_all_spaceWidth)
     CheckBox cbAllSpaceWidth;
     KeyInfo keyInfo;
     private TextView lastText;
 
-    @BindView(R.id.size_container)
     LinearLayout llSizeContainer;
 
-    @BindView(R.id.tv_space_value)
     TextView tvSpaceValue;
 
-    @BindView(R.id.tv_spaceWidth_value)
     TextView tvSpaceWidthValue;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -199,7 +192,6 @@ public class SizeAdjustFragment extends BaseBackFragment {
         return i;
     }
 
-    @OnClick({R.id.iv_space_reduce, R.id.iv_space_add, R.id.iv_spaceWidth_add, R.id.iv_spaceWidth_reduce, R.id.iv_left, R.id.iv_right, R.id.iv_down, R.id.iv_up, R.id.bt_save})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_save /* 2131361969 */:

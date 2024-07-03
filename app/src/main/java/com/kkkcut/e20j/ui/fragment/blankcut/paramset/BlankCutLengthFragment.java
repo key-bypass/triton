@@ -3,18 +3,17 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
+
+import com.cutting.machine.clamp.ClampF;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutType;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.clamp.ClampF;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutLengthFragment extends BaseBlankCutParamSetFragment {
 
-    @BindView(R.id.et_key_length)
     EditText etKeyLength;
     private int length;
 

@@ -1,5 +1,10 @@
 package com.kkkcut.e20j.DbBean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 /* loaded from: classes.dex */
 public class LocalDbVersion {
     long LastUpdateTime;
@@ -9,6 +14,7 @@ public class LocalDbVersion {
     String SvHash;
     String SvResName;
     String SvResVer;
+    @Id
     Long id;
     int updateStatus;
     String url;
@@ -27,6 +33,21 @@ public class LocalDbVersion {
     }
 
     public LocalDbVersion() {
+    }
+
+    @Generated(hash = 1859759485)
+    public LocalDbVersion(long LastUpdateTime, String LocResName, String LocResVer, int ResType, String SvHash, String SvResName,
+                          String SvResVer, Long id, int updateStatus, String url) {
+        this.LastUpdateTime = LastUpdateTime;
+        this.LocResName = LocResName;
+        this.LocResVer = LocResVer;
+        this.ResType = ResType;
+        this.SvHash = SvHash;
+        this.SvResName = SvResName;
+        this.SvResVer = SvResVer;
+        this.id = id;
+        this.updateStatus = updateStatus;
+        this.url = url;
     }
 
     public Long getId() {

@@ -7,7 +7,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.bean.KeyInfo;
 import java.util.ArrayList;
 import java.util.List;
 

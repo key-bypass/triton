@@ -2,55 +2,42 @@ package com.kkkcut.e20j.ui.fragment.setting;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import butterknife.BindView;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.base.BaseFFragment;
 import com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
 
 /* loaded from: classes.dex */
 public class SpeedSetFragment extends BaseFFragment {
     public static final String TAG = "SpeedSetFragment";
 
-    @BindView(R.id.ll_dimple)
     LinearLayout llDimple;
 
-    @BindView(R.id.ll_single_standard)
     LinearLayout llSingleStandard;
 
-    @BindView(R.id.ll_tibbe)
     LinearLayout llTibbe;
 
-    @BindView(R.id.ll_tubular)
     LinearLayout llTubular;
 
-    @BindView(R.id.seekbar_angle_key)
     BubbleSeekBar seekbarAngleKey;
 
-    @BindView(R.id.seekbar_dimple_key)
     BubbleSeekBar seekbarDimpleKey;
 
-    @BindView(R.id.seekbar_double_inside_key)
     BubbleSeekBar seekbarDoubleInsideKey;
 
-    @BindView(R.id.seekbar_double_key)
     BubbleSeekBar seekbarDoubleKey;
 
-    @BindView(R.id.seekbar_double_outside_key)
     BubbleSeekBar seekbarDoubleOutsideKey;
 
-    @BindView(R.id.seekbar_single_inside_key)
     BubbleSeekBar seekbarSingleInsideKey;
 
-    @BindView(R.id.seekbar_single_key)
     BubbleSeekBar seekbarSingleKey;
 
-    @BindView(R.id.seekbar_single_outside_key)
     BubbleSeekBar seekbarSingleOutsideKey;
 
-    @BindView(R.id.seekbar_tubular_key)
     BubbleSeekBar seekbarTubularKey;
     private int defaultSpeed = 15;
     private int defaultDimpleSpeed = 3;

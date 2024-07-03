@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.View;
-import com.liying.core.bean.DestPoint;
+
+import com.cutting.machine.bean.DestPoint;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

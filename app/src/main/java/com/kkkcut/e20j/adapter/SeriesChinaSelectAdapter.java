@@ -13,6 +13,7 @@ import com.kkkcut.e20j.DbBean.ModelSeries;
 import com.kkkcut.e20j.DbBean.china.ModelYearChina;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import com.kkkcut.e20j.us.R;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

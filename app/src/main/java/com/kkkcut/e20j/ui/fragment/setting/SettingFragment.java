@@ -5,9 +5,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
+
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.driver.pl2303.UsbSerialManager;
@@ -20,13 +18,10 @@ import com.kkkcut.e20j.utils.CutCountHelper;
 public class SettingFragment extends BaseBackFragment {
     private Fragment currentFragment;
 
-    @BindView(R.id.rb_cut_setting)
     RadioButton rbCutSetting;
 
-    @BindView(R.id.rb_space_Width)
     RadioButton rb_space_Width;
 
-    @BindView(R.id.tv_cut_count)
     TextView tvCutCount;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -62,7 +57,7 @@ public class SettingFragment extends BaseBackFragment {
         });
     }
 
-    @OnCheckedChanged({R.id.rb_speed, R.id.rb_other, R.id.rb_cut_setting, R.id.rb_space_Width})
+
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.rb_cut_setting /* 2131362606 */:
@@ -124,7 +119,6 @@ public class SettingFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.iv_quit})
     public void onClick() {
         RemindDialog remindDialog = new RemindDialog(getContext());
         remindDialog.setRemindMsg(getString(R.string.do_you_want_to_exit_the_program));

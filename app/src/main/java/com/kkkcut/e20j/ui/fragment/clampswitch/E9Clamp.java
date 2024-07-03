@@ -1,8 +1,9 @@
 package com.kkkcut.e20j.ui.fragment.clampswitch;
 
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 

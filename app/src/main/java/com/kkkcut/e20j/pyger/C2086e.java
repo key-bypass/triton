@@ -7,12 +7,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.content.FileProvider;
+
 import com.pgyersdk.PgyerActivityManager;
 import com.pgyersdk.PgyerProvider;
-import com.pgyersdk.p012c.C2023b;
+import com.pgyersdk.p012c.Strings;
+import com.pgyersdk.update.DownloadFileListener;
+
 import java.io.File;
-import net.sqlcipher.database.SQLiteDatabase;
 
 /* JADX INFO: Access modifiers changed from: package-private */
 /* compiled from: PgyerDownloadListener.java */
@@ -59,10 +62,10 @@ public class C2086e implements DownloadFileListener {
     private Dialog m381b() {
         this.f722e = PgyerActivityManager.getInstance().getCurrentActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(this.f722e);
-        builder.setTitle(C2023b.m151a(256));
-        builder.setMessage(C2023b.m151a(257));
-        builder.setNegativeButton(C2023b.m151a(258), new DialogInterfaceOnClickListenerC2084c(this));
-        builder.setPositiveButton(C2023b.m151a(259), new DialogInterfaceOnClickListenerC2085d(this));
+        builder.setTitle(Strings.m151a(256));
+        builder.setMessage(Strings.m151a(257));
+        builder.setNegativeButton(Strings.m151a(258), new DialogInterfaceOnClickListenerC2084c(this));
+        builder.setPositiveButton(Strings.m151a(259), new DialogInterfaceOnClickListenerC2085d(this));
         AlertDialog create = builder.create();
         this.f719b = create;
         return create;
@@ -91,7 +94,7 @@ public class C2086e implements DownloadFileListener {
                 ProgressDialog progressDialog = new ProgressDialog(this.f721d);
                 this.f718a = progressDialog;
                 progressDialog.setProgressStyle(1);
-                this.f718a.setMessage(C2023b.m151a(260));
+                this.f718a.setMessage(Strings.m151a(260));
                 this.f718a.setCancelable(false);
                 this.f718a.show();
             }

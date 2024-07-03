@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cutting.machine.MachineInfo
 import com.kkkcut.e20j.DbBean.Model
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
 import com.kkkcut.e20j.us.R

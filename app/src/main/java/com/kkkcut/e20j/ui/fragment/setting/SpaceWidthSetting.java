@@ -3,8 +3,6 @@ package com.kkkcut.e20j.ui.fragment.setting;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
@@ -15,22 +13,16 @@ public class SpaceWidthSetting extends BaseBackFragment {
     public static final String TAG = "SpaceWidthSetting";
     private String SPACE_WIDTH = "SPACE_WIDTH";
 
-    @BindView(R.id.et_double_inside_key)
     EditText etDoubleInsideKey;
 
-    @BindView(R.id.et_double_key)
     EditText etDoubleKey;
 
-    @BindView(R.id.et_double_outside_key)
     EditText etDoubleOutsideKey;
 
-    @BindView(R.id.et_single_inside_key)
     EditText etSingleInsideKey;
 
-    @BindView(R.id.et_single_key)
     EditText etSingleKey;
 
-    @BindView(R.id.et_single_outside_key)
     EditText etSingleOutsideKey;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -60,7 +52,6 @@ public class SpaceWidthSetting extends BaseBackFragment {
         this.etDoubleOutsideKey.setText(String.valueOf(SPUtils.getInt(this.SPACE_WIDTH + 4, 0)));
     }
 
-    @OnClick({R.id.bt_save})
     public void onViewClicked() {
         save(this.etSingleKey, 1);
         save(this.etDoubleKey, 0);

@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.base;
 
+import static com.kkkcut.e20j.us.R.*;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,8 +12,8 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.kkkcut.e20j.ui.activity.LookPicActivity;
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
 
 /* loaded from: classes.dex */
 public abstract class HideStatusActivity extends BaseActivity {

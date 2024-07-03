@@ -1,14 +1,16 @@
 package com.kkkcut.e20j.ui.fragment.engraving;
 
+import static io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread;
+
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.adapter.UsbImgSelectAdapter;
 import com.kkkcut.e20j.androidquick.tool.FileUtil;
@@ -16,21 +18,24 @@ import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+
 /* loaded from: classes.dex */
 public class UsbImageSelectFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemChildClickListener {
     private static final String LOGO_IMAGE = "LogoImage";
 
-    @BindView(R.id.rv_pics)
     RecyclerView rvPics;
     private File selectFile;
     UsbImgSelectAdapter usbImgSelectAdapter;
@@ -66,7 +71,7 @@ public class UsbImageSelectFragment extends BaseBackFragment implements BaseQuic
             public List<File> call() throws Exception {
                 return UsbImageSelectFragment.getImageFile(new File(Environment.getExternalStorageDirectory(), UsbImageSelectFragment.LOGO_IMAGE));
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<File>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.UsbImageSelectFragment.1
+        }).subscribeOn(Schedulers.io()).observeOn(mainThread()).subscribe(new Consumer<List<File>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.UsbImageSelectFragment.1
             @Override // io.reactivex.functions.Consumer
             public void accept(List<File> list) throws Exception {
                 UsbImageSelectFragment.this.usbImgSelectAdapter.setNewData(list);
@@ -164,7 +169,6 @@ public class UsbImageSelectFragment extends BaseBackFragment implements BaseQuic
         this.usbImgSelectAdapter.addFrame(file2);
     }
 
-    @OnClick({R.id.tv_load_pics_from_usb, R.id.bt_cancle, R.id.bt_confirm})
     public void onViewClicked(View view) {
         FrameActivity frameActivity = (FrameActivity) getActivity();
         int id = view.getId();

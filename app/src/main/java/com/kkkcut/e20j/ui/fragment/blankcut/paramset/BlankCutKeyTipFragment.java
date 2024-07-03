@@ -3,24 +3,21 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.clamp.ClampF;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.clamp.ClampF;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutKeyTipFragment extends BaseBlankCutParamSetFragment {
 
-    @BindView(R.id.et_remaining_thickness)
     EditText etRemainingThickness;
 
-    @BindView(R.id.et_tip_width)
     EditText etTipWidth;
     private int remainingThickness;
     private int tipWidth;

@@ -28,7 +28,10 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import com.kkkcut.e20j.R;
+
+import com.google.android.material.badge.BadgeDrawable;
+import com.kkkcut.e20j.us.R;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
@@ -152,7 +155,7 @@ public class BubbleSeekBar extends View {
         this.mSectionTextArray = new SparseArray<>();
         this.mPoint = new int[2];
         this.isTouchToSeekAnimEnd = true;
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.BubbleSeekBar, i, 0);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.IndexBar, i, 0);
         this.mMin = obtainStyledAttributes.getFloat(11, 0.0f);
         this.mMax = obtainStyledAttributes.getFloat(10, 100.0f);
         this.mProgress = obtainStyledAttributes.getFloat(12, this.mMin);
@@ -164,8 +167,8 @@ public class BubbleSeekBar extends View {
         this.mThumbRadius = obtainStyledAttributes.getDimensionPixelSize(28, dimensionPixelSize2 + BubbleUtils.dp2px(2));
         this.mThumbRadiusOnDragging = obtainStyledAttributes.getDimensionPixelSize(29, this.mSecondTrackSize * 2);
         this.mSectionCount = obtainStyledAttributes.getInteger(16, 10);
-        this.mTrackColor = obtainStyledAttributes.getColor(33, ContextCompat.getColor(context, com.kkkcut.e20j.us.R.color.colorPrimary));
-        int color = obtainStyledAttributes.getColor(14, ContextCompat.getColor(context, com.kkkcut.e20j.us.R.color.colorAccent));
+        this.mTrackColor = obtainStyledAttributes.getColor(33, ContextCompat.getColor(context, R.color.colorPrimary));
+        int color = obtainStyledAttributes.getColor(14, ContextCompat.getColor(context, R.color.colorAccent));
         this.mSecondTrackColor = color;
         this.mThumbColor = obtainStyledAttributes.getColor(27, color);
         this.isShowSectionText = obtainStyledAttributes.getBoolean(25, false);

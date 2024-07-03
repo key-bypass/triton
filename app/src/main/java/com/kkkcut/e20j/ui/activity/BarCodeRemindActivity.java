@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.base.HideStatusActivity;
 import com.kkkcut.e20j.us.R;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
@@ -20,37 +20,29 @@ public class BarCodeRemindActivity extends HideStatusActivity {
     public static final String BAR_CODE = "bar_code";
     public static final String ID = "ID";
 
-    @BindView(R.id.iv_1)
     ImageView iv1;
 
-    @BindView(R.id.iv_2)
     ImageView iv2;
 
-    @BindView(R.id.iv_3)
     ImageView iv3;
 
-    @BindView(R.id.ll_1)
     LinearLayout ll1;
 
-    @BindView(R.id.ll_2)
     LinearLayout ll2;
 
-    @BindView(R.id.ll_3)
     LinearLayout ll3;
 
-    @BindView(R.id.tv_1)
     TextView tv1;
 
-    @BindView(R.id.tv_2)
     TextView tv2;
 
-    @BindView(R.id.tv_3)
     TextView tv3;
     private Type type;
     private static final int[] hu66Arr = {909, 1309};
     private static final int[] toy48Arr = {872, 1309};
     private static final int[] hu100Arr = {1097, 1373};
     private static final int[] hu101Arr = {1370, 1407};
+
 
     /* loaded from: classes.dex */
     private enum Type {
@@ -121,7 +113,6 @@ public class BarCodeRemindActivity extends HideStatusActivity {
         return QuickActivity.TransitionMode.FADE;
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_1, R.id.ll_2, R.id.ll_3})
     public void onclick(View view) {
         int id = view.getId();
         if (id == R.id.iv_back) {

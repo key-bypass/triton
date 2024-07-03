@@ -13,8 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
@@ -29,27 +27,20 @@ public class KeySpaceWidthSetFragment extends BaseBackFragment {
     private EditText currentEdit;
     private CustomKey customKey;
 
-    @BindView(R.id.fl_row_tool)
     FrameLayout flRowTool;
     boolean isDimple;
 
-    @BindView(R.id.iv_space_width)
     ImageView ivSpaceWidth;
 
-    @BindView(R.id.ll_index)
     LinearLayout llIndex;
 
-    @BindView(R.id.ll_space)
     LinearLayout llSpace;
 
-    @BindView(R.id.ll_space_tool)
     LinearLayout llSpaceTool;
     private MyOnfocusChanged myOnfocusChanged = new MyOnfocusChanged();
 
-    @BindView(R.id.tv_side_row)
     TextView tvSideRow;
 
-    @BindView(R.id.tv_unit)
     TextView tvUnit;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -249,7 +240,6 @@ public class KeySpaceWidthSetFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.bt_number_1, R.id.bt_number_2, R.id.bt_number_3, R.id.bt_delete, R.id.bt_number_4, R.id.bt_number_5, R.id.bt_number_6, R.id.bt_number_next, R.id.bt_number_7, R.id.bt_number_8, R.id.bt_number_9, R.id.bt_number_last, R.id.bt_number_0, R.id.bt_next, R.id.bt_last, R.id.tv_row_reduce, R.id.tv_row_add})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_delete) {
@@ -275,7 +265,8 @@ public class KeySpaceWidthSetFragment extends BaseBackFragment {
                     inputNumb(((Button) view).getText().toString().trim());
                     return;
                 case R.id.bt_number_last /* 2131361959 */:
-                    EditText editText = (EditText) ((LinearLayout) this.currentEdit.getParent()).getChildAt(r12.indexOfChild(this.currentEdit) - 1);
+                    var r12 = (LinearLayout) this.currentEdit.getParent();
+                    EditText editText = (EditText) r12.getChildAt(r12.indexOfChild(this.currentEdit) - 1);
                     if (editText != null) {
                         editText.requestFocus();
                         return;

@@ -10,7 +10,7 @@ import android.graphics.Region;
 import android.text.TextUtils;
 import android.util.Log;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.bean.KeyInfo;
 import java.util.ArrayList;
 import java.util.List;
 

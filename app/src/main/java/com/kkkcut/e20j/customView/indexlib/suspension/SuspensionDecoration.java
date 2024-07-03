@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import java.util.List;

@@ -3,11 +3,14 @@ package com.kkkcut.e20j.ui.fragment.engraving;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+
 import androidx.core.view.ViewCompat;
+
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.speed.Speed;
 import com.kkkcut.e20j.utils.BitmapUtil;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.speed.Speed;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ public class EngravePathGen {
                 return arrayList;
             }
             int i7 = 0;
-            boolean z = i4;
+            boolean z = i4 != 0;
             while (true) {
                 int i8 = height - 1;
                 if (i7 < i8) {
@@ -135,15 +138,16 @@ public class EngravePathGen {
                             i11 = i2;
                             i10 = i;
                         }
-                        z = 0;
+                        z = false;
                         addCutPoint(arrayList, i10, i11, engraveParam, false);
                     }
                     i7++;
                     z = z;
                 }
+                break;
             }
             i5++;
-            i4 = z;
+            i4 = z ? 1 : 0;
         }
     }
 

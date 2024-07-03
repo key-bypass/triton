@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.base.HideStatusActivity;
 import com.kkkcut.e20j.us.R;
@@ -17,7 +15,6 @@ public class LookPicActivity extends HideStatusActivity {
     public static final String RES_ID = "ResId";
     public static final String isKeyImg = "isKeyImg";
 
-    @BindView(R.id.iv_show)
     ImageView ivPhoto;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
@@ -49,11 +46,6 @@ public class LookPicActivity extends HideStatusActivity {
         } else {
             this.ivPhoto.setImageResource(getIntent().getIntExtra(RES_ID, 0));
         }
-    }
-
-    @OnClick({R.id.fl_lool_pic})
-    public void onViewClicked() {
-        finish();
     }
 
     @Override // com.kkkcut.e20j.base.BaseActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity

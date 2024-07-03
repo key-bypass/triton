@@ -8,9 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import com.kkkcut.e20j.androidquick.autolayout.widget.AutoRadioGroup;
@@ -21,20 +18,20 @@ import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.DestPoint;
-import com.liying.core.bean.KeyAlign;
-import com.liying.core.bean.KeyType;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.duplicate.keyview.CopyDoubleOutSideKey;
-import com.liying.core.duplicate.keyview.CopyDoubleSideKey;
-import com.liying.core.duplicate.keyview.CopySideHoleKey;
-import com.liying.core.duplicate.keyview.CopySingleInsideKey;
-import com.liying.core.duplicate.keyview.CopySingleOutSideKey;
-import com.liying.core.duplicate.keyview.CopySingleSideKey;
-import com.liying.core.operation.duplicateDecode.DuplicateDecodeParams;
-import com.liying.core.operation.duplicateDecode.DuplicateKeyData;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.DestPoint;
+import com.cutting.machine.bean.KeyAlign;
+import com.cutting.machine.bean.KeyType;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.duplicate.keyview.CopyDoubleOutSideKey;
+import com.cutting.machine.duplicate.keyview.CopyDoubleSideKey;
+import com.cutting.machine.duplicate.keyview.CopySideHoleKey;
+import com.cutting.machine.duplicate.keyview.CopySingleInsideKey;
+import com.cutting.machine.duplicate.keyview.CopySingleOutSideKey;
+import com.cutting.machine.duplicate.keyview.CopySingleSideKey;
+import com.cutting.machine.operation.duplicateDecode.DuplicateDecodeParams;
+import com.cutting.machine.operation.duplicateDecode.DuplicateKeyData;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,50 +42,36 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     private int cutter_size;
     private DuplicateDecodeParams decodeParams;
 
-    @BindView(R.id.fl_key)
     FrameLayout flKey;
 
-    @BindView(R.id.fl_tubular)
     FrameLayout flTubular;
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
     private int layerCut;
 
-    @BindView(R.id.ll_cut_depth_single_key)
     LinearLayout llCutDepthSingleKey;
 
-    @BindView(R.id.ll_depth)
     LinearLayout llDepth;
 
-    @BindView(R.id.rb_layer_1)
     RadioButton rbLayer1;
 
-    @BindView(R.id.rb_layer_2)
     RadioButton rbLayer2;
 
-    @BindView(R.id.rb_layer_3)
     RadioButton rbLayer3;
 
-    @BindView(R.id.rg_layer_cut)
     AutoRadioGroup rgLayerCut;
 
-    @BindView(R.id.tv_cut_depth_single_key)
     TextView tvCutDepthSingleKey;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvCutterSize;
 
-    @BindView(R.id.tv_depth_value_single_key)
     TextView tvDepthValueSingleKey;
 
-    @BindView(R.id.tv_remind)
     TextView tvRemind;
 
-    @BindView(R.id.tv_speed_value)
     TextView tvSpeedValue;
 
-    @BindView(R.id.tv_title_layer)
+
     TextView tvTitleLayer;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
@@ -104,7 +87,6 @@ public class DuplicateNewCutDialog extends BottomInDialog {
         setCancelable(false);
     }
 
-    @OnClick({R.id.bt_cancle, R.id.iv_size_reduce, R.id.iv_size_add, R.id.bt_cut, R.id.iv_speed_add, R.id.iv_speed_reduce, R.id.bt_1_0mm, R.id.bt_1_5mm, R.id.bt_2_0mm, R.id.bt_2_5mm, R.id.iv_depth_add_single_key, R.id.iv_depth_reduce_single_key})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_1_0mm /* 2131361900 */:
@@ -202,7 +184,6 @@ public class DuplicateNewCutDialog extends BottomInDialog {
         }
     }
 
-    @OnCheckedChanged({R.id.rb_layer_1, R.id.rb_layer_2, R.id.rb_layer_3, R.id.rb_50, R.id.rb_100})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         if (id == R.id.rb_100) {
@@ -257,7 +238,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     private void initSingleKeyCutDepth() {
-        if (getKeyInfo().getKeyType() == KeyType.SINGLE_SIDE_KEY) {
+        if (getKeyInfo().keyType == KeyType.SINGLE_SIDE_KEY) {
             this.llCutDepthSingleKey.setVisibility(0);
             this.tvCutDepthSingleKey.setVisibility(0);
             this.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
@@ -302,7 +283,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     private void initCutter() {
-        if (getKeyInfo().getKeyType() == KeyType.DOUBLE_SIDE_KEY) {
+        if (getKeyInfo().keyType == KeyType.DOUBLE_SIDE_KEY) {
             this.cutter_size = SPUtils.getInt(SpKeys.DOUBLE_KEY_CUTTER, 200);
         }
         this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
@@ -375,7 +356,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     public KeyType getKeyType() {
-        return getKeyInfo().getKeyType();
+        return getKeyInfo().keyType;
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

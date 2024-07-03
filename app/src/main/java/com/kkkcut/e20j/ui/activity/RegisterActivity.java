@@ -5,9 +5,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
+
 import com.kkkcut.e20j.Constant;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.network.RetrofitManager;
@@ -25,32 +23,27 @@ import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.UnifiedErrorUtil;
 import com.kkkcut.e20j.utils.lan.LocalManageUtil;
-import com.liying.core.MachineInfo;
-import io.reactivex.ObservableSource;
+import com.cutting.machine.MachineInfo;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import static io.reactivex.rxjava3.schedulers.Schedulers.io;
+
 
 /* loaded from: classes.dex */
 public class RegisterActivity extends BaseCustomKeyBoardActivity {
     private static final String TAG = "RegisterActivity";
-
-    @BindView(R.id.et_regCode)
-    EditText etRegCode;
-
-    @BindView(R.id.et_sn)
     EditText etSn;
-    private ListCompositeDisposable listCompositeDisposable = new ListCompositeDisposable();
-    private LoadingDialog loadingDialog;
-
-    @BindView(R.id.tv_cpu)
+    EditText etRegCode;
     TextView tvCpu;
 
-    @BindView(R.id.tv_sn)
-    TextView tvSn;
+    private ListCompositeDisposable listCompositeDisposable = new ListCompositeDisposable();
+    private LoadingDialog loadingDialog;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected int getContentViewLayoutID() {
@@ -78,7 +71,6 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
         this.tvCpu.setText(uuid);
     }
 
-    @OnClick({R.id.bt_activate})
     public void onViewClicked() {
         registration();
     }
@@ -107,7 +99,7 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
             ToastUtil.showToast(R.string.cpu_id_not_found);
         } else {
             showLoading();
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).register(TUitls.register(uuid, trim, trim2)).subscribeOn(Schedulers.io()).flatMap(new Function<RegistrationRes, ObservableSource<Configuration>>() { // from class: com.kkkcut.e20j.ui.activity.RegisterActivity.5
+            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).register(TUitls.register(uuid, trim, trim2)).subscribeOn(io()).flatMap(new Function<RegistrationRes, ObservableSource<Configuration>>() { // from class: com.kkkcut.e20j.ui.activity.RegisterActivity.5
                 @Override // io.reactivex.functions.Function
                 public ObservableSource<Configuration> apply(RegistrationRes registrationRes) throws Exception {
                     Log.i(RegisterActivity.TAG, "first---" + registrationRes.getMsg() + ":" + registrationRes.getCode());
@@ -217,7 +209,6 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_regCode})
     public void onRegCodeChanged(CharSequence charSequence) {
         if (charSequence.length() == 8) {
             hideSoftKeyboard();
@@ -225,7 +216,6 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_sn})
     public void onSnChanged(CharSequence charSequence) {
         if (charSequence.length() == 10) {
             this.etRegCode.requestFocus();

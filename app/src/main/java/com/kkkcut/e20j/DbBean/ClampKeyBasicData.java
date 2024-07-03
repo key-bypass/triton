@@ -3,6 +3,11 @@ package com.kkkcut.e20j.DbBean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
+@Entity
 /* loaded from: classes.dex */
 public class ClampKeyBasicData implements Parcelable {
     public static final Parcelable.Creator<ClampKeyBasicData> CREATOR = new Parcelable.Creator<ClampKeyBasicData>() { // from class: com.kkkcut.e20j.DbBean.ClampKeyBasicData.1
@@ -21,7 +26,10 @@ public class ClampKeyBasicData implements Parcelable {
     String ClampNum;
     String ClampSide;
     String ClampSlot;
+
     Long FK_KeyID;
+
+    @Id
     int id;
 
     @Override // android.os.Parcelable
@@ -95,5 +103,14 @@ public class ClampKeyBasicData implements Parcelable {
         this.ClampNum = parcel.readString();
         this.ClampSide = parcel.readString();
         this.ClampSlot = parcel.readString();
+    }
+
+    @Generated(hash = 1102231679)
+    public ClampKeyBasicData(String ClampNum, String ClampSide, String ClampSlot, Long FK_KeyID, int id) {
+        this.ClampNum = ClampNum;
+        this.ClampSide = ClampSide;
+        this.ClampSlot = ClampSlot;
+        this.FK_KeyID = FK_KeyID;
+        this.id = id;
     }
 }

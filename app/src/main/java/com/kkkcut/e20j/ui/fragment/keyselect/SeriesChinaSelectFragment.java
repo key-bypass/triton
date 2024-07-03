@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.china.ModelSeriesChina;
 import com.kkkcut.e20j.DbBean.china.ModelYearChina;
@@ -22,10 +21,10 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.ui.fragment.KeyOperateFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
-import io.reactivex.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -34,7 +33,6 @@ import java.util.concurrent.Callable;
 public class SeriesChinaSelectFragment extends BaseBackFragment {
     private SeriesChinaSelectAdapter mAdapter;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -64,19 +62,17 @@ public class SeriesChinaSelectFragment extends BaseBackFragment {
         this.mAdapter = seriesChinaSelectAdapter;
         this.rvCategoryList.setAdapter(seriesChinaSelectAdapter);
         this.rvCategoryList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        this.mAdapter.setOnItemClickListener(new SeriesChinaSelectAdapter.OnItemClickListener() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesChinaSelectFragment$$ExternalSyntheticLambda1
-            @Override // com.kkkcut.e20j.adapter.SeriesChinaSelectAdapter.OnItemClickListener
-            public final void onItemClick(View view, int i, String str) {
+        this.mAdapter.setOnItemClickListener((view, i, str) -> {
                 SeriesChinaSelectFragment.this.m62xa03c1a74(view, i, str);
-            }
+
         });
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
     /* renamed from: lambda$initView$0$com-kkkcut-e20j-ui-fragment-keyselect-SeriesChinaSelectFragment, reason: not valid java name */
     public /* synthetic */ void m62xa03c1a74(View view, int i, String str) {
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_space_a);
-        ImageView imageView = (ImageView) view.findViewById(R.id.iv_arrow);
+        LinearLayout linearLayout = view.findViewById(R.id.ll_space_a);
+        ImageView imageView = view.findViewById(R.id.iv_arrow);
         int childCount = linearLayout.getChildCount();
         if (childCount == 1) {
             imageView.setImageResource(R.drawable.arrow_bottom);
@@ -88,35 +84,27 @@ public class SeriesChinaSelectFragment extends BaseBackFragment {
     }
 
     private void getModelYears(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesChinaSelectFragment$$ExternalSyntheticLambda4
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List chinaModelYears;
                 chinaModelYears = KeyInfoDaoManager.getInstance().getChinaModelYears(i);
                 return chinaModelYears;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesChinaSelectFragment$$ExternalSyntheticLambda2
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
                 SeriesChinaSelectFragment.this.m61x488f7d6a((List) obj);
-            }
+
         }));
     }
 
     private void showSeries(final View view, final int i, final String str) {
         Log.d(TAG, "showSeries() called with: itemView = [" + view + "], yearID = [" + i + "], years = [" + str + "]");
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesChinaSelectFragment$$ExternalSyntheticLambda5
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List chinaModelSeries;
                 chinaModelSeries = KeyInfoDaoManager.getInstance().getChinaModelSeries(i);
                 return chinaModelSeries;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesChinaSelectFragment$$ExternalSyntheticLambda3
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
                 SeriesChinaSelectFragment.this.m64xf54d7378(view, str, (List) obj);
-            }
+
         }));
     }
 
@@ -128,14 +116,14 @@ public class SeriesChinaSelectFragment extends BaseBackFragment {
             return;
         }
         int i = -1;
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_space_a);
+        LinearLayout linearLayout = view.findViewById(R.id.ll_space_a);
         Iterator it = list.iterator();
         View view2 = null;
         while (it.hasNext()) {
             final ModelSeriesChina modelSeriesChina = (ModelSeriesChina) it.next();
             if (modelSeriesChina.getFK_KeyID() != i) {
                 view2 = getLayoutInflater().inflate(R.layout.item_years_china_child, (ViewGroup) linearLayout, false);
-                TextView textView = (TextView) view2.findViewById(R.id.tv_detail);
+                TextView textView = view2.findViewById(R.id.tv_detail);
                 String str2 = "";
                 if (!TextUtils.isEmpty(modelSeriesChina.getName())) {
                     str2 = "" + modelSeriesChina.getName() + " ";
@@ -150,11 +138,11 @@ public class SeriesChinaSelectFragment extends BaseBackFragment {
                 linearLayout.addView(view2);
                 i = (int) modelSeriesChina.getFK_KeyID();
             }
-            LinearLayout linearLayout2 = (LinearLayout) view2.findViewById(R.id.ll_series_container);
+            LinearLayout linearLayout2 = view2.findViewById(R.id.ll_series_container);
             View inflate = getLayoutInflater().inflate(R.layout.item_series_china, (ViewGroup) null);
             ResUpdateUtils.showKeyImage(getContext(), (int) modelSeriesChina.getFK_KeyID(), (ImageView) inflate.findViewById(R.id.iv_thumb));
             ((TextView) inflate.findViewById(R.id.tv_clamp)).setText(modelSeriesChina.getClampKeyBasicData().getClampNum() + " " + modelSeriesChina.getClampKeyBasicData().getClampSide());
-            TextView textView2 = (TextView) inflate.findViewById(R.id.tv_align);
+            TextView textView2 = inflate.findViewById(R.id.tv_align);
             if (modelSeriesChina.getKeyBasicData().getAlign() == 0) {
                 textView2.setText(R.string.shoulder);
             } else {

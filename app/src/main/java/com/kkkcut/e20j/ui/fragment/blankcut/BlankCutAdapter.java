@@ -3,6 +3,7 @@ package com.kkkcut.e20j.ui.fragment.blankcut;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.adapter.BaseAutolayoutHolder;
 import com.kkkcut.e20j.us.R;
+
 import java.util.List;
 
 /* loaded from: classes.dex */

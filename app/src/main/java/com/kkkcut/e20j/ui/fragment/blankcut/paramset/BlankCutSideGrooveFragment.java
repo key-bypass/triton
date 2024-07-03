@@ -3,46 +3,42 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
+
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.clamp.S8;
+import com.cutting.machine.clamp.ClampF;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.clamp.S1B;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.error.ErrorHelper;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.clamp.ClampF;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.clamp.S1B;
-import com.liying.core.clamp.S8;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.error.ErrorHelper;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutSideGrooveFragment extends BaseBlankCutParamSetFragment {
-
-    @BindView(R.id.et_groove_length)
     EditText etGrooveLength;
 
-    @BindView(R.id.et_side_groove_width)
     EditText etGrooveWidth;
 
-    @BindView(R.id.et_remaining_thickness)
     EditText etRemainingThickness;
     private int grooveLength;
     private int grooveWidth;
     private int remainingThickness;
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_blank_cut_side_groove;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public void onCutFinish() {
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public String setKeyLocationPath() {
         return "keyblank/decoder/S8-3.json";
     }
@@ -55,7 +51,7 @@ public class BlankCutSideGrooveFragment extends BaseBlankCutParamSetFragment {
         return blankCutSideGrooveFragment;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public boolean checkHaveRiskCutClamp(ClampF clampF) {
         int high2;
         boolean z = clampF instanceof S8;
@@ -76,7 +72,7 @@ public class BlankCutSideGrooveFragment extends BaseBlankCutParamSetFragment {
         return true;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public void setMdKeyBlankClass(mdKeyBlankClass mdkeyblankclass) {
         mdkeyblankclass.setRepairKeyBlakType(2);
         mdkeyblankclass.setCutFaceSettingType(0);
@@ -86,7 +82,7 @@ public class BlankCutSideGrooveFragment extends BaseBlankCutParamSetFragment {
         mdkeyblankclass.setKeyBlankGrooveLength(this.grooveLength);
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment
     public boolean readyStartCut() {
         String trim = this.etGrooveLength.getText().toString().trim();
         if (TextUtils.isEmpty(trim)) {

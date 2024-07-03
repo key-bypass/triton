@@ -5,11 +5,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnTextChanged;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.DbBean.technical.DataModel;
 import com.kkkcut.e20j.adapter.TechnicalInfoModelAdapter;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
@@ -17,33 +18,30 @@ import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class TechnicalInfoModelSelectFragment extends BaseBackFragment {
     public static final String TAG = "TechnicalInfoBrandSelectFragment";
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.indexBar)
     IndexBar indexBar;
     private TechnicalInfoModelAdapter mAdapter;
     private List<DataModel> mDatas1;
     private SuspensionDecoration mDecoration;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
     private List<DataModel> tempData = new ArrayList();
 
-    @BindView(R.id.tvSideBarHint)
     TextView tvSideBarHint;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -94,7 +92,7 @@ public class TechnicalInfoModelSelectFragment extends BaseBackFragment {
     }
 
     public void goSeries(int i, String str) {
-        start(TechnicalInfoSeriesSelectFragment.newInstance(i, str));
+        start(com.kkkcut.e20j.p005ui.fragment.technical.TechnicalInfoSeriesSelectFragment.newInstance(i, str));
         hideSoftInput();
     }
 
@@ -131,7 +129,6 @@ public class TechnicalInfoModelSelectFragment extends BaseBackFragment {
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
         String modelName;
         this.tempData = new ArrayList();

@@ -4,12 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.androidquick.tool.LogUtil;
 import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
 
 /* loaded from: classes.dex */
 public abstract class BaseActivity extends QuickActivity {
@@ -50,7 +51,7 @@ public abstract class BaseActivity extends QuickActivity {
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
         LogUtil.i(TAG, eventCenter.getEventCode() + "");
     }
 

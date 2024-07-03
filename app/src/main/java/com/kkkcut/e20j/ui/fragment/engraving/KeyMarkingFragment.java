@@ -19,8 +19,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import androidx.core.internal.view.SupportMenu;
 import androidx.core.view.ViewCompat;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.AlignTextView;
 import com.kkkcut.e20j.DbBean.userDB.KeyMarkingChild;
 import com.kkkcut.e20j.DbBean.userDB.KeyMarkingTemplate;
@@ -34,30 +32,31 @@ import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.ui.fragment.engraving.EngravePathGen;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.BitmapUtil;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.operation.cut.DataParam;
-import com.liying.core.utils.AssetsJsonUtils;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.operation.cut.DataParam;
+import com.cutting.machine.utils.AssetsJsonUtils;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class KeyMarkingFragment extends BaseBackFragment {
@@ -67,30 +66,23 @@ public class KeyMarkingFragment extends BaseBackFragment {
     private static final int SELECT_IMAGE = 1;
     private static final int SELECT_TEMPLATE = 2;
 
-    @BindView(R.id.cb_auto_center)
     CheckBox cbAutoCenter;
     private View currentView;
     private boolean decode;
     private Bitmap engraveingBitmap;
 
-    @BindView(R.id.fl_container)
     FrameLayout flContainer;
     private Typeface fontFace;
 
-    @BindView(R.id.kmfl)
     KeyMarkingFramelayout kmfl;
 
-    @BindView(R.id.rb_high_speed)
     RadioButton rbHighSpeed;
 
-    @BindView(R.id.rb_low_speed)
     RadioButton rbLowSpeed;
 
-    @BindView(R.id.rb_middle_speed)
     RadioButton rbMiddleSpeed;
     private int rightSpace;
 
-    @BindView(R.id.tv_depth_value)
     TextView tvDepthValue;
     private int cutDepth = 10;
     private Point origin = new Point();
@@ -174,7 +166,6 @@ public class KeyMarkingFragment extends BaseBackFragment {
         this.dataParam.setDecoderSize(100);
     }
 
-    @OnClick({R.id.iv_up, R.id.iv_down, R.id.iv_left, R.id.iv_right, R.id.bt_cut, R.id.font_size_add, R.id.font_size_reduce, R.id.tv_select_template, R.id.iv_depth_reduce, R.id.iv_depth_add, R.id.tv_add_text, R.id.tv_edit_text, R.id.tv_delete, R.id.tv_add_pic, R.id.tv_save, R.id.rb_low_speed, R.id.rb_middle_speed, R.id.rb_high_speed, R.id.bt_decode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_cut /* 2131361921 */:
@@ -530,7 +521,7 @@ public class KeyMarkingFragment extends BaseBackFragment {
 
     /* JADX INFO: Access modifiers changed from: private */
     public EngravePathGen.EngraveParam getEngraveParam() {
-        return new EngravePathGen.EngraveParam(ClampManager.getInstance().getS5().getX(), ClampManager.getInstance().getS5().getY(), this.origin.x * 10, this.origin.y * 10, ClampManager.getInstance().getDC().getxDistance(), ClampManager.getInstance().getDC().getyDistance(), OperationManager.getInstance().getKeyAlignInfo().getKeyFace(), (int) ((!TextUtils.isEmpty(this.tvDepthValue.getText().toString().trim()) ? Math.round(Float.parseFloat(r0.replace("mm", "")) * 100.0f) : 5) / MachineData.dZScale), SPUtils.getInt(SpKeys.ENGRAVING_SPEED, 15));
+        return new EngravePathGen.EngraveParam(ClampManager.getInstance().getS5().getX(), ClampManager.getInstance().getS5().getY(), this.origin.x * 10, this.origin.y * 10, ClampManager.getInstance().getDC().getxDistance(), ClampManager.getInstance().getDC().getyDistance(), OperationManager.getInstance().getKeyAlignInfo().getKeyFace(), (int) ((!TextUtils.isEmpty(this.tvDepthValue.getText().toString().trim()) ? Math.round(Float.parseFloat(this.tvDepthValue.getText().toString().replace("mm", "")) * 100.0f) : 5) / MachineData.dZScale), SPUtils.getInt(SpKeys.ENGRAVING_SPEED, 15));
     }
 
     public static String substring(String str, int i, int i2) {

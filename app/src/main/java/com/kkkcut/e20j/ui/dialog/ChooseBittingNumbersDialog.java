@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.us.R;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */

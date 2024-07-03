@@ -129,6 +129,7 @@ public class OnDragTouchListener implements View.OnTouchListener {
             }
             return;
         }
+        int r3 = 0;
         final float width = this.left + (view.getWidth() / 2) >= this.parentWidth / 2 ? r3 - view.getWidth() : 0.0f;
         ValueAnimator ofFloat = ValueAnimator.ofFloat(this.left, width);
         ofFloat.setInterpolator(new DecelerateInterpolator());

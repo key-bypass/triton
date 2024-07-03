@@ -1,7 +1,7 @@
 package com.kkkcut.e20j.ui.fragment.hondakey;
 
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
 
 /* loaded from: classes.dex */
 public class HondaKeyFactory {

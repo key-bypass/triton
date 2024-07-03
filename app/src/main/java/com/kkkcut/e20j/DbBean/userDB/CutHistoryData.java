@@ -1,8 +1,14 @@
 package com.kkkcut.e20j.DbBean.userDB;
 
 import com.kkkcut.e20j.DbBean.GoOperatBean;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.util.Date;
 
+@Entity
 /* loaded from: classes.dex */
 public class CutHistoryData {
     String KeyChinaNum;
@@ -11,6 +17,8 @@ public class CutHistoryData {
     String cuts;
     int doorIgnition;
     int doorToIgnition;
+
+    @Id
     Long id;
     int isCustomKey;
     String remark;
@@ -52,6 +60,25 @@ public class CutHistoryData {
     }
 
     public CutHistoryData() {
+    }
+
+    @Generated(hash = 2037872432)
+    public CutHistoryData(String KeyChinaNum, int basicDataID, String codeSeries, String cuts, int doorIgnition, int doorToIgnition, Long id, int isCustomKey, String remark,
+                          int seriesID, long time, String title, String toothCode, String toothCodeSide) {
+        this.KeyChinaNum = KeyChinaNum;
+        this.basicDataID = basicDataID;
+        this.codeSeries = codeSeries;
+        this.cuts = cuts;
+        this.doorIgnition = doorIgnition;
+        this.doorToIgnition = doorToIgnition;
+        this.id = id;
+        this.isCustomKey = isCustomKey;
+        this.remark = remark;
+        this.seriesID = seriesID;
+        this.time = time;
+        this.title = title;
+        this.toothCode = toothCode;
+        this.toothCodeSide = toothCodeSide;
     }
 
     public Long getId() {

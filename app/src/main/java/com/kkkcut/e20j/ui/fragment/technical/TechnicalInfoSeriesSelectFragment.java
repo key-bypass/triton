@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 import com.kkkcut.e20j.DbBean.technical.DataModelSeries;
 import com.kkkcut.e20j.DbBean.technical.DataModelSeriesYear;
 
@@ -18,10 +17,13 @@ import com.kkkcut.e20j.adapter.TechnicalSeriesAdapter;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
+import com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoFragment;
 import com.kkkcut.e20j.us.R;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +33,6 @@ import java.util.concurrent.Callable;
 public class TechnicalInfoSeriesSelectFragment extends BaseBackFragment {
     private TechnicalSeriesAdapter mAdapter;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
 
     @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
@@ -71,8 +72,8 @@ public class TechnicalInfoSeriesSelectFragment extends BaseBackFragment {
     /* JADX INFO: Access modifiers changed from: package-private */
     /* renamed from: lambda$initView$0$com-kkkcut-e20j-ui-fragment-technical-TechnicalInfoSeriesSelectFragment */
     public /* synthetic */ void m80x6fd42498(View view, int i, String str) {
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.container);
-        ImageView imageView = (ImageView) view.findViewById(R.id.iv_arrow);
+        LinearLayout linearLayout = view.findViewById(R.id.container);
+        ImageView imageView = view.findViewById(R.id.iv_arrow);
         int childCount = linearLayout.getChildCount();
         if (childCount == 1) {
             imageView.setImageResource(R.drawable.arrow_bottom);
@@ -84,59 +85,44 @@ public class TechnicalInfoSeriesSelectFragment extends BaseBackFragment {
     }
 
     private void getModelSeries(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoSeriesSelectFragment$$ExternalSyntheticLambda4
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
-                List technicalInfoModelSeries;
-                technicalInfoModelSeries = KeyInfoDaoManager.getInstance().getTechnicalInfoModelSeries(i);
-                return technicalInfoModelSeries;
-            }
-        }).subscribeOn(Schedulers.m398io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoSeriesSelectFragment$$ExternalSyntheticLambda2
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
-                TechnicalInfoSeriesSelectFragment.this.m79x3621488f((List) obj);
-            }
+        addDisposable((Disposable) Observable.fromCallable(() -> {
+            List technicalInfoModelSeries;
+            technicalInfoModelSeries = KeyInfoDaoManager.getInstance().getTechnicalInfoModelSeries(i);
+            return technicalInfoModelSeries;
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
+            TechnicalInfoSeriesSelectFragment.this.m79x3621488f(obj);
         }));
     }
 
     private void showSeriesYear(final View view, final int i, final String str) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoSeriesSelectFragment$$ExternalSyntheticLambda5
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
-                List technicalInfoModelSeriesYear;
-                technicalInfoModelSeriesYear = KeyInfoDaoManager.getInstance().getTechnicalInfoModelSeriesYear(i);
-                return technicalInfoModelSeriesYear;
-            }
-        }).subscribeOn(Schedulers.m398io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoSeriesSelectFragment$$ExternalSyntheticLambda3
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
-                TechnicalInfoSeriesSelectFragment.this.m82x17da8d39(view, str, (List) obj);
-            }
+        addDisposable((Disposable) Observable.fromCallable(() -> {
+            List technicalInfoModelSeriesYear;
+            technicalInfoModelSeriesYear = KeyInfoDaoManager.getInstance().getTechnicalInfoModelSeriesYear(i);
+            return technicalInfoModelSeriesYear;
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
+            TechnicalInfoSeriesSelectFragment.this.m82x17da8d39(view, str, obj);
         }));
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
     /* renamed from: lambda$showSeriesYear$5$com-kkkcut-e20j-ui-fragment-technical-TechnicalInfoSeriesSelectFragment */
     public /* synthetic */ void m82x17da8d39(View view, final String str, List list) throws Exception {
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             ToastUtil.showToast(R.string.no_data_was_found);
             return;
         }
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.container);
+        LinearLayout linearLayout = view.findViewById(R.id.container);
         View inflate = getLayoutInflater().inflate(R.layout.item_technical_info_child, (ViewGroup) linearLayout, false);
         linearLayout.addView(inflate);
         Iterator it = list.iterator();
         while (it.hasNext()) {
             final DataModelSeriesYear dataModelSeriesYear = (DataModelSeriesYear) it.next();
-            LinearLayout linearLayout2 = (LinearLayout) inflate.findViewById(R.id.ll_series_container);
+            LinearLayout linearLayout2 = inflate.findViewById(R.id.ll_series_container);
             View inflate2 = getLayoutInflater().inflate(R.layout.item_technical_info_years, (ViewGroup) null);
             ((TextView) inflate2.findViewById(R.id.tv_year)).setText(dataModelSeriesYear.getSeriesYearName());
             linearLayout2.addView(inflate2);
-            inflate2.setOnClickListener(new View.OnClickListener() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoSeriesSelectFragment$$ExternalSyntheticLambda0
-                @Override // android.view.View.OnClickListener
-                public final void onClick(View view2) {
+            inflate2.setOnClickListener(view2 -> {
                     TechnicalInfoSeriesSelectFragment.this.m81x50cea638(str, dataModelSeriesYear, view2);
-                }
             });
         }
     }

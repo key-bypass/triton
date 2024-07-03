@@ -2,13 +2,16 @@ package com.kkkcut.e20j.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.MyApplication;
-import com.liying.core.MachineInfo;
+
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.json.JSONObject;
 
 /* loaded from: classes.dex */
 public class AssetVersionUtil {

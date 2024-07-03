@@ -22,8 +22,6 @@ import android.widget.TextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.internal.view.SupportMenu;
 import androidx.core.view.ViewCompat;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.AlignTextView;
 import com.kkkcut.e20j.DbBean.userDB.KeyMarkingChild;
 import com.kkkcut.e20j.DbBean.userDB.KeyMarkingTemplate;
@@ -37,28 +35,29 @@ import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.ui.fragment.engraving.EngraveE9PathGen;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.BitmapUtil;
-import com.liying.core.Command;
-import com.liying.core.CuttingMachine;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.OperateType;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.operation.cut.DataParam;
-import com.liying.core.utils.AssetsJsonUtils;
-import com.liying.core.utils.DecoderPositionUtils;
-import com.liying.core.utils.UnitConvertUtil;
-import io.reactivex.Observable;
+import com.cutting.machine.Command;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.operation.cut.DataParam;
+import com.cutting.machine.utils.AssetsJsonUtils;
+import com.cutting.machine.utils.DecoderPositionUtils;
+import com.cutting.machine.utils.UnitConvertUtil;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -74,30 +73,23 @@ public class KeyMarkingE9Fragment extends BaseBackFragment {
     private static final int SELECT_TEMPLATE = 2;
     private static final float letterSpace = 0.05f;
 
-    @BindView(R.id.cb_auto_center)
     CheckBox cbAutoCenter;
     private View currentView;
     private boolean decode;
     private Bitmap engraveingBitmap;
 
-    @BindView(R.id.fl_container)
     FrameLayout flContainer;
     private Typeface fontFace;
 
-    @BindView(R.id.kmfl)
     KeyMarkingE9Layout kmfl;
 
-    @BindView(R.id.rb_high_speed)
     RadioButton rbHighSpeed;
 
-    @BindView(R.id.rb_low_speed)
     RadioButton rbLowSpeed;
 
-    @BindView(R.id.rb_middle_speed)
     RadioButton rbMiddleSpeed;
     private int rightSpace;
 
-    @BindView(R.id.tv_depth_value)
     TextView tvDepthValue;
     private int cutDepth = 10;
     private Point origin = new Point();
@@ -175,7 +167,6 @@ public class KeyMarkingE9Fragment extends BaseBackFragment {
         this.dataParam.setDecoderSize(100);
     }
 
-    @OnClick({R.id.iv_up, R.id.iv_down, R.id.iv_left, R.id.iv_right, R.id.bt_cut, R.id.font_size_add, R.id.font_size_reduce, R.id.tv_select_template, R.id.iv_depth_reduce, R.id.iv_depth_add, R.id.tv_add_text, R.id.tv_edit_text, R.id.tv_delete, R.id.tv_add_pic, R.id.tv_save, R.id.rb_low_speed, R.id.rb_middle_speed, R.id.rb_high_speed, R.id.bt_decode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_cut /* 2131361921 */:

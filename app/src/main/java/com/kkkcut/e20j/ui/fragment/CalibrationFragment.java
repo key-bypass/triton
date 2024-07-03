@@ -7,84 +7,63 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import com.liying.core.Command;
-import com.liying.core.CuttingMachine;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.operation.calibrate.CalibrationParams;
+import com.cutting.machine.Command;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.operation.calibrate.CalibrationParams;
 
 /* loaded from: classes.dex */
 public class CalibrationFragment extends BaseBackFragment {
     public static final String TAG = "CalibrationFragment";
 
-    @BindView(R.id.bt_car_clamp_b)
     Button btCarClampB;
 
-    @BindView(R.id.bt_car_clamp_d)
     Button btCarClampD;
 
-    @BindView(R.id.bt_distance_calibrate_s1a)
     Button btDistanceCalibrateS1a;
 
-    @BindView(R.id.bt_house_clamp_b)
     Button btSingleKeyClampB;
     CalibrationParams calibrationParams;
     private boolean isE9;
 
-    @BindView(R.id.ll_angle_key_clamp)
     LinearLayout llAngleKeyClamp;
 
-    @BindView(R.id.ll_blank_cut_calibrate)
     LinearLayout llBlankCutClamp;
 
-    @BindView(R.id.ll_car_clamp)
     LinearLayout llCarClamp;
 
-    @BindView(R.id.ll_cross_key_clamp)
     LinearLayout llCroossKeyClamp;
 
-    @BindView(R.id.ll_distance_calibrate)
     LinearLayout llDistanceCalibrate;
 
-    @BindView(R.id.ll_marking_clamp)
     LinearLayout llMarkingClamp;
 
-    @BindView(R.id.ll_single_side_clamp)
     LinearLayout llSingleSideClamp;
 
-    @BindView(R.id.ll_tubular_clamp)
     LinearLayout llTubularClamp;
 
-    @BindView(R.id.rb_angle_clamp)
     RadioButton rbAngleClamp;
 
-    @BindView(R.id.rb_blank_cut_clamp)
     RadioButton rbBlankCutClamp;
 
-    @BindView(R.id.rb_cross_key_clamp)
     RadioButton rbCrossKeyClamp;
 
-    @BindView(R.id.rb_marking_clamp)
     RadioButton rbMarkingClamp;
 
-    @BindView(R.id.rb_single_side_clmap)
     RadioButton rbSingleSideClamp;
 
-    @BindView(R.id.rb_tubular_clamp)
     RadioButton rbTubularClamp;
     private RemindDialog remindDialog;
 
@@ -119,7 +98,6 @@ public class CalibrationFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.bt_car_clamp_a, R.id.bt_car_clamp_b, R.id.bt_car_clamp_c, R.id.bt_car_clamp_d, R.id.bt_distance_calibrate_s1a, R.id.bt_tubular_clamp, R.id.bt_house_clamp_a, R.id.bt_house_clamp_b, R.id.bt_angle_clamp, R.id.bt_distance_calibrate, R.id.bt_marking_clamp, R.id.bt_left, R.id.bt_right, R.id.bt_cross_key_clamp, R.id.bt_blank_cut_calibrate, R.id.bt_on, R.id.bt_off})
     public void onViewClicked(View view) {
         int i;
         String string = getString(R.string.clean_the_groove_from_chips);
@@ -293,7 +271,6 @@ public class CalibrationFragment extends BaseBackFragment {
         return getString(R.string.calibration);
     }
 
-    @OnCheckedChanged({R.id.rb_distance_calibrate, R.id.rb_autonmobile_clamp, R.id.rb_single_side_clmap, R.id.rb_tubular_clamp, R.id.rb_angle_clamp, R.id.rb_marking_clamp, R.id.rb_cross_key_clamp, R.id.rb_blank_cut_clamp})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.rb_angle_clamp /* 2131362599 */:

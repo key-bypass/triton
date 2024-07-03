@@ -11,9 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.search.BarCodeSearch;
@@ -29,12 +26,13 @@ import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
+import com.cutting.machine.MachineInfo;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,84 +42,58 @@ public class SearchFragment extends BaseBackFragment implements BaseQuickAdapter
     private static final String TYPE = "TYPE";
     FrameActivity activity;
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.flag_bar_code)
     View flagBarCode;
 
-    @BindView(R.id.flag_blitz_card)
     View flagBlitzCard;
 
-    @BindView(R.id.flag_china_key)
     View flagChinaKey;
 
-    @BindView(R.id.flag_dsd)
     View flagDsd;
 
-    @BindView(R.id.flag_key_blank)
     View flagKeyBlank;
 
-    @BindView(R.id.flag_key_id)
     View flagKeyId;
 
-    @BindView(R.id.flag_lkp)
     View flagLkp;
 
-    @BindView(R.id.flag_silca)
     View flagSilca;
     private KeySearchAdapter keySearchAdapter;
 
-    @BindView(R.id.rl_bar_code)
     RelativeLayout rlBarCode;
 
-    @BindView(R.id.rl_blitz_card)
     RelativeLayout rlBlitzCard;
 
-    @BindView(R.id.rl_china_key_num)
     RelativeLayout rlChinaKeyNum;
 
-    @BindView(R.id.rl_dsd)
     RelativeLayout rlDsd;
 
-    @BindView(R.id.rl_key_blank)
     RelativeLayout rlKeyBlank;
 
-    @BindView(R.id.rl_key_id)
     RelativeLayout rlKeyId;
 
-    @BindView(R.id.rl_lkp)
     RelativeLayout rlLkp;
 
-    @BindView(R.id.rl_silca)
     RelativeLayout rlSilca;
 
-    @BindView(R.id.rv_result)
     RecyclerView rvResult;
     private SearchType searchType = SearchType.KEY_BLANK;
 
-    @BindView(R.id.tv_bar_code)
     TextView tvBarCode;
 
-    @BindView(R.id.tv_blitz_card)
     TextView tvBlitzCard;
 
-    @BindView(R.id.tv_china_key_num)
     TextView tvChinaKeyNum;
 
-    @BindView(R.id.tv_dsd)
     TextView tvDsd;
 
-    @BindView(R.id.tv_key_blank)
     TextView tvKeyBlank;
 
-    @BindView(R.id.tv_key_id)
     TextView tvKeyId;
 
-    @BindView(R.id.tv_lkp)
     TextView tvLkp;
 
-    @BindView(R.id.tv_silca)
     TextView tvSilca;
 
     /* loaded from: classes.dex */
@@ -197,7 +169,6 @@ public class SearchFragment extends BaseBackFragment implements BaseQuickAdapter
         return getString(R.string.search);
     }
 
-    @OnClick({R.id.rl_key_blank, R.id.rl_key_id, R.id.rl_china_key_num, R.id.rl_blitz_card, R.id.rl_dsd, R.id.rl_lkp, R.id.rl_silca, R.id.rl_bar_code})
     public void onViewClicked(View view) {
         int color = ThemeUtils.getColor(getContext(), R.attr.color_red_blueDark);
         int color2 = ThemeUtils.getColor(getContext(), R.attr.textColor_ffffff_333333);
@@ -430,7 +401,6 @@ public class SearchFragment extends BaseBackFragment implements BaseQuickAdapter
         }
     }
 
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
         switch (AnonymousClass12.$SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[this.searchType.ordinal()]) {
             case 1:

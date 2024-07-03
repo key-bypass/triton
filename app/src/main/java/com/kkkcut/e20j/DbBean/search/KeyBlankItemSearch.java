@@ -1,9 +1,10 @@
 package com.kkkcut.e20j.DbBean.search;
 
 import android.text.TextUtils;
+
+import com.cutting.machine.utils.KeyDataUtils;
 import com.kkkcut.e20j.utils.DesUtil;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
-import com.liying.core.utils.KeyDataUtils;
 
 /* loaded from: classes.dex */
 public class KeyBlankItemSearch implements SearchResult {

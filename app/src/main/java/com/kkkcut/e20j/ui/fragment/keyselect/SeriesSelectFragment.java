@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnTextChanged;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.ModelSeries;
 import com.kkkcut.e20j.DbBean.ModelYear;
@@ -24,11 +22,11 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.ui.fragment.KeyOperateFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
+import com.cutting.machine.MachineInfo;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,11 +36,9 @@ public class SeriesSelectFragment extends BaseBackFragment {
     private SeriesSelectAdapter mAdapter;
     private LinearLayoutManager manager;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
     }
 
@@ -117,11 +113,9 @@ public class SeriesSelectFragment extends BaseBackFragment {
                 modelSeries = KeyInfoDaoManager.getInstance().getModelSeries(i);
                 return modelSeries;
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesSelectFragment$$ExternalSyntheticLambda4
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
                 SeriesSelectFragment.this.m69x57bdac18(i2, view, str, (List) obj);
-            }
+
         }));
     }
 
@@ -137,14 +131,14 @@ public class SeriesSelectFragment extends BaseBackFragment {
         this.manager.startSmoothScroll(topLinearSmoothScroller);
         ((ImageView) view.findViewById(R.id.iv_arrow)).setImageResource(R.drawable.arrow_bottom);
         int i2 = -1;
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ll_space_a);
+        LinearLayout linearLayout = view.findViewById(R.id.ll_space_a);
         Iterator it = list.iterator();
         View view2 = null;
         while (it.hasNext()) {
             final ModelSeries modelSeries = (ModelSeries) it.next();
             if (modelSeries.getFK_KeyID() != i2) {
                 view2 = getLayoutInflater().inflate(R.layout.item_years_child_us, (ViewGroup) linearLayout, false);
-                TextView textView = (TextView) view2.findViewById(R.id.tv_title_id);
+                TextView textView = view2.findViewById(R.id.tv_title_id);
                 if (MachineInfo.isE20Us(getContext())) {
                     textView.setText("Card");
                 } else {
@@ -156,22 +150,20 @@ public class SeriesSelectFragment extends BaseBackFragment {
                 linearLayout.addView(view2);
                 i2 = modelSeries.getFK_KeyID();
             }
-            LinearLayout linearLayout2 = (LinearLayout) view2.findViewById(R.id.ll_series_container);
+            LinearLayout linearLayout2 = view2.findViewById(R.id.ll_series_container);
             View inflate = getLayoutInflater().inflate(R.layout.item_serie_us, (ViewGroup) null);
             ((TextView) inflate.findViewById(R.id.tv_series)).setText(modelSeries.getCodeSeries());
-            TextView textView2 = (TextView) inflate.findViewById(R.id.tv_nick_name);
+            TextView textView2 = inflate.findViewById(R.id.tv_nick_name);
             if (textView2 != null) {
                 textView2.setText(modelSeries.getName());
             }
-            TextView textView3 = (TextView) inflate.findViewById(R.id.tv_isn);
+            TextView textView3 = inflate.findViewById(R.id.tv_isn);
             final String isn = modelSeries.getISN();
             textView3.setText(isn);
             linearLayout2.addView(inflate);
-            inflate.setOnClickListener(new View.OnClickListener() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesSelectFragment$$ExternalSyntheticLambda0
-                @Override // android.view.View.OnClickListener
-                public final void onClick(View view3) {
+            inflate.setOnClickListener( view3 -> {
                     SeriesSelectFragment.this.m68x51b9e0b9(str, modelSeries, isn, view3);
-                }
+
             });
         }
     }
@@ -190,18 +182,14 @@ public class SeriesSelectFragment extends BaseBackFragment {
     }
 
     private void getModelYears(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesSelectFragment$$ExternalSyntheticLambda5
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List modelYears;
                 modelYears = KeyInfoDaoManager.getInstance().getModelYears(i);
                 return modelYears;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesSelectFragment$$ExternalSyntheticLambda3
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
                 SeriesSelectFragment.this.m65x3628abc1((List) obj);
-            }
+
         }));
     }
 

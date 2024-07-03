@@ -1,7 +1,8 @@
 package com.kkkcut.e20j.DbBean.search;
 
 import android.text.TextUtils;
-import com.liying.core.MachineInfo;
+
+import com.cutting.machine.MachineInfo;
 
 /* loaded from: classes.dex */
 public class ChinaNumSearch implements SearchResult {

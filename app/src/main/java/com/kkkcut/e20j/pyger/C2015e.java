@@ -11,6 +11,9 @@ import android.os.Build;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.pgyersdk.p008b.p011c.RootViewInfo;
+
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +27,7 @@ class C2015e {
     /* renamed from: a */
     public static Bitmap m120a(Activity activity, View[] viewArr) {
         if (activity != null) {
-            List<C2012b> m114a = C2011a.m114a(activity);
+            List<RootViewInfo> m114a = C2011a.m114a(activity);
             View decorView = activity.getWindow().getDecorView();
             try {
                 Bitmap createBitmap = Bitmap.createBitmap(decorView.getWidth(), decorView.getHeight(), Bitmap.Config.ARGB_8888);
@@ -38,20 +41,20 @@ class C2015e {
     }
 
     /* renamed from: a */
-    private static void m125a(List<C2012b> list, Bitmap bitmap, View[] viewArr) {
-        Iterator<C2012b> it = list.iterator();
+    private static void m125a(List<RootViewInfo> list, Bitmap bitmap, View[] viewArr) {
+        Iterator<RootViewInfo> it = list.iterator();
         while (it.hasNext()) {
             m124a(it.next(), bitmap, viewArr);
         }
     }
 
     /* renamed from: a */
-    private static void m124a(C2012b c2012b, Bitmap bitmap, View[] viewArr) {
-        if ((c2012b.m115a().flags & 2) == 2) {
-            new Canvas(bitmap).drawARGB((int) (c2012b.m115a().dimAmount * 255.0f), 0, 0, 0);
+    private static void m124a(RootViewInfo rootViewInfo, Bitmap bitmap, View[] viewArr) {
+        if ((rootViewInfo.m115a().flags & 2) == 2) {
+            new Canvas(bitmap).drawARGB((int) (rootViewInfo.m115a().dimAmount * 255.0f), 0, 0, 0);
         }
         Canvas canvas = new Canvas(bitmap);
-        canvas.translate(c2012b.m116b(), c2012b.m117c());
+        canvas.translate(rootViewInfo.m116b(), rootViewInfo.m117c());
         int[] iArr = viewArr != null ? new int[viewArr.length] : null;
         if (viewArr != null) {
             for (int i = 0; i < viewArr.length; i++) {
@@ -61,8 +64,8 @@ class C2015e {
                 }
             }
         }
-        c2012b.m118d().draw(canvas);
-        m121a(c2012b.m118d(), canvas);
+        rootViewInfo.m118d().draw(canvas);
+        m121a(rootViewInfo.m118d(), canvas);
     }
 
     /* renamed from: a */

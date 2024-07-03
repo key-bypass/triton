@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.BindView;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.kkkcut.e20j.DbBean.LocalDbVersion;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
@@ -15,76 +14,59 @@ import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.AppUpdateUtil;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlin.Unit;
+
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 /* loaded from: classes.dex */
 public class DataUpdateFragment extends BaseBackFragment {
 
-    @BindView(R.id.bt_error_update)
     Button btErrorUpdate;
 
-    @BindView(R.id.bt_imgs_update)
     Button btImgUpdate;
 
-    @BindView(R.id.bt_main_db_update)
     Button btMainDbUpdate;
 
-    @BindView(R.id.bt_res_update)
     Button btResUpdate;
 
-    @BindView(R.id.bt_software_update)
     Button btSoftwareUpdate;
 
-    @BindView(R.id.tv_name_app)
     TextView tvNameApp;
 
-    @BindView(R.id.tv_name_err)
     TextView tvNameErr;
 
-    @BindView(R.id.tv_name_imgs)
     TextView tvNameImgs;
 
-    @BindView(R.id.tv_name_main_db)
     TextView tvNameMainDb;
 
-    @BindView(R.id.tv_name_res)
     TextView tvNameRes;
 
-    @BindView(R.id.tv_value_current_error)
     TextView tvValueCurrentError;
 
-    @BindView(R.id.tv_value_current_imgs)
     TextView tvValueCurrentImg;
 
-    @BindView(R.id.tv_value_current_main_db)
     TextView tvValueCurrentMainDb;
 
-    @BindView(R.id.tv_value_current_res)
     TextView tvValueCurrentRes;
 
-    @BindView(R.id.tv_value_current_software)
     TextView tvValueCurrentSoftware;
 
-    @BindView(R.id.tv_value_new_error)
     TextView tvValueNewError;
 
-    @BindView(R.id.tv_value_new_imgs)
     TextView tvValueNewImg;
 
-    @BindView(R.id.tv_value_new_main_db)
     TextView tvValueNewMainDb;
 
-    @BindView(R.id.tv_value_new_res)
     TextView tvValueNewRes;
 
-    @BindView(R.id.tv_value_new_software)
     TextView tvValueNewSoftware;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -208,11 +190,8 @@ public class DataUpdateFragment extends BaseBackFragment {
                 ToastUtil.showToast(th.getMessage());
             }
         }));
-        addDisposable(RxView.clicks(this.btSoftwareUpdate).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.DataUpdateFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                AppUpdateUtil.checkUpdate(DataUpdateFragment.this.getActivity());
-            }
+        addDisposable((Disposable) RxView.clicks(this.btSoftwareUpdate).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
+            AppUpdateUtil.checkUpdate(DataUpdateFragment.this.getActivity());
         }));
         update(this.btMainDbUpdate, this.tvValueCurrentMainDb, this.tvValueNewMainDb, ResUpdateDaoManager.getInstance().getMainDb(ResUpdateUtils.getLocalMainDbName()));
         update(this.btResUpdate, this.tvValueCurrentRes, this.tvValueNewRes, ResUpdateDaoManager.getInstance().getResDb());
@@ -225,39 +204,37 @@ public class DataUpdateFragment extends BaseBackFragment {
     }
 
     private void update(final View view, final TextView textView, final TextView textView2, final LocalDbVersion localDbVersion, final boolean z) {
-        addDisposable(RxView.clicks(view).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.DataUpdateFragment.5
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                ResUpdateUtils.download(DataUpdateFragment.this.getContext(), localDbVersion, new ResUpdateUtils.DataBaseUpdateListener() { // from class: com.kkkcut.e20j.ui.fragment.DataUpdateFragment.5.1
-                    private ProgressDialog progressDialog;
+        addDisposable((Disposable) RxView.clicks(view).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
+            ResUpdateUtils.download(DataUpdateFragment.this.getContext(), localDbVersion, new ResUpdateUtils.DataBaseUpdateListener() { // from class: com.kkkcut.e20j.ui.fragment.DataUpdateFragment.5.1
+                private ProgressDialog progressDialog;
 
-                    @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
-                    public void start() {
-                        this.progressDialog = DataUpdateFragment.this.getProgressDialog(localDbVersion);
-                    }
+                @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
+                public void start() {
+                    this.progressDialog = DataUpdateFragment.this.getProgressDialog(localDbVersion);
+                }
 
-                    @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
-                    public void progress(int i) {
-                        this.progressDialog.setProgress(i);
-                    }
+                @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
+                public void progress(int i) {
+                    this.progressDialog.setProgress(i);
+                }
 
-                    @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
-                    public void finish() {
-                        view.setVisibility(8);
-                        this.progressDialog.dismiss();
-                        textView.setTextColor(ThemeUtils.getColor(DataUpdateFragment.this.getContext(), R.attr.textColor_ffffff_333333));
-                        textView.setText(localDbVersion.getSvResVer());
-                        textView2.setTextColor(ThemeUtils.getColor(DataUpdateFragment.this.getContext(), R.attr.textColor_ffffff_333333));
-                        ToastUtil.showToast(R.string.update_finish);
-                    }
+                @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
+                public void finish() {
+                    view.setVisibility(8);
+                    this.progressDialog.dismiss();
+                    textView.setTextColor(ThemeUtils.getColor(DataUpdateFragment.this.getContext(), R.attr.textColor_ffffff_333333));
+                    textView.setText(localDbVersion.getSvResVer());
+                    textView2.setTextColor(ThemeUtils.getColor(DataUpdateFragment.this.getContext(), R.attr.textColor_ffffff_333333));
+                    ToastUtil.showToast(R.string.update_finish);
+                }
 
-                    @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
-                    public void error(Throwable th) {
-                        this.progressDialog.dismiss();
-                        ToastUtil.showToast(th.getMessage());
-                    }
-                }, z);
-            }
+                @Override // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
+                public void error(Throwable th) {
+                    this.progressDialog.dismiss();
+                    ToastUtil.showToast(th.getMessage());
+                }
+            }, z);
+
         }));
     }
 

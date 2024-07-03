@@ -1,5 +1,6 @@
 package com.kkkcut.e20j.ui.fragment.setting;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,12 +23,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
+
 import com.kkkcut.e20j.DbBean.userDB.CollectionDataDao;
 import com.kkkcut.e20j.DbBean.userDB.CustomKeyDao;
 import com.kkkcut.e20j.DbBean.userDB.CutHistoryDataDao;
@@ -45,17 +42,16 @@ import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.ui.fragment.setting.ExcelToSQLite;
-import com.kkkcut.e20j.ui.fragment.setting.SQLiteToExcel;
+import com.cutting.machine.Command;
+import com.cutting.machine.CoreConstant;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.Command;
-import com.liying.core.CoreConstant;
-import com.liying.core.CuttingMachine;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -66,6 +62,8 @@ import java.util.concurrent.TimeUnit;
 
 import me.jahnen.libaums.core.UsbMassStorageDevice;
 import me.jahnen.libaums.core.fs.UsbFile;
+import me.jahnen.libaums.core.fs.UsbFileInputStream;
+import me.jahnen.libaums.core.fs.UsbFileOutputStream;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -84,59 +82,41 @@ public class OtherSettingFragment extends BaseBackFragment {
     public static final String TAG = "OtherSettingFragment";
     private int actionType;
 
-    @BindView(R.id.bt_continue_move)
     Button btContinueMove;
 
-    @BindView(R.id.bt_dispaley_setting)
     TextView btDispaleySetting;
 
-    @BindView(R.id.bt_ok)
     Button btOk;
 
-    @BindView(R.id.ll_move_order)
     LinearLayout btStartMove;
 
-    @BindView(R.id.cb_bar_code)
     CheckBox cbBarCode;
 
-    @BindView(R.id.cb_chinese_car)
     CheckBox cbChineseCar;
 
-    @BindView(R.id.cb_decoder_position_detect)
     CheckBox cbDecoderPositionDetect;
 
-    @BindView(R.id.cb_safety_door)
     CheckBox cbSafetyDoor;
 
-    @BindView(R.id.et_move_time)
     EditText etMoveTime;
 
-    @BindView(R.id.et_ratio)
     EditText etRatio;
 
-    @BindView(R.id.et_x)
     EditText etX;
 
-    @BindView(R.id.et_y)
     EditText etY;
 
-    @BindView(R.id.et_z)
     EditText etZ;
     private boolean hasMove;
 
-    @BindView(R.id.ll_database_export)
     LinearLayout llDatabaseExport;
 
-    @BindView(R.id.ll_move)
     LinearLayout llMove;
 
-    @BindView(R.id.ll_ratio_setup)
     LinearLayout llRatioSetup;
 
-    @BindView(R.id.rb_150)
     RadioButton rb150;
 
-    @BindView(R.id.rb_inch)
     RadioButton rbInch;
     String tableNameStr;
     private UsbMassStorageDevice usbMassStorageDevice;
@@ -163,7 +143,7 @@ public class OtherSettingFragment extends BaseBackFragment {
                 if (OtherSettingFragment.this.usbMassStorageDevice == null || OtherSettingFragment.this.usbMassStorageDevice.getPartitions() == null || OtherSettingFragment.this.usbMassStorageDevice.getPartitions().get(0) == null || OtherSettingFragment.this.usbMassStorageDevice.getPartitions().get(0).getFileSystem() == null) {
                     ToastUtil.showToast("Does not support this USB flash drive");
                 }
-                FileSystem fileSystem = OtherSettingFragment.this.usbMassStorageDevice.getPartitions().get(0).getFileSystem();
+                FileSystem fileSystem = (FileSystem) OtherSettingFragment.this.usbMassStorageDevice.getPartitions().get(0).getFileSystem();
                 try {
                     if (OtherSettingFragment.this.actionType == 1) {
                         OtherSettingFragment.this.export2usb(fileSystem);
@@ -263,7 +243,6 @@ public class OtherSettingFragment extends BaseBackFragment {
         }
     }
 
-    @OnCheckedChanged({R.id.cb_safety_door, R.id.cb_chinese_car, R.id.cb_move, R.id.rb_150, R.id.rb_200, R.id.cb_decoder_position_detect, R.id.cb_bar_code, R.id.rb_mm, R.id.rb_inch})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.cb_bar_code /* 2131362000 */:
@@ -321,7 +300,7 @@ public class OtherSettingFragment extends BaseBackFragment {
     }
 
     @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
         int eventCode = eventCenter.getEventCode();
         if (eventCode != 32) {
             if (eventCode != 33) {
@@ -333,7 +312,7 @@ public class OtherSettingFragment extends BaseBackFragment {
             showErrorDialog(getContext(), (ErrorBean) eventCenter.getData());
             return;
         }
-        if (((OperateType) eventCenter.getData()) == OperateType.MOVE_XYZ) {
+        if ((eventCenter.getData()) == OperateType.MOVE_XYZ) {
             if (this.hasMove) {
                 this.hasMove = false;
                 OperationManager.getInstance().sendOrder(Command.DecoderOperation(1, 0, 1, 1, 1, ""), OperateType.MOVE_XYZ);
@@ -382,7 +361,6 @@ public class OtherSettingFragment extends BaseBackFragment {
         editDialog.show();
     }
 
-    @OnClick({R.id.bt_start_move, R.id.tv_upload_log, R.id.tv_reset, R.id.bt_continue_move, R.id.bt_import, R.id.bt_export, R.id.bt_dispaley_setting, R.id.bt_conductivity_test, R.id.bt_ok})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_conductivity_test /* 2131361916 */:
@@ -517,14 +495,14 @@ public class OtherSettingFragment extends BaseBackFragment {
             return;
         }
         builder.addFormDataPart("flie", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
-        HashMap hashMap = new HashMap();
+        var hashMap = new HashMap<String, String>();
         String string = SPUtils.getString("series");
         if (TextUtils.isEmpty(string)) {
             ToastUtil.showToast(R.string.serial_not_empty);
             return;
         }
         hashMap.put("LotSN", string);
-        for (String str : hashMap.keySet()) {
+        for (var str : hashMap.keySet()) {
             builder.addFormDataPart(str, (String) hashMap.get(str));
         }
         showLoadingDialog(getString(R.string.waitting));
@@ -579,7 +557,7 @@ public class OtherSettingFragment extends BaseBackFragment {
                     ToastUtil.showToast("Does not support this USB flash drive");
                     return;
                 }
-                FileSystem fileSystem = usbMassStorageDevice.getPartitions().get(0).getFileSystem();
+                FileSystem fileSystem = (FileSystem) usbMassStorageDevice.getPartitions().get(0).getFileSystem();
                 if (i == 1) {
                     export2usb(fileSystem);
                     return;
@@ -646,7 +624,7 @@ public class OtherSettingFragment extends BaseBackFragment {
         }
         String str = "/data/data/" + MyApplication.getInstance().getPackageName() + "/databases/userData.db";
         String path = Environment.getExternalStorageDirectory().getPath();
-        final UsbFile rootDirectory = fileSystem.getRootDirectory();
+        final UsbFile rootDirectory = (UsbFile)fileSystem.getRootDirectories().iterator().next();
         new SQLiteToExcel.Builder(getContext()).setDataBase(str).setTables(this.tableNameStr.split(",")).setOutputFileName("userDb.xls").setOutputPath(path).start(new SQLiteToExcel.ExportListener() { // from class: com.kkkcut.e20j.ui.fragment.setting.OtherSettingFragment.8
             @Override // com.kkkcut.e20j.ui.fragment.setting.SQLiteToExcel.ExportListener
             public void onStart() {
@@ -770,7 +748,6 @@ public class OtherSettingFragment extends BaseBackFragment {
         getContext().unregisterReceiver(this.usbReceiver);
     }
 
-    @OnLongClick({R.id.view_hide})
     public boolean onLongClick() {
         showEditDialog();
         return true;

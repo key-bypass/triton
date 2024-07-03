@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
+
 import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.List;
 

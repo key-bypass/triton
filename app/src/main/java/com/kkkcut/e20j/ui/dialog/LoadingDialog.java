@@ -8,17 +8,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.tool.StringUtil;
+import com.cutting.machine.Command;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.communication.OperationManager;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.Command;
-import com.liying.core.OperateType;
-import com.liying.core.communication.OperationManager;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class LoadingDialog extends Dialog implements View.OnClickListener {

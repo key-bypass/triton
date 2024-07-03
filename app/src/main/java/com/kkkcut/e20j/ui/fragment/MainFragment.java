@@ -11,12 +11,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.Constant;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.SpKeys;
@@ -37,7 +38,6 @@ import com.kkkcut.e20j.net.Apis;
 import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
 import com.kkkcut.e20j.ui.activity.RegisterActivity;
-import com.kkkcut.e20j.ui.fragment.SearchFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.KeyBlankCutTypeSelectFragment;
 import com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment;
 import com.kkkcut.e20j.ui.fragment.duplicatekey.DuplicateKeyNewFragment;
@@ -52,80 +52,62 @@ import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.DesUtil;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
 import com.kkkcut.e20j.utils.lan.LocalManageUtil;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /* loaded from: classes.dex */
 public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
     private static final int REGISTER = 1;
     public static final String TAG = "MainFragment";
 
-    @BindView(R.id.about_us)
     TextView aboutUs;
     private String companyStr;
     Configuration configuration1;
 
-    @BindView(R.id.view_devide_language)
     View devideLanguage;
 
-    @BindView(R.id.drawerlayout)
     DrawerLayout drawerLayout;
 
-    @BindView(R.id.fl_adv_search)
     FrameLayout flAdvSearch;
 
-    @BindView(R.id.help_center)
     TextView helpCenter;
 
-    @BindView(R.id.language_choice)
     TextView languageChoice;
     private String languageStr;
 
-    @BindView(R.id.ll_bar_code)
     LinearLayout llBarCode;
     private String machineName;
 
-    @BindView(R.id.rv_carkay)
     RecyclerView rvCarkay;
 
-    @BindView(R.id.rv_extra_funtion)
     RecyclerView rvExtraFuntion;
 
-    @BindView(R.id.rv_housekey)
     RecyclerView rvHousekey;
 
-    @BindView(R.id.setting)
     TextView setting;
 
-    @BindView(R.id.tv_db_version)
     TextView tvDbVersion;
 
-    @BindView(R.id.tv_search)
     TextView tvSearch;
 
-    @BindView(R.id.tv_series)
     TextView tvSeries;
 
-    @BindView(R.id.tv_soft_version)
     TextView tvSoftVersion;
 
-    @BindView(R.id.tv_title_carkey)
     TextView tvTitleCarkey;
 
-    @BindView(R.id.tv_title_house_key)
     TextView tvTitleHousekey;
 
-    @BindView(R.id.version_update)
     TextView versionUpdate;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -158,10 +140,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
     }
 
     private void checkConfigUpdate() {
-        addDisposable(Observable.fromCallable(new Callable<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.2
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // java.util.concurrent.Callable
-            public Boolean call() throws Exception {
+        addDisposable((Disposable) Observable.fromCallable(() -> {
                 if (AppUtil.isApkInDebug(MainFragment.this.getContext()) || !NetUtil.isNetworkConnected(MainFragment.this.getContext())) {
                     return false;
                 }
@@ -170,7 +149,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
                     return true;
                 }
                 return Boolean.valueOf(AssetVersionUtil.getAssetsDbVersion(MainFragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA) > SPUtils.getInt(SpKeys.CONFIG_UPDATE, 0));
-            }
+
         }).subscribeOn(Schedulers.io()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.1
             @Override // io.reactivex.functions.Consumer
             public void accept(Boolean bool) throws Exception {
@@ -203,7 +182,6 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         }
     }
 
-    @OnClick({R.id.fl_search, R.id.fl_adv_search, R.id.version_update, R.id.data_update, R.id.language_choice, R.id.about_us, R.id.setting, R.id.help_center, R.id.ll_bar_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.about_us /* 2131361812 */:
@@ -381,33 +359,23 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
 
     /* JADX INFO: Access modifiers changed from: private */
     public void checkResUpdate(final Context context, String str) {
-        addDisposable(ResUpdateUtils.checkResUpdate(getContext(), str, new Consumer<ResUpdateUtils.UpdateBean>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(ResUpdateUtils.UpdateBean updateBean) throws Exception {
-                if (updateBean.isUpdate()) {
-                    new AlertDialog.Builder(context).setIcon(R.drawable.upgrade).setTitle(R.string.ResUpdate).setMessage(updateBean.getUpdateLog()).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.4.1
-                        @Override // android.content.DialogInterface.OnClickListener
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            MainFragment.this.goDataUpgradeFragment();
-                        }
-                    }).setNegativeButton(R.string.cancel, (DialogInterface.OnClickListener) null).show();
-                }
+        addDisposable(ResUpdateUtils.checkResUpdate(getContext(), str,  updateBean -> {
+            if (updateBean.isUpdate()) {
+                new AlertDialog.Builder(context).setIcon(R.drawable.upgrade).setTitle(R.string.ResUpdate).setMessage(updateBean.getUpdateLog()).setCancelable(false).setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                        MainFragment.this.goDataUpgradeFragment();
+
+                }).setNegativeButton(R.string.cancel, null).show();
             }
-        }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.5
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Throwable th) throws Exception {
-                ToastUtil.showToast(th.getMessage());
-            }
-        }));
+        }, th -> ToastUtil.showToast(th.getMessage())));
     }
 
     /* JADX INFO: Access modifiers changed from: private */
     /* renamed from: readConfigurationFromLocal, reason: merged with bridge method [inline-methods] */
     public Configuration m41xc6c90224() {
         if (AppUtil.isApkInDebug(getContext())) {
-            return (Configuration) GsonHelper.fromJson(readConfigurationFromAssets(), Configuration.class);
+            return GsonHelper.fromJson(readConfigurationFromAssets(), Configuration.class);
         }
-        return (Configuration) GsonHelper.fromJson(FileUtil.readIoToString(Constant.CONFIG_PATH), Configuration.class);
+        return GsonHelper.fromJson(FileUtil.readIoToString(Constant.CONFIG_PATH), Configuration.class);
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -417,42 +385,25 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         if (TextUtils.isEmpty(string)) {
             goRegister();
         } else {
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getConfig(TUitls.getconfig(string)).subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread()).doOnNext(new Consumer<Configuration>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.8
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Configuration configuration) throws Exception {
-                    FileUtil.readIoStringToFile(GsonHelper.toJsonString(configuration), Constant.CONFIG_PATH);
-                    MainFragment.this.initDb();
-                    SPUtils.put(SpKeys.CONFIG_UPDATE, AssetVersionUtil.getAssetsDbVersion(MainFragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA));
-                }
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Configuration>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.6
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Configuration configuration) throws Exception {
-                    ToastUtil.showToast(R.string.update_finish);
-                    MainFragment.this.m42xce2e3743(configuration);
-                }
-            }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.7
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Throwable th) throws Exception {
-                    MainFragment.this.getConfiguration();
-                }
-            }));
+            addDisposable(RetrofitManager.getInstance().createApi(Apis.class).getConfig(TUitls.getconfig(string)).subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread()).doOnNext(configuration -> {
+                FileUtil.readIoStringToFile(GsonHelper.toJsonString(configuration), Constant.CONFIG_PATH);
+                MainFragment.this.initDb();
+                SPUtils.put(SpKeys.CONFIG_UPDATE, AssetVersionUtil.getAssetsDbVersion(MainFragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA));
+            }).observeOn(AndroidSchedulers.mainThread()).subscribe( configuration -> {
+                ToastUtil.showToast(R.string.update_finish);
+                MainFragment.this.m42xce2e3743(configuration);
+            }, th -> MainFragment.this.getConfiguration()));
         }
     }
 
     private void goRegister() {
-        addDisposable(Observable.create(new ObservableOnSubscribe<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.10
-            @Override // io.reactivex.ObservableOnSubscribe
-            public void subscribe(ObservableEmitter<Boolean> observableEmitter) throws Exception {
-                do {
-                } while (!MyApplication.getInstance().isSerialInit());
-                observableEmitter.onNext(true);
-                observableEmitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.9
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Boolean bool) throws Exception {
-                MainFragment.this.startActivityForResult(new Intent(MainFragment.this.getContext(), (Class<?>) RegisterActivity.class), 1);
-            }
+        addDisposable(Observable.create( observableEmitter -> {
+            do {
+            } while (!MyApplication.getInstance().isSerialInit());
+            observableEmitter.onNext(true);
+            observableEmitter.onComplete();
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe( bool -> {
+            MainFragment.this.startActivityForResult(new Intent(MainFragment.this.getContext(), RegisterActivity.class), 1);
         }));
     }
 
@@ -584,9 +535,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
             }
         }
         if (eventCode == 37) {
-            addDisposable(Observable.create(new ObservableOnSubscribe<String>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.13
-                @Override // io.reactivex.ObservableOnSubscribe
-                public void subscribe(ObservableEmitter<String> observableEmitter) throws Exception {
+            addDisposable(Observable.create( observableEmitter -> {
                     while (true) {
                         String string = SPUtils.getString(SpKeys.MACHINE_ID);
                         if (!TextUtils.isEmpty(string)) {
@@ -596,18 +545,16 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
                         }
                         Thread.sleep(500L);
                     }
-                }
-            }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.12
-                @Override // io.reactivex.functions.Consumer
-                public void accept(String str) throws Exception {
+
+            }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe( str ->{
                     MainFragment mainFragment = MainFragment.this;
-                    mainFragment.checkResUpdate(mainFragment.getContext(), str);
-                }
+                    mainFragment.checkResUpdate(mainFragment.getContext(), (String) str);
+
             }));
             return;
         }
         if (eventCode == 40) {
-            startActivityForResult(new Intent(getContext(), (Class<?>) RegisterActivity.class), 1);
+            startActivityForResult(new Intent(getContext(), RegisterActivity.class), 1);
             return;
         }
         if (eventCode == 54) {

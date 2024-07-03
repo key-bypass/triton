@@ -8,7 +8,6 @@ import com.kkkcut.e20j.MyApplication
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
 import com.kkkcut.e20j.bean.gsonBean.Configuration.CenterLayoutBean.KeytypeBean
 import com.kkkcut.e20j.us.R
-import org.w3c.dom.Text
 
 /* loaded from: classes.dex */
 class HomeCenterRvAdapter(list: List<KeytypeBean>) :

@@ -4,46 +4,35 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import butterknife.BindView;
-import butterknife.OnClick;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
 
 /* loaded from: classes.dex */
 public class KeyTypeSelectFragment extends BaseBackFragment {
     private static final String CUSTOMKEY = "CUSTOMKEY";
     private CustomKey customKey;
 
-    @BindView(R.id.rb_dimple_key)
     RadioButton rbDimpleKey;
 
-    @BindView(R.id.rb_double_inside_key)
     RadioButton rbDoubleInsideKey;
 
-    @BindView(R.id.rb_double_key)
     RadioButton rbDoubleKey;
 
-    @BindView(R.id.rb_double_outside_key)
     RadioButton rbDoubleOutsideKey;
 
-    @BindView(R.id.rb_inside_key)
     RadioButton rbSingleInsideKey;
 
-    @BindView(R.id.rb_single_key)
     RadioButton rbSingleKey;
 
-    @BindView(R.id.rb_single_outside_key)
     RadioButton rbSingleOutsideKey;
 
-    @BindView(R.id.rb_tubular_key)
     RadioButton rbTubularKey;
 
-    @BindView(R.id.rg1)
     RadioGroup rg1;
 
-    @BindView(R.id.rg2)
     RadioGroup rg2;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -177,7 +166,6 @@ public class KeyTypeSelectFragment extends BaseBackFragment {
         return getString(R.string.select_key_type);
     }
 
-    @OnClick({R.id.bt_last, R.id.bt_next})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_last) {

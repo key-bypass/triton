@@ -2,8 +2,6 @@ package com.kkkcut.e20j.ui.fragment;
 
 import android.os.Handler;
 import android.widget.ImageView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.base.BaseFFragment;
 import com.kkkcut.e20j.presenter.SplashPresenter;
 import com.kkkcut.e20j.us.R;
@@ -13,7 +11,6 @@ import me.yokeyword.fragmentation.ISupportFragment;
 /* loaded from: classes.dex */
 public class SplashFragment extends BaseFFragment implements SplashView {
 
-    @BindView(R.id.iv_splash)
     ImageView ivSplash;
     private SplashPresenter splashPresenter;
 
@@ -22,7 +19,6 @@ public class SplashFragment extends BaseFFragment implements SplashView {
         return R.layout.activity_lanuch;
     }
 
-    @OnClick({R.id.iv_splash})
     public void onViewClicked() {
     }
 

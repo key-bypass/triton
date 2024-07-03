@@ -3,22 +3,19 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
+import com.cutting.machine.clamp.ClampF;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.clamp.ClampF;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutDrillingFragment extends BaseBlankCutParamSetFragment {
     private int diameter;
     private int distance;
 
-    @BindView(R.id.et_diameter)
     EditText etDiameter;
 
-    @BindView(R.id.et_distance)
     EditText etDistance;
 
     @Override // com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment

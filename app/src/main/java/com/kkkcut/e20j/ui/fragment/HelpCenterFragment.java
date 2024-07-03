@@ -5,15 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
+
+import spa.lyh.cn.lib_largeimageview.LargeImageView;
 
 /* loaded from: classes.dex */
 public class HelpCenterFragment extends BaseBackFragment {
     private int lastIndex;
 
-    @BindView(R.id.viewpager)
     ViewPager vp;
     private int[] pics_en = {R.drawable.help1_en, R.drawable.help2_en};
     private int[] pics_ch = {R.drawable.help1_ch, R.drawable.help2_ch};

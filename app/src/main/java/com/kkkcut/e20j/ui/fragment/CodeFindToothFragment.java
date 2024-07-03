@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.BittingCode;
 import com.kkkcut.e20j.adapter.CodeFindToothAdapter;
@@ -25,14 +23,17 @@ import com.kkkcut.e20j.dao.ToothCodeDaoManager;
 import com.kkkcut.e20j.net.Apis;
 import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.GetUUID;
-import io.reactivex.Observable;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -45,20 +46,16 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
     public static final String SERIES = "series";
     private CodeFindToothAdapter adapter;
 
-    @BindView(R.id.bt_search_online)
     Button btSearchOnline;
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.rv_tooth_list)
     RecyclerView rvToothList;
     private ToothCodeDaoManager toothCodeDaoManager;
 
-    @BindView(R.id.tv_series)
     TextView tvSeries;
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_code_find_tooth;
     }
@@ -73,7 +70,7 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
         return codeFindToothFragment;
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected void initViewsAndEvents() {
         String string = getArguments().getString("series");
         if (!TextUtils.isEmpty(string)) {
@@ -81,7 +78,7 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
         }
         this.toothCodeDaoManager = new ToothCodeDaoManager(getArguments().getInt("keyID"));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         this.rvToothList.setLayoutManager(linearLayoutManager);
         CodeFindToothAdapter codeFindToothAdapter = new CodeFindToothAdapter();
         this.adapter = codeFindToothAdapter;
@@ -115,7 +112,6 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
         }));
     }
 
-    @OnClick({R.id.bt_search_offline, R.id.bt_search_online})
     public void onViewClicked(View view) {
         String trim = this.etSearch.getText().toString().trim();
         if (TextUtils.isEmpty(trim)) {
@@ -151,9 +147,7 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
         if (TextUtils.isEmpty(str2)) {
             str2 = "0";
         }
-        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getToothByCode(TUitls.codeFindToothParam(str, getArguments().getInt("keyID"), GetUUID.getUUID(), SPUtils.getString("series"), str2)).map(new Function<CodeFindToothRes, List<BittingCode>>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.7
-            @Override // io.reactivex.functions.Function
-            public List<BittingCode> apply(CodeFindToothRes codeFindToothRes) throws Exception {
+        addDisposable(RetrofitManager.getInstance().createApi(Apis.class).getToothByCode(TUitls.codeFindToothParam(str, getArguments().getInt("keyID"), GetUUID.getUUID(), SPUtils.getString("series"), str2)).map( codeFindToothRes -> {
                 if (TextUtils.equals(codeFindToothRes.getCode(), "0")) {
                     ArrayList arrayList = new ArrayList();
                     List<CodeFindToothRes.DataBean> data = codeFindToothRes.getData();
@@ -169,26 +163,17 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
                     throw new Exception(CodeFindToothFragment.this.getString(R.string.no_data_was_found));
                 }
                 throw new Exception(codeFindToothRes.getMsg());
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doFinally(new Action() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.6
-            @Override // io.reactivex.functions.Action
-            public void run() throws Exception {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doFinally(() -> {
                 CodeFindToothFragment.this.dismissLoadingDialog();
-            }
-        }).subscribe(new Consumer<List<BittingCode>>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<BittingCode> list) throws Exception {
+
+        }).subscribe(list -> {
                 if (list.size() == 0) {
                     ToastUtil.showToast(R.string.no_data_was_found);
                 }
                 CodeFindToothFragment.this.adapter.setNewData(list);
-            }
-        }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.5
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Throwable th) throws Exception {
-                ToastUtil.showToast(th.getMessage());
-            }
-        }));
+
+        }, th -> ToastUtil.showToast(th.getMessage())));
     }
 
     @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
@@ -212,7 +197,7 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
         onBack();
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
     public String setTitleStr() {
         return getString(R.string.code);
     }

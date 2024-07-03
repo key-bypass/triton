@@ -5,9 +5,11 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.Buffer;
@@ -19,12 +21,6 @@ final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
     private static final Charset UTF_8 = Charset.forName("UTF-8");
     private final TypeAdapter<T> adapter;
     private final Gson gson;
-
-    /* JADX WARN: Multi-variable type inference failed */
-    @Override // retrofit2.Converter
-    public /* bridge */ /* synthetic */ RequestBody convert(Object obj) throws IOException {
-        return convert((GsonRequestBodyConverter<T>) obj);
-    }
 
     /* JADX INFO: Access modifiers changed from: package-private */
     public GsonRequestBodyConverter(Gson gson, TypeAdapter<T> typeAdapter) {

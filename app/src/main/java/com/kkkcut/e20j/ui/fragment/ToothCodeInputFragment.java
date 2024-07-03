@@ -9,12 +9,12 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cutting.machine.bean.KeyInfo;
 import com.kkkcut.e20j.adapter.ToothKeyboardRvAdapter;
 import com.kkkcut.e20j.androidquick.tool.FileUtil;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
@@ -33,34 +33,29 @@ import com.kkkcut.e20j.customView.drawKeyImg.SingleKey;
 import com.kkkcut.e20j.customView.drawKeyImg.SingleOutGrooveKey;
 import com.kkkcut.e20j.customView.drawKeyImg.TubularKey;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.bean.KeyInfo;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
 public class ToothCodeInputFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
 
-    @BindView(R.id.bt_ignition_door)
     Button btIgnitionDoor;
 
-    @BindView(R.id.bt_rounding)
     Button btRounding;
 
-    @BindView(R.id.switch_decimal)
     Switch cbDecimal;
     private boolean doorIgnition;
     private boolean doorToIgnition;
 
-    @BindView(R.id.fl_key)
     FrameLayout flKey;
     Key key = null;
     private KeyInfo keyinfo;
 
-    @BindView(R.id.ll_input_rule)
     LinearLayout llInputRule;
 
-    @BindView(R.id.rv_keyboard)
     RecyclerView rvKeyboard;
     private ToothKeyboardRvAdapter toothKeyboardRvAdapter;
 
@@ -192,7 +187,6 @@ public class ToothCodeInputFragment extends BaseBackFragment implements BaseQuic
         return arrayList;
     }
 
-    @OnClick({R.id.iv_left, R.id.iv_right, R.id.iv_down, R.id.iv_up, R.id.ll_confirm, R.id.bt_cancle, R.id.bt_rounding, R.id.bt_input_rule, R.id.bt_ignition_door})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_cancle /* 2131361909 */:
@@ -275,7 +269,6 @@ public class ToothCodeInputFragment extends BaseBackFragment implements BaseQuic
         return getString(R.string.input);
     }
 
-    @OnCheckedChanged({R.id.switch_decimal, R.id.cb_invert})
     public void onCheckedChange(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         if (id == R.id.cb_invert) {
@@ -297,7 +290,7 @@ public class ToothCodeInputFragment extends BaseBackFragment implements BaseQuic
     }
 
     @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
         if (eventCenter.getEventCode() == 15) {
             this.key.setToothCodeAndInvalidate((String) eventCenter.getData());
         } else if (eventCenter.getEventCode() == 22) {

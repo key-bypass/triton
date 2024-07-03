@@ -1,15 +1,16 @@
 package com.kkkcut.e20j.ui.fragment.engraving;
 
+import static io.reactivex.rxjava3.schedulers.Schedulers.io;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.userDB.KeyMarkingTemplate;
 import com.kkkcut.e20j.adapter.KeyMarkingTemplateAdapter;
@@ -17,27 +18,26 @@ import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 /* loaded from: classes.dex */
 public class TemplateSelectFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
-    @BindView(R.id.bt_delete_all)
     Button btDeleteAll;
 
-    @BindView(R.id.et_search)
     EditText etSearch;
-    private KeyMarkingTemplateAdapter keyMarkingTemplateAdapter;
 
-    @BindView(R.id.rv_template_list)
     RecyclerView rvTemplateList;
+
+    KeyMarkingTemplateAdapter keyMarkingTemplateAdapter;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected int getContentViewLayoutID() {
@@ -61,9 +61,9 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(1);
         this.rvTemplateList.setLayoutManager(linearLayoutManager);
-        KeyMarkingTemplateAdapter keyMarkingTemplateAdapter = new KeyMarkingTemplateAdapter();
-        this.keyMarkingTemplateAdapter = keyMarkingTemplateAdapter;
-        keyMarkingTemplateAdapter.setOnItemChildClickListener(this);
+
+        this.keyMarkingTemplateAdapter = new KeyMarkingTemplateAdapter();
+        this.keyMarkingTemplateAdapter.setOnItemChildClickListener(this);
         this.keyMarkingTemplateAdapter.setOnItemClickListener(this);
         this.rvTemplateList.setAdapter(this.keyMarkingTemplateAdapter);
         getTemplates();
@@ -75,7 +75,7 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
             public List<KeyMarkingTemplate> call() throws Exception {
                 return UserDataDaoManager.getInstance(TemplateSelectFragment.this.getContext()).getKeyMarkingTemplates();
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<KeyMarkingTemplate>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.TemplateSelectFragment.1
+        }).subscribeOn(io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<KeyMarkingTemplate>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.TemplateSelectFragment.1
             @Override // io.reactivex.functions.Consumer
             public void accept(List<KeyMarkingTemplate> list) throws Exception {
                 TemplateSelectFragment.this.keyMarkingTemplateAdapter.setNewData(list);
@@ -87,7 +87,6 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
         }));
     }
 
-    @OnClick({R.id.bt_delete_all})
     public void onViewClicked() {
         RemindDialog remindDialog = new RemindDialog(getContext());
         remindDialog.setRemindMsg(getString(R.string.delete_all_recordes));
@@ -103,21 +102,14 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
         remindDialog.show();
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
-    public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        UserDataDaoManager.getInstance(getContext()).deleteSingleTemplate((KeyMarkingTemplate) baseQuickAdapter.getData().get(i));
-        baseQuickAdapter.remove(i);
-    }
-
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(final Editable editable) {
         Disposable subscribe = Observable.fromCallable(new Callable<List<KeyMarkingTemplate>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.TemplateSelectFragment.6
             @Override // java.util.concurrent.Callable
             public List<KeyMarkingTemplate> call() throws Exception {
                 return UserDataDaoManager.getInstance(TemplateSelectFragment.this.getContext()).fuzzyQueryTemplates(editable.toString());
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<KeyMarkingTemplate>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.TemplateSelectFragment.5
+        }).subscribeOn(io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<KeyMarkingTemplate>>() { // from class: com.kkkcut.e20j.ui.fragment.engraving.TemplateSelectFragment.5
             @Override // io.reactivex.functions.Consumer
             public void accept(List<KeyMarkingTemplate> list) throws Exception {
                 TemplateSelectFragment.this.keyMarkingTemplateAdapter.setNewData(list);
@@ -127,10 +119,10 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
         addDisposable(subscribe);
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("template", (KeyMarkingTemplate) baseQuickAdapter.getData().get(i));
+        bundle.putSerializable("template", (KeyMarkingTemplate) adapter.getData().get(position));
         setFragmentResult(0, bundle);
         onBack();
     }

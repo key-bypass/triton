@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.KeyResource;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
@@ -21,71 +20,52 @@ import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.kkkcut.e20j.utils.UnitUtils;
-import com.liying.core.MachineInfo;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.error.ErrorCode;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.error.ErrorCode;
 import java.util.HashMap;
 
 /* loaded from: classes.dex */
 public class KeyInfoFragment extends BaseBackFragment {
     public static final String KEY_INFO = "keyinfo";
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
 
-    @BindView(R.id.iv_play_video)
     ImageView ivPlayVideo;
 
-    @BindView(R.id.iv_qrcode)
     ImageView ivQrcode;
 
-    @BindView(R.id.iv_real_key)
     ImageView ivRealKey;
     private KeyResource keyResource;
 
-    @BindView(R.id.ll_depth)
     LinearLayout llDepth;
 
-    @BindView(R.id.ll_index)
     LinearLayout llIndex;
 
-    @BindView(R.id.ll_key_blanks)
     LinearLayout llKeyBlanks;
 
-    @BindView(R.id.ll_space)
     LinearLayout llSpace;
 
-    @BindView(R.id.tv_align)
     TextView tvAlign;
 
-    @BindView(R.id.tv_detail)
     TextView tvDetail;
 
-    @BindView(R.id.tv_key_numbering)
     TextView tvKeyNumbering;
 
-    @BindView(R.id.tv_key_series)
     TextView tvKeySeries;
 
-    @BindView(R.id.tv_key_thickness)
     TextView tvKeyThickness;
 
-    @BindView(R.id.tv_key_width)
     TextView tvKeyWidth;
 
-    @BindView(R.id.tv_qrcode)
     TextView tvQrcode;
 
-    @BindView(R.id.tv_title_depth)
     TextView tvTitleDepth;
 
-    @BindView(R.id.tv_title_space)
     TextView tvTitleSpace;
 
-    @BindView(R.id.tv_title_thickness)
     TextView tvTitleThickness;
 
-    @BindView(R.id.webview_description)
     WebView webviewDescription;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -146,9 +126,9 @@ public class KeyInfoFragment extends BaseBackFragment {
             if (keyResource != null && ((keyResource.getFK_LanguageID() == 2 && MachineInfo.isChineseMachine()) || (this.keyResource.getFK_LanguageID() == 1 && !MachineInfo.isChineseMachine()))) {
                 String videoPath = this.keyResource.getVideoPath();
                 if (!TextUtils.isEmpty(videoPath)) {
-                    this.ivPlayVideo.setVisibility(0);
-                    this.tvQrcode.setVisibility(0);
-                    this.ivQrcode.setVisibility(0);
+                    this.ivPlayVideo.setVisibility(View.VISIBLE);
+                    this.tvQrcode.setVisibility(View.VISIBLE);
+                    this.ivQrcode.setVisibility(View.VISIBLE);
                     this.ivQrcode.setImageBitmap(CodeUtils.createImage(videoPath, ErrorCode.keyDecodeFailed, ErrorCode.keyDecodeFailed, null));
                 }
                 String explainHtml = this.keyResource.getExplainHtml();
@@ -290,7 +270,6 @@ public class KeyInfoFragment extends BaseBackFragment {
         return (KeyInfo) getArguments().getParcelable(KEY_INFO);
     }
 
-    @OnClick({R.id.iv_play_video})
     public void onViewClicked() {
         KeyResource keyResource = this.keyResource;
         if (keyResource != null) {

@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.Manufacturer;
 import com.kkkcut.e20j.DbBean.Model;
@@ -15,26 +16,24 @@ import com.kkkcut.e20j.base.BaseFragment;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /* loaded from: classes.dex */
 public class KeySelectFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener {
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.indexBar)
     IndexBar indexBar;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
 
-    @BindView(R.id.tvSideBarHint)
     TextView tvSideBarHint;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -53,7 +52,7 @@ public class KeySelectFragment extends BaseFragment implements BaseQuickAdapter.
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected void initViewsAndEvents() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         this.rvCategoryList.setLayoutManager(linearLayoutManager);
         getManufacturers();
     }
@@ -63,19 +62,11 @@ public class KeySelectFragment extends BaseFragment implements BaseQuickAdapter.
     }
 
     private void getModels(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.KeySelectFragment$$ExternalSyntheticLambda3
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List models;
                 models = KeyInfoDaoManager.getInstance().getModels(i);
                 return models;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.KeySelectFragment$$ExternalSyntheticLambda1
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
-                KeySelectFragment.this.m58xac7dfe5((List) obj);
-            }
-        }));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> KeySelectFragment.this.m58xac7dfe5(obj)));
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
@@ -87,18 +78,14 @@ public class KeySelectFragment extends BaseFragment implements BaseQuickAdapter.
     }
 
     private void getModelYears(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.KeySelectFragment$$ExternalSyntheticLambda2
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List modelYears;
                 modelYears = KeyInfoDaoManager.getInstance().getModelYears(i);
                 return modelYears;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.KeySelectFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
-                KeySelectFragment.this.m57xd564af6a((List) obj);
-            }
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
+                KeySelectFragment.this.m57xd564af6a(obj);
+
         }));
     }
 

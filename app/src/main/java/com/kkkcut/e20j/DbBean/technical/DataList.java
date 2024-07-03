@@ -1,6 +1,10 @@
 package com.kkkcut.e20j.DbBean.technical;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
+@Entity
 public class DataList {
     String Column1;
     String Column10;
@@ -23,7 +27,10 @@ public class DataList {
     String Column7;
     String Column8;
     String Column9;
+
     int fK_ModelSeriesYearID;
+
+    @Id
     int id;
 
     public String getColoumn(int i) {
@@ -102,6 +109,34 @@ public class DataList {
     }
 
     public DataList() {
+    }
+
+    @Generated(hash = 1025777755)
+    public DataList(String Column1, String Column10, String Column11, String Column12, String Column13, String Column14, String Column15, String Column16, String Column17, String Column18, String Column19, String Column2, String Column20, String Column21, String Column3, String Column4, String Column5, String Column6,
+                    String Column7, String Column8, String Column9, int fK_ModelSeriesYearID, int id) {
+        this.Column1 = Column1;
+        this.Column10 = Column10;
+        this.Column11 = Column11;
+        this.Column12 = Column12;
+        this.Column13 = Column13;
+        this.Column14 = Column14;
+        this.Column15 = Column15;
+        this.Column16 = Column16;
+        this.Column17 = Column17;
+        this.Column18 = Column18;
+        this.Column19 = Column19;
+        this.Column2 = Column2;
+        this.Column20 = Column20;
+        this.Column21 = Column21;
+        this.Column3 = Column3;
+        this.Column4 = Column4;
+        this.Column5 = Column5;
+        this.Column6 = Column6;
+        this.Column7 = Column7;
+        this.Column8 = Column8;
+        this.Column9 = Column9;
+        this.fK_ModelSeriesYearID = fK_ModelSeriesYearID;
+        this.id = id;
     }
 
     public int getId() {

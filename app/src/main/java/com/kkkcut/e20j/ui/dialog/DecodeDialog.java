@@ -11,20 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
 import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.KeyType;
+import com.cutting.machine.clamp.ClampUtil;
+import com.cutting.machine.operation.cut.DataParam;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.bean.KeyType;
-import com.liying.core.clamp.ClampUtil;
-import com.liying.core.operation.cut.DataParam;
+
 import java.util.Locale;
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,51 +30,37 @@ public class DecodeDialog extends BottomInDialog {
     public static final String PARAM = "param";
     private static final String TAG = "DecodeDialog";
 
-    @BindView(R.id.bt_cancle)
     TextView btCancle;
 
-    @BindView(R.id.bt_decode)
     TextView btDecode;
 
-    @BindView(R.id.cb_slant_correction)
     CheckBox cbSlantCorrection;
     private DataParam decodeParams;
     private int decoderSize;
     boolean dimpleDuplicate;
     boolean isRound;
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
 
-    @BindView(R.id.iv_decoder)
     ImageView ivDecoder;
 
-    @BindView(R.id.ll_decode_slowly)
     LinearLayout llDecodeSlowly;
 
-    @BindView(R.id.rb_50)
     RadioButton rb50;
 
-    @BindView(R.id.rg_decode_size)
     RadioGroup rgDecodeSize;
 
-    @BindView(R.id.sb_round)
     CheckBox sbRound;
     private int timeValue;
 
-    @BindView(R.id.tv_decode_slowly)
     TextView tvDecodeSlowly;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvDecoderSize;
 
-    @BindView(R.id.tv_round)
     TextView tvRound;
 
-    @BindView(R.id.tv_slant_correction)
     TextView tvSlantCorrection;
 
-    @BindView(R.id.tv_time_value)
     TextView tvTimeValue;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
@@ -179,7 +162,6 @@ public class DecodeDialog extends BottomInDialog {
         }
     }
 
-    @OnClick({R.id.bt_cancle, R.id.bt_decode, R.id.iv_close, R.id.iv_time_reduce, R.id.iv_time_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_cancle /* 2131361909 */:
@@ -249,7 +231,6 @@ public class DecodeDialog extends BottomInDialog {
         return this.decodeParams.getKeyInfo();
     }
 
-    @OnCheckedChanged({R.id.sb_round, R.id.rb_100, R.id.rb_50})
     public void onChecekChange(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         if (id == R.id.rb_100) {

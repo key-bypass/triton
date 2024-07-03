@@ -1,11 +1,13 @@
 package com.kkkcut.e20j.pyger;
 
-import com.pgyersdk.p016f.C2036a;
-import com.pgyersdk.p016f.C2041f;
+import com.pgyersdk.crash.PgyerObservable;
+import com.pgyersdk.crash.PgyerObserver;
+import com.pgyersdk.utils.AsyncTaskUtils;
+import com.pgyersdk.utils.LogUtils;
 import java.lang.Thread;
 
 /* loaded from: classes2.dex */
-public class PgyerCrashObservable extends C2030e {
+public class PgyerCrashObservable extends PgyerObservable {
 
     /* renamed from: b */
     PgyerObserver f484b;
@@ -27,10 +29,10 @@ public class PgyerCrashObservable extends C2030e {
     private void m155b() {
         Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         if (defaultUncaughtExceptionHandler != null) {
-            C2041f.m216a("PgyerSDK", "Current handler class = " + defaultUncaughtExceptionHandler.getClass().getName());
+            LogUtils.m216a("PgyerSDK", "Current handler class = " + defaultUncaughtExceptionHandler.getClass().getName());
         }
         if (defaultUncaughtExceptionHandler instanceof C2026a) {
-            C2041f.m216a("PgyerSDK", "ExceptionHandler is already reset");
+            LogUtils.m216a("PgyerSDK", "ExceptionHandler is already reset");
         } else {
             Thread.setDefaultUncaughtExceptionHandler(new C2026a(defaultUncaughtExceptionHandler, this));
         }
@@ -42,7 +44,7 @@ public class PgyerCrashObservable extends C2030e {
 
     /* renamed from: a */
     public void m156a() {
-        C2036a.m194a(new AsyncTaskC2031f());
+        AsyncTaskUtils.m194a(new AsyncTaskC2031f());
         m155b();
     }
 
@@ -56,7 +58,7 @@ public class PgyerCrashObservable extends C2030e {
         if (!pgyerObserver.equals(this.f484b)) {
             super.detach(pgyerObserver);
         } else {
-            C2041f.m220d("PgyerSDK", "Can't detach pgyer default observer.");
+            LogUtils.m220d("PgyerSDK", "Can't detach pgyer default observer.");
         }
     }
 

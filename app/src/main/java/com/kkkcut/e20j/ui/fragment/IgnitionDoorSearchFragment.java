@@ -11,16 +11,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.bean.eventbus.InputFinishBean;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import com.liying.core.MachineInfo;
+import com.cutting.machine.MachineInfo;
 import java.lang.reflect.Method;
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,17 +29,13 @@ public class IgnitionDoorSearchFragment extends BaseBackFragment {
     public int STATUS;
     private EditText currentEdit;
 
-    @BindView(R.id.ll_code)
     LinearLayout llCode;
 
-    @BindView(R.id.ll_index)
     LinearLayout llIndex;
 
-    @BindView(R.id.ll_title)
     LinearLayout llTitle;
     private MyOnfocusChanged myOnfocusChanged = new MyOnfocusChanged();
 
-    @BindView(R.id.rb_ignition_to_door)
     RadioButton rbIgnitionToDoor;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -130,7 +123,6 @@ public class IgnitionDoorSearchFragment extends BaseBackFragment {
         return textView;
     }
 
-    @OnClick({R.id.bt_number_1, R.id.bt_number_2, R.id.bt_number_3, R.id.bt_number_4, R.id.bt_number_5, R.id.bt_number_last, R.id.bt_number_next, R.id.bt_delete, R.id.btn_cancel, R.id.btn_ok})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_delete) {
@@ -179,7 +171,6 @@ public class IgnitionDoorSearchFragment extends BaseBackFragment {
         start(KeyOperateFragment.newInstance(), 2);
     }
 
-    @OnCheckedChanged({R.id.rb_door_to_ignition, R.id.rb_ignition_to_door})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         if (id == R.id.rb_door_to_ignition) {
@@ -257,7 +248,8 @@ public class IgnitionDoorSearchFragment extends BaseBackFragment {
     }
 
     private void changeLast() {
-        EditText editText = (EditText) ((LinearLayout) this.currentEdit.getParent()).getChildAt(r0.indexOfChild(this.currentEdit) - 1);
+        var r0 = (LinearLayout) this.currentEdit.getParent();
+        EditText editText = (EditText) (r0).getChildAt(r0.indexOfChild(this.currentEdit) - 1);
         if (editText != null) {
             editText.requestFocus();
         }

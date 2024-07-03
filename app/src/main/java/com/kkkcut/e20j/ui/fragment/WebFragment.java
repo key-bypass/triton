@@ -3,14 +3,12 @@ package com.kkkcut.e20j.ui.fragment;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import butterknife.BindView;
 import com.kkkcut.e20j.base.BaseFragment;
 import com.kkkcut.e20j.us.R;
 
 /* loaded from: classes.dex */
 public class WebFragment extends BaseFragment {
 
-    @BindView(R.id.webview)
     WebView webView;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

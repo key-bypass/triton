@@ -45,7 +45,7 @@ public class WelcomeActivity extends HideStatusActivity implements SplashView {
 
     @Override // com.kkkcut.e20j.view.SplashView
     /* renamed from: goMain, reason: merged with bridge method [inline-methods] */
-    public void m25lambda$goMainDelay$0$comkkkcute20juiactivityWelcomeActivity() {
+    public void goMain() {
         startActivity(new Intent(this, (Class<?>) FrameActivity.class));
         finish();
     }
@@ -55,7 +55,7 @@ public class WelcomeActivity extends HideStatusActivity implements SplashView {
         new Handler().postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.activity.WelcomeActivity$$ExternalSyntheticLambda0
             @Override // java.lang.Runnable
             public final void run() {
-                WelcomeActivity.this.m25lambda$goMainDelay$0$comkkkcute20juiactivityWelcomeActivity();
+                WelcomeActivity.this.goMain();
             }
         }, j);
     }

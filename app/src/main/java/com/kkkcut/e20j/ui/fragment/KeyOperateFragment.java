@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.BittingCode;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.KeyBasicData;
@@ -67,27 +65,27 @@ import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.CutCountHelper;
 import com.kkkcut.e20j.utils.DatabaseFileUtils;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
-import com.liying.core.Command;
-import com.liying.core.CuttingMachine;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.operation.cut.DataParam;
-import com.liying.core.utils.KeyDataUtils;
-import io.reactivex.Observable;
+import com.cutting.machine.Command;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.operation.cut.DataParam;
+import com.cutting.machine.utils.KeyDataUtils;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,13 +110,10 @@ public class KeyOperateFragment extends BaseBackFragment {
     private List<AngleKeyStep> angleKeySteps;
     private ArrayList<CodeAndTooth> bittingCodes;
 
-    @BindView(R.id.bt_change_sibling)
     Button btChangedSibling;
 
-    @BindView(R.id.bt_cut)
     TextView btCut;
 
-    @BindView(R.id.bt_decode)
     TextView btDecode;
     private RemindDialog clearClampRemind;
     private int cutCount;
@@ -126,35 +121,27 @@ public class KeyOperateFragment extends BaseBackFragment {
     private boolean doorIgnition;
     private boolean doorToIgnition;
 
-    @BindView(R.id.fl_key_view)
     FrameLayout flKeyview;
     private boolean isBarCodeScan;
     private boolean isSibling;
 
-    @BindView(R.id.iv_real_key)
     ImageView ivRealKey;
 
-    @BindView(R.id.iv_switch_last)
     ImageView ivSwitchLast;
 
-    @BindView(R.id.iv_switch_next)
     ImageView ivSwitchNext;
     private KeyInfo ki;
     private ClampBean lastClamp;
 
-    @BindView(R.id.tv_code_find_tooth)
     TextView llCodeFindTooth;
 
-    @BindView(R.id.tv_input)
     TextView llInput;
 
-    @BindView(R.id.tv_lack_tooth)
     TextView llLackTooth;
     private Key mKey;
     private int mainKeyID;
     private String mainKeyToothCode;
 
-    @BindView(R.id.mtv)
     MarqueeTextView mtv;
     ViewPager.OnPageChangeListener onPageChangeListener;
     private boolean rounding;
@@ -162,40 +149,28 @@ public class KeyOperateFragment extends BaseBackFragment {
     private String toothCodeLack;
     private int toothCount;
 
-    @BindView(R.id.tv_adjust)
     TextView tvAdjust;
 
-    @BindView(R.id.tv_blank)
     TextView tvBlank;
 
-    @BindView(R.id.tv_code)
     TextView tvCode;
 
-    @BindView(R.id.tv_collect)
     TextView tvCollect;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvCutterSize;
 
-    @BindView(R.id.tv_decoder_size)
     TextView tvDecoderSize;
 
-    @BindView(R.id.tv_hint)
     TextView tvHint;
 
-    @BindView(R.id.tv_info)
     TextView tvInfo;
 
-    @BindView(R.id.tv_move)
     TextView tvMove;
 
-    @BindView(R.id.tv_series)
     TextView tvSeries;
 
-    @BindView(R.id.tv_side)
     TextView tvSide;
 
-    @BindView(R.id.vp_clamp)
     ViewPager vpClamp;
     private boolean moveToRight = true;
     private DataParam dataParam = new DataParam();
@@ -344,7 +319,7 @@ public class KeyOperateFragment extends BaseBackFragment {
         initRemind(keyInfo);
     }
 
-    private Observable<KeyInfo> getKeyInfoDisposable(final int i, boolean z) {
+    private Observable getKeyInfoDisposable(final int i, boolean z) {
         if (z) {
             return Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda2
                 @Override // java.util.concurrent.Callable
@@ -360,20 +335,16 @@ public class KeyOperateFragment extends BaseBackFragment {
                 }
             });
         }
-        return Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda11
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        return Observable.fromCallable(() -> {
                 KeyBasicData basicData;
                 basicData = KeyInfoDaoManager.getInstance().getBasicData(i);
                 return basicData;
-            }
-        }).map(new Function() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda8
-            @Override // io.reactivex.functions.Function
-            public final Object apply(Object obj) {
+
+        }).map(obj -> {
                 KeyInfo keyInfo;
                 keyInfo = ((KeyBasicData) obj).toKeyInfo();
                 return keyInfo;
-            }
+
         });
     }
 
@@ -403,25 +374,19 @@ public class KeyOperateFragment extends BaseBackFragment {
     }
 
     private void initKeySide(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda1
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() ->  {
                 KeyBasicDataItem basicDataSide;
                 basicDataSide = KeyInfoDaoManager.getInstance().getBasicDataSide(i);
                 return basicDataSide;
-            }
-        }).map(new Function() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda9
-            @Override // io.reactivex.functions.Function
-            public final Object apply(Object obj) {
+
+        }).map(obj -> {
                 KeyInfo keyInfo;
                 keyInfo = ((KeyBasicDataItem) obj).toKeyInfo();
                 return keyInfo;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda5
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
                 KeyOperateFragment.this.m32xce3e71f((KeyInfo) obj);
-            }
+
         }));
     }
 
@@ -819,7 +784,6 @@ public class KeyOperateFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.tv_input, R.id.tv_code_find_tooth, R.id.tv_lack_tooth, R.id.fl_key_view, R.id.iv_scale, R.id.iv_key_scale, R.id.iv_switch_last, R.id.iv_switch_next, R.id.bt_decode, R.id.bt_cut, R.id.tv_info, R.id.tv_collect, R.id.bt_change_sibling, R.id.tv_move, R.id.tv_adjust})
     public void onViewClicked(View view) {
         int i;
         String str;
@@ -1036,8 +1000,8 @@ public class KeyOperateFragment extends BaseBackFragment {
     public void m33x473e13c1(String str) {
         String variableSpace;
         GoOperatBean keyData = getKeyData();
-        keyData.setToothCode(this.ki.getKeyToothCode());
-        keyData.setRemark(str);
+        keyData.toothCode = this.ki.getKeyToothCode();
+        keyData.remark = str;
         final CollectionData collectionData = new CollectionData(keyData);
         if (TextUtils.isEmpty(keyData.getCuts())) {
             if (TextUtils.isEmpty(this.ki.getVariableSpace())) {
@@ -1595,7 +1559,7 @@ public class KeyOperateFragment extends BaseBackFragment {
         }
         String[] split = keyToothCode.split(";")[0].split(",");
         String[] split2 = this.ki.getSpaceStr().split(";")[0].split(",");
-        TreeMap treeMap = new TreeMap();
+        var treeMap = new TreeMap<String, String>();
         String findNoCutDepth = findNoCutDepth();
         for (int i = 0; i < split.length; i++) {
             if (!TextUtils.equals(findNoCutDepth, split[i])) {

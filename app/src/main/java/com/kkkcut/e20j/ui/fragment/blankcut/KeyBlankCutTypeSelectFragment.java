@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutCreateGrooveFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutDrillingFragment;
@@ -18,7 +19,7 @@ import com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutLeftGrooveFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutRightGrooveFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutSideGrooveFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,16 +29,12 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
     BlankCutAdapter blankCutAdapter;
     private BlankCutType blankCutType;
 
-    @BindView(R.id.bt_ok)
     Button btOk;
 
-    @BindView(R.id.bt_preset)
     Button btPreset;
 
-    @BindView(R.id.iv_show)
     ImageView ivShow;
 
-    @BindView(R.id.rv_blank_cut)
     RecyclerView rvBlankCut;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -91,7 +88,6 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
         return keyBlankCutTypeSelectFragment;
     }
 
-    @OnClick({R.id.bt_ok, R.id.bt_preset})
     public void onclick(View view) {
         int id = view.getId();
         if (id != R.id.bt_ok) {

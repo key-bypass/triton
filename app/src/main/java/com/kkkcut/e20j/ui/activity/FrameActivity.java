@@ -1,5 +1,6 @@
 package com.kkkcut.e20j.ui.activity;
 
+import static io.reactivex.rxjava3.schedulers.Schedulers.io;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -9,8 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.Constant;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.SpKeys;
@@ -42,22 +41,23 @@ import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.kkkcut.e20j.utils.ZipUtils;
-import com.liying.core.Command;
-import com.liying.core.DialogBtnCallBack;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.communication.OperationManager;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import com.cutting.machine.Command;
+import com.cutting.machine.DialogBtnCallBack;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.communication.OperationManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.BiFunction;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -68,23 +68,17 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     private CertificationDialog certificationDialog;
     private ErrorDialog errorDialog;
 
-    @BindView(R.id.iv_home)
     ImageView ivHome;
 
-    @BindView(R.id.iv_menu)
     ImageView ivMenu;
 
-    @BindView(R.id.iv_message)
     ImageView ivMessage;
     private LoadingDialog loadingDialog;
 
-    @BindView(R.id.tv_back)
     TextView tvBack;
 
-    @BindView(R.id.tv_logo)
     TextView tvLogo;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
     private long DOUBLE_CLICK_TIME = 0;
     long[] mHits = new long[10];
@@ -163,7 +157,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
         if (TextUtils.isEmpty(string)) {
             return;
         }
-        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).certification(TUitls.certification(GetUUID.getUUID(), string, "XX", "0.0.0.0")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<CertificationRes>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.3
+        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).certification(TUitls.certification(GetUUID.getUUID(), string, "XX", "0.0.0.0")).subscribeOn(io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<CertificationRes>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.3
             @Override // io.reactivex.functions.Consumer
             public void accept(CertificationRes certificationRes) throws Exception {
                 String str;
@@ -207,7 +201,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
             public Boolean apply(Integer num, Integer num2) throws Exception {
                 return Boolean.valueOf(num.intValue() > num2.intValue());
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.5
+        }).subscribeOn(io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.5
             @Override // io.reactivex.functions.Consumer
             public void accept(Boolean bool) throws Exception {
                 if (bool.booleanValue()) {
@@ -232,7 +226,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
             public Boolean call() throws Exception {
                 return Boolean.valueOf(FileUtil.copyAssetToSDCard(FrameActivity.this.getAssets(), Constant.ZIP_NAME_CODE_DB, Constant.CODE_DB_ZIP_PATH));
             }
-        }).subscribeOn(Schedulers.io()).map(new Function<Boolean, Boolean>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.10
+        }).subscribeOn(io()).map(new Function<Boolean, Boolean>() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.10
             @Override // io.reactivex.functions.Function
             public Boolean apply(Boolean bool) throws Exception {
                 File file = new File(Constant.CODE_DATABASE_PATH);
@@ -364,14 +358,14 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     @Override // com.kkkcut.e20j.base.BaseActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
         int eventCode = eventCenter.getEventCode();
         if (eventCode == 12) {
             if (AppUtil.isApkInDebug(this)) {
                 return;
             }
             showErrorDialog(R.drawable.error_1, getString(R.string.no_device_found), getString(R.string.retry), new DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.14
-                @Override // com.liying.core.DialogBtnCallBack
+                @Override // com.cutting.machine.DialogBtnCallBack
                 public void onDialogButClick(boolean z) {
                     if (z) {
                         UsbSerialManager.getInstance().init(FrameActivity.this);
@@ -385,7 +379,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
                 return;
             }
             showErrorDialog(R.drawable.error_1, getString(R.string.device_not_connected), getString(R.string.retry), new DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.activity.FrameActivity.15
-                @Override // com.liying.core.DialogBtnCallBack
+                @Override // com.cutting.machine.DialogBtnCallBack
                 public void onDialogButClick(boolean z) {
                     if (z) {
                         UsbSerialManager.getInstance().init(FrameActivity.this);
@@ -472,7 +466,6 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
         this.certificationDialog.dismiss();
     }
 
-    @OnClick({R.id.tv_back, R.id.iv_message, R.id.iv_menu, R.id.iv_home, R.id.tv_title})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_home /* 2131362304 */:
@@ -574,7 +567,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     @Override // com.kkkcut.e20j.base.BaseFActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy() called");
         UsbSerialManager.getInstance().stop();
@@ -586,7 +579,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     @Override // com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity
-    protected void showLoadingDialog(String str) {
+    public void showLoadingDialog(String str) {
         if (this.loadingDialog == null) {
             this.loadingDialog = new LoadingDialog(this);
         }
@@ -606,7 +599,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     @Override // com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity
-    protected void dissmissLoadingDialog() {
+    public void dissmissLoadingDialog() {
         LoadingDialog loadingDialog = this.loadingDialog;
         if (loadingDialog == null || !loadingDialog.isShowing()) {
             return;

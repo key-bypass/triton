@@ -6,11 +6,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnTextChanged;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.DbBean.china.ModelChina;
 import com.kkkcut.e20j.adapter.ModelChinaSelectAdapter;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
@@ -18,33 +19,30 @@ import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import static io.reactivex.rxjava3.schedulers.Schedulers.io;
 
 /* loaded from: classes.dex */
 public class ModelChinaSelectFragment extends BaseBackFragment {
     public static final String TAG = "TechnicalInfoBrandSelectFragment";
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.indexBar)
     IndexBar indexBar;
     private ModelChinaSelectAdapter mAdapter;
     private List<ModelChina> mDatas1;
     private SuspensionDecoration mDecoration;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
     private List<ModelChina> tempData = new ArrayList();
 
-    @BindView(R.id.tvSideBarHint)
     TextView tvSideBarHint;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -101,18 +99,14 @@ public class ModelChinaSelectFragment extends BaseBackFragment {
 
     private void getModels(final int i) {
         Log.i("TechnicalInfoBrandSelectFragment", "getModels: " + i);
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.ModelChinaSelectFragment$$ExternalSyntheticLambda1
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
+        addDisposable(Observable.fromCallable(() -> {
                 List chinaModels;
                 chinaModels = KeyInfoDaoManager.getInstance().getChinaModels(i);
                 return chinaModels;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.keyselect.ModelChinaSelectFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+
+        }).subscribeOn(io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
                 ModelChinaSelectFragment.this.m59x29258140((List) obj);
-            }
+
         }));
     }
 
@@ -134,7 +128,7 @@ public class ModelChinaSelectFragment extends BaseBackFragment {
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
+
     public void afterTextChanged(Editable editable) {
         String modelName;
         this.tempData = new ArrayList();

@@ -1,9 +1,17 @@
 package com.kkkcut.e20j.DbBean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 /* loaded from: classes.dex */
 public class KeyBlank {
     String Description;
+
+    @Id
     long ID;
+
     String KeyBlankName;
 
     public KeyBlank(long j, String str, String str2) {
@@ -13,6 +21,13 @@ public class KeyBlank {
     }
 
     public KeyBlank() {
+    }
+
+    @Generated(hash = 687553763)
+    public KeyBlank(String Description, long ID, String KeyBlankName) {
+        this.Description = Description;
+        this.ID = ID;
+        this.KeyBlankName = KeyBlankName;
     }
 
     public long getID() {

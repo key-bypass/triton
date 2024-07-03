@@ -1,7 +1,6 @@
 package com.kkkcut.e20j.adapter
 
 import android.util.Pair
-import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder

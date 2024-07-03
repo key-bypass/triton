@@ -1,6 +1,6 @@
 package com.kkkcut.e20j.utils.lan;
 
-import com.liying.core.MachineInfo;
+import com.cutting.machine.MachineInfo;
 
 /* loaded from: classes.dex */
 public class LanguageUtil {

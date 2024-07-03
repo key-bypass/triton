@@ -3,29 +3,26 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
+
+import com.cutting.machine.clamp.S8;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.clamp.ClampF;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.clamp.S1B;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.error.ErrorHelper;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import com.liying.core.clamp.ClampF;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.clamp.S1B;
-import com.liying.core.clamp.S8;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.error.ErrorHelper;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutRightGrooveFragment extends BaseBlankCutParamSetFragment {
 
-    @BindView(R.id.et_groove_length)
     EditText etGrooveLength;
 
-    @BindView(R.id.et_remaining_thickness)
     EditText etRemainingThickness;
 
-    @BindView(R.id.et_remaining_width)
     EditText etRemainingWidth;
     private int grooveLength;
     private int remainingThickness;

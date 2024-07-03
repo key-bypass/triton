@@ -2,14 +2,24 @@ package com.kkkcut.e20j.ui.fragment.blankcut.paramset.base;
 
 import android.os.Bundle;
 import android.view.View;
-import butterknife.OnClick;
-import com.example.spl_key_sdklibrary.JawClass;
-import com.example.spl_key_sdklibrary.Key;
-import com.example.spl_key_sdklibrary.KeyBlankCutPathClass;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
-import com.example.spl_key_sdklibrary.mdKeyLocationPointClass;
+
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.S8;
+import com.cutting.machine.clamp.Clamp;
+import com.cutting.machine.clamp.ClampF;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.S1B;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.utils.UnitConvertUtil;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
+
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
@@ -17,24 +27,16 @@ import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutSpeedUtils;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutType;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.Clamp;
-import com.liying.core.clamp.ClampF;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.S1B;
-import com.liying.core.clamp.S8;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.utils.UnitConvertUtil;
-import io.reactivex.Observable;
+import com.spl.key.JawClass;
+import com.spl.key.Key;
+import com.spl.key.mdKeyBlankClass;
+import com.spl.key.mdKeyLocationPointClass;
+import com.spl.key.KeyBlankCutPathClass;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +58,7 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
     public abstract void setMdKeyBlankClass(mdKeyBlankClass mdkeyblankclass);
 
     /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     public void initViewsAndEvents() {
         this.blankCutBean = (BlankCutBean) getArguments().getParcelable(BLANK_CUT);
     }
@@ -69,7 +71,7 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
         return null;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
     public String setTitleStr() {
         BlankCutBean blankCutBean = this.blankCutBean;
         if (blankCutBean != null) {
@@ -78,7 +80,6 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
         return null;
     }
 
-    @OnClick({R.id.bt_cut})
     public void onClick(View view) {
         if (view.getId() != R.id.bt_cut) {
             return;
@@ -110,7 +111,7 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
         ToastUtil.showToast(R.string.please_complete_the_data);
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected void onEventComing(EventCenter eventCenter) {
         KeyInfo keyInfo = new KeyInfo();
         char c = 3;
@@ -149,44 +150,44 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
             setMdKeyBlankClass(mdkeyblankclass);
             JawClass.JAW_S8 jaw_s8 = getJaw_s8(s8);
             String[][] strArr = null;
-            switch (AnonymousClass2.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[getBlankCutType().ordinal()]) {
+            switch (C14862.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[getBlankCutType().ordinal()]) {
                 case 1:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_TopPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_TopPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 2:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 3:
                 case 4:
                 case 5:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_WidthThickPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 6:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_KeyHeadDrillingPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize());
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_KeyHeadDrillingPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize());
                     break;
                 case 7:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_LeftGrovePath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_LeftGrovePath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 8:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_RightGrovePath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_RightGrovePath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 9:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_TipCutPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_TipCutPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 10:
                 case 11:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_40KTo80KPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_40KTo80KPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 12:
                 case 13:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_HY18Path(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_HY18Path(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 14:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_InternalGroveCutPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_InternalGroveCutPath(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
                 case 15:
                 case 16:
-                    strArr = KeyBlankCutPathClass.GetKeyBlankCut_KW16ToKW15Path(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
+                    strArr = KeyBlankCutPathClass.INSTANCE.GetKeyBlankCut_KW16ToKW15Path(Key.enumMachineType.alpha, BlankCutSpeedUtils.getSpeed(getBlankCutType()), mdKeyLocationPointClass, mdkeyblankclass, ToolSizeManager.getCutterSize(), jaw_s8);
                     break;
             }
             ArrayList arrayList = new ArrayList();
@@ -215,9 +216,9 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
         onCutFinish();
     }
 
-    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment$2, reason: invalid class name */
+    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment$2 */
     /* loaded from: classes.dex */
-    static /* synthetic */ class AnonymousClass2 {
+    static /* synthetic */ class C14862 {
         static final /* synthetic */ int[] $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType;
 
         static {

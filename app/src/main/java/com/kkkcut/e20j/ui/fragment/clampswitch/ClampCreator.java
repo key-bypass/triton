@@ -1,8 +1,8 @@
 package com.kkkcut.e20j.ui.fragment.clampswitch;
 
-import com.liying.core.CuttingMachine;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.CuttingMachine;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
 import java.util.List;
 
 /* loaded from: classes.dex */

@@ -6,10 +6,12 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import com.kkkcut.e20j.R;
+
 import com.kkkcut.e20j.androidquick.autolayout.AutoLayoutInfo;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoLayoutHelper;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
+import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -67,7 +69,7 @@ public class MetroLayout extends ViewGroup {
         int childCount = getChildCount();
         for (int i6 = 0; i6 < childCount; i6++) {
             View childAt = getChildAt(i6);
-            if (childAt.getVisibility() != 8) {
+            if (childAt.getVisibility() != View.GONE) {
                 MetroBlock findAvailablePos = findAvailablePos(childAt);
                 int i7 = findAvailablePos.left;
                 int i8 = findAvailablePos.top;

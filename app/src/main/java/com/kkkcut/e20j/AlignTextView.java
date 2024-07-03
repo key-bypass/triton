@@ -7,10 +7,10 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import androidx.appcompat.widget.AppCompatTextView;
+import android.widget.TextView;
 
 /* loaded from: classes.dex */
-public class AlignTextView extends AppCompatTextView {
+public class AlignTextView extends TextView {
     public AlignTextView(Context context) {
         super(context);
     }

@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -28,5 +22,4 @@ include 'ext:YoKeyword:fragmentation_core'
 include 'ext:YoKeyword:fragmentation'
 include 'ext:cymchad.viewadapter:library'
 include ':lib:prolific_serial'
-include ':lib:cutting_machine'
 include ':lib:spl_key_sdk'

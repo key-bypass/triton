@@ -67,7 +67,7 @@ public class UserDataDaoManager {
     }
 
     public CutHistoryData getLastCutHistory() {
-        List list = this.daoSession.queryBuilder(CutHistoryData.class).orderDesc(CutHistoryDataDao.Properties.Id).limit(1).list();
+        List list = this.daoSession.queryBuilder(CutHistoryData.class).orderDesc(CutHistoryDataDao.Properties.Time).limit(1).list();
         if (list == null || list.size() == 0) {
             return null;
         }
@@ -75,7 +75,7 @@ public class UserDataDaoManager {
     }
 
     public List<CutHistoryData> getCutHistory() {
-        return this.daoSession.queryBuilder(CutHistoryData.class).orderDesc(CutHistoryDataDao.Properties.Id).limit(300).list();
+        return this.daoSession.queryBuilder(CutHistoryData.class).orderDesc(CutHistoryDataDao.Properties.Time).limit(300).list();
     }
 
     public List<CutHistoryData> getCutHistory(int i, int i2, String str) {
@@ -113,7 +113,7 @@ public class UserDataDaoManager {
     }
 
     public List<CollectionData> getCollection() {
-        return this.daoSession.queryBuilder(CollectionData.class).orderDesc(CollectionDataDao.Properties.Id).list();
+        return this.daoSession.queryBuilder(CollectionData.class).orderDesc(CollectionDataDao.Properties.Title).list();
     }
 
     public List<CollectionData> getCollection(int i, int i2, String str) {
@@ -211,7 +211,7 @@ public class UserDataDaoManager {
     }
 
     public boolean haveNewMessage() {
-        return this.daoSession.getJpushMsgDao().queryBuilder().where(JpushMsgDao.Properties.HaveRead.eq(1), new WhereCondition[0]).list().size() > 0;
+        return !this.daoSession.getJpushMsgDao().queryBuilder().where(JpushMsgDao.Properties.HaveRead.eq(1), new WhereCondition[0]).list().isEmpty();
     }
 
     public void updateMessageDate(JpushMsg jpushMsg) {
@@ -243,7 +243,7 @@ public class UserDataDaoManager {
     }
 
     public List<Manufacturer> getManufacturerHidden() {
-        ArrayList arrayList = new ArrayList();
+        var arrayList = new ArrayList();
         Iterator<ManufacturerHidden> it = this.daoSession.getManufacturerHiddenDao().queryBuilder().list().iterator();
         while (it.hasNext()) {
             arrayList.add(new Manufacturer(it.next()));

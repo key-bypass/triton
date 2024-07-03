@@ -7,32 +7,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.DbBean.userDB.CustomKey;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.dao.UserDataDaoManager;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
 public class KeyClampSetFragment extends BaseBackFragment {
     private static final String CUSTOMKEY = "CUSTOMKEY";
 
-    @BindView(R.id.bt_next)
     Button btNext;
     private CustomKey customKey;
 
-    @BindView(R.id.rb_clamp_1)
     RadioButton rbClamp1;
 
-    @BindView(R.id.rb_clamp_2)
     RadioButton rbClamp2;
 
-    @BindView(R.id.rb_clamp_3)
     RadioButton rbClamp3;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -93,7 +87,6 @@ public class KeyClampSetFragment extends BaseBackFragment {
         }
     }
 
-    @OnClick({R.id.bt_last, R.id.bt_next})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.bt_last) {
@@ -107,7 +100,6 @@ public class KeyClampSetFragment extends BaseBackFragment {
         showEditDialog(this.customKey);
     }
 
-    @OnCheckedChanged({R.id.rb_clamp_1, R.id.rb_clamp_2, R.id.rb_clamp_3})
     public void onCheckedChange(CompoundButton compoundButton, boolean z) {
         switch (compoundButton.getId()) {
             case R.id.rb_clamp_1 /* 2131362602 */:

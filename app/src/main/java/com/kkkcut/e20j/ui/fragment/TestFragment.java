@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.base.BaseFragment;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.DesUtil;
@@ -23,13 +21,10 @@ import okhttp3.Response;
 /* loaded from: classes.dex */
 public class TestFragment extends BaseFragment {
 
-    @BindView(R.id.clear)
     Button clear;
 
-    @BindView(R.id.param)
     EditText paramDes;
 
-    @BindView(R.id.response)
     TextView responseDec;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -48,7 +43,6 @@ public class TestFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.commit})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.clear) {

@@ -76,6 +76,8 @@ public class BaseKeyboardView extends KeyboardView {
         List<Keyboard.Key> keys = getKeyboard().getKeys();
         int size = keys.size();
         int i = 0;
+        int r7 = 0;
+        int r8 = 0;
         while (i < size) {
             Keyboard.Key key3 = keys.get(i);
             if (!z2 || key2 == key3) {

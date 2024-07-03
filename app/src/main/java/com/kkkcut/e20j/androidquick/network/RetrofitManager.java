@@ -4,7 +4,6 @@ import com.kkkcut.e20j.androidquick.network.gsonconvert.CustomGsonConverterFacto
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /* loaded from: classes.dex */
 public class RetrofitManager {

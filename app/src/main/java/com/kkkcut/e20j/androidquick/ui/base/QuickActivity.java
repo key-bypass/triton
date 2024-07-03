@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import android.widget.Toolbar;
+
 import com.kkkcut.e20j.androidquick.autolayout.AutoLayoutActivity;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.androidquick.ui.manager.QuickAppManager;
 import com.kkkcut.e20j.androidquick.ui.permission.EasyPermissions;
 import com.kkkcut.e20j.androidquick.ui.viewstatus.VaryViewHelperController;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
+
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +38,6 @@ public abstract class QuickActivity extends AutoLayoutActivity implements EasyPe
     protected static String TAG = "QuickActivity";
     private LinearLayout contentView;
     private boolean flag;
-    private Unbinder mUnbinder;
     private View mainView;
     protected Toolbar toolbar;
     protected FrameLayout toolbarLayout;
@@ -93,7 +92,7 @@ public abstract class QuickActivity extends AutoLayoutActivity implements EasyPe
 
     protected abstract boolean isLoadDefaultTitleBar();
 
-    protected abstract void onEventComing(EventCenter eventCenter);
+    protected abstract void onEventComing(EventCenter<?> eventCenter);
 
     protected abstract boolean toggleOverridePendingTransition();
 
@@ -232,7 +231,6 @@ public abstract class QuickActivity extends AutoLayoutActivity implements EasyPe
         } else {
             super.setContentView(i);
         }
-        this.mUnbinder = ButterKnife.bind(this);
         if (getLoadingTargetView() != null) {
             this.mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
         }
@@ -277,10 +275,6 @@ public abstract class QuickActivity extends AutoLayoutActivity implements EasyPe
     @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
     public void onDestroy() {
         super.onDestroy();
-        Unbinder unbinder = this.mUnbinder;
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
         EventBus.getDefault().unregister(this);
         QuickAppManager.getInstance().removeActivity(this);
     }

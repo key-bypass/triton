@@ -2,8 +2,6 @@ package com.kkkcut.e20j.ui.fragment.setting;
 
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
@@ -16,112 +14,76 @@ public class CutSettingFragment extends BaseBackFragment {
     public static final String STRENGTHEN_ROUTE_PLAN = "strengthen_route_plan";
     public static final String TAG = "CutSettingFragment";
 
-    @BindView(R.id.cb_angle_1)
     CheckBox cbAngle1;
 
-    @BindView(R.id.cb_angle_2)
     CheckBox cbAngle2;
 
-    @BindView(R.id.cb_angle_3)
     CheckBox cbAngle3;
 
-    @BindView(R.id.cb_angle_4)
     CheckBox cbAngle4;
 
-    @BindView(R.id.cb_dimple_1)
     CheckBox cbDimple1;
 
-    @BindView(R.id.cb_dimple_2)
     CheckBox cbDimple2;
 
-    @BindView(R.id.cb_dimple_3)
     CheckBox cbDimple3;
 
-    @BindView(R.id.cb_dimple_4)
     CheckBox cbDimple4;
 
-    @BindView(R.id.cb_double_external_1)
     CheckBox cbDoubleExternal1;
 
-    @BindView(R.id.cb_double_external_2)
     CheckBox cbDoubleExternal2;
 
-    @BindView(R.id.cb_double_external_3)
     CheckBox cbDoubleExternal3;
 
-    @BindView(R.id.cb_double_external_4)
     CheckBox cbDoubleExternal4;
 
-    @BindView(R.id.cb_double_internal_1)
     CheckBox cbDoubleInternal1;
 
-    @BindView(R.id.cb_double_internal_2)
     CheckBox cbDoubleInternal2;
 
-    @BindView(R.id.cb_double_internal_3)
     CheckBox cbDoubleInternal3;
 
-    @BindView(R.id.cb_double_internal_4)
     CheckBox cbDoubleInternal4;
 
-    @BindView(R.id.cb_doublekey_1)
     CheckBox cbDoublekey1;
 
-    @BindView(R.id.cb_doublekey_2)
     CheckBox cbDoublekey2;
 
-    @BindView(R.id.cb_doublekey_3)
     CheckBox cbDoublekey3;
 
-    @BindView(R.id.cb_doublekey_4)
     CheckBox cbDoublekey4;
 
-    @BindView(R.id.cb_single_external_1)
     CheckBox cbSingleExternal1;
 
-    @BindView(R.id.cb_single_external_2)
     CheckBox cbSingleExternal2;
 
-    @BindView(R.id.cb_single_external_3)
     CheckBox cbSingleExternal3;
 
-    @BindView(R.id.cb_single_external_4)
     CheckBox cbSingleExternal4;
 
-    @BindView(R.id.cb_single_internal_1)
     CheckBox cbSingleInternal1;
 
-    @BindView(R.id.cb_single_internal_2)
     CheckBox cbSingleInternal2;
 
-    @BindView(R.id.cb_single_internal_3)
     CheckBox cbSingleInternal3;
 
-    @BindView(R.id.cb_single_internal_4)
     CheckBox cbSingleInternal4;
 
-    @BindView(R.id.cb_singlekey_1)
     CheckBox cbSinglekey1;
 
-    @BindView(R.id.cb_singlekey_2)
     CheckBox cbSinglekey2;
 
-    @BindView(R.id.cb_singlekey_3)
     CheckBox cbSinglekey3;
 
-    @BindView(R.id.cb_singlekey_4)
     CheckBox cbSinglekey4;
 
-    @BindView(R.id.cb_tubular_1)
     CheckBox cbTubular1;
 
-    @BindView(R.id.cb_tubular_2)
     CheckBox cbTubular2;
 
-    @BindView(R.id.cb_tubular_3)
     CheckBox cbTubular3;
 
-    @BindView(R.id.cb_tubular_4)
     CheckBox cbTubular4;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -174,7 +136,6 @@ public class CutSettingFragment extends BaseBackFragment {
         this.cbAngle4.setChecked(SPUtils.getBoolean("strengthen_route_plan7", false));
     }
 
-    @OnCheckedChanged({R.id.cb_singlekey_1, R.id.cb_doublekey_1, R.id.cb_single_internal_1, R.id.cb_single_external_1, R.id.cb_double_internal_1, R.id.cb_double_external_1, R.id.cb_dimple_1, R.id.cb_tubular_1, R.id.cb_angle_1, R.id.cb_singlekey_2, R.id.cb_doublekey_2, R.id.cb_single_internal_2, R.id.cb_single_external_2, R.id.cb_double_internal_2, R.id.cb_double_external_2, R.id.cb_dimple_2, R.id.cb_tubular_2, R.id.cb_angle_2, R.id.cb_singlekey_3, R.id.cb_doublekey_3, R.id.cb_single_internal_3, R.id.cb_single_external_3, R.id.cb_double_internal_3, R.id.cb_double_external_3, R.id.cb_dimple_3, R.id.cb_tubular_3, R.id.cb_angle_3, R.id.cb_singlekey_4, R.id.cb_doublekey_4, R.id.cb_single_internal_4, R.id.cb_single_external_4, R.id.cb_double_internal_4, R.id.cb_double_external_4, R.id.cb_dimple_4, R.id.cb_tubular_4, R.id.cb_angle_4})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         switch (id) {

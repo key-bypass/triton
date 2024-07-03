@@ -13,7 +13,7 @@ import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.utils.UnitUtils;
-import com.liying.core.bean.KeyInfo;
+import com.cutting.machine.bean.KeyInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

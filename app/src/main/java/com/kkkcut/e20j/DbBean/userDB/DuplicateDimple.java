@@ -1,6 +1,9 @@
 package com.kkkcut.e20j.DbBean.userDB;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class DuplicateDimple {
     String ClampNum;
     String ClampSide;
@@ -47,6 +50,31 @@ public class DuplicateDimple {
     }
 
     public DuplicateDimple() {
+    }
+
+    @Generated(hash = 1165837475)
+    public DuplicateDimple(String ClampNum, String ClampSide, String ClampSlot, int KeyTypeItemID, int align, String depth, String depth_name, int face, Long icCard, String keyname, int length, String parameter_info, int row_count,
+            String row_pos, String space, String space_width, int thick, long time, int type, int width) {
+        this.ClampNum = ClampNum;
+        this.ClampSide = ClampSide;
+        this.ClampSlot = ClampSlot;
+        this.KeyTypeItemID = KeyTypeItemID;
+        this.align = align;
+        this.depth = depth;
+        this.depth_name = depth_name;
+        this.face = face;
+        this.icCard = icCard;
+        this.keyname = keyname;
+        this.length = length;
+        this.parameter_info = parameter_info;
+        this.row_count = row_count;
+        this.row_pos = row_pos;
+        this.space = space;
+        this.space_width = space_width;
+        this.thick = thick;
+        this.time = time;
+        this.type = type;
+        this.width = width;
     }
 
     public Long getIcCard() {

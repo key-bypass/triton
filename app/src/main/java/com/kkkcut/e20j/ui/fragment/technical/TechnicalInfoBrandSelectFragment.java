@@ -7,20 +7,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnTextChanged;
 import com.kkkcut.e20j.DbBean.technical.DataManufacturer;
 import com.kkkcut.e20j.adapter.TechnicalInfoBradAdapter;
 import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
 import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -29,18 +28,14 @@ import java.util.concurrent.Callable;
 public class TechnicalInfoBrandSelectFragment extends BaseBackFragment {
     public static final String TAG = "TechnicalInfoBrandSelectFragment";
 
-    @BindView(R.id.et_search)
     EditText etSearch;
 
-    @BindView(R.id.indexBar)
     IndexBar indexBar;
     private TechnicalInfoBradAdapter mAdapter;
     private SuspensionDecoration mDecoration;
 
-    @BindView(R.id.rv_category_list)
     RecyclerView rvCategoryList;
 
-    @BindView(R.id.tvSideBarHint)
     TextView tvSideBarHint;
     private List<DataManufacturer> mDatas1 = new ArrayList();
     private List<DataManufacturer> tempData = new ArrayList();
@@ -127,7 +122,6 @@ public class TechnicalInfoBrandSelectFragment extends BaseBackFragment {
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
         String manufacturerName;
         this.tempData = new ArrayList();

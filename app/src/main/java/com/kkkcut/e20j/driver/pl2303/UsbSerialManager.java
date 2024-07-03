@@ -9,28 +9,32 @@ import android.hardware.usb.UsbManager;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.cutting.machine.OperateType;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.communication.Communication;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.communication.WriteCallback;
+import com.cutting.machine.error.ErrorCodeBean;
+import com.cutting.machine.error.ErrorHandle;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.dao.ErrorCodeDaoManager;
 import com.kkkcut.e20j.driver.communication.Pl2303DriveProxy;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.OperateType;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.communication.Communication;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.communication.WriteCallback;
-import com.liying.core.error.ErrorCodeBean;
-import com.liying.core.error.ErrorHandle;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import org.greenrobot.eventbus.EventBus;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.disposables.ListCompositeDisposable;
 
 /* loaded from: classes.dex */
 public class UsbSerialManager implements Communication, ErrorHandle {
@@ -44,11 +48,11 @@ public class UsbSerialManager implements Communication, ErrorHandle {
     private String order = "";
     private Handler handler = new Handler();
     WriteCallback writeCallback = new WriteCallback() { // from class: com.kkkcut.e20j.driver.pl2303.UsbSerialManager.1
-        @Override // com.liying.core.communication.WriteCallback
+        @Override // com.cutting.machine.communication.WriteCallback
         public void onWriteFailure(Exception exc) {
         }
 
-        @Override // com.liying.core.communication.WriteCallback
+        @Override // com.cutting.machine.communication.WriteCallback
         public void onWriteSuccess(int i, int i2, byte[] bArr) {
         }
     };
@@ -92,7 +96,7 @@ public class UsbSerialManager implements Communication, ErrorHandle {
         this.operateType = operateType;
     }
 
-    @Override // com.liying.core.communication.Communication
+    @Override // com.cutting.machine.communication.Communication
     public void sendData(byte[] bArr, WriteCallback writeCallback) {
         this.writeCallback = writeCallback;
         if (sendOrder(bArr)) {
@@ -100,12 +104,12 @@ public class UsbSerialManager implements Communication, ErrorHandle {
         }
     }
 
-    @Override // com.liying.core.communication.Communication
+    @Override // com.cutting.machine.communication.Communication
     public <T> void sendEventBusMessage(int i, T t) {
         EventBus.getDefault().post(new EventCenter(i, t));
     }
 
-    @Override // com.liying.core.error.ErrorHandle
+    @Override // com.cutting.machine.error.ErrorHandle
     public ErrorCodeBean getErrorBean(int i) {
         com.kkkcut.e20j.DbBean.ErrorCodeBean errorCode = ErrorCodeDaoManager.getInstance().getErrorCode(i);
         ErrorCodeBean errorCodeBean = new ErrorCodeBean();

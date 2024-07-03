@@ -1,136 +1,79 @@
 package com.kkkcut.e20j.DbBean.search;
 
-import com.kkkcut.e20j.DbBean.DaoSession;
-import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
+@Entity
 /* loaded from: classes.dex */
 public class SearchModelYearChina {
     long FK_ModelChinaID;
-    private transient DaoSession daoSession;
     String description;
     String fromYear;
+    @Id
     long id;
-    private transient SearchModelYearChinaDao myDao;
-    SearchModelChina searchModelChina;
-    private transient Long searchModelChina__resolvedKey;
+
     int sort;
     String toYear;
 
-    public SearchModelYearChina(long j, long j2, String str, String str2, int i, String str3) {
-        this.id = j;
-        this.FK_ModelChinaID = j2;
-        this.fromYear = str;
-        this.toYear = str2;
-        this.sort = i;
-        this.description = str3;
+    @Generated(hash = 1730455243)
+    public SearchModelYearChina(long FK_ModelChinaID, String description,
+                                String fromYear, long id, int sort, String toYear) {
+        this.FK_ModelChinaID = FK_ModelChinaID;
+        this.description = description;
+        this.fromYear = fromYear;
+        this.id = id;
+        this.sort = sort;
+        this.toYear = toYear;
     }
 
+    @Generated(hash = 866993883)
     public SearchModelYearChina() {
     }
-
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long j) {
-        this.id = j;
-    }
-
     public long getFK_ModelChinaID() {
         return this.FK_ModelChinaID;
     }
 
-    public void setFK_ModelChinaID(long j) {
-        this.FK_ModelChinaID = j;
-    }
-
-    public String getFromYear() {
-        return this.fromYear;
-    }
-
-    public void setFromYear(String str) {
-        this.fromYear = str;
-    }
-
-    public String getToYear() {
-        return this.toYear;
-    }
-
-    public void setToYear(String str) {
-        this.toYear = str;
-    }
-
-    public int getSort() {
-        return this.sort;
-    }
-
-    public void setSort(int i) {
-        this.sort = i;
+    public void setFK_ModelChinaID(long FK_ModelChinaID) {
+        this.FK_ModelChinaID = FK_ModelChinaID;
     }
 
     public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String str) {
-        this.description = str;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getFromYear() {
+        return this.fromYear;
     }
 
-    public SearchModelChina getSearchModelChina() {
-        long j = this.FK_ModelChinaID;
-        Long l = this.searchModelChina__resolvedKey;
-        if (l == null || !l.equals(Long.valueOf(j))) {
-            DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            SearchModelChina load = daoSession.getSearchModelChinaDao().load(Long.valueOf(j));
-            synchronized (this) {
-                this.searchModelChina = load;
-                this.searchModelChina__resolvedKey = Long.valueOf(j);
-            }
-        }
-        return this.searchModelChina;
+    public void setFromYear(String fromYear) {
+        this.fromYear = fromYear;
     }
 
-    public void setSearchModelChina(SearchModelChina searchModelChina) {
-        if (searchModelChina == null) {
-            throw new DaoException("To-one property 'FK_ModelChinaID' has not-null constraint; cannot set to-one to null");
-        }
-        synchronized (this) {
-            this.searchModelChina = searchModelChina;
-            long modelID = searchModelChina.getModelID();
-            this.FK_ModelChinaID = modelID;
-            this.searchModelChina__resolvedKey = Long.valueOf(modelID);
-        }
+    public long getId() {
+        return this.id;
     }
 
-    public void delete() {
-        SearchModelYearChinaDao searchModelYearChinaDao = this.myDao;
-        if (searchModelYearChinaDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        searchModelYearChinaDao.delete(this);
+    public void setId(long id) {
+        this.id = id;
+    }
+    public int getSort() {
+        return this.sort;
     }
 
-    public void refresh() {
-        SearchModelYearChinaDao searchModelYearChinaDao = this.myDao;
-        if (searchModelYearChinaDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        searchModelYearChinaDao.refresh(this);
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
-    public void update() {
-        SearchModelYearChinaDao searchModelYearChinaDao = this.myDao;
-        if (searchModelYearChinaDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        searchModelYearChinaDao.update(this);
+    public String getToYear() {
+        return this.toYear;
     }
 
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        this.myDao = daoSession != null ? daoSession.getSearchModelYearChinaDao() : null;
+    public void setToYear(String toYear) {
+        this.toYear = toYear;
     }
+
 }

@@ -3,6 +3,11 @@ package com.kkkcut.e20j.DbBean.userDB;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 /* loaded from: classes.dex */
 public class JpushMsg implements Parcelable {
     public static final Parcelable.Creator<JpushMsg> CREATOR = new Parcelable.Creator<JpushMsg>() { // from class: com.kkkcut.e20j.DbBean.userDB.JpushMsg.1
@@ -22,6 +27,8 @@ public class JpushMsg implements Parcelable {
     String data;
     String extra;
     int haveRead;
+
+    @Id
     Long id;
     String title;
 
@@ -105,5 +112,15 @@ public class JpushMsg implements Parcelable {
     }
 
     public JpushMsg() {
+    }
+
+    @Generated(hash = 986042970)
+    public JpushMsg(String content, String data, String extra, int haveRead, Long id, String title) {
+        this.content = content;
+        this.data = data;
+        this.extra = extra;
+        this.haveRead = haveRead;
+        this.id = id;
+        this.title = title;
     }
 }

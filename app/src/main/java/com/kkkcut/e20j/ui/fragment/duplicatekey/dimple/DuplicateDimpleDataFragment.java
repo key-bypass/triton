@@ -10,8 +10,24 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
+
+import com.cutting.machine.Command;
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.KeyBlankCutStepsGenerateUtil;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.StepsGenerateUtil;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.ClampBean;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.StepBean;
+import com.cutting.machine.clamp.ClampManager;
+import com.cutting.machine.clamp.ClampUtil;
+import com.cutting.machine.clamp.MachineData;
+import com.cutting.machine.communication.OperationManager;
+import com.cutting.machine.error.ErrorBean;
+import com.cutting.machine.error.ErrorCode;
+import com.cutting.machine.operation.cut.DataParam;
+import com.cutting.machine.utils.AssetsJsonUtils;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.kkkcut.e20j.DbBean.userDB.DuplicateDimple;
 import com.kkkcut.e20j.SpKeys;
@@ -30,30 +46,16 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.CutCountHelper;
-import com.liying.core.Command;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.KeyBlankCutStepsGenerateUtil;
-import com.liying.core.OperateType;
-import com.liying.core.StepsGenerateUtil;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.ClampBean;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.bean.StepBean;
-import com.liying.core.clamp.ClampManager;
-import com.liying.core.clamp.ClampUtil;
-import com.liying.core.clamp.MachineData;
-import com.liying.core.communication.OperationManager;
-import com.liying.core.error.ErrorBean;
-import com.liying.core.error.ErrorCode;
-import com.liying.core.operation.cut.DataParam;
-import com.liying.core.utils.AssetsJsonUtils;
-import io.reactivex.functions.Consumer;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.greenrobot.eventbus.EventBus;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /* loaded from: classes.dex */
 public class DuplicateDimpleDataFragment extends BaseBackFragment {
@@ -63,64 +65,46 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
     private static final String ZIMUZHU = "zimuzhu";
     private boolean aligned;
 
-    @BindView(R.id.bt_decode)
     Button btDecode;
 
-    @BindView(R.id.bt_find_space)
     Button btFindSpace;
 
-    @BindView(R.id.bt_location)
     Button btLocation;
 
-    @BindView(R.id.bt_save)
     Button btSave;
     private int dimpleCutIndex;
 
-    @BindView(R.id.gl_space)
     GridLayout gridLayout;
 
-    @BindView(R.id.iv_x_add)
     ImageView ivXAdd;
 
-    @BindView(R.id.iv_x_reduce)
     ImageView ivXReduce;
 
-    @BindView(R.id.iv_y_add)
     ImageView ivYAdd;
 
-    @BindView(R.id.iv_y_reduce)
     ImageView ivYReduce;
 
-    @BindView(R.id.iv_z_add)
     ImageView ivZAdd;
 
-    @BindView(R.id.iv_z_reduce)
     ImageView ivZReduce;
     private KeyInfo keyInfo;
     private RadioButton lastRb;
 
-    @BindView(R.id.rb_row)
     RadioButton rbRow;
 
-    @BindView(R.id.rb_step_x)
     RadioButton rbStepX;
 
-    @BindView(R.id.rb_step_y)
     RadioButton rbStepY;
 
-    @BindView(R.id.rb_step_z)
     RadioButton rbStepZ;
 
-    @BindView(R.id.rg_row_index)
     RadioGroup rgRowIndex;
     private int rowIndex;
     private List<Integer> rowList;
     private List<List<Integer>> spaceList;
 
-    @BindView(R.id.tv_decode_sleep)
     TextView tvSleep;
 
-    @BindView(R.id.tv_space)
     TextView tvSpace;
     private List<RadioButton> rbList = new ArrayList();
     private int x = 1;
@@ -249,81 +233,70 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
         this.rbList.add(this.rbRow);
         this.rbRow.setOnClickListener(new CustomOnClickListener());
         changeRow(0);
-        addDisposable(RxView.clicks(this.ivXAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                if (!DuplicateDimpleDataFragment.this.aligned) {
-                    ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
-                    return;
-                }
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
-                int currentX = OperationManager.getInstance().getCurrentX();
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment2.x = currentX + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepX);
-                DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
-                DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
-                OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
+        addDisposable((Disposable) RxView.clicks(this.ivXAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(obj -> {
+
+            if (!DuplicateDimpleDataFragment.this.aligned) {
+                ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
+                return;
             }
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
+            int currentX = OperationManager.getInstance().getCurrentX();
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment2.x = currentX + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepX);
+            DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
+            DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
+            OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
+
         }));
-        addDisposable(RxView.clicks(this.ivYAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.2
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                if (!DuplicateDimpleDataFragment.this.aligned) {
-                    ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
-                    return;
-                }
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
-                int currentY = OperationManager.getInstance().getCurrentY();
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment2.y = currentY + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepY);
-                DuplicateDimpleDataFragment.this.x = OperationManager.getInstance().getCurrentX();
-                DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
-                OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
+        addDisposable((Disposable) RxView.clicks(this.ivYAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.2
+            if (!DuplicateDimpleDataFragment.this.aligned) {
+                ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
+                return;
             }
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
+            int currentY = OperationManager.getInstance().getCurrentY();
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment2.y = currentY + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepY);
+            DuplicateDimpleDataFragment.this.x = OperationManager.getInstance().getCurrentX();
+            DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
+            OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
         }));
-        addDisposable(RxView.clicks(this.ivZAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.3
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                if (!DuplicateDimpleDataFragment.this.aligned) {
-                    ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
-                    return;
-                }
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
-                DuplicateDimpleDataFragment.this.x = OperationManager.getInstance().getCurrentX();
-                DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
-                int currentZ = OperationManager.getInstance().getCurrentZ();
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment2.z = currentZ + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepZ);
-                OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
+        addDisposable((Disposable) RxView.clicks(this.ivZAdd).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.3
+            if (!DuplicateDimpleDataFragment.this.aligned) {
+                ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
+                return;
             }
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
+            DuplicateDimpleDataFragment.this.x = OperationManager.getInstance().getCurrentX();
+            DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
+            int currentZ = OperationManager.getInstance().getCurrentZ();
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment2.z = currentZ + duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepZ);
+            OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
         }));
-        addDisposable(RxView.clicks(this.ivXReduce).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                if (!DuplicateDimpleDataFragment.this.aligned) {
-                    ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
-                    return;
-                }
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
-                int currentX = OperationManager.getInstance().getCurrentX();
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment2.x = currentX - duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepX);
-                DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
-                DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
-                OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
+        addDisposable((Disposable) RxView.clicks(this.ivXReduce).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.4
+            if (!DuplicateDimpleDataFragment.this.aligned) {
+                ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
+                return;
             }
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment2 = DuplicateDimpleDataFragment.this;
+            int currentX = OperationManager.getInstance().getCurrentX();
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment2.x = currentX - duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepX);
+            DuplicateDimpleDataFragment.this.y = OperationManager.getInstance().getCurrentY();
+            DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
+            OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
         }));
-        addDisposable(RxView.clicks(this.ivYReduce).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.5
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
+        addDisposable((Disposable) RxView.clicks(this.ivYReduce).throttleFirst(500L, TimeUnit.MILLISECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.5
+
                 if (!DuplicateDimpleDataFragment.this.aligned) {
                     ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
                     return;
@@ -337,11 +310,10 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
                 DuplicateDimpleDataFragment.this.x = OperationManager.getInstance().getCurrentX();
                 DuplicateDimpleDataFragment.this.z = OperationManager.getInstance().getCurrentZ();
                 OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
-            }
+
         }));
-        addDisposable(RxView.clicks(this.ivZReduce).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.6
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
+        addDisposable((Disposable) RxView.clicks(this.ivZReduce).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.6
+
                 if (!DuplicateDimpleDataFragment.this.aligned) {
                     ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
                     return;
@@ -355,11 +327,9 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
                 DuplicateDimpleDataFragment duplicateDimpleDataFragment3 = DuplicateDimpleDataFragment.this;
                 duplicateDimpleDataFragment2.z = currentZ - duplicateDimpleDataFragment3.getStep(duplicateDimpleDataFragment3.rbStepZ);
                 OperationManager.getInstance().move(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z);
-            }
+
         }));
-        addDisposable(RxView.clicks(this.btSave).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.7
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
+        addDisposable((Disposable) RxView.clicks(this.btSave).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.7
                 if (DuplicateDimpleDataFragment.this.aligned) {
                     if (!DuplicateDimpleDataFragment.this.dataNotComplete()) {
                         DuplicateDimpleDataFragment.this.showEditDialog();
@@ -370,59 +340,50 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
                     }
                 }
                 ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
-            }
+
         }));
-        addDisposable(RxView.clicks(this.btDecode).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.8
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                if (!DuplicateDimpleDataFragment.this.dataNotComplete()) {
-                    if (ClampManager.getInstance().checkHasCalibrated(DuplicateDimpleDataFragment.this.keyInfo)) {
-                        new DecodeDialog(DuplicateDimpleDataFragment.this.getActivity(), DuplicateDimpleDataFragment.this.dataParam, true).show();
-                        return;
-                    }
+        addDisposable((Disposable) RxView.clicks(this.btDecode).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.8
+            if (!DuplicateDimpleDataFragment.this.dataNotComplete()) {
+                if (ClampManager.getInstance().checkHasCalibrated(DuplicateDimpleDataFragment.this.keyInfo)) {
+                    new DecodeDialog(DuplicateDimpleDataFragment.this.getActivity(), DuplicateDimpleDataFragment.this.dataParam, true).show();
                     return;
                 }
-                ToastUtil.showToast(R.string.please_complete_the_data);
+                return;
             }
+            ToastUtil.showToast(R.string.please_complete_the_data);
         }));
-        addDisposable(RxView.clicks(this.btLocation).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.9
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
-                duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
-                OperationManager.getInstance().start(DuplicateDimpleDataFragment.this.dataParam, AssetsJsonUtils.getCommonSteps(DuplicateDimpleDataFragment.this.getContext(), AssetsJsonUtils.getKeyDecodeLocationJsonPath(DuplicateDimpleDataFragment.this.keyInfo)), OperateType.DIMPLE_DUPLICATE_LOCATION);
-            }
+        addDisposable((Disposable) RxView.clicks(this.btLocation).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.9
+            DuplicateDimpleDataFragment duplicateDimpleDataFragment = DuplicateDimpleDataFragment.this;
+            duplicateDimpleDataFragment.showLoadingDialog(duplicateDimpleDataFragment.getString(R.string.waitting), true);
+            OperationManager.getInstance().start(DuplicateDimpleDataFragment.this.dataParam, AssetsJsonUtils.getCommonSteps(DuplicateDimpleDataFragment.this.getContext(), AssetsJsonUtils.getKeyDecodeLocationJsonPath(DuplicateDimpleDataFragment.this.keyInfo)), OperateType.DIMPLE_DUPLICATE_LOCATION);
         }));
-        addDisposable(RxView.clicks(this.btFindSpace).throttleFirst(1L, TimeUnit.SECONDS).subscribe(new Consumer<Object>() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.10
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Object obj) throws Exception {
-                int indexOf;
-                if (DuplicateDimpleDataFragment.this.aligned) {
-                    final int size = ((List) DuplicateDimpleDataFragment.this.spaceList.get(DuplicateDimpleDataFragment.this.rowIndex)).size();
-                    int i16 = 0;
-                    if (DuplicateDimpleDataFragment.this.lastRb != null && DuplicateDimpleDataFragment.this.rbList.indexOf(DuplicateDimpleDataFragment.this.lastRb) - 4 >= 0) {
-                        i16 = indexOf;
-                    }
-                    DimpleSpaceSelectDialog dimpleSpaceSelectDialog = new DimpleSpaceSelectDialog(DuplicateDimpleDataFragment.this.getContext(), size, i16);
-                    dimpleSpaceSelectDialog.show();
-                    dimpleSpaceSelectDialog.setOnConfirm(new DimpleSpaceSelectDialog.OnConfirmListener() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.10.1
-                        @Override // com.kkkcut.e20j.ui.dialog.DimpleSpaceSelectDialog.OnConfirmListener
-                        public void onConfirm(int i17) {
-                            ((RadioButton) DuplicateDimpleDataFragment.this.rbList.get((DuplicateDimpleDataFragment.this.rbList.size() - size) + i17)).performClick();
-                            DuplicateDimpleDataFragment.this.showLoadingDialog(DuplicateDimpleDataFragment.this.getString(R.string.waitting), true);
-                            int clampFace = OperationManager.getInstance().getKeyAlignInfo().getClampFace() + ClampManager.getInstance().getS1B().getHigh1();
-                            ArrayList arrayList2 = new ArrayList();
-                            arrayList2.add(new StepBean(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z, "", "C:5,X;C:5,Y;C:5,Z", false));
-                            arrayList2.add(new StepBean(1, 0, 0, clampFace, "", "C:5,Z;DCDS:1," + (i17 + 1), false));
-                            arrayList2.add(new StepBean(0, 0, 0, -400, "", "U:Z;"));
-                            DuplicateDimpleDataFragment.this.dataParam.setPauseTime(DuplicateDimpleDataFragment.this.sleep);
-                            OperationManager.getInstance().start(DuplicateDimpleDataFragment.this.dataParam, arrayList2, OperateType.DUPLICATE_DIMPLE_DECODE_SINGLE);
-                        }
-                    });
-                    return;
+        addDisposable((Disposable) RxView.clicks(this.btFindSpace).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.10
+            int indexOf = 0;
+            if (DuplicateDimpleDataFragment.this.aligned) {
+                final int size = (DuplicateDimpleDataFragment.this.spaceList.get(DuplicateDimpleDataFragment.this.rowIndex)).size();
+                int i16 = 0;
+                if (DuplicateDimpleDataFragment.this.lastRb != null && DuplicateDimpleDataFragment.this.rbList.indexOf(DuplicateDimpleDataFragment.this.lastRb) - 4 >= 0) {
+                    i16 = indexOf;
                 }
-                ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
+                DimpleSpaceSelectDialog dimpleSpaceSelectDialog = new DimpleSpaceSelectDialog(DuplicateDimpleDataFragment.this.getContext(), size, i16);
+                dimpleSpaceSelectDialog.show();
+                dimpleSpaceSelectDialog.setOnConfirm(new DimpleSpaceSelectDialog.OnConfirmListener() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.10.1
+                    @Override // com.kkkcut.e20j.ui.dialog.DimpleSpaceSelectDialog.OnConfirmListener
+                    public void onConfirm(int i17) {
+                        DuplicateDimpleDataFragment.this.rbList.get((DuplicateDimpleDataFragment.this.rbList.size() - size) + i17).performClick();
+                        DuplicateDimpleDataFragment.this.showLoadingDialog(DuplicateDimpleDataFragment.this.getString(R.string.waitting), true);
+                        int clampFace = OperationManager.getInstance().getKeyAlignInfo().getClampFace() + ClampManager.getInstance().getS1B().getHigh1();
+                        ArrayList arrayList2 = new ArrayList();
+                        arrayList2.add(new StepBean(0, DuplicateDimpleDataFragment.this.x, DuplicateDimpleDataFragment.this.y, DuplicateDimpleDataFragment.this.z, "", "C:5,X;C:5,Y;C:5,Z", false));
+                        arrayList2.add(new StepBean(1, 0, 0, clampFace, "", "C:5,Z;DCDS:1," + (i17 + 1), false));
+                        arrayList2.add(new StepBean(0, 0, 0, -400, "", "U:Z;"));
+                        DuplicateDimpleDataFragment.this.dataParam.setPauseTime(DuplicateDimpleDataFragment.this.sleep);
+                        OperationManager.getInstance().start(DuplicateDimpleDataFragment.this.dataParam, arrayList2, OperateType.DUPLICATE_DIMPLE_DECODE_SINGLE);
+                    }
+                });
+                return;
             }
+            ToastUtil.showToast(DuplicateDimpleDataFragment.this.getString(R.string.please_locate_first));
         }));
         this.tvSleep.setText(String.valueOf(this.sleep));
         initParam();
@@ -556,12 +517,11 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
 
     /* JADX WARN: Removed duplicated region for block: B:53:0x0169  */
     /* JADX WARN: Removed duplicated region for block: B:56:0x017d  */
-    @butterknife.OnClick({com.kkkcut.e20j.us.R.id.bt_number_1, com.kkkcut.e20j.us.R.id.bt_number_2, com.kkkcut.e20j.us.R.id.bt_number_3, com.kkkcut.e20j.us.R.id.bt_number_4, com.kkkcut.e20j.us.R.id.bt_number_5, com.kkkcut.e20j.us.R.id.bt_number_6, com.kkkcut.e20j.us.R.id.bt_number_7, com.kkkcut.e20j.us.R.id.bt_number_8, com.kkkcut.e20j.us.R.id.bt_number_9, com.kkkcut.e20j.us.R.id.bt_number_0, com.kkkcut.e20j.us.R.id.bt_delete, com.kkkcut.e20j.us.R.id.bt_number_next, com.kkkcut.e20j.us.R.id.bt_number_last, com.kkkcut.e20j.us.R.id.bt_auto, com.kkkcut.e20j.us.R.id.iv_sleep_reduce, com.kkkcut.e20j.us.R.id.iv_sleep_add, com.kkkcut.e20j.us.R.id.iv_space_reduce, com.kkkcut.e20j.us.R.id.iv_space_add, com.kkkcut.e20j.us.R.id.bt_go_to_raw})
     /*
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    public void onClick(android.view.View r6) {
+    public void onClick(View r6) {
         /*
             Method dump skipped, instructions count: 466
             To view this dump change 'Code comments level' option to 'DEBUG'
@@ -569,7 +529,6 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DuplicateDimpleDataFragment.onClick(android.view.View):void");
     }
 
-    @OnCheckedChanged({R.id.rb_row_1, R.id.rb_row_2, R.id.rb_row_3, R.id.rb_row_4})
     public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
         if (z) {
             switch (compoundButton.getId()) {

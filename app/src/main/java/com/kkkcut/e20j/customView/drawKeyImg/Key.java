@@ -16,12 +16,12 @@ import com.kkkcut.e20j.androidquick.tool.LogUtil;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.ThemeUtils;
-import com.liying.core.KeyAlignInfo;
-import com.liying.core.OperateType;
-import com.liying.core.ToolSizeManager;
-import com.liying.core.bean.DestPoint;
-import com.liying.core.bean.KeyInfo;
-import com.liying.core.clamp.MachineData;
+import com.cutting.machine.KeyAlignInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.ToolSizeManager;
+import com.cutting.machine.bean.DestPoint;
+import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.clamp.MachineData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -760,12 +760,12 @@ public abstract class Key extends View {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    public java.lang.String getDoorIgnitionSideBDepthStr(com.liying.core.OperateType r14, boolean r15) {
+    public java.lang.String getDoorIgnitionSideBDepthStr(com.cutting.machine.OperateType r14, boolean r15) {
         /*
             Method dump skipped, instructions count: 243
             To view this dump change 'Code comments level' option to 'DEBUG'
         */
-        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.customView.drawKeyImg.Key.getDoorIgnitionSideBDepthStr(com.liying.core.OperateType, boolean):java.lang.String");
+        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.customView.drawKeyImg.Key.getDoorIgnitionSideBDepthStr(com.cutting.machine.OperateType, boolean):java.lang.String");
     }
 
     public String getDoorIgnitionSideCDepthStr(OperateType operateType, boolean z) {
@@ -1646,15 +1646,15 @@ public abstract class Key extends View {
                 r3 = 1;
             }
             if (row == 0) {
-                arrayList4.add(new DestPoint(spaceLeft, depthByCode, (boolean) r3));
-                arrayList4.add(new DestPoint(spaceRight, depthByCode, (boolean) r3));
-                arrayList5.add(new DestPoint(spaceLeft, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), (boolean) r3));
-                arrayList5.add(new DestPoint(spaceRight, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), (boolean) r3));
+                arrayList4.add(new DestPoint(spaceLeft, depthByCode, r3 == 0));
+                arrayList4.add(new DestPoint(spaceRight, depthByCode, r3 == 0));
+                arrayList5.add(new DestPoint(spaceLeft, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), r3 == 0));
+                arrayList5.add(new DestPoint(spaceRight, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), r3 == 0));
             } else {
-                arrayList5.add(new DestPoint(spaceLeft, depthByCode, (boolean) r3));
-                arrayList5.add(new DestPoint(spaceRight, depthByCode, (boolean) r3));
-                arrayList4.add(new DestPoint(spaceLeft, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), (boolean) r3));
-                arrayList4.add(new DestPoint(spaceRight, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode), (boolean) r3));
+                arrayList5.add(new DestPoint(spaceLeft, depthByCode, r3 == 0));
+                arrayList5.add(new DestPoint(spaceRight, depthByCode, r3 == 0));
+                arrayList4.add(new DestPoint(spaceLeft, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode),  r3 == 0));
+                arrayList4.add(new DestPoint(spaceRight, calculateAnotherSideDepth(getKeyinfo(), keyAlignInfo, depthByCode),  r3 == 0));
             }
             if (i2 == sortSpace.size() - r3) {
                 if (align == 0) {
@@ -1814,7 +1814,7 @@ public abstract class Key extends View {
         int i2 = 0;
         while (i2 < arrayList.size()) {
             int i3 = 0;
-            int r3 = z;
+            int r3 = z ? 1 : 0;
             while (i3 < arrayList.get(i2).length) {
                 int depthByCode = getDepthByCode(this.allDepths.get(i2), this.allDepthNames.get(i2), arrayList.get(i2)[i3]);
                 int intValue = this.allSpaces.get(i2).get(i3).intValue();
@@ -1996,12 +1996,12 @@ public abstract class Key extends View {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    private java.util.List<java.util.List<com.liying.core.bean.DestPoint>> getSingleInsideGrooveKeyPoint(com.liying.core.KeyAlignInfo r20, java.lang.String r21) {
+    private java.util.List<java.util.List<com.cutting.machine.bean.DestPoint>> getSingleInsideGrooveKeyPoint(com.cutting.machine.KeyAlignInfo r20, java.lang.String r21) {
         /*
             Method dump skipped, instructions count: 882
             To view this dump change 'Code comments level' option to 'DEBUG'
         */
-        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.customView.drawKeyImg.Key.getSingleInsideGrooveKeyPoint(com.liying.core.KeyAlignInfo, java.lang.String):java.util.List");
+        throw new UnsupportedOperationException("Method not decompiled: com.kkkcut.e20j.customView.drawKeyImg.Key.getSingleInsideGrooveKeyPoint(com.cutting.machine.KeyAlignInfo, java.lang.String):java.util.List");
     }
 
     private List<List<DestPoint>> getSingleInsideGrooveKeyPoint2(KeyAlignInfo keyAlignInfo) {
@@ -2054,7 +2054,7 @@ public abstract class Key extends View {
         int i2;
         int depthByCode;
         int depthByCode2;
-        int r12;
+        boolean r12;
         int max;
         ArrayList arrayList = new ArrayList();
         ArrayList<String[]> toothCode = getToothCode();
@@ -2103,14 +2103,14 @@ public abstract class Key extends View {
                         max = Math.max(intValue3, intValue4);
                     }
                     int spaceLeft = getSpaceLeft(align, max, intValue2 + 300);
-                    r12 = 1;
+                    r12 = true;
                     arrayList2.add(new DestPoint(spaceLeft, width, true, false));
                 } else {
-                    r12 = 1;
+                    r12 = true;
                 }
-                arrayList2.add(new DestPoint(intValue, depthByCode3, (boolean) r12));
-                arrayList2.add(new DestPoint(fixSpaceWidthRight, depthByCode3, (boolean) r12));
-                if (i4 == toothCode.get(i3).length - r12) {
+                arrayList2.add(new DestPoint(intValue, depthByCode3, r12));
+                arrayList2.add(new DestPoint(fixSpaceWidthRight, depthByCode3, r12));
+                if (i4 == toothCode.get(i3).length - (r12 ? 1 : 0 )) {
                     int abs = align == 0 ? (int) (Math.abs(keyAlignInfo.getShoulder() - keyAlignInfo.getTip()) * MachineData.dYScale) : 0;
                     int nose = this.keyinfo.getNose();
                     int guide = this.keyinfo.getGuide();

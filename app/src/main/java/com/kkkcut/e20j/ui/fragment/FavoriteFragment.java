@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
 import com.kkkcut.e20j.DbBean.userDB.CollectionData;
@@ -28,32 +27,31 @@ import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /* loaded from: classes.dex */
 public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
     private static final int PAGE_SIZE = 50;
     private static final String TYPE = "type";
-    BaseQuickAdapter adapter;
+    FavoriteAdapter adapter;
 
-    @BindView(R.id.bt_get_test_data)
     Button btGetTestData;
 
-    @BindView(R.id.et_search)
     EditText etSearch;
     private int pageIndex;
 
-    @BindView(R.id.rv_user_data)
     RecyclerView rvUserData;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
@@ -77,7 +75,7 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected void initViewsAndEvents() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         this.rvUserData.setLayoutManager(linearLayoutManager);
         this.rvUserData.addItemDecoration(new DividerItemDecoration(getContext(), 1));
         FavoriteAdapter favoriteAdapter = new FavoriteAdapter();
@@ -85,7 +83,7 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
         this.rvUserData.setAdapter(favoriteAdapter);
         getDataList(0, 50, false);
         if (MyApplication.getInstance().isShowRealDepth()) {
-            this.btGetTestData.setVisibility(0);
+            this.btGetTestData.setVisibility(View.VISIBLE);
         }
         this.adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.1
             @Override // com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener
@@ -103,16 +101,9 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
     /* JADX INFO: Access modifiers changed from: private */
     public void getDataList(final int i, final int i2, final boolean z) {
         final String trim = this.etSearch.getText().toString().trim();
-        Disposable subscribe = Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment$$ExternalSyntheticLambda1
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
-                return FavoriteFragment.this.m26x9c541203(i, i2, trim);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
-                FavoriteFragment.this.m27x55cb9fa2(z, (List) obj);
-            }
+        Disposable subscribe = Observable.fromCallable(() -> FavoriteFragment.this.m26x9c541203(i, i2, trim)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
+                FavoriteFragment.this.m27x55cb9fa2(z, obj);
+
         });
         clearDisposable();
         addDisposable(subscribe);
@@ -187,7 +178,6 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
         return getString(R.string.favorites);
     }
 
-    @OnClick({R.id.bt_delete_all, R.id.bt_get_test_data})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id != R.id.bt_delete_all) {
@@ -228,7 +218,7 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
                 @Override // io.reactivex.functions.Consumer
                 public void accept(CollectionData collectionData) throws Exception {
                     Log.i(FavoriteFragment.TAG, "accept: " + collectionData.getTitle());
-                    FavoriteFragment.this.adapter.addData((BaseQuickAdapter) collectionData);
+                    FavoriteFragment.this.adapter.addData(collectionData);
                 }
             }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.5
                 @Override // io.reactivex.functions.Consumer
@@ -270,7 +260,6 @@ public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapt
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @OnTextChanged(callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED, value = {R.id.et_search})
     public void afterTextChanged(Editable editable) {
         this.pageIndex = 0;
         getDataList(0, 50, true);

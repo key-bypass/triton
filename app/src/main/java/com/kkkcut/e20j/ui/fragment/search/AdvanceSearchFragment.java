@@ -6,41 +6,34 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SpinnerAdapter;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.customView.searchSpinner.SearchableListDialog;
 import com.kkkcut.e20j.customView.searchSpinner.SearchableSpinner;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 /* loaded from: classes.dex */
 public class AdvanceSearchFragment extends BaseBackFragment implements SearchableListDialog.SearchableItem {
 
-    @BindView(R.id.et_card)
     EditText etCard;
 
-    @BindView(R.id.et_key_blank)
     EditText etKeyBlank;
 
-    @BindView(R.id.et_lock_manufacturer)
     EditText etLockManufacturer;
 
-    @BindView(R.id.et_lock_system)
     EditText etLockSystem;
     private InputType inputType;
 
-    @BindView(R.id.spinner_card)
     SearchableSpinner spinnerCard;
 
-    @BindView(R.id.spinner_key_manufacturer)
     SearchableSpinner spinnerKeyManufacturer;
 
     /* JADX INFO: Access modifiers changed from: package-private */
@@ -155,7 +148,6 @@ public class AdvanceSearchFragment extends BaseBackFragment implements Searchabl
         return KeyInfoDaoManager.getInstance().searchLockManu(str);
     }
 
-    @OnClick({R.id.iv_card, R.id.iv_key_blank, R.id.iv_lock_manu, R.id.iv_lock_system, R.id.bt_clear, R.id.bt_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_clear /* 2131361915 */:

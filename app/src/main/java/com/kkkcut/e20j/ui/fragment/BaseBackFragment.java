@@ -2,8 +2,9 @@ package com.kkkcut.e20j.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.base.BaseFFragment;
-import com.kkkcut.e20j.ui.activity.FrameActivity;
 
 /* loaded from: classes.dex */
 public abstract class BaseBackFragment extends BaseFFragment {
@@ -21,13 +22,13 @@ public abstract class BaseBackFragment extends BaseFFragment {
     }
 
     public void setTittle() {
-        FrameActivity frameActivity = (FrameActivity) this._mActivity;
+        var frameActivity = this._mActivity;
         if (frameActivity != null) {
             String titleStr = setTitleStr();
             if (titleStr == null) {
                 titleStr = "";
             }
-            frameActivity.setTittle(titleStr);
+            frameActivity.setTitle(titleStr);
         }
     }
 
@@ -38,4 +39,5 @@ public abstract class BaseBackFragment extends BaseFFragment {
         }
         setTittle();
     }
+
 }

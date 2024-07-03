@@ -5,27 +5,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.widget.EditText;
-import butterknife.BindView;
-import com.example.spl_key_sdklibrary.mdKeyBlankClass;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean;
 import com.kkkcut.e20j.ui.fragment.blankcut.BlankCutType;
 import com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment;
+import com.cutting.machine.clamp.ClampF;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.clamp.ClampF;
+import com.spl.key.mdKeyBlankClass;
 
 /* loaded from: classes.dex */
 public class BlankCutCreateGrooveFragment extends BaseBlankCutParamSetFragment {
 
-    @BindView(R.id.et_groove_length)
     EditText etGrooveLength;
 
-    @BindView(R.id.et_left_width)
     EditText etLeftWidth;
 
-    @BindView(R.id.et_remaining_thickness)
     EditText etRemainingThickness;
 
-    @BindView(R.id.et_right_width)
     EditText etRightWidth;
     private int grooveLength;
     private int remainingLeftWidth;

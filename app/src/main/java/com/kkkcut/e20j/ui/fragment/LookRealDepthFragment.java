@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.ui.fragment;
 
+import static io.reactivex.rxjava3.schedulers.Schedulers.newThread;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,8 +11,6 @@ import android.widget.TextView;
 import androidx.core.internal.view.SupportMenu;
 import androidx.core.view.InputDeviceCompat;
 import androidx.core.view.ViewCompat;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.network.RetrofitManager;
@@ -23,10 +23,12 @@ import com.kkkcut.e20j.net.Apis;
 import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.dialog.EditDialog;
 import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
+
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,40 +40,28 @@ import java.util.UUID;
 public class LookRealDepthFragment extends BaseBackFragment {
     private static final String DEPTH_NAME = "depthName";
 
-    @BindView(R.id.colum)
     LinearLayout colum;
 
-    @BindView(R.id.difference)
     LinearLayout difference;
 
-    @BindView(R.id.depth_name)
     LinearLayout llDepthName;
 
-    @BindView(R.id.real_depth)
     LinearLayout llRealDepth;
 
-    @BindView(R.id.row)
     LinearLayout row;
 
-    @BindView(R.id.standard_depth)
     LinearLayout standardDepth;
 
-    @BindView(R.id.tv_depth)
     TextView tvDepth;
 
-    @BindView(R.id.tv_depth_name)
     TextView tvDepthName;
 
-    @BindView(R.id.tv_diff)
     TextView tvDiff;
 
-    @BindView(R.id.tv_max)
     TextView tvMax;
 
-    @BindView(R.id.tv_min)
     TextView tvMin;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
     private String realDepthName = "";
     private String realDepth = "";
@@ -116,6 +106,7 @@ public class LookRealDepthFragment extends BaseBackFragment {
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected void initViewsAndEvents() {
+
         String[] split = getArguments().getString("depth").split(";");
         this.tvDepth.setText("标准齿深：" + split[0]);
         final String string = getArguments().getString(DEPTH_NAME);
@@ -140,7 +131,8 @@ public class LookRealDepthFragment extends BaseBackFragment {
             String[] split2 = split[Integer.parseInt(bitt.getRow()) - 1].split(",");
             float f = 2.1474836E9f;
             int i = 0;
-            for (int i2 = 0; i2 < split2.length; i2++) {
+            var r12 = split2.length;
+            for (int i2 = 0; i2 < r12; i2++) {
                 float round = Math.round(Math.abs(r12 - Integer.parseInt(split2[i2])) * 10.0f) / 10.0f;
                 if (round < f) {
                     f = round;
@@ -254,7 +246,6 @@ public class LookRealDepthFragment extends BaseBackFragment {
         return textView;
     }
 
-    @OnClick({R.id.bt_screenshot})
     public void onclick() {
         if (TextUtils.isEmpty(this.realDepthName) || TextUtils.isEmpty(this.realDepth)) {
             return;
@@ -279,7 +270,7 @@ public class LookRealDepthFragment extends BaseBackFragment {
     /* JADX INFO: Access modifiers changed from: private */
     public void uploadData(String str) {
         String string = getArguments().getString("title");
-        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).postTestData(TUitls.uploadTestData(this.uuid, String.valueOf(getArguments().getInt("keyid")), string, getArguments().getString("bitNum"), this.realDepthName, this.realDepth, str, SPUtils.getString("series", "test_sn"), AppUtil.getVersionCode(getContext()), SPUtils.getString(SpKeys.FIRMWARE, "test_fm"), getArguments().getString("depth"), getArguments().getString(DEPTH_NAME))).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<UploadTestData>() { // from class: com.kkkcut.e20j.ui.fragment.LookRealDepthFragment.6
+        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).postTestData(TUitls.uploadTestData(this.uuid, String.valueOf(getArguments().getInt("keyid")), string, getArguments().getString("bitNum"), this.realDepthName, this.realDepth, str, SPUtils.getString("series", "test_sn"), AppUtil.getVersionCode(getContext()), SPUtils.getString(SpKeys.FIRMWARE, "test_fm"), getArguments().getString("depth"), getArguments().getString(DEPTH_NAME))).subscribeOn(newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<UploadTestData>() { // from class: com.kkkcut.e20j.ui.fragment.LookRealDepthFragment.6
             @Override // io.reactivex.functions.Consumer
             public void accept(UploadTestData uploadTestData) throws Exception {
                 if ("0".equals(uploadTestData.getCode())) {

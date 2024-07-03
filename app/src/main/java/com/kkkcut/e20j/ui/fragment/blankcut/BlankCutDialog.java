@@ -9,64 +9,48 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.ToolSizeManager;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
-import com.liying.core.ToolSizeManager;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
 public class BlankCutDialog extends BottomInDialog {
     private static final String TAG = "CutDialog";
     private BlankCutType blankCutType;
-
-    @BindView(R.id.bt_1_5mm)
     Button bt15mm;
 
-    @BindView(R.id.bt_2_0mm)
     Button bt20mm;
 
-    @BindView(R.id.bt_2_5mm)
     Button bt25mm;
 
-    @BindView(R.id.tv_cut)
     TextView btCut;
     private int cutSpeed;
     private boolean cutterSizeChangeable;
     private int cutter_size;
 
-    @BindView(R.id.iv_clamp)
     ImageView ivClamp;
 
-    @BindView(R.id.iv_cutter)
     ImageView ivCutter;
 
-    @BindView(R.id.ll_cut_speed)
     LinearLayout llCutSpeed;
 
-    @BindView(R.id.ll_cutter_size)
     LinearLayout llCutterSize;
     private boolean onceCut;
 
-    @BindView(R.id.rg_cut_times)
     RadioGroup rgCutTimes;
 
-    @BindView(R.id.tv_cut_speed)
     TextView tvCutSpeed;
 
-    @BindView(R.id.tv_cutter_size)
     TextView tvCutterSize;
 
-    @BindView(R.id.tv_cutter_size_remind)
     TextView tvCutterSizeRemind;
 
-    @BindView(R.id.tv_speed_value)
     TextView tvSpeedValue;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
@@ -259,7 +243,6 @@ public class BlankCutDialog extends BottomInDialog {
         this.bt25mm.setVisibility(8);
     }
 
-    @OnClick({R.id.iv_size_add, R.id.iv_size_reduce, R.id.iv_speed_add, R.id.iv_speed_reduce, R.id.tv_cut, R.id.bt_cancle, R.id.iv_close, R.id.bt_1_5mm, R.id.bt_2_0mm, R.id.bt_2_5mm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_1_5mm /* 2131361901 */:
@@ -377,7 +360,6 @@ public class BlankCutDialog extends BottomInDialog {
         return true;
     }
 
-    @OnCheckedChanged({R.id.rb_double_cut, R.id.rb_once_cut})
     public void onCheckedChange(CompoundButton compoundButton, boolean z) {
         int id = compoundButton.getId();
         if (id == R.id.rb_double_cut) {

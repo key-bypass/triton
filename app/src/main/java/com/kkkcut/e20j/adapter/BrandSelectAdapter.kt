@@ -1,5 +1,6 @@
 package com.kkkcut.e20j.adapter
 
+import com.cutting.machine.MachineInfo
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

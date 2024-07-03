@@ -82,7 +82,7 @@ public class AutoLayoutHelper {
 
     public static AutoLayoutInfo getAutoLayoutInfo(Context context, AttributeSet attributeSet) {
         AutoLayoutInfo autoLayoutInfo = new AutoLayoutInfo();
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, com.kkkcut.e20j.R.styleable.AutoLayout_Layout);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.AutoLayout_Layout);
         int i = obtainStyledAttributes.getInt(1, 0);
         int i2 = obtainStyledAttributes.getInt(0, 0);
         obtainStyledAttributes.recycle();

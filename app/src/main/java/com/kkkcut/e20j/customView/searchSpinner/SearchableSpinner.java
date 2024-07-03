@@ -10,15 +10,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import androidx.appcompat.widget.AppCompatSpinner;
-import com.kkkcut.e20j.R;
-import com.kkkcut.e20j.customView.searchSpinner.SearchableListDialog;
+
+import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /* loaded from: classes.dex */
-public class SearchableSpinner extends AppCompatSpinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
+public class SearchableSpinner extends androidx.appcompat.widget.AppCompatSpinner implements View.OnTouchListener, SearchableListDialog.SearchableItem {
     public static final int NO_ITEM_SELECTED = -1;
     private ArrayAdapter _arrayAdapter;
     private Context _context;

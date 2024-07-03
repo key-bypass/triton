@@ -1,22 +1,19 @@
 package com.kkkcut.e20j.ui.fragment;
 
 import android.widget.LinearLayout;
-import butterknife.BindView;
+
+import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.MachineInfo;
+
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /* loaded from: classes.dex */
 public class SupportFragment extends BaseBackFragment {
     public static final String TAG = "SupportFragment";
-
-    @BindView(R.id.ll_chinese)
     LinearLayout llChinese;
 
-    @BindView(R.id.ll_foreign)
     LinearLayout llForeign;
 
-    @BindView(R.id.ll_foreign_us)
     LinearLayout llForeignUS;
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

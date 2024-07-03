@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.adapter.LanguageListAdapter;
 import com.kkkcut.e20j.driver.pl2303.UsbSerialManager;
@@ -25,7 +24,6 @@ public class LanguageSwitchFragment extends BaseBackFragment implements BaseQuic
     List<String> languageList;
     Map<String, String> languageMap;
 
-    @BindView(R.id.rv_language)
     RecyclerView rvLanguage;
     private String shortName;
 

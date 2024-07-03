@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.BittingCode;
 import com.kkkcut.e20j.adapter.LackToothAdapter2;
 import com.kkkcut.e20j.adapter.ToothKeyboardRvAdapter;
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
@@ -34,19 +31,18 @@ import com.kkkcut.e20j.ui.dialog.MultiToothSelectDialog;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.UnifiedErrorUtil;
-import com.liying.core.bean.KeyInfo;
-import io.reactivex.Observable;
+import com.cutting.machine.bean.KeyInfo;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
+
 import org.greenrobot.eventbus.EventBus;
 
 /* loaded from: classes.dex */
@@ -60,19 +56,16 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
     public static final String ToothCode_Honda_B = "toothcode_honda_b";
     private int index;
     LackToothAdapter2 lackToothAdapter;
+    ToothCodeDaoManager toothCodeDaoManager;
 
-    @BindView(R.id.ll_toothcode_container)
     LinearLayout llToothcodeContainer;
 
-    @BindView(R.id.rv_keyboard)
     RecyclerView rvKeyboard;
 
-    @BindView(R.id.rv_tooth_list)
     RecyclerView rvToothList;
-    private ToothCodeDaoManager toothCodeDaoManager;
+
     private ToothKeyboardRvAdapter toothKeyboardRvAdapter;
 
-    @BindView(R.id.tv_multi)
     TextView tvMulti;
     private ArrayList<List<String>> allDepthNames = new ArrayList<>();
     private int textColorDefault = -1;
@@ -312,7 +305,7 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
             }
         }
         List<CodeAndTooth> data = baseQuickAdapter.getData();
-        for (CodeAndTooth codeAndTooth : data) {
+        for (var codeAndTooth : data) {
             if (codeAndTooth.t != 0) {
                 ((LackToothRes.DataBean) codeAndTooth.t).setChecked(false);
             }
@@ -358,7 +351,6 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
         return arrayList;
     }
 
-    @OnClick({R.id.bt_search, R.id.bt_search_offline})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_search /* 2131361972 */:
@@ -374,14 +366,9 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
 
     private void fuzzyQueryBitting(final String str) {
         showLoadingDialog(getString(R.string.waitting));
-        addDisposable(Observable.fromCallable(new Callable<List<BittingCode>>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.4
-            @Override // java.util.concurrent.Callable
-            public List<BittingCode> call() throws Exception {
-                return LackToothFragment.this.toothCodeDaoManager.lackToothMulti(str, LackToothFragment.this.multiToothMap);
-            }
-        }).map(new Function<List<BittingCode>, List<CodeAndTooth>>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.3
-            @Override // io.reactivex.functions.Function
-            public List<CodeAndTooth> apply(List<BittingCode> list) throws Exception {
+        addDisposable(Observable.fromCallable(() -> {
+            return LackToothFragment.this.toothCodeDaoManager.lackToothMulti(str, LackToothFragment.this.multiToothMap);
+        }).map(list -> {
                 ArrayList arrayList = new ArrayList();
                 if (list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
@@ -393,21 +380,16 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
                     return arrayList;
                 }
                 throw new Exception(LackToothFragment.this.getString(R.string.no_data_was_found));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<CodeAndTooth>>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<CodeAndTooth> list) throws Exception {
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(list -> {
                 LackToothFragment.this.dismissLoadingDialog();
                 LackToothAdapter2 lackToothAdapter2 = new LackToothAdapter2(R.layout.item_lacktooth, R.layout.item_lacktooth_title, list);
                 lackToothAdapter2.setOnItemClickListener(LackToothFragment.this);
                 LackToothFragment.this.rvToothList.setAdapter(lackToothAdapter2);
-            }
-        }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.2
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Throwable th) throws Exception {
+
+        }, th -> {
                 LackToothFragment.this.dismissLoadingDialog();
                 ToastUtil.showToast(R.string.no_data_was_found);
-            }
+
         }));
     }
 
@@ -422,41 +404,37 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
             String charSequence = ((TextView) this.llToothcodeContainer.getChildAt(i)).getText().toString();
             str = TextUtils.equals(charSequence, "#") ? str + "[" + this.multiToothMap.get(Integer.valueOf(i)) + "]" : str + charSequence;
         }
-        KeyInfo keyInfo = (KeyInfo) getArguments().getParcelable(KEY_INFO);
+        KeyInfo keyInfo = getArguments().getParcelable(KEY_INFO);
         if (keyInfo.getIcCard() == 1480 || keyInfo.getIcCard() == 601480) {
             str = str + "*";
         }
-        addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).lackTooth(TUitls.lackToothParam(str.replace("?", "*"), getArguments().getInt("keyID"), GetUUID.getUUID(), SPUtils.getString("series"), getArguments().getString("series"))).map(new Function<LackToothRes, List<CodeAndTooth>>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.6
-            @Override // io.reactivex.functions.Function
-            public List<CodeAndTooth> apply(LackToothRes lackToothRes) throws Exception {
-                List<List<LackToothRes.DataBean>> data = lackToothRes.getData();
-                if ("0".equals(lackToothRes.getCode())) {
-                    if (data != null && data.size() > 0) {
-                        ArrayList arrayList = new ArrayList();
-                        int i2 = 0;
-                        while (i2 < data.size()) {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append(LackToothFragment.this.getString(R.string.key));
-                            sb.append(" ");
-                            int i3 = i2 + 1;
-                            sb.append(i3);
-                            arrayList.add(new CodeAndTooth(true, sb.toString()));
-                            for (int i4 = 0; i4 < data.get(i2).size(); i4++) {
-                                arrayList.add(new CodeAndTooth(data.get(i2).get(i4)));
-                            }
-                            i2 = i3;
+        addDisposable(RetrofitManager.getInstance().createApi(Apis.class).lackTooth(TUitls.lackToothParam(str.replace("?", "*"), getArguments().getInt("keyID"), GetUUID.getUUID(), SPUtils.getString("series"), getArguments().getString("series"))).map(lackToothRes -> {
+            List<List<LackToothRes.DataBean>> data = lackToothRes.getData();
+            if ("0".equals(lackToothRes.getCode())) {
+                if (data != null && data.size() > 0) {
+                    ArrayList arrayList = new ArrayList();
+                    int i2 = 0;
+                    while (i2 < data.size()) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(LackToothFragment.this.getString(R.string.key));
+                        sb.append(" ");
+                        int i3 = i2 + 1;
+                        sb.append(i3);
+                        arrayList.add(new CodeAndTooth(true, sb.toString()));
+                        for (int i4 = 0; i4 < data.get(i2).size(); i4++) {
+                            arrayList.add(new CodeAndTooth(data.get(i2).get(i4)));
                         }
-                        return arrayList;
+                        i2 = i3;
                     }
-                    throw new Exception(LackToothFragment.this.getString(R.string.no_data_was_found));
+                    return arrayList;
                 }
                 throw new Exception(LackToothFragment.this.getString(R.string.no_data_was_found));
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            throw new Exception(LackToothFragment.this.getString(R.string.no_data_was_found));
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( obj -> {
                 LackToothFragment.this.m34lambda$search$0$comkkkcute20juifragmentLackToothFragment((List) obj);
-            }
+
         }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.LackToothFragment.5
             @Override // io.reactivex.functions.Consumer
             public void accept(Throwable th) throws Exception {

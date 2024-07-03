@@ -12,8 +12,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.view.customkeyboard.BaseKeyboard;
-import com.liying.core.MachineInfo;
+
+import com.cutting.machine.MachineInfo;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -34,15 +35,13 @@ public class KeyboardManager {
         @Override // android.view.View.OnFocusChangeListener
         public void onFocusChange(final View view, boolean z) {
             if ((view instanceof EditText) && z) {
-                view.postDelayed(new Runnable() { // from class: com.kkkcut.e20j.view.customkeyboard.KeyboardManager.2.1
-                    @Override // java.lang.Runnable
-                    public void run() {
+                view.postDelayed(() -> {
                         if (KeyboardManager.this.isShow) {
                             KeyboardManager.this.keyboard.setEditText((EditText) view);
                         } else {
                             KeyboardManager.this.showSoftKeyboard((EditText) view);
                         }
-                    }
+
                 }, 100L);
             }
         }

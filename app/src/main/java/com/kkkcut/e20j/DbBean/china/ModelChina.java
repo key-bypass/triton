@@ -2,9 +2,12 @@ package com.kkkcut.e20j.DbBean.china;
 
 import android.text.TextUtils;
 import com.kkkcut.e20j.DbBean.KeyInfoBase;
-import com.liying.core.MachineInfo;
+import com.cutting.machine.MachineInfo;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class ModelChina extends KeyInfoBase {
     String description;
     String distributorNum;
@@ -30,6 +33,18 @@ public class ModelChina extends KeyInfoBase {
     }
 
     public ModelChina() {
+    }
+
+    @Generated(hash = 440988405)
+    public ModelChina(String description, String distributorNum, int fK_ManufacturerID, int is_visible,
+            int modelID, String modelName, String modelName_CN) {
+        this.description = description;
+        this.distributorNum = distributorNum;
+        this.fK_ManufacturerID = fK_ManufacturerID;
+        this.is_visible = is_visible;
+        this.modelID = modelID;
+        this.modelName = modelName;
+        this.modelName_CN = modelName_CN;
     }
 
     @Override // com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean

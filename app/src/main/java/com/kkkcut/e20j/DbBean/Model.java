@@ -1,9 +1,13 @@
 package com.kkkcut.e20j.DbBean;
 
 import android.text.TextUtils;
-import com.liying.core.MachineInfo;
 
-/* loaded from: classes.dex */
+import com.cutting.machine.MachineInfo;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class Model extends KeyInfoBase {
     String description;
     String distributorNum;
@@ -29,6 +33,18 @@ public class Model extends KeyInfoBase {
     }
 
     public Model() {
+    }
+
+    @Generated(hash = 1680000835)
+    public Model(String description, String distributorNum, int fK_ManufacturerID,
+            int is_visible, int modelID, String modelName, String modelName_CN) {
+        this.description = description;
+        this.distributorNum = distributorNum;
+        this.fK_ManufacturerID = fK_ManufacturerID;
+        this.is_visible = is_visible;
+        this.modelID = modelID;
+        this.modelName = modelName;
+        this.modelName_CN = modelName_CN;
     }
 
     @Override // com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean
