@@ -9,10 +9,10 @@ import android.content.DialogInterface;
 public class DialogInterfaceOnClickListenerC2085d implements DialogInterface.OnClickListener {
 
     /* renamed from: a */
-    final /* synthetic */ C2086e f717a;
+    final /* synthetic */ PgyerDownloadListener f717a;
 
-    public DialogInterfaceOnClickListenerC2085d(C2086e c2086e) {
-        this.f717a = c2086e;
+    public DialogInterfaceOnClickListenerC2085d(PgyerDownloadListener pgyerDownloadListener) {
+        this.f717a = pgyerDownloadListener;
     }
 
     @Override // android.content.DialogInterface.OnClickListener

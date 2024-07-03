@@ -1,7 +1,8 @@
 package com.pgyersdk.feedback;
 
+import com.kkkcut.e20j.pyger.C2077k;
 import com.pgyersdk.feedback.p017a.AlertDialogBuilderC2062m;
-import com.pgyersdk.p016f.C2047l;
+import com.pgyersdk.utils.Util;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
@@ -28,14 +29,14 @@ public class PgyerFeedbackManager {
         }
 
         public PgyerFeedbackBuilder setBarBackgroundColor(String str) {
-            if (C2047l.m239b(str)) {
+            if (Util.m239b(str)) {
                 FeedbackActivity.setBarBackgroundColor(str);
             }
             return this;
         }
 
         public PgyerFeedbackBuilder setBarButtonPressedColor(String str) {
-            if (C2047l.m239b(str)) {
+            if (Util.m239b(str)) {
                 FeedbackActivity.setBarButtonPressedColor(str);
             }
             return this;
@@ -47,21 +48,21 @@ public class PgyerFeedbackManager {
         }
 
         public PgyerFeedbackBuilder setColorDialogTitle(String str) {
-            if (C2047l.m239b(str)) {
+            if (Util.m239b(str)) {
                 AlertDialogBuilderC2062m.m276a(str);
             }
             return this;
         }
 
         public PgyerFeedbackBuilder setColorPickerBackgroundColor(String str) {
-            if (C2047l.m239b(str)) {
+            if (Util.m239b(str)) {
                 FeedbackActivity.setColorPickerBackgroundColor(str);
             }
             return this;
         }
 
         public PgyerFeedbackBuilder setColorTitleBg(String str) {
-            if (C2047l.m239b(str)) {
+            if (Util.m239b(str)) {
                 AlertDialogBuilderC2062m.m280b(str);
             }
             return this;
@@ -112,13 +113,13 @@ public class PgyerFeedbackManager {
     }
 
     public void invoke() {
-        if (C2047l.m236a()) {
+        if (Util.m236a()) {
             this.f547b.m352e();
         }
     }
 
     public void register() {
-        if (C2047l.m236a()) {
+        if (Util.m236a()) {
             this.f547b.m353f();
         }
     }

@@ -5,49 +5,42 @@ import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-import butterknife.BindView;
+
+import com.cutting.machine.Command;
+import com.cutting.machine.MachineInfo;
+import com.cutting.machine.OperateType;
+import com.cutting.machine.communication.OperationManager;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.dao.KeyInfoDaoManager;
 import com.kkkcut.e20j.us.R;
-import com.liying.core.Command;
-import com.liying.core.MachineInfo;
-import com.liying.core.OperateType;
-import com.liying.core.communication.OperationManager;
 import io.reactivex.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.Callable;
 
 /* loaded from: classes.dex */
 public class AboutFragment extends BaseBackFragment {
 
-    @BindView(R.id.tv_company)
     TextView tvCompany;
 
-    @BindView(R.id.tv_db_version)
     TextView tvDbVersion;
 
-    @BindView(R.id.tv_firmware)
     TextView tvFirmware;
 
-    @BindView(R.id.tv_model_name)
     TextView tvModelName;
 
-    @BindView(R.id.tv_serial)
     TextView tvSerial;
 
-    @BindView(R.id.tv_soft_version)
     TextView tvSoftVersion;
 
-    @BindView(R.id.tv_update_log)
     TextView tvUpdateLog;
 
-    @BindView(R.id.webview)
     WebView webView;
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_about_us;
     }
@@ -62,12 +55,12 @@ public class AboutFragment extends BaseBackFragment {
         return aboutFragment;
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
     public String setTitleStr() {
         return getString(R.string.machine_info);
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected void initViewsAndEvents() {
         String string = getArguments().getString("companyStr");
         if (TextUtils.isEmpty(string)) {
@@ -92,14 +85,14 @@ public class AboutFragment extends BaseBackFragment {
     }
 
     private void initUpdateLog() {
-        addDisposable(Observable.fromCallable(new Callable<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.2
+        addDisposable((Disposable) Observable.fromCallable(new Callable<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.2
             @Override // java.util.concurrent.Callable
-            public String call() throws Exception {
+            public String call() {
                 return KeyInfoDaoManager.getInstance().getUpdateInfo();
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.1
             @Override // io.reactivex.functions.Consumer
-            public void accept(String str) throws Exception {
+            public void accept(String str) {
                 if (TextUtils.isEmpty(str)) {
                     str = "";
                 }
@@ -115,22 +108,18 @@ public class AboutFragment extends BaseBackFragment {
     }
 
     private void getDbVersion() {
-        addDisposable(Observable.fromCallable(new Callable<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.4
-            @Override // java.util.concurrent.Callable
-            public String call() throws Exception {
+        addDisposable((Disposable) Observable.fromCallable(() -> {
                 String dbVersion = KeyInfoDaoManager.getInstance().getDbVersion();
                 return TextUtils.isEmpty(dbVersion) ? "16.44" : dbVersion;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.3
-            @Override // io.reactivex.functions.Consumer
-            public void accept(String str) throws Exception {
+
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( str -> {
                 AboutFragment.this.tvDbVersion.setText(str);
-            }
+
         }));
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
+    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    protected void onEventComing(EventCenter<?> eventCenter) {
         if (isVisible() && eventCenter.getEventCode() == 35) {
             String str = (String) eventCenter.getData();
             if (TextUtils.isEmpty(str)) {

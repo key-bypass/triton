@@ -1,10 +1,10 @@
 package com.pgyersdk.update;
 
 import com.pgyersdk.PgyerProvider;
-import com.pgyersdk.p016f.C2036a;
-import com.pgyersdk.p016f.C2038c;
-import com.pgyersdk.p016f.C2047l;
-import com.pgyersdk.p016f.C2048m;
+import com.pgyersdk.utils.AsyncTaskUtils;
+import com.pgyersdk.utils.FileUtils;
+import com.pgyersdk.utils.Util;
+import com.pgyersdk.utils.Utils;
 import java.io.File;
 
 /* loaded from: classes2.dex */
@@ -37,14 +37,14 @@ public class PgyUpdateManager {
         boolean deleteHistroyApk = true;
 
         public PgyUpdateManager register() {
-            if (!C2047l.m236a()) {
+            if (!Util.m236a()) {
                 return null;
             }
             if (this.updateManagerListener == null) {
-                this.updateManagerListener = new C2090i(this.isForced);
+                this.updateManagerListener = new PgyerUpdateListener(this.isForced);
             }
             if (this.downloadFileListener == null) {
-                this.downloadFileListener = new C2086e(this.userCanRetry);
+                this.downloadFileListener = new PgyerDownloadListener(this.userCanRetry);
             }
             PgyUpdateManager.f704a = new PgyUpdateManager(this.updateManagerListener, this.downloadFileListener, this.isForced, this.userCanRetry, this.deleteHistroyApk);
             return PgyUpdateManager.f704a;
@@ -78,15 +78,15 @@ public class PgyUpdateManager {
 
     /* renamed from: a */
     private void m369a(boolean z) {
-        if (z && C2047l.m244e()) {
-            C2038c.m196a().m201a(new File(C2038c.m196a().m204c(PgyerProvider.f436a)));
+        if (z && Util.m244e()) {
+            FileUtils.m196a().m201a(new File(FileUtils.m196a().m204c(PgyerProvider.f436a)));
         }
     }
 
     public static void downLoadApk(String str) {
-        if (C2047l.m244e()) {
-            if (C2048m.m249b()) {
-                C2036a.m194a(new AsyncTaskC2083b(str, f706c));
+        if (Util.m244e()) {
+            if (Utils.m249b()) {
+                AsyncTaskUtils.m194a(new AsyncTaskC2083b(str, f706c));
             } else {
                 f706c.downloadFailed();
             }
@@ -94,12 +94,12 @@ public class PgyUpdateManager {
     }
 
     public static void installApk(File file) {
-        C2086e.m380a(file);
+        PgyerDownloadListener.m380a(file);
     }
 
     @Deprecated
     public static void register() {
-        if (C2047l.m236a()) {
+        if (Util.m236a()) {
             new Builder().setForced(false).setUserCanRetry(true).register();
         }
     }
@@ -107,13 +107,13 @@ public class PgyUpdateManager {
     public static void unRegister() {
         if (f704a != null) {
             UpdateManagerListener updateManagerListener = f705b;
-            if (updateManagerListener != null && (updateManagerListener instanceof C2090i)) {
-                ((C2090i) updateManagerListener).m385b();
+            if (updateManagerListener != null && (updateManagerListener instanceof PgyerUpdateListener)) {
+                ((PgyerUpdateListener) updateManagerListener).m385b();
             }
             f705b = null;
             DownloadFileListener downloadFileListener = f706c;
-            if (downloadFileListener != null && (downloadFileListener instanceof C2086e)) {
-                ((C2086e) downloadFileListener).m382a();
+            if (downloadFileListener != null && (downloadFileListener instanceof PgyerDownloadListener)) {
+                ((PgyerDownloadListener) downloadFileListener).m382a();
             }
             f706c = null;
             AsyncTaskC2082a asyncTaskC2082a = f707d;
@@ -135,7 +135,7 @@ public class PgyUpdateManager {
 
     @Deprecated
     public static void register(UpdateManagerListener updateManagerListener) {
-        if (C2047l.m236a()) {
+        if (Util.m236a()) {
             new Builder().setUpdateManagerListener(updateManagerListener).register();
         }
     }
@@ -146,10 +146,10 @@ public class PgyUpdateManager {
         if (asyncTaskC2082a != null) {
             asyncTaskC2082a.cancel(true);
         }
-        if (C2048m.m249b()) {
+        if (Utils.m249b()) {
             AsyncTaskC2082a asyncTaskC2082a2 = new AsyncTaskC2082a(f705b);
             f707d = asyncTaskC2082a2;
-            C2036a.m194a(asyncTaskC2082a2);
+            AsyncTaskUtils.m194a(asyncTaskC2082a2);
             return;
         }
         f705b.checkUpdateFailed(new IllegalArgumentException("net work unavailable"));

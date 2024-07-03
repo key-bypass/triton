@@ -2,14 +2,13 @@ package com.pgyersdk.feedback;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import com.pgyersdk.feedback.p017a.C2050a;
-import com.pgyersdk.p008b.C2019e;
-import com.pgyersdk.p014e.p015a.C2035b;
-import com.pgyersdk.p016f.C2042g;
+import com.pgyersdk.p008b.FileManager;
+import com.pgyersdk.p014e.p015a.SystemBarTintManager;
+import com.pgyersdk.utils.OrientatingUtils;
 import java.io.File;
 
 /* loaded from: classes2.dex */
@@ -29,9 +28,9 @@ public class FeedbackActivity extends Activity {
         Window window = getWindow();
         WindowManager.LayoutParams attributes = window.getAttributes();
         if (z) {
-            attributes.flags |= 67108864;
+            attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         } else {
-            attributes.flags &= -67108865;
+            attributes.flags &= ~WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         }
         window.setAttributes(attributes);
     }
@@ -46,7 +45,7 @@ public class FeedbackActivity extends Activity {
     }
 
     public static void setBarImmersive(Boolean bool) {
-        f543a = bool.booleanValue();
+        f543a = bool;
     }
 
     public static void setColorPickerBackgroundColor(String str) {
@@ -59,18 +58,16 @@ public class FeedbackActivity extends Activity {
         m253a();
     }
 
-    @Override // android.app.Activity
+    @Override
     protected void onCreate(Bundle bundle) {
         requestWindowFeature(1);
-        C2042g.m221a(this);
+        OrientatingUtils.m221a(this);
         super.onCreate(bundle);
         if (f543a) {
-            if (Build.VERSION.SDK_INT >= 19) {
-                m254a(true);
-            }
-            C2035b c2035b = new C2035b(this);
-            c2035b.m182a(true);
-            c2035b.m181a(Color.parseColor(ViewOnClickListenerC2070d.f641b));
+            m254a(true);
+            SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
+            systemBarTintManager.m182a(true);
+            systemBarTintManager.m181a(Color.parseColor(ViewOnClickListenerC2070d.f641b));
         }
         this.f545c = getIntent().getStringExtra("imgFile");
         ViewOnClickListenerC2070d viewOnClickListenerC2070d = new ViewOnClickListenerC2070d(this, this.f545c);
@@ -81,10 +78,9 @@ public class FeedbackActivity extends Activity {
     /* renamed from: a */
     private void m253a() {
         this.f544b.f647g.m262b();
-        this.f544b.f654n.destroyDrawingCache();
         this.f544b.f654n = null;
         this.f544b = null;
-        C2019e.m131a(new File(this.f545c));
+        FileManager.m131a(new File(this.f545c));
         PgyerFeedbackManager.getInstance().m257b().m350c();
     }
 }

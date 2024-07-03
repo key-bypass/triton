@@ -2,27 +2,35 @@ package com.kkkcut.e20j.DbBean.technical;
 
 import com.kkkcut.e20j.DbBean.KeyInfoBase;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class DataModel extends KeyInfoBase {
     int fK_ManufacturerID;
     int modelID;
     String modelName;
     String modelName_CN;
 
+    @Generated(hash = 1125617716)
+    public DataModel(int fK_ManufacturerID, int modelID, String modelName,
+            String modelName_CN) {
+        this.fK_ManufacturerID = fK_ManufacturerID;
+        this.modelID = modelID;
+        this.modelName = modelName;
+        this.modelName_CN = modelName_CN;
+    }
+
+
+    @Generated(hash = 1794172823)
+    public DataModel() {
+    }
+
     @Override // com.chad.library.adapter.base.entity.MultiItemEntity
     public int getItemType() {
         return 1;
     }
-
-    public DataModel(int i, int i2, String str, String str2) {
-        this.modelID = i;
-        this.fK_ManufacturerID = i2;
-        this.modelName = str;
-        this.modelName_CN = str2;
-    }
-
-    public DataModel() {
-    }
+    
 
     @Override // com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean
     public String getTarget() {

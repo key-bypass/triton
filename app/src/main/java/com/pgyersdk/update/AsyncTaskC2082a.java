@@ -1,9 +1,9 @@
 package com.pgyersdk.update;
 
 import android.os.AsyncTask;
-import com.pgyersdk.p012c.C2023b;
-import com.pgyersdk.p016f.C2041f;
-import com.pgyersdk.p016f.C2048m;
+import com.pgyersdk.p012c.Strings;
+import com.pgyersdk.utils.LogUtils;
+import com.pgyersdk.utils.Utils;
 import com.pgyersdk.update.javabean.AppBean;
 import java.util.HashMap;
 import org.json.JSONException;
@@ -27,9 +27,9 @@ public class AsyncTaskC2082a extends AsyncTask<Void, String, HashMap<String, Str
     @Override // android.os.AsyncTask
     /* renamed from: a */
     public HashMap<String, String> doInBackground(Void... voidArr) {
-        if (!C2048m.m249b()) {
-            this.f710a.checkUpdateFailed(new Exception(C2023b.m151a(518)));
-            C2041f.m216a("PgyerSDK", "Check update failed");
+        if (!Utils.m249b()) {
+            this.f710a.checkUpdateFailed(new Exception(Strings.m151a(518)));
+            LogUtils.m216a("PgyerSDK", "Check update failed");
         }
         return m371a();
     }
@@ -131,8 +131,8 @@ public class AsyncTaskC2082a extends AsyncTask<Void, String, HashMap<String, Str
         if (!this.f711b) {
             UpdateManagerListener updateManagerListener = this.f710a;
             if (updateManagerListener != null) {
-                updateManagerListener.checkUpdateFailed(new RuntimeException(C2023b.m151a(517)));
-                C2041f.m216a("PgyerSDK", "Check update failed");
+                updateManagerListener.checkUpdateFailed(new RuntimeException(Strings.m151a(517)));
+                LogUtils.m216a("PgyerSDK", "Check update failed");
                 return;
             }
             return;
@@ -140,8 +140,8 @@ public class AsyncTaskC2082a extends AsyncTask<Void, String, HashMap<String, Str
         try {
             JSONObject jSONObject = new JSONObject(hashMap.get("response")).getJSONObject("data");
             if (jSONObject.getBoolean("updateDeny")) {
-                this.f710a.checkUpdateFailed(new RuntimeException(C2023b.m151a(517)));
-                C2041f.m216a("PgyerSDK", "Check update failed. Please go to wwww.pgyer.com to get more detail");
+                this.f710a.checkUpdateFailed(new RuntimeException(Strings.m151a(517)));
+                LogUtils.m216a("PgyerSDK", "Check update failed. Please go to wwww.pgyer.com to get more detail");
                 return;
             }
             if (jSONObject.getBoolean("haveNewVersion")) {
@@ -150,27 +150,27 @@ public class AsyncTaskC2082a extends AsyncTask<Void, String, HashMap<String, Str
                 if (updateManagerListener2 != null) {
                     updateManagerListener2.onUpdateAvailable(m370a);
                 }
-                C2041f.m216a("PgyerSDK", "There is a new version");
+                LogUtils.m216a("PgyerSDK", "There is a new version");
                 return;
             }
             UpdateManagerListener updateManagerListener3 = this.f710a;
             if (updateManagerListener3 != null) {
                 updateManagerListener3.onNoUpdateAvailable();
             }
-            C2041f.m216a("PgyerSDK", "It's the latest version");
+            LogUtils.m216a("PgyerSDK", "It's the latest version");
         } catch (JSONException e) {
             e.printStackTrace();
             UpdateManagerListener updateManagerListener4 = this.f710a;
             if (updateManagerListener4 != null) {
                 updateManagerListener4.checkUpdateFailed(e);
             }
-            C2041f.m217a("PgyerSDK", "JSONException", e);
+            LogUtils.m217a("PgyerSDK", "JSONException", e);
         } catch (Exception e2) {
             UpdateManagerListener updateManagerListener5 = this.f710a;
             if (updateManagerListener5 != null) {
                 updateManagerListener5.checkUpdateFailed(e2);
             }
-            C2041f.m217a("PgyerSDK", "Please check you config of PGY SDK. ", e2);
+            LogUtils.m217a("PgyerSDK", "Please check you config of PGY SDK. ", e2);
         }
     }
 

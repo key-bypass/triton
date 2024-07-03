@@ -1,20 +1,25 @@
 package com.kkkcut.e20j.DbBean;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class BittingCode {
     String bitting;
     String code;
     String isn;
 
-    public BittingCode(String str, String str2, String str3) {
-        this.code = str;
-        this.bitting = str2;
-        this.isn = str3;
+    @Generated(hash = 1556232697)
+    public BittingCode(String bitting, String code, String isn) {
+        this.bitting = bitting;
+        this.code = code;
+        this.isn = isn;
     }
 
+    @Generated(hash = 496046989)
     public BittingCode() {
     }
-
+    
     public String getCode() {
         return this.code;
     }

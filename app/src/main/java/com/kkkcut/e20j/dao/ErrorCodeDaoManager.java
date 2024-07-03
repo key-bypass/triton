@@ -67,7 +67,7 @@ public class ErrorCodeDaoManager {
             return "";
         }
         try {
-            return DesUtil.decrypt(getDaoSession().getDbVersionDao().queryBuilder().unique().getVersion(), DesUtil.DATABASE);
+            return DesUtil.decrypt(getDaoSession().getLocalDbVersionDao().queryBuilder().unique().getSvResVer(), DesUtil.DATABASE);
         } catch (Exception e) {
             e.printStackTrace();
             return "0";

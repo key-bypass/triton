@@ -1,6 +1,9 @@
 package com.kkkcut.e20j.DbBean;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class ModelYear extends KeyInfoBase {
     String description;
     int fK_ModelID;
@@ -29,6 +32,17 @@ public class ModelYear extends KeyInfoBase {
     }
 
     public ModelYear() {
+    }
+
+    @Generated(hash = 295269605)
+    public ModelYear(String description, int fK_ModelID, String fromYear, int modelYearID,
+            int sort, String toYear) {
+        this.description = description;
+        this.fK_ModelID = fK_ModelID;
+        this.fromYear = fromYear;
+        this.modelYearID = modelYearID;
+        this.sort = sort;
+        this.toYear = toYear;
     }
 
     public int getModelYearID() {

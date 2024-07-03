@@ -1,16 +1,16 @@
 package com.pgyersdk;
 
-import com.pgyersdk.p012c.C2022a;
-import com.pgyersdk.p016f.C2041f;
-import com.pgyersdk.p016f.C2047l;
+import com.pgyersdk.p012c.Constants;
+import com.pgyersdk.utils.LogUtils;
+import com.pgyersdk.utils.Util;
 
 /* loaded from: classes2.dex */
 public class Pgyer {
     public static void setAppId(String str) {
-        C2022a.f474l = C2047l.m240c(str);
-        if (C2047l.m236a()) {
+        Constants.f474l = Util.m240c(str);
+        if (Util.m236a()) {
             return;
         }
-        C2041f.m218b("PgyerSDK", "Please config correct AppId");
+        LogUtils.m218b("PgyerSDK", "Please config correct AppId");
     }
 }

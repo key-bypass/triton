@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import com.pgyersdk.p008b.p009a.C2004b;
-import com.pgyersdk.p008b.p010b.InterfaceC2008a;
+import com.pgyersdk.p008b.p009a.CaptureFailException;
+import com.pgyersdk.p008b.p010b.ScreenCaptureListener;
 
 /* JADX INFO: Access modifiers changed from: package-private */
 /* compiled from: TracupCapture.java */
@@ -14,12 +14,12 @@ import com.pgyersdk.p008b.p010b.InterfaceC2008a;
 public class HandlerC2020f extends Handler {
 
     /* renamed from: a */
-    final /* synthetic */ C2021g f456a;
+    final /* synthetic */ TracupCapture f456a;
 
     /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public HandlerC2020f(C2021g c2021g, Looper looper) {
+    public HandlerC2020f(TracupCapture tracupCapture, Looper looper) {
         super(looper);
-        this.f456a = c2021g;
+        this.f456a = tracupCapture;
     }
 
     @Override // android.os.Handler
@@ -27,16 +27,16 @@ public class HandlerC2020f extends Handler {
         super.handleMessage(message);
         Bitmap bitmap = (Bitmap) message.obj;
         if (bitmap != null) {
-            InterfaceC2008a interfaceC2008a = this.f456a.f462f;
-            if (interfaceC2008a != null) {
-                interfaceC2008a.mo111a(bitmap);
+            ScreenCaptureListener screenCaptureListener = this.f456a.f462f;
+            if (screenCaptureListener != null) {
+                screenCaptureListener.onComplete(bitmap);
                 return;
             }
             return;
         }
-        InterfaceC2008a interfaceC2008a2 = this.f456a.f462f;
-        if (interfaceC2008a2 != null) {
-            interfaceC2008a2.mo112a(new C2004b("Sorry,Capture is failed."));
+        ScreenCaptureListener screenCaptureListener2 = this.f456a.f462f;
+        if (screenCaptureListener2 != null) {
+            screenCaptureListener2.onError(new CaptureFailException("Sorry,Capture is failed."));
         }
     }
 }

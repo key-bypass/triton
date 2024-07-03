@@ -62,6 +62,7 @@ public class Object2FileUitl {
 
     public static Object file2Object(String str) {
         ObjectInputStream objectInputStream;
+        Exception e = null;
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(PASSWORD.getBytes(), Algorithm);
             Cipher cipher = Cipher.getInstance(Algorithm);

@@ -51,13 +51,12 @@ public final class ZipUtils {
             zipOutputStream.close();
             return true;
         } catch (Throwable th2) {
-            th = th2;
             zipOutputStream2 = zipOutputStream;
             if (zipOutputStream2 != null) {
                 zipOutputStream2.finish();
                 zipOutputStream2.close();
             }
-            throw th;
+            throw th2;
         }
     }
 
@@ -89,13 +88,12 @@ public final class ZipUtils {
             zipOutputStream.close();
             return true;
         } catch (Throwable th2) {
-            th = th2;
             zipOutputStream2 = zipOutputStream;
             if (zipOutputStream2 != null) {
                 zipOutputStream2.finish();
                 zipOutputStream2.close();
             }
-            throw th;
+            throw th2;
         }
     }
 
@@ -127,17 +125,18 @@ public final class ZipUtils {
             zipOutputStream.close();
             return zipFile;
         } catch (Throwable th2) {
-            th = th2;
+
             zipOutputStream2 = zipOutputStream;
             if (zipOutputStream2 != null) {
                 zipOutputStream2.close();
             }
-            throw th;
+            throw th2;
         }
     }
 
     private static boolean zipFile(File file, String str, ZipOutputStream zipOutputStream, String str2) throws IOException {
         StringBuilder sb = new StringBuilder();
+        Throwable th = null;
         sb.append(str);
         sb.append(isSpace(str) ? "" : File.separator);
         sb.append(file.getName());
@@ -176,13 +175,12 @@ public final class ZipUtils {
                         return true;
                     }
                 }
-            } catch (Throwable th) {
-                th = th;
+            } catch (Throwable th4) {
                 bufferedInputStream = bufferedInputStream2;
                 if (bufferedInputStream != null) {
                     bufferedInputStream.close();
                 }
-                throw th;
+                throw th4;
             }
         } catch (Throwable th2) {
             th = th2;

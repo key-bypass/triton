@@ -12,6 +12,9 @@ import android.webkit.CookieSyncManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 import com.kkkcut.e20j.utils.DesUtil;
+
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -276,6 +279,8 @@ public class FileUtil {
 
     public static StringBuilder readFile(String str, String str2) {
         File file = new File(str);
+        Throwable th;
+        Exception e;
         StringBuilder sb = new StringBuilder("");
         BufferedReader bufferedReader = null;
         if (!file.isFile()) {
@@ -319,6 +324,7 @@ public class FileUtil {
         if (StringUtil.isEmpty(str2)) {
             return false;
         }
+        Exception e = null;
         FileWriter fileWriter = null;
         try {
             try {
@@ -348,6 +354,8 @@ public class FileUtil {
 
     public static boolean writeFile(String str, List<String> list, boolean z) {
         int i = 0;
+        Exception e;
+        Throwable th;
         if (list.size() == 0 || list == null) {
             return false;
         }
@@ -406,6 +414,8 @@ public class FileUtil {
 
     public static boolean writeFile(File file, InputStream inputStream, boolean z) {
         FileOutputStream fileOutputStream = null;
+        Exception e;
+        Throwable th;
         try {
             try {
                 makeDirs(file.getAbsolutePath());

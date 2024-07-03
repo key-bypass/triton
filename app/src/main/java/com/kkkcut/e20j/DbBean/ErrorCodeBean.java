@@ -1,6 +1,9 @@
 package com.kkkcut.e20j.DbBean;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class ErrorCodeBean {
     int Code;
     String Desc_cs;
@@ -41,6 +44,28 @@ public class ErrorCodeBean {
     }
 
     public ErrorCodeBean() {
+    }
+
+    @Generated(hash = 117352923)
+    public ErrorCodeBean(int Code, String Desc_cs, String Desc_de, String Desc_en, String Desc_es, String Desc_fr, String Desc_hb, String Desc_it, String Desc_ko, String Desc_pl, String Desc_pt, String Desc_ru, String Desc_tr, String Desc_vi,
+            String Desc_zh, int ID, int MessageType) {
+        this.Code = Code;
+        this.Desc_cs = Desc_cs;
+        this.Desc_de = Desc_de;
+        this.Desc_en = Desc_en;
+        this.Desc_es = Desc_es;
+        this.Desc_fr = Desc_fr;
+        this.Desc_hb = Desc_hb;
+        this.Desc_it = Desc_it;
+        this.Desc_ko = Desc_ko;
+        this.Desc_pl = Desc_pl;
+        this.Desc_pt = Desc_pt;
+        this.Desc_ru = Desc_ru;
+        this.Desc_tr = Desc_tr;
+        this.Desc_vi = Desc_vi;
+        this.Desc_zh = Desc_zh;
+        this.ID = ID;
+        this.MessageType = MessageType;
     }
 
     public int getID() {

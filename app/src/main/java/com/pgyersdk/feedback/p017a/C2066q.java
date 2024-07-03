@@ -12,7 +12,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.Shape;
 import android.widget.Button;
-import com.pgyersdk.p016f.C2037b;
+import com.pgyersdk.utils.ConvertUtil;
 
 /* compiled from: PgyerVoiceButton.java */
 /* renamed from: com.pgyersdk.feedback.a.q */
@@ -45,10 +45,10 @@ public class C2066q extends Button {
         this.f620a = "#f2f2f2";
         this.f621b = "#e0e0e0";
         this.f622c = context;
-        setPadding(C2037b.m195a(context, 20.0f), 0, 0, 0);
+        setPadding(ConvertUtil.m195a(context, 20.0f), 0, 0, 0);
         setBackground(3);
         setTextSize(16.0f);
-        setPadding(0, 0, C2037b.m195a(context, 10.0f), 0);
+        setPadding(0, 0, ConvertUtil.m195a(context, 10.0f), 0);
     }
 
     private void setBackground(int i) {
@@ -74,24 +74,24 @@ public class C2066q extends Button {
         Paint paint = new Paint();
         Path path = new Path();
         path.moveTo(0.0f, getHeight() / 2);
-        path.lineTo(C2037b.m195a(context, 10.0f), (getHeight() / 2) - C2037b.m195a(context, 4.0f));
-        path.lineTo(C2037b.m195a(context, 10.0f), (getHeight() / 2) + C2037b.m195a(context, 4.0f));
+        path.lineTo(ConvertUtil.m195a(context, 10.0f), (getHeight() / 2) - ConvertUtil.m195a(context, 4.0f));
+        path.lineTo(ConvertUtil.m195a(context, 10.0f), (getHeight() / 2) + ConvertUtil.m195a(context, 4.0f));
         path.lineTo(0.0f, getHeight() / 2);
         path.close();
         paint.setColor(Color.parseColor(str));
         canvas.drawPath(path, paint);
-        canvas.drawRoundRect(new RectF(C2037b.m195a(context, 10.0f), 0.0f, getWidth(), getHeight()), C2037b.m195a(context, 5.0f), C2037b.m195a(context, 5.0f), paint);
+        canvas.drawRoundRect(new RectF(ConvertUtil.m195a(context, 10.0f), 0.0f, getWidth(), getHeight()), ConvertUtil.m195a(context, 5.0f), ConvertUtil.m195a(context, 5.0f), paint);
         Paint paint2 = new Paint();
         paint2.setAntiAlias(true);
         paint2.setStyle(Paint.Style.STROKE);
         paint2.setStrokeWidth(2.0f);
         paint2.setColor(-7829368);
-        int m195a = C2037b.m195a(context, 5.0f);
+        int m195a = ConvertUtil.m195a(context, 5.0f);
         if (i >= 1) {
-            canvas.drawArc(new RectF(C2037b.m195a(context, 8.0f), C2037b.m195a(context, 8.0f) + m195a, (getHeight() - (m195a * 2)) - C2037b.m195a(context, 8.0f), (getHeight() - m195a) - C2037b.m195a(context, 8.0f)), -30.0f, 60.0f, false, paint2);
+            canvas.drawArc(new RectF(ConvertUtil.m195a(context, 8.0f), ConvertUtil.m195a(context, 8.0f) + m195a, (getHeight() - (m195a * 2)) - ConvertUtil.m195a(context, 8.0f), (getHeight() - m195a) - ConvertUtil.m195a(context, 8.0f)), -30.0f, 60.0f, false, paint2);
         }
         if (i >= 2) {
-            canvas.drawArc(new RectF(C2037b.m195a(context, 4.0f), C2037b.m195a(context, 4.0f) + m195a, (getHeight() - (m195a * 2)) - C2037b.m195a(context, 4.0f), (getHeight() - m195a) - C2037b.m195a(context, 4.0f)), -30.0f, 60.0f, false, paint2);
+            canvas.drawArc(new RectF(ConvertUtil.m195a(context, 4.0f), ConvertUtil.m195a(context, 4.0f) + m195a, (getHeight() - (m195a * 2)) - ConvertUtil.m195a(context, 4.0f), (getHeight() - m195a) - ConvertUtil.m195a(context, 4.0f)), -30.0f, 60.0f, false, paint2);
         }
         if (i >= 3) {
             canvas.drawArc(new RectF(0.0f, m195a, getHeight() - (m195a * 2), getHeight() - m195a), -30.0f, 60.0f, false, paint2);

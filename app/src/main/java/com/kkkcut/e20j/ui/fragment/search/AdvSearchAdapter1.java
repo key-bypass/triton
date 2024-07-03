@@ -31,7 +31,7 @@ public class AdvSearchAdapter1 extends BaseQuickAdapter<AdvSearchResult, BaseVie
             @Override // android.view.View.OnTouchListener
             public final boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean onTouchEvent;
-                onTouchEvent = BaseViewHolder.this.itemView.onTouchEvent(motionEvent);
+                onTouchEvent = baseViewHolder.itemView.onTouchEvent(motionEvent);
                 return onTouchEvent;
             }
         });

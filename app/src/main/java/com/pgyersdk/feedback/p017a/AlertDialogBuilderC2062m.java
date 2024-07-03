@@ -19,14 +19,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import com.pgyersdk.p008b.C2019e;
-import com.pgyersdk.p012c.C2022a;
-import com.pgyersdk.p012c.C2023b;
-import com.pgyersdk.p016f.C2037b;
-import com.pgyersdk.p016f.C2038c;
-import com.pgyersdk.p016f.C2041f;
-import com.pgyersdk.p016f.C2043h;
-import com.pgyersdk.p016f.C2046k;
+import com.pgyersdk.p008b.FileManager;
+import com.pgyersdk.p012c.Constants;
+import com.pgyersdk.p012c.Strings;
+import com.pgyersdk.utils.ConvertUtil;
+import com.pgyersdk.utils.FileUtils;
+import com.pgyersdk.utils.LogUtils;
+import com.pgyersdk.utils.SharedPreferenesManager;
+import com.pgyersdk.utils.StringUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
@@ -144,7 +144,7 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     /* renamed from: l */
     private void m297l() {
         try {
-            File file = new File(C2038c.m196a().m205d(this.f586D));
+            File file = new File(FileUtils.m196a().m205d(this.f586D));
             if (!file.exists()) {
                 file.mkdir();
             }
@@ -167,12 +167,12 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         this.f608w = new C2063n(this.f586D);
         PopupWindow popupWindow = new PopupWindow(this.f608w);
         this.f607v = popupWindow;
-        popupWindow.setWidth(C2037b.m195a(this.f586D, 80.0f));
-        this.f607v.setHeight(C2037b.m195a(this.f586D, 80.0f));
+        popupWindow.setWidth(ConvertUtil.m195a(this.f586D, 80.0f));
+        this.f607v.setHeight(ConvertUtil.m195a(this.f586D, 80.0f));
         if (this.f586D.getResources().getConfiguration().orientation % 2 == 1) {
-            this.f607v.showAtLocation(this.f591f, 48, 0, C2037b.m195a(this.f586D, 115.0f));
+            this.f607v.showAtLocation(this.f591f, 48, 0, ConvertUtil.m195a(this.f586D, 115.0f));
         } else {
-            this.f607v.showAtLocation(this.f591f, 48, 0, C2037b.m195a(this.f586D, 70.0f));
+            this.f607v.showAtLocation(this.f591f, 48, 0, ConvertUtil.m195a(this.f586D, 70.0f));
         }
         m303r();
     }
@@ -189,25 +189,25 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
 
     /* renamed from: o */
     private void m300o() {
-        if (!C2046k.m235a(C2043h.m222a(this.f586D, "selfmail"))) {
-            this.f592g.setText(C2043h.m222a(this.f586D, "selfmail"));
+        if (!StringUtil.isEmpty(SharedPreferenesManager.m222a(this.f586D, "selfmail"))) {
+            this.f592g.setText(SharedPreferenesManager.m222a(this.f586D, "selfmail"));
         }
-        if (!C2046k.m235a(C2043h.m222a(this.f586D, "feedback_des"))) {
-            this.f591f.setText(C2043h.m222a(this.f586D, "feedback_des"));
+        if (!StringUtil.isEmpty(SharedPreferenesManager.m222a(this.f586D, "feedback_des"))) {
+            this.f591f.setText(SharedPreferenesManager.m222a(this.f586D, "feedback_des"));
         }
-        if (C2046k.m235a(C2043h.m222a(this.f586D, "voicefile"))) {
+        if (StringUtil.isEmpty(SharedPreferenesManager.m222a(this.f586D, "voicefile"))) {
             return;
         }
-        File file = new File(C2043h.m222a(this.f586D, "voicefile"));
+        File file = new File(SharedPreferenesManager.m222a(this.f586D, "voicefile"));
         this.f602q = file;
         if (file.exists()) {
             this.f594i.setVisibility(8);
             this.f596k.setVisibility(0);
-            this.f595j.setText(C2043h.m222a(this.f586D, "voiceTime"));
+            this.f595j.setText(SharedPreferenesManager.m222a(this.f586D, "voiceTime"));
         } else {
             this.f602q = null;
-            C2043h.m224a("voicefile", "");
-            C2043h.m224a("voiceTime", "");
+            SharedPreferenesManager.m224a("voicefile", "");
+            SharedPreferenesManager.m224a("voiceTime", "");
         }
     }
 
@@ -226,7 +226,7 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
             this.f606u = true;
             m298m();
         } catch (Exception e) {
-            C2041f.m217a("PgyerSDK", "starting record error ", e);
+            LogUtils.m217a("PgyerSDK", "starting record error ", e);
         }
     }
 
@@ -295,9 +295,9 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         if ("tagBtnDelete".equals(view.getTag().toString())) {
             this.f596k.setVisibility(8);
             this.f594i.setVisibility(0);
-            C2019e.m131a(this.f602q);
-            C2043h.m224a("voicefile", "");
-            C2043h.m224a("voiceTime", "");
+            FileManager.m131a(this.f602q);
+            SharedPreferenesManager.m224a("voicefile", "");
+            SharedPreferenesManager.m224a("voiceTime", "");
             this.f602q = null;
         }
     }
@@ -343,8 +343,8 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         this.f598m.setBackgroundColor(-1);
         this.f598m.setOnTouchListener(this.f588F);
         if (!this.f583A) {
-            this.f590e = (TextView) m273a((CharSequence) C2023b.m151a(1062));
-            TextView textView = (TextView) m273a((CharSequence) C2023b.m151a(1062));
+            this.f590e = (TextView) m273a((CharSequence) Strings.m151a(1062));
+            TextView textView = (TextView) m273a((CharSequence) Strings.m151a(1062));
             this.f590e = textView;
             this.f598m.addView(textView, m295k);
         }
@@ -367,8 +367,8 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private View m289h() {
         EditText editText = new EditText(this.f586D);
         this.f591f = editText;
-        editText.setHint(C2023b.m151a(1044));
-        this.f591f.setPadding(C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 10.0f), C2037b.m195a(this.f586D, 20.0f), 0);
+        editText.setHint(Strings.m151a(1044));
+        this.f591f.setPadding(ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 10.0f), ConvertUtil.m195a(this.f586D, 20.0f), 0);
         this.f591f.setHintTextColor(Color.parseColor(f582d));
         if (this.f586D.getResources().getConfiguration().orientation == 1) {
             this.f591f.setMinLines(8);
@@ -385,9 +385,9 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private View m291i() {
         EditText editText = new EditText(this.f586D);
         this.f592g = editText;
-        editText.setHint(C2023b.m151a(1045));
+        editText.setHint(Strings.m151a(1045));
         this.f592g.setSingleLine(true);
-        this.f592g.setPadding(C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 10.0f), C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 10.0f));
+        this.f592g.setPadding(ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 10.0f), ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 10.0f));
         this.f592g.setHintTextColor(Color.parseColor(f582d));
         this.f592g.setMinLines(1);
         this.f592g.setTextSize(14.0f);
@@ -396,8 +396,8 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         this.f592g.setFocusable(true);
         this.f592g.setFocusableInTouchMode(true);
         this.f592g.requestFocus();
-        if (!C2046k.m235a("selfmail")) {
-            this.f592g.setText(C2043h.m222a(this.f586D, "selfmail"));
+        if (!StringUtil.isEmpty("selfmail")) {
+            this.f592g.setText(SharedPreferenesManager.m222a(this.f586D, "selfmail"));
         }
         return this.f592g;
     }
@@ -406,7 +406,7 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private TextView m294j() {
         TextView textView = new TextView(this.f586D);
         textView.setBackgroundColor(Color.parseColor("#f0f0f0"));
-        textView.setHeight(C2037b.m195a(this.f586D, 1.0f));
+        textView.setHeight(ConvertUtil.m195a(this.f586D, 1.0f));
         return textView;
     }
 
@@ -473,14 +473,14 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private void m279b(LinearLayout linearLayout) {
         this.f596k = new LinearLayout(this.f586D);
         LinearLayout.LayoutParams m295k = m295k();
-        m295k.setMargins(C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f));
+        m295k.setMargins(ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f));
         this.f596k.setGravity(16);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, C2037b.m195a(this.f586D, 40.0f));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, ConvertUtil.m195a(this.f586D, 40.0f));
         layoutParams.weight = 1.0f;
-        layoutParams.setMargins(0, 0, C2037b.m195a(this.f586D, 20.0f), 0);
+        layoutParams.setMargins(0, 0, ConvertUtil.m195a(this.f586D, 20.0f), 0);
         C2066q c2066q = new C2066q(this.f586D);
         this.f595j = c2066q;
-        c2066q.setPadding(0, 0, C2037b.m195a(this.f586D, 10.0f), 0);
+        c2066q.setPadding(0, 0, ConvertUtil.m195a(this.f586D, 10.0f), 0);
         this.f595j.setGravity(21);
         this.f595j.setOnClickListener(this);
         this.f595j.setTag("tagBtnPlay");
@@ -490,17 +490,17 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         c2055f.setTag("tagBtnDelete");
         this.f597l.setOnClickListener(this);
         LinearLayout.LayoutParams m295k2 = m295k();
-        m295k2.width = C2037b.m195a(this.f586D, 30.0f);
-        m295k2.height = C2037b.m195a(this.f586D, 30.0f);
+        m295k2.width = ConvertUtil.m195a(this.f586D, 30.0f);
+        m295k2.height = ConvertUtil.m195a(this.f586D, 30.0f);
         this.f596k.addView(this.f597l, m295k2);
         this.f596k.setVisibility(8);
         linearLayout.addView(this.f596k, m295k);
         LinearLayout.LayoutParams m295k3 = m295k();
-        m295k3.height = C2037b.m195a(this.f586D, 40.0f);
-        m295k3.setMargins(C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f));
+        m295k3.height = ConvertUtil.m195a(this.f586D, 40.0f);
+        m295k3.setMargins(ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f));
         C2052c c2052c = new C2052c(this.f586D);
         this.f594i = c2052c;
-        c2052c.setText(C2023b.m151a(1072));
+        c2052c.setText(Strings.m151a(1072));
         this.f594i.setOnTouchListener(this.f589G);
         linearLayout.addView(this.f594i, m295k3);
     }
@@ -515,19 +515,19 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private View m272a(LinearLayout linearLayout) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, -2);
         layoutParams.gravity = 3;
-        layoutParams.setMargins(C2037b.m195a(this.f586D, 15.0f), 0, C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f));
+        layoutParams.setMargins(ConvertUtil.m195a(this.f586D, 15.0f), 0, ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f));
         CheckBox checkBox = new CheckBox(this.f586D);
         this.f593h = checkBox;
-        checkBox.setText(C2023b.m151a(1064));
+        checkBox.setText(Strings.m151a(1064));
         this.f593h.setTextColor(Color.parseColor(f581c));
         this.f593h.setChecked(true);
         linearLayout.addView(this.f593h, layoutParams);
         TextView textView = new TextView(this.f586D);
-        textView.setText(C2023b.m151a(1065) + C2022a.f469g + "\t" + C2022a.f468f + "（" + C2022a.f467e + "）");
+        textView.setText(Strings.m151a(1065) + Constants.f469g + "\t" + Constants.f468f + "（" + Constants.f467e + "）");
         textView.setTextColor(Color.parseColor(f581c));
         textView.setTextSize(12.0f);
         ViewGroup.LayoutParams m295k = m295k();
-        textView.setPadding(C2037b.m195a(this.f586D, 20.0f), 0, C2037b.m195a(this.f586D, 20.0f), C2037b.m195a(this.f586D, 20.0f));
+        textView.setPadding(ConvertUtil.m195a(this.f586D, 20.0f), 0, ConvertUtil.m195a(this.f586D, 20.0f), ConvertUtil.m195a(this.f586D, 20.0f));
         linearLayout.addView(textView, m295k);
         return linearLayout;
     }

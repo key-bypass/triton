@@ -85,7 +85,7 @@ public class DatabaseFileUtils {
     public static SQLiteDatabase getDataBase(String str) {
         String str2 = "/data/data/" + MyApplication.getInstance().getPackageName() + "/databases/" + str;
         if (new File(str2).exists()) {
-            return SQLiteDatabase.openDatabase(str2, "", (SQLiteDatabase.CursorFactory) null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            return SQLiteDatabase.openDatabase(str2, "",  null, SQLiteDatabase.CREATE_IF_NECESSARY);
         }
         return null;
     }
@@ -93,7 +93,7 @@ public class DatabaseFileUtils {
     public static SQLiteDatabase getDatabaseByPassword(String str) {
         String str2 = "/data/data/" + MyApplication.getInstance().getPackageName() + "/databases/" + str;
         if (new File(str2).exists()) {
-            return SQLiteDatabase.openDatabase(str2, KEY, (SQLiteDatabase.CursorFactory) null, SQLiteDatabase.CREATE_IF_NECESSARY);
+            return SQLiteDatabase.openDatabase(str2, KEY,  null, SQLiteDatabase.CREATE_IF_NECESSARY);
         }
         return null;
     }

@@ -3,7 +3,10 @@ package com.kkkcut.e20j.DbBean.userDB;
 import com.kkkcut.e20j.DbBean.KeyInfoBase;
 import com.kkkcut.e20j.DbBean.Manufacturer;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class ManufacturerHidden extends KeyInfoBase {
     Long manufacturerId;
     byte[] manufacturerLogoImage;
@@ -30,6 +33,15 @@ public class ManufacturerHidden extends KeyInfoBase {
     }
 
     public ManufacturerHidden() {
+    }
+
+    @Generated(hash = 425508132)
+    public ManufacturerHidden(Long manufacturerId, byte[] manufacturerLogoImage,
+            String manufacturerName, String manufacturerNameCN) {
+        this.manufacturerId = manufacturerId;
+        this.manufacturerLogoImage = manufacturerLogoImage;
+        this.manufacturerName = manufacturerName;
+        this.manufacturerNameCN = manufacturerNameCN;
     }
 
     @Override // com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean

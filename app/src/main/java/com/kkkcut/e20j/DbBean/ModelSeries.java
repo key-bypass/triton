@@ -3,7 +3,10 @@ package com.kkkcut.e20j.DbBean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class ModelSeries extends KeyInfoBase implements Parcelable {
     public static final Parcelable.Creator<ModelSeries> CREATOR = new Parcelable.Creator<ModelSeries>() { // from class: com.kkkcut.e20j.DbBean.ModelSeries.1
         /* JADX WARN: Can't rename method to resolve collision */
@@ -175,5 +178,21 @@ public class ModelSeries extends KeyInfoBase implements Parcelable {
         this.Notes = parcel.readString();
         this.Sort = parcel.readInt();
         this.Remark = parcel.readString();
+    }
+
+    @Generated(hash = 1637681422)
+    public ModelSeries(int FK_ModelYearID, String ISN, String Notes, String Remark, int Sort, String codeSeries, String cuts, int fK_KeyID, String modelNo,
+            int modelSeriesID, String name) {
+        this.FK_ModelYearID = FK_ModelYearID;
+        this.ISN = ISN;
+        this.Notes = Notes;
+        this.Remark = Remark;
+        this.Sort = Sort;
+        this.codeSeries = codeSeries;
+        this.cuts = cuts;
+        this.fK_KeyID = fK_KeyID;
+        this.modelNo = modelNo;
+        this.modelSeriesID = modelSeriesID;
+        this.name = name;
     }
 }

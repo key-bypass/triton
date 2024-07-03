@@ -2091,4 +2091,5 @@
     </attr>
     <attr name="yearTodayStyle" format="reference">
     </attr>
+    <declare-styleable name="IndexBar">IndexBar</declare-styleable>
 </resources>

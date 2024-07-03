@@ -13,7 +13,7 @@ public abstract class BaseFragment extends QuickFragment {
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
+    protected void onEventComing(EventCenter<?> eventCenter) {
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment

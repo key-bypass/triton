@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.ui.fragment.setting;
 
+import static org.apache.poi.ss.usermodel.ClientAnchor.AnchorType.DONT_MOVE_AND_RESIZE;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -250,10 +252,10 @@ public class SQLiteToExcel {
             int i4 = 0;
             while (i4 < columnCount) {
                 Cell createCell = createRow2.createCell(i4);
-                if (rawQuery.getType(i4) == 4) {
+                if (rawQuery.getType(i4) == Cursor.FIELD_TYPE_BLOB) {
                     row = createRow2;
                     HSSFClientAnchor hSSFClientAnchor = new HSSFClientAnchor(0, 0, 0, 0, (short) i4, i3, (short) (i4 + 1), i3 + 1);
-                    hSSFClientAnchor.setAnchorType(3);
+                    hSSFClientAnchor.setAnchorType(DONT_MOVE_AND_RESIZE);
                     i = i4;
                     createDrawingPatriarch.createPicture(hSSFClientAnchor, this.workbook.addPicture(rawQuery.getBlob(i), 5));
                 } else {

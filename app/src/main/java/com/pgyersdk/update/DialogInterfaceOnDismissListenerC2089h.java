@@ -9,10 +9,10 @@ import android.content.DialogInterface;
 public class DialogInterfaceOnDismissListenerC2089h implements DialogInterface.OnDismissListener {
 
     /* renamed from: a */
-    final /* synthetic */ C2090i f726a;
+    final /* synthetic */ PgyerUpdateListener f726a;
 
-    public DialogInterfaceOnDismissListenerC2089h(C2090i c2090i) {
-        this.f726a = c2090i;
+    public DialogInterfaceOnDismissListenerC2089h(PgyerUpdateListener pgyerUpdateListener) {
+        this.f726a = pgyerUpdateListener;
     }
 
     @Override // android.content.DialogInterface.OnDismissListener

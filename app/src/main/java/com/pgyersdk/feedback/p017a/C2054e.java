@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.widget.LinearLayout;
-import com.pgyersdk.p016f.C2037b;
+import com.pgyersdk.utils.ConvertUtil;
 
 /* compiled from: PgyerColorPikcerBg.java */
 /* renamed from: com.pgyersdk.feedback.a.e */
@@ -44,16 +44,16 @@ public class C2054e extends LinearLayout {
         Path path = new Path();
         path.moveTo(0.0f, 0.0f);
         path.lineTo(getWidth(), 0.0f);
-        path.lineTo(getWidth(), getHeight() - C2037b.m195a(this.f569a, 5.0f));
-        path.lineTo(0.0f, getHeight() - C2037b.m195a(this.f569a, 5.0f));
+        path.lineTo(getWidth(), getHeight() - ConvertUtil.m195a(this.f569a, 5.0f));
+        path.lineTo(0.0f, getHeight() - ConvertUtil.m195a(this.f569a, 5.0f));
         canvas.drawPath(path, this.f570b);
-        int m195a = (context.getResources().getDisplayMetrics().widthPixels / 6) - C2037b.m195a(context, 10.0f);
+        int m195a = (context.getResources().getDisplayMetrics().widthPixels / 6) - ConvertUtil.m195a(context, 10.0f);
         Path path2 = new Path();
         float f = m195a;
-        path2.moveTo(f, getHeight() - C2037b.m195a(this.f569a, 5.0f));
-        path2.lineTo(C2037b.m195a(this.f569a, 5.0f) + m195a, getHeight());
-        path2.lineTo(m195a + C2037b.m195a(this.f569a, 10.0f), getHeight() - C2037b.m195a(this.f569a, 5.0f));
-        path2.lineTo(f, getHeight() - C2037b.m195a(this.f569a, 5.0f));
+        path2.moveTo(f, getHeight() - ConvertUtil.m195a(this.f569a, 5.0f));
+        path2.lineTo(ConvertUtil.m195a(this.f569a, 5.0f) + m195a, getHeight());
+        path2.lineTo(m195a + ConvertUtil.m195a(this.f569a, 10.0f), getHeight() - ConvertUtil.m195a(this.f569a, 5.0f));
+        path2.lineTo(f, getHeight() - ConvertUtil.m195a(this.f569a, 5.0f));
         canvas.drawPath(path2, this.f570b);
     }
 

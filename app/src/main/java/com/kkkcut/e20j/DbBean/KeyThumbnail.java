@@ -1,6 +1,9 @@
 package com.kkkcut.e20j.DbBean;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class KeyThumbnail {
     int FK_KeyID;
     int ID;
@@ -10,19 +13,23 @@ public class KeyThumbnail {
     byte[] ImageFormat4;
     byte[] ImageFormat5;
 
-    public KeyThumbnail(int i, int i2, byte[] bArr, byte[] bArr2, byte[] bArr3, byte[] bArr4, byte[] bArr5) {
-        this.ID = i;
-        this.FK_KeyID = i2;
-        this.ImageFormat1 = bArr;
-        this.ImageFormat2 = bArr2;
-        this.ImageFormat3 = bArr3;
-        this.ImageFormat4 = bArr4;
-        this.ImageFormat5 = bArr5;
+    @Generated(hash = 1427644859)
+    public KeyThumbnail(int FK_KeyID, int ID, byte[] ImageFormat1,
+            byte[] ImageFormat2, byte[] ImageFormat3, byte[] ImageFormat4,
+            byte[] ImageFormat5) {
+        this.FK_KeyID = FK_KeyID;
+        this.ID = ID;
+        this.ImageFormat1 = ImageFormat1;
+        this.ImageFormat2 = ImageFormat2;
+        this.ImageFormat3 = ImageFormat3;
+        this.ImageFormat4 = ImageFormat4;
+        this.ImageFormat5 = ImageFormat5;
     }
 
+    @Generated(hash = 637526414)
     public KeyThumbnail() {
     }
-
+    
     public int getID() {
         return this.ID;
     }

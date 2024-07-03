@@ -8,10 +8,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import com.pgyersdk.p007a.C2001a;
-import com.pgyersdk.p012c.C2022a;
-import com.pgyersdk.p016f.C2041f;
-import com.pgyersdk.p016f.C2047l;
+import com.pgyersdk.p007a.Api;
+import com.pgyersdk.p012c.Constants;
+import com.pgyersdk.utils.LogUtils;
+import com.pgyersdk.utils.Util;
 
 /* loaded from: classes2.dex */
 public class PgyerProvider extends ContentProvider {
@@ -24,7 +24,7 @@ public class PgyerProvider extends ContentProvider {
         try {
             ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 128);
             if (applicationInfo != null && applicationInfo.metaData != null) {
-                return applicationInfo.metaData.getString(C2022a.f475m);
+                return applicationInfo.metaData.getString(Constants.f475m);
             }
             return null;
         } catch (PackageManager.NameNotFoundException e) {
@@ -45,13 +45,13 @@ public class PgyerProvider extends ContentProvider {
     /* renamed from: c */
     private void m98c(Context context) {
         String m96a = m96a(context);
-        if (C2022a.f474l.equals("")) {
-            C2022a.f474l = C2047l.m240c(m96a);
+        if (Constants.f474l.equals("")) {
+            Constants.f474l = Util.m240c(m96a);
         }
-        if (C2047l.m240c(C2022a.f474l) == null) {
-            C2041f.m220d("PgyerSDK", "Please config AppId on Manifest.xml or use Pgyer.setAppId().");
+        if (Util.m240c(Constants.f474l) == null) {
+            LogUtils.m220d("PgyerSDK", "Please config AppId on Manifest.xml or use Pgyer.setAppId().");
         }
-        C2022a.m145c(context);
+        Constants.m145c(context);
     }
 
     @Override // android.content.ContentProvider
@@ -72,10 +72,10 @@ public class PgyerProvider extends ContentProvider {
     @Override // android.content.ContentProvider
     public boolean onCreate() {
         f436a = getContext();
-        C2041f.m216a("PgyerSDK", " PgyerProvider onCreate");
-        C2041f.m216a("PgyerSDK", " context is " + f436a.toString());
+        LogUtils.m216a("PgyerSDK", " PgyerProvider onCreate");
+        LogUtils.m216a("PgyerSDK", " context is " + f436a.toString());
         m98c(f436a);
-        C2001a.m100a(f436a);
+        Api.m100a(f436a);
         m97b(f436a);
         return true;
     }

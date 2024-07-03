@@ -16,7 +16,7 @@ import android.os.StatFs;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import com.kkkcut.e20j.androidquick.tool.FileUtil;
-import com.pgyersdk.p016f.C2048m;
+import com.pgyersdk.utils.Utils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class C2033a {
         if (map == null) {
             map = new HashMap<>();
         }
-        if (C2048m.m245a().m252a(context, "android.permission.ACCESS_WIFI_STATE")) {
+        if (Utils.m245a().m252a(context, "android.permission.ACCESS_WIFI_STATE")) {
             map.put("wifi_permission", "true");
             WifiManager wifiManager = (WifiManager) context.getSystemService("wifi");
             WifiInfo connectionInfo = wifiManager.getConnectionInfo();
@@ -114,8 +114,8 @@ public class C2033a {
                 blockCountLong = statFs.getBlockCountLong();
                 availableBlocksLong = statFs.getAvailableBlocksLong();
             }
-            strArr[0] = C2048m.m245a().m250a(blockCountLong * blockSizeLong);
-            strArr[1] = C2048m.m245a().m250a(blockSizeLong * availableBlocksLong);
+            strArr[0] = Utils.m245a().m250a(blockCountLong * blockSizeLong);
+            strArr[1] = Utils.m245a().m250a(blockSizeLong * availableBlocksLong);
         }
         return strArr;
     }
@@ -130,7 +130,7 @@ public class C2033a {
     /* renamed from: d */
     public static Map<String, String> m173d(Context context) {
         HashMap hashMap = new HashMap();
-        if (C2048m.m245a().m252a(context, "android.permission.INTERNET") && C2048m.m245a().m252a(context, "android.permission.ACCESS_NETWORK_STATE")) {
+        if (Utils.m245a().m252a(context, "android.permission.INTERNET") && Utils.m245a().m252a(context, "android.permission.ACCESS_NETWORK_STATE")) {
             hashMap.put("network_permission", "true");
             NetworkInfo activeNetworkInfo = ((ConnectivityManager) context.getSystemService("connectivity")).getActiveNetworkInfo();
             if (activeNetworkInfo != null && activeNetworkInfo.getState() == NetworkInfo.State.CONNECTED) {
@@ -172,12 +172,12 @@ public class C2033a {
                 }
                 bufferedReader.close();
             } catch (IOException e) {
-                C2048m.m245a().m251a("DeviceHelper", e);
+                Utils.m245a().m251a("DeviceHelper", e);
             }
         } else {
             j = memoryInfo.totalMem;
         }
-        return new String[]{C2048m.m245a().m250a(j), C2048m.m245a().m250a(memoryInfo.availMem)};
+        return new String[]{Utils.m245a().m250a(j), Utils.m245a().m250a(memoryInfo.availMem)};
     }
 
     /* renamed from: f */
@@ -240,8 +240,8 @@ public class C2033a {
             blockCountLong = statFs.getBlockCountLong();
             availableBlocksLong = statFs.getAvailableBlocksLong();
         }
-        strArr[0] = C2048m.m245a().m250a(blockCountLong * blockSizeLong);
-        strArr[1] = C2048m.m245a().m250a(blockSizeLong * availableBlocksLong);
+        strArr[0] = Utils.m245a().m250a(blockCountLong * blockSizeLong);
+        strArr[1] = Utils.m245a().m250a(blockSizeLong * availableBlocksLong);
         return strArr;
     }
 

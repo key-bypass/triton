@@ -3,7 +3,7 @@ package com.pgyersdk.update;
 import android.os.AsyncTask;
 import android.os.Build;
 import com.pgyersdk.PgyerProvider;
-import com.pgyersdk.p016f.C2038c;
+import com.pgyersdk.utils.FileUtils;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -137,7 +137,7 @@ public class AsyncTaskC2083b extends AsyncTask<Void, Integer, Long> {
     /* renamed from: a */
     private File m374a() {
         File file;
-        File file2 = new File(C2038c.m196a().m204c(PgyerProvider.f436a));
+        File file2 = new File(FileUtils.m196a().m204c(PgyerProvider.f436a));
         this.f715d = file2.getAbsolutePath();
         try {
             file = File.createTempFile("apk-", ".apk", file2);

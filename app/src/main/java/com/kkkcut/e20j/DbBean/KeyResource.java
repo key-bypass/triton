@@ -1,6 +1,9 @@
 package com.kkkcut.e20j.DbBean;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class KeyResource {
     String ExplainHtml;
     int FK_LanguageID;
@@ -19,6 +22,17 @@ public class KeyResource {
     }
 
     public KeyResource() {
+    }
+
+    @Generated(hash = 1115476147)
+    public KeyResource(String ExplainHtml, int FK_LanguageID, int FK_ModelSeriesID,
+            int ID, int ProductTypeID, String VideoPath) {
+        this.ExplainHtml = ExplainHtml;
+        this.FK_LanguageID = FK_LanguageID;
+        this.FK_ModelSeriesID = FK_ModelSeriesID;
+        this.ID = ID;
+        this.ProductTypeID = ProductTypeID;
+        this.VideoPath = VideoPath;
     }
 
     public int getID() {

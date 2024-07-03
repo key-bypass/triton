@@ -9,10 +9,10 @@ import android.content.DialogInterface;
 public class DialogInterfaceOnClickListenerC2087f implements DialogInterface.OnClickListener {
 
     /* renamed from: a */
-    final /* synthetic */ C2090i f723a;
+    final /* synthetic */ PgyerUpdateListener f723a;
 
-    public DialogInterfaceOnClickListenerC2087f(C2090i c2090i) {
-        this.f723a = c2090i;
+    public DialogInterfaceOnClickListenerC2087f(PgyerUpdateListener pgyerUpdateListener) {
+        this.f723a = pgyerUpdateListener;
     }
 
     @Override // android.content.DialogInterface.OnClickListener

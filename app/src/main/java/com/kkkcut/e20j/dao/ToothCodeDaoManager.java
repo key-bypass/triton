@@ -21,8 +21,8 @@ public class ToothCodeDaoManager {
         this.daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(new GreenDaoContext(), String.valueOf(i)).getWritableDb()).newSession();
     }
 
-    public List<BittingCode> codeFindTooth(String str, String str2) {
-        QueryBuilder queryBuilder = this.daoSession.queryBuilder(BittingCode.class);
+    public List codeFindTooth(String str, String str2) {
+        QueryBuilder<BittingCode> queryBuilder = this.daoSession.queryBuilder(BittingCode.class);
         return "0".equals(str2) ? queryBuilder.where(BittingCodeDao.Properties.Code.eq(str.toUpperCase()), new WhereCondition[0]).list() : queryBuilder.where(BittingCodeDao.Properties.Code.eq(str.toUpperCase()), BittingCodeDao.Properties.Isn.eq(str2)).list();
     }
 
@@ -64,10 +64,7 @@ public class ToothCodeDaoManager {
         try {
             Cursor rawQuery = database.rawQuery(replace, null);
             while (rawQuery.moveToNext()) {
-                try {
-                    arrayList.add(new BittingCode(rawQuery.getString(rawQuery.getColumnIndexOrThrow("code")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("bitting")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ISN"))));
-                } finally {
-                }
+                arrayList.add(new BittingCode(rawQuery.getString(rawQuery.getColumnIndexOrThrow("code")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("bitting")), rawQuery.getString(rawQuery.getColumnIndexOrThrow("ISN"))));
             }
             if (rawQuery != null) {
                 rawQuery.close();

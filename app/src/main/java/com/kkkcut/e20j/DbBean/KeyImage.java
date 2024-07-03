@@ -2,7 +2,10 @@ package com.kkkcut.e20j.DbBean;
 
 import android.text.TextUtils;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class KeyImage {
     long LastUpdateTime;
     String hashLocal;
@@ -19,6 +22,16 @@ public class KeyImage {
     }
 
     public KeyImage() {
+    }
+
+    @Generated(hash = 1057741164)
+    public KeyImage(long LastUpdateTime, String hashLocal, String hashServer,
+            int keyId, String url) {
+        this.LastUpdateTime = LastUpdateTime;
+        this.hashLocal = hashLocal;
+        this.hashServer = hashServer;
+        this.keyId = keyId;
+        this.url = url;
     }
 
     public int getKeyId() {

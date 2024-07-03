@@ -7,9 +7,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import com.pgyersdk.feedback.FeedbackActivity;
-import com.pgyersdk.p012c.C2022a;
-import com.pgyersdk.p012c.C2023b;
-import com.pgyersdk.p016f.C2046k;
+import com.pgyersdk.p012c.Constants;
+import com.pgyersdk.p012c.Strings;
+import com.pgyersdk.utils.StringUtil;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class AsyncTaskC2067r extends AsyncTask<Void, Void, HashMap<String, Strin
         this.f635i = str;
         this.f636j = str4;
         if (context != null) {
-            C2022a.m145c(context);
+            Constants.m145c(context);
         }
     }
 
@@ -71,7 +71,7 @@ public class AsyncTaskC2067r extends AsyncTask<Void, Void, HashMap<String, Strin
 
     @Override // android.os.AsyncTask
     protected void onPreExecute() {
-        String m151a = C2023b.m151a(1061);
+        String m151a = Strings.m151a(1061);
         ProgressDialog progressDialog = this.f633g;
         if ((progressDialog == null || !progressDialog.isShowing()) && this.f634h) {
             this.f633g = ProgressDialog.show(this.f627a, "", m151a, true, false);
@@ -105,7 +105,7 @@ public class AsyncTaskC2067r extends AsyncTask<Void, Void, HashMap<String, Strin
         try {
             String str = hashMap.get("response");
             Message message = new Message();
-            if (!C2046k.m235a(str)) {
+            if (!StringUtil.isEmpty(str)) {
                 if (new JSONObject(str).getInt("code") == 0) {
                     message.what = 20001;
                 } else {

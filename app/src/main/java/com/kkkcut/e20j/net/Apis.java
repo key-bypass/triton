@@ -10,10 +10,10 @@ import com.kkkcut.e20j.bean.gsonBean.LackToothRes;
 import com.kkkcut.e20j.bean.gsonBean.RegistrationRes;
 import com.kkkcut.e20j.bean.gsonBean.UploadCustomKey;
 import com.kkkcut.e20j.bean.gsonBean.UploadTestData;
-import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import io.reactivex.rxjava3.core.Observable;
 
 /* loaded from: classes.dex */
 public interface Apis {

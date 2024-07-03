@@ -13,11 +13,11 @@ public class DialogInterfaceOnClickListenerC2088g implements DialogInterface.OnC
     final /* synthetic */ String f724a;
 
     /* renamed from: b */
-    final /* synthetic */ C2090i f725b;
+    final /* synthetic */ PgyerUpdateListener f725b;
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public DialogInterfaceOnClickListenerC2088g(C2090i c2090i, String str) {
-        this.f725b = c2090i;
+    public DialogInterfaceOnClickListenerC2088g(PgyerUpdateListener pgyerUpdateListener, String str) {
+        this.f725b = pgyerUpdateListener;
         this.f724a = str;
     }
 
@@ -26,7 +26,7 @@ public class DialogInterfaceOnClickListenerC2088g implements DialogInterface.OnC
         AlertDialog alertDialog;
         try {
             PgyUpdateManager.downLoadApk(this.f724a);
-            alertDialog = C2090i.f727a;
+            alertDialog = PgyerUpdateListener.f727a;
             alertDialog.dismiss();
         } catch (Exception unused) {
         }
