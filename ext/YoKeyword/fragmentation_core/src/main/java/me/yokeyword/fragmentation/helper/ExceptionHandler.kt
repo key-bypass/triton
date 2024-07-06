@@ -1,10 +1,8 @@
-package me.yokeyword.fragmentation.helper;
-
-import androidx.annotation.NonNull;
+package me.yokeyword.fragmentation.helper
 
 /**
  * Created by YoKey on 17/2/5.
  */
-public interface ExceptionHandler {
-    void onException(@NonNull Exception e);
+interface ExceptionHandler {
+    fun onException(e: Exception)
 }

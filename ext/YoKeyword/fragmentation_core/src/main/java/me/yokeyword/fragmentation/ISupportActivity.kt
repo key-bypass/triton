@@ -1,29 +1,25 @@
-package me.yokeyword.fragmentation;
+package me.yokeyword.fragmentation
 
-import android.view.MotionEvent;
-
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import android.view.MotionEvent
+import me.yokeyword.fragmentation.anim.FragmentAnimator
 
 /**
  * Created by YoKey on 17/6/13.
  */
+interface ISupportActivity {
+    val supportDelegate: SupportActivityDelegate
 
-public interface ISupportActivity {
-    SupportActivityDelegate getSupportDelegate();
+    fun extraTransaction(): ExtraTransaction?
 
-    ExtraTransaction extraTransaction();
+    var fragmentAnimator: FragmentAnimator?
 
-    FragmentAnimator getFragmentAnimator();
+    fun onCreateFragmentAnimator(): FragmentAnimator?
 
-    void setFragmentAnimator(FragmentAnimator fragmentAnimator);
+    fun post(runnable: Runnable?)
 
-    FragmentAnimator onCreateFragmentAnimator();
+    fun onBackPressed()
 
-    void post(Runnable runnable);
+    fun onBackPressedSupport()
 
-    void onBackPressed();
-
-    void onBackPressedSupport();
-
-    boolean dispatchTouchEvent(MotionEvent ev);
+    fun dispatchTouchEvent(ev: MotionEvent?): Boolean
 }

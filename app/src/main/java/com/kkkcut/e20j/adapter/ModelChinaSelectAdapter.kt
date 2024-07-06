@@ -1,6 +1,5 @@
 package com.kkkcut.e20j.adapter
 
-import com.cutting.machine.MachineInfo
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cutting.machine.MachineInfo
 import com.kkkcut.e20j.DbBean.china.ModelChina
 import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
 import com.kkkcut.e20j.us.R
@@ -16,7 +16,7 @@ import com.kkkcut.e20j.us.R
 class ModelChinaSelectAdapter(protected var mContext: Context) :
     RecyclerView.Adapter<com.kkkcut.e20j.adapter.ModelChinaSelectAdapter.ViewHolder>() {
     private var listener: OnKeySelectItemClickListener? = null
-    protected var mDatas: List<ModelChina> = listOf();
+    protected var mDatas: List<ModelChina>? = null
     protected var mInflater: LayoutInflater = LayoutInflater.from(mContext)
 
     /* loaded from: classes.dex */
@@ -24,7 +24,7 @@ class ModelChinaSelectAdapter(protected var mContext: Context) :
         fun onItemClick(i: Int)
     }
 
-    var datas: List<ModelChina>
+    var datas: List<ModelChina>?
         get() = this.mDatas
         set(list) {
             this.mDatas = list

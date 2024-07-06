@@ -1,3 +1,6 @@
+plugins {
+    alias(libs.plugins.jetbrains.kotlin.android)
+}
 apply plugin: 'com.android.library'
 
 android {
@@ -13,9 +16,13 @@ android {
         targetCompatibility JavaVersion.VERSION_17
         sourceCompatibility JavaVersion.VERSION_17
     }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {
     implementation libs.appcompat.v7
     api project(':ext:YoKeyword:fragmentation_core')
+    implementation libs.core.ktx
 }

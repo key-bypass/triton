@@ -1,7 +1,7 @@
-package com.gyf.barlibrary;
+package com.gyf.barlibrary
 
+import androidx.fragment.app.Fragment
 
-import androidx.fragment.app.Fragment;
 
 /**
  * ImmersionFragment沉浸式基类，因为fragment是基于activity之上的，
@@ -10,21 +10,19 @@ import androidx.fragment.app.Fragment;
  * 已过时，当配合vieapager使用时，请自行使用懒加载方式实现,或者参看我的demo里的BaseLazyFragment
  * Created by geyifeng on 2017/5/12.
  */
-@Deprecated
-public abstract class ImmersionFragment extends Fragment {
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if ((isVisibleToUser && isResumed())) {
-            onResume();
+@Deprecated("")
+abstract class ImmersionFragment : Fragment() {
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if ((isVisibleToUser && isResumed)) {
+            onResume()
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getUserVisibleHint() && immersionEnabled()) {
-            immersionInit();
+    override fun onResume() {
+        super.onResume()
+        if (userVisibleHint && immersionEnabled()) {
+            immersionInit()
         }
     }
 
@@ -34,11 +32,11 @@ public abstract class ImmersionFragment extends Fragment {
      *
      * @return the boolean
      */
-    @Deprecated
-    protected boolean immersionEnabled() {
-        return true;
+    @Deprecated("")
+    protected fun immersionEnabled(): Boolean {
+        return true
     }
 
-    @Deprecated
-    protected abstract void immersionInit();
+    @Deprecated("")
+    protected abstract fun immersionInit()
 }

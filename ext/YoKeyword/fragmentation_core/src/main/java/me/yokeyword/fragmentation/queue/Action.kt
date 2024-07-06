@@ -1,35 +1,34 @@
-package me.yokeyword.fragmentation.queue;
+package me.yokeyword.fragmentation.queue
 
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager
 
 /**
  * Created by YoKey on 17/12/28.
  */
+abstract class Action {
+    var fragmentManager: FragmentManager? = null
+    var action: Int = ACTION_NORMAL
+    var duration: Long = 0
 
-public abstract class Action {
-    public static final long DEFAULT_POP_TIME = 300L;
+    constructor()
 
-    public static final int ACTION_NORMAL = 0;
-    public static final int ACTION_POP = 1;
-    public static final int ACTION_POP_MOCK = 2;
-    public static final int ACTION_BACK = 3;
-    public static final int ACTION_LOAD = 4;
-
-    public FragmentManager fragmentManager;
-    public int action = ACTION_NORMAL;
-    public long duration = 0;
-
-    public Action() {
+    constructor(action: Int) {
+        this.action = action
     }
 
-    public Action(int action) {
-        this.action = action;
+    constructor(action: Int, fragmentManager: FragmentManager?) : this(action) {
+        this.fragmentManager = fragmentManager
     }
 
-    public Action(int action, FragmentManager fragmentManager) {
-        this(action);
-        this.fragmentManager = fragmentManager;
-    }
+    abstract fun run()
 
-    public abstract void run();
+    companion object {
+        const val DEFAULT_POP_TIME: Long = 300L
+
+        const val ACTION_NORMAL: Int = 0
+        const val ACTION_POP: Int = 1
+        const val ACTION_POP_MOCK: Int = 2
+        const val ACTION_BACK: Int = 3
+        const val ACTION_LOAD: Int = 4
+    }
 }

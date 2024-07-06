@@ -1,247 +1,241 @@
-package me.yokeyword.fragmentation.helper.internal;
+package me.yokeyword.fragmentation.helper.internal
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import java.util.List;
-
-import androidx.fragment.app.FragmentationMagician;
-import me.yokeyword.fragmentation.ISupportFragment;
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentationMagician.getActiveFragments
+import me.yokeyword.fragmentation.ISupportFragment
 
 /**
  * Created by YoKey on 17/4/4.
  */
-
-public class VisibleDelegate {
-    private static final String FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE = "fragmentation_invisible_when_leave";
-    private static final String FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE = "fragmentation_compat_replace";
-
+class VisibleDelegate(private val mSupportF: ISupportFragment) {
     // SupportVisible相关
-    private boolean mIsSupportVisible;
-    private boolean mNeedDispatch = true;
-    private boolean mInvisibleWhenLeave;
-    private boolean mIsFirstVisible = true;
-    private boolean mFirstCreateViewCompatReplace = true;
-    private boolean mAbortInitVisible = false;
-    private Runnable taskDispatchSupportVisible;
+    var isSupportVisible: Boolean = false
+        private set
+    private var mNeedDispatch = true
+    private var mInvisibleWhenLeave = false
+    private var mIsFirstVisible = true
+    private var mFirstCreateViewCompatReplace = true
+    private var mAbortInitVisible = false
+    private var taskDispatchSupportVisible: Runnable? = null
 
-    private Handler mHandler;
-    private Bundle mSaveInstanceState;
+    private var mHandler: Handler? = null
+    private var mSaveInstanceState: Bundle? = null
 
-    private ISupportFragment mSupportF;
-    private Fragment mFragment;
+    private val mFragment = mSupportF as Fragment
 
-    public VisibleDelegate(ISupportFragment fragment) {
-        this.mSupportF = fragment;
-        this.mFragment = (Fragment) fragment;
-    }
-
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    fun onCreate(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            mSaveInstanceState = savedInstanceState;
+            mSaveInstanceState = savedInstanceState
             // setUserVisibleHint() may be called before onCreate()
-            mInvisibleWhenLeave = savedInstanceState.getBoolean(FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE);
-            mFirstCreateViewCompatReplace = savedInstanceState.getBoolean(FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE);
+            mInvisibleWhenLeave = savedInstanceState.getBoolean(
+                FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE
+            )
+            mFirstCreateViewCompatReplace = savedInstanceState.getBoolean(
+                FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE
+            )
         }
     }
 
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE, mInvisibleWhenLeave);
-        outState.putBoolean(FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE, mFirstCreateViewCompatReplace);
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE, mInvisibleWhenLeave)
+        outState.putBoolean(FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE, mFirstCreateViewCompatReplace)
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        if (!mFirstCreateViewCompatReplace && mFragment.getTag() != null && mFragment.getTag().startsWith("android:switcher:")) {
-            return;
+    fun onActivityCreated(savedInstanceState: Bundle?) {
+        if (!mFirstCreateViewCompatReplace && mFragment.tag != null && mFragment.tag!!.startsWith("android:switcher:")) {
+            return
         }
 
         if (mFirstCreateViewCompatReplace) {
-            mFirstCreateViewCompatReplace = false;
+            mFirstCreateViewCompatReplace = false
         }
 
-        initVisible();
+        initVisible()
     }
 
-    private void initVisible() {
-        if (!mInvisibleWhenLeave && !mFragment.isHidden() && mFragment.getUserVisibleHint()) {
-            if ((mFragment.getParentFragment() != null && isFragmentVisible(mFragment.getParentFragment()))
-                    || mFragment.getParentFragment() == null) {
-                mNeedDispatch = false;
-                safeDispatchUserVisibleHint(true);
+    private fun initVisible() {
+        if (!mInvisibleWhenLeave && !mFragment.isHidden && mFragment.userVisibleHint) {
+            if ((mFragment.parentFragment != null && isFragmentVisible(mFragment.parentFragment))
+                || mFragment.parentFragment == null
+            ) {
+                mNeedDispatch = false
+                safeDispatchUserVisibleHint(true)
             }
         }
     }
 
-    public void onResume() {
+    fun onResume() {
         if (!mIsFirstVisible) {
-            if (!mIsSupportVisible && !mInvisibleWhenLeave && isFragmentVisible(mFragment)) {
-                mNeedDispatch = false;
-                dispatchSupportVisible(true);
+            if (!isSupportVisible && !mInvisibleWhenLeave && isFragmentVisible(mFragment)) {
+                mNeedDispatch = false
+                dispatchSupportVisible(true)
             }
         } else {
             if (mAbortInitVisible) {
-                mAbortInitVisible = false;
-                initVisible();
+                mAbortInitVisible = false
+                initVisible()
             }
         }
     }
 
-    public void onPause() {
+    fun onPause() {
         if (taskDispatchSupportVisible != null) {
-            getHandler().removeCallbacks(taskDispatchSupportVisible);
-            mAbortInitVisible = true;
-            return;
+            handler.removeCallbacks(taskDispatchSupportVisible!!)
+            mAbortInitVisible = true
+            return
         }
 
-        if (mIsSupportVisible && isFragmentVisible(mFragment)) {
-            mNeedDispatch = false;
-            mInvisibleWhenLeave = false;
-            dispatchSupportVisible(false);
+        if (isSupportVisible && isFragmentVisible(mFragment)) {
+            mNeedDispatch = false
+            mInvisibleWhenLeave = false
+            dispatchSupportVisible(false)
         } else {
-            mInvisibleWhenLeave = true;
+            mInvisibleWhenLeave = true
         }
     }
 
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden && !mFragment.isResumed()) {
+    fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden && !mFragment.isResumed) {
             //if fragment is shown but not resumed, ignore...
-            onFragmentShownWhenNotResumed();
-            return;
+            onFragmentShownWhenNotResumed()
+            return
         }
         if (hidden) {
-            safeDispatchUserVisibleHint(false);
+            safeDispatchUserVisibleHint(false)
         } else {
-            enqueueDispatchVisible();
+            enqueueDispatchVisible()
         }
     }
 
-    private void onFragmentShownWhenNotResumed() {
-        mInvisibleWhenLeave = false;
-        dispatchChildOnFragmentShownWhenNotResumed();
+    private fun onFragmentShownWhenNotResumed() {
+        mInvisibleWhenLeave = false
+        dispatchChildOnFragmentShownWhenNotResumed()
     }
 
-    private void dispatchChildOnFragmentShownWhenNotResumed() {
-        FragmentManager fragmentManager = mFragment.getChildFragmentManager();
-        List<Fragment> childFragments = FragmentationMagician.getActiveFragments(fragmentManager);
+    private fun dispatchChildOnFragmentShownWhenNotResumed() {
+        val fragmentManager = mFragment.childFragmentManager
+        val childFragments = getActiveFragments(fragmentManager)
         if (childFragments != null) {
-            for (Fragment child : childFragments) {
-                if (child instanceof ISupportFragment && !child.isHidden() && child.getUserVisibleHint()) {
-                    ((ISupportFragment) child).getSupportDelegate().getVisibleDelegate().onFragmentShownWhenNotResumed();
+            for (child in childFragments) {
+                if (child is ISupportFragment && !child.isHidden && child.userVisibleHint) {
+                    (child as ISupportFragment).supportDelegate.visibleDelegate.onFragmentShownWhenNotResumed()
                 }
             }
         }
     }
 
-    public void onDestroyView() {
-        mIsFirstVisible = true;
+    fun onDestroyView() {
+        mIsFirstVisible = true
     }
 
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (mFragment.isResumed() || (!mFragment.isAdded() && isVisibleToUser)) {
-            if (!mIsSupportVisible && isVisibleToUser) {
-                safeDispatchUserVisibleHint(true);
-            } else if (mIsSupportVisible && !isVisibleToUser) {
-                dispatchSupportVisible(false);
+    fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        if (mFragment.isResumed || (!mFragment.isAdded && isVisibleToUser)) {
+            if (!isSupportVisible && isVisibleToUser) {
+                safeDispatchUserVisibleHint(true)
+            } else if (isSupportVisible && !isVisibleToUser) {
+                dispatchSupportVisible(false)
             }
         }
     }
 
-    private void safeDispatchUserVisibleHint(boolean visible) {
+    private fun safeDispatchUserVisibleHint(visible: Boolean) {
         if (mIsFirstVisible) {
-            if (!visible) return;
-            enqueueDispatchVisible();
+            if (!visible) return
+            enqueueDispatchVisible()
         } else {
-            dispatchSupportVisible(visible);
+            dispatchSupportVisible(visible)
         }
     }
 
-    private void enqueueDispatchVisible() {
-        taskDispatchSupportVisible = new Runnable() {
-            @Override
-            public void run() {
-                taskDispatchSupportVisible = null;
-                dispatchSupportVisible(true);
-            }
-        };
-        getHandler().post(taskDispatchSupportVisible);
+    private fun enqueueDispatchVisible() {
+        taskDispatchSupportVisible = Runnable {
+            taskDispatchSupportVisible = null
+            dispatchSupportVisible(true)
+        }
+        handler.post(taskDispatchSupportVisible!!)
     }
 
-    private void dispatchSupportVisible(boolean visible) {
-        if (visible && isParentInvisible()) return;
+    private fun dispatchSupportVisible(visible: Boolean) {
+        if (visible && isParentInvisible) return
 
-        if (mIsSupportVisible == visible) {
-            mNeedDispatch = true;
-            return;
+        if (isSupportVisible == visible) {
+            mNeedDispatch = true
+            return
         }
 
-        mIsSupportVisible = visible;
+        isSupportVisible = visible
 
         if (visible) {
-            if (checkAddState()) return;
-            mSupportF.onSupportVisible();
+            if (checkAddState()) return
+            mSupportF.onSupportVisible()
 
             if (mIsFirstVisible) {
-                mIsFirstVisible = false;
-                mSupportF.onLazyInitView(mSaveInstanceState);
+                mIsFirstVisible = false
+                mSupportF.onLazyInitView(mSaveInstanceState)
             }
-            dispatchChild(true);
+            dispatchChild(true)
         } else {
-            dispatchChild(false);
-            mSupportF.onSupportInvisible();
+            dispatchChild(false)
+            mSupportF.onSupportInvisible()
         }
     }
 
-    private void dispatchChild(boolean visible) {
+    private fun dispatchChild(visible: Boolean) {
         if (!mNeedDispatch) {
-            mNeedDispatch = true;
+            mNeedDispatch = true
         } else {
-            if (checkAddState()) return;
-            FragmentManager fragmentManager = mFragment.getChildFragmentManager();
-            List<Fragment> childFragments = FragmentationMagician.getActiveFragments(fragmentManager);
+            if (checkAddState()) return
+            val fragmentManager = mFragment.childFragmentManager
+            val childFragments = getActiveFragments(fragmentManager)
             if (childFragments != null) {
-                for (Fragment child : childFragments) {
-                    if (child instanceof ISupportFragment && !child.isHidden() && child.getUserVisibleHint()) {
-                        ((ISupportFragment) child).getSupportDelegate().getVisibleDelegate().dispatchSupportVisible(visible);
+                for (child in childFragments) {
+                    if (child is ISupportFragment && !child.isHidden && child.userVisibleHint) {
+                        (child as ISupportFragment).supportDelegate.visibleDelegate.dispatchSupportVisible(
+                            visible
+                        )
                     }
                 }
             }
         }
     }
 
-    private boolean isParentInvisible() {
-        Fragment parentFragment = mFragment.getParentFragment();
+    private val isParentInvisible: Boolean
+        get() {
+            val parentFragment = mFragment.parentFragment
 
-        if (parentFragment instanceof ISupportFragment) {
-            return !((ISupportFragment) parentFragment).isSupportVisible();
+            if (parentFragment is ISupportFragment) {
+                return !(parentFragment as ISupportFragment).isSupportVisible
+            }
+
+            return parentFragment != null && !parentFragment.isVisible
         }
 
-        return parentFragment != null && !parentFragment.isVisible();
-    }
-
-    private boolean checkAddState() {
-        if (!mFragment.isAdded()) {
-            mIsSupportVisible = !mIsSupportVisible;
-            return true;
+    private fun checkAddState(): Boolean {
+        if (!mFragment.isAdded) {
+            isSupportVisible = !isSupportVisible
+            return true
         }
-        return false;
+        return false
     }
 
-    private boolean isFragmentVisible(Fragment fragment) {
-        return !fragment.isHidden() && fragment.getUserVisibleHint();
+    private fun isFragmentVisible(fragment: Fragment?): Boolean {
+        return !fragment!!.isHidden && fragment.userVisibleHint
     }
 
-    public boolean isSupportVisible() {
-        return mIsSupportVisible;
-    }
-
-    private Handler getHandler() {
-        if (mHandler == null) {
-            mHandler = new Handler(Looper.getMainLooper());
+    private val handler: Handler
+        get() {
+            if (mHandler == null) {
+                mHandler = Handler(Looper.getMainLooper())
+            }
+            return mHandler!!
         }
-        return mHandler;
+
+    companion object {
+        private const val FRAGMENTATION_STATE_SAVE_IS_INVISIBLE_WHEN_LEAVE =
+            "fragmentation_invisible_when_leave"
+        private const val FRAGMENTATION_STATE_SAVE_COMPAT_REPLACE = "fragmentation_compat_replace"
     }
 }

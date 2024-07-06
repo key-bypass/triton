@@ -1,125 +1,104 @@
-package me.yokeyword.fragmentation;
+package me.yokeyword.fragmentation
 
-import androidx.annotation.IntDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import me.yokeyword.fragmentation.helper.ExceptionHandler;
+import androidx.annotation.IntDef
+import me.yokeyword.fragmentation.helper.ExceptionHandler
+import kotlin.concurrent.Volatile
 
 /**
  * Created by YoKey on 17/2/5.
  */
-public class Fragmentation {
-    /**
-     * Dont display stack view.
-     */
-    public static final int NONE = 0;
-    /**
-     * Shake it to display stack view.
-     */
-    public static final int SHAKE = 1;
-    /**
-     * As a bubble display stack view.
-     */
-    public static final int BUBBLE = 2;
+class Fragmentation internal constructor(builder: FragmentationBuilder) {
+    var isDebug: Boolean = builder.debug
+    var mode: Int = BUBBLE
+    var handler: ExceptionHandler?
 
-    static volatile Fragmentation INSTANCE;
+    @IntDef(*[NONE, SHAKE, BUBBLE])
+    @Retention(AnnotationRetention.SOURCE)
+    internal annotation class StackViewMode
 
-    private boolean debug;
-    private int mode = BUBBLE;
-    private ExceptionHandler handler;
-
-    @IntDef({NONE, SHAKE, BUBBLE})
-    @Retention(RetentionPolicy.SOURCE)
-    @interface StackViewMode {
-    }
-
-    public static Fragmentation getDefault() {
-        if (INSTANCE == null) {
-            synchronized (Fragmentation.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new Fragmentation(new FragmentationBuilder());
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
-    Fragmentation(FragmentationBuilder builder) {
-        debug = builder.debug;
-        if (debug) {
-            mode = builder.mode;
+    init {
+        mode = if (isDebug) {
+            builder.mode
         } else {
-            mode = NONE;
+            NONE
         }
-        handler = builder.handler;
+        handler = builder.handler
     }
 
-    public boolean isDebug() {
-        return debug;
-    }
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    public ExceptionHandler getHandler() {
-        return handler;
-    }
-
-    public void setHandler(ExceptionHandler handler) {
-        this.handler = handler;
-    }
-
-    public int getMode() {
-        return mode;
-    }
-
-    public void setMode(@StackViewMode int mode) {
-        this.mode = mode;
-    }
-
-    public static FragmentationBuilder builder() {
-        return new FragmentationBuilder();
-    }
-
-    public static class FragmentationBuilder {
-        private boolean debug;
-        private int mode;
-        private ExceptionHandler handler;
+    class FragmentationBuilder {
+        var debug: Boolean = false
+        var mode: Int = 0
+        var handler: ExceptionHandler? = null
 
         /**
          * @param debug Suppressed Exception("Can not perform this action after onSaveInstanceState!") when debug=false
          */
-        public FragmentationBuilder debug(boolean debug) {
-            this.debug = debug;
-            return this;
+        fun debug(debug: Boolean): FragmentationBuilder {
+            this.debug = debug
+            return this
         }
 
         /**
          * Sets the mode to display the stack view
-         * <p>
+         *
+         *
          * None if debug(false).
-         * <p>
+         *
+         *
          * Default:NONE
          */
-        public FragmentationBuilder stackViewMode(@StackViewMode int mode) {
-            this.mode = mode;
-            return this;
+        fun stackViewMode(@StackViewMode mode: Int): FragmentationBuilder {
+            this.mode = mode
+            return this
         }
 
         /**
          * @param handler Handled Exception("Can not perform this action after onSaveInstanceState!") when debug=false.
          */
-        public FragmentationBuilder handleException(ExceptionHandler handler) {
-            this.handler = handler;
-            return this;
+        fun handleException(handler: ExceptionHandler?): FragmentationBuilder {
+            this.handler = handler
+            return this
         }
 
-        public Fragmentation install() {
-            Fragmentation.INSTANCE = new Fragmentation(this);
-            return Fragmentation.INSTANCE;
+        fun install(): Fragmentation? {
+            INSTANCE = Fragmentation(this)
+            return INSTANCE
+        }
+    }
+
+    companion object {
+        /**
+         * Dont display stack view.
+         */
+        const val NONE: Int = 0
+
+        /**
+         * Shake it to display stack view.
+         */
+        const val SHAKE: Int = 1
+
+        /**
+         * As a bubble display stack view.
+         */
+        const val BUBBLE: Int = 2
+
+        @Volatile
+        var INSTANCE: Fragmentation? = null
+
+        val default: Fragmentation?
+            get() {
+                if (INSTANCE == null) {
+                    synchronized(Fragmentation::class.java) {
+                        if (INSTANCE == null) {
+                            INSTANCE = Fragmentation(FragmentationBuilder())
+                        }
+                    }
+                }
+                return INSTANCE
+            }
+
+        fun builder(): FragmentationBuilder {
+            return FragmentationBuilder()
         }
     }
 }

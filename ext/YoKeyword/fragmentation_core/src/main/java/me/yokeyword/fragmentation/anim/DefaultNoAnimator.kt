@@ -1,43 +1,40 @@
-package me.yokeyword.fragmentation.anim;
+package me.yokeyword.fragmentation.anim
 
+import android.os.Parcel
+import android.os.Parcelable
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by YoKeyword on 16/2/15.
  */
-public class DefaultNoAnimator extends FragmentAnimator implements Parcelable {
-    public DefaultNoAnimator() {
-        enter = 0;
-        exit = 0;
-        popEnter = 0;
-        popExit = 0;
+class DefaultNoAnimator : FragmentAnimator, Parcelable {
+    constructor() {
+        enter = 0
+        exit = 0
+        popEnter = 0
+        popExit = 0
     }
 
-    protected DefaultNoAnimator(Parcel in) {
-        super(in);
+    protected constructor(`in`: Parcel) : super(`in`)
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        super.writeToParcel(dest, flags)
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
+    override fun describeContents(): Int {
+        return 0
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    companion object {
+        val CREATOR: Parcelable.Creator<DefaultNoAnimator?> =
+            object : Parcelable.Creator<DefaultNoAnimator?> {
+                override fun createFromParcel(`in`: Parcel): DefaultNoAnimator? {
+                    return DefaultNoAnimator(`in`)
+                }
+
+                override fun newArray(size: Int): Array<DefaultNoAnimator?> {
+                    return arrayOfNulls(size)
+                }
+            }
     }
-
-    public static final Creator<DefaultNoAnimator> CREATOR = new Creator<DefaultNoAnimator>() {
-        @Override
-        public DefaultNoAnimator createFromParcel(Parcel in) {
-            return new DefaultNoAnimator(in);
-        }
-
-        @Override
-        public DefaultNoAnimator[] newArray(int size) {
-            return new DefaultNoAnimator[size];
-        }
-    };
 }

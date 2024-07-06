@@ -1,3 +1,8 @@
+plugins {
+    alias(libs.plugins.jetbrains.kotlin.android)
+    id 'com.android.library'
+        id 'kotlin-parcelize'
+}
 apply plugin: 'com.android.library'
 //apply plugin: 'bintray-release'
 
@@ -16,10 +21,19 @@ android {
     lint {
         abortOnError false
     }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
 
 }
 
 dependencies {
     implementation libs.appcompat.v7
+    implementation libs.core.ktx
 }
