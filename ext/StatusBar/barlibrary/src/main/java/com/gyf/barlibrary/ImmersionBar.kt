@@ -26,7 +26,7 @@ import kotlin.math.abs
  * Created by gyf on 2017/05/09.
  */
 class ImmersionBar {
-    private var mActivity: Activity?
+    private var mActivity: Activity
     private var mWindow: Window?
     private var mDecorView: ViewGroup? = null
     private var mContentView: ViewGroup? = null
@@ -66,7 +66,7 @@ class ImmersionBar {
      * @param fragment the fragment
      */
     private constructor(fragment: Fragment) {
-        mActivity = fragment.activity
+        mActivity = fragment.activity!!
         mActivityName = mActivity!!.javaClass.name
         mWindow = mActivity!!.window
         mFragmentName = mActivityName + "_AND_" + fragment.javaClass.name
@@ -1549,7 +1549,6 @@ class ImmersionBar {
         if (mContentView != null) mContentView = null
         if (mConfig != null) mConfig = null
         if (mWindow != null) mWindow = null
-        if (mActivity != null) mActivity = null
         if (!isEmpty(mImmersionBarName)) {
             if (barParams != null) barParams = null
             val tagList = mTagKeyMap[mActivityName]

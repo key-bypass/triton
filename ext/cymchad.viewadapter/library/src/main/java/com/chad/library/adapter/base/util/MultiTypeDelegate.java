@@ -1,12 +1,12 @@
 package com.chad.library.adapter.base.util;
 
-import android.util.SparseIntArray;
-
-import java.util.List;
-
 import static com.chad.library.adapter.base.BaseMultiItemQuickAdapter.TYPE_NOT_FOUND;
 
+import android.util.SparseIntArray;
+
 import androidx.annotation.LayoutRes;
+
+import java.util.List;
 
 /**
  * help you to achieve multi type easily

@@ -1,7 +1,6 @@
 package com.chad.library.adapter.base;
 
 import android.graphics.Canvas;
-
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -23,6 +22,7 @@ import java.util.List;
 public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
 
     private static final int NO_TOGGLE_VIEW = 0;
+    private static final String ERROR_NOT_SAME_ITEMTOUCHHELPER = "Item drag and item swipe should pass the same ItemTouchHelper";
     protected int mToggleViewId = NO_TOGGLE_VIEW;
     protected ItemTouchHelper mItemTouchHelper;
     protected boolean itemDragEnabled = false;
@@ -30,11 +30,8 @@ public abstract class BaseItemDraggableAdapter<T, K extends BaseViewHolder> exte
     protected OnItemDragListener mOnItemDragListener;
     protected OnItemSwipeListener mOnItemSwipeListener;
     protected boolean mDragOnLongPress = true;
-
     protected View.OnTouchListener mOnToggleViewTouchListener;
     protected View.OnLongClickListener mOnToggleViewLongClickListener;
-
-    private static final String ERROR_NOT_SAME_ITEMTOUCHHELPER = "Item drag and item swipe should pass the same ItemTouchHelper";
 
 
     public BaseItemDraggableAdapter(List<T> data) {

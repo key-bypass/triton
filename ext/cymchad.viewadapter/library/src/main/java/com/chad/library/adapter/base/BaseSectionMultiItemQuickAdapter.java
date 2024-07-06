@@ -18,16 +18,14 @@ import java.util.List;
  */
 public abstract class BaseSectionMultiItemQuickAdapter<T extends SectionMultiEntity, K extends BaseViewHolder> extends BaseQuickAdapter<T, K> {
 
+    public static final int TYPE_NOT_FOUND = -404;
+    protected static final int SECTION_HEADER_VIEW = 0x00000444;
+    private static final int DEFAULT_VIEW_TYPE = -0xff;
+    protected int mSectionHeadResId;
     /**
      * layouts indexed with their types
      */
     private SparseIntArray layouts;
-
-    private static final int DEFAULT_VIEW_TYPE = -0xff;
-    public static final int TYPE_NOT_FOUND = -404;
-
-    protected int mSectionHeadResId;
-    protected static final int SECTION_HEADER_VIEW = 0x00000444;
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -72,8 +70,8 @@ public abstract class BaseSectionMultiItemQuickAdapter<T extends SectionMultiEnt
     /**
      * collect layout types you need
      *
-     * @param type             The key of layout type
-     * @param layoutResId      The layoutResId of layout type
+     * @param type        The key of layout type
+     * @param layoutResId The layoutResId of layout type
      */
     protected void addItemType(int type, @LayoutRes int layoutResId) {
         if (layouts == null) {

@@ -1,9 +1,19 @@
 package com.chad.library.adapter.base;
 
+import static com.chad.library.adapter.base.BaseQuickAdapter.EMPTY_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.FOOTER_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.HEADER_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.LOADING_VIEW;
+
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.IDraggableListener;
@@ -11,13 +21,6 @@ import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 
 import java.util.Collections;
-
-import static com.chad.library.adapter.base.BaseQuickAdapter.*;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.MotionEventCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * <pre>
@@ -46,7 +49,7 @@ public class DraggableController implements IDraggableListener {
     private View.OnTouchListener mOnToggleViewTouchListener;
     private View.OnLongClickListener mOnToggleViewLongClickListener;
 
-    private BaseQuickAdapter mAdapter;
+    private final BaseQuickAdapter mAdapter;
 
     public DraggableController(BaseQuickAdapter adapter) {
         mAdapter = adapter;

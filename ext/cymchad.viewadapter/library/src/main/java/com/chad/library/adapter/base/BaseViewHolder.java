@@ -53,28 +53,19 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * Views indexed with their IDs
      */
     private final SparseArray<View> views;
-
-    public Set<Integer> getNestViews() {
-        return nestViews;
-    }
-
     private final HashSet<Integer> nestViews;
-
     private final LinkedHashSet<Integer> childClickViewIds;
-
     private final LinkedHashSet<Integer> itemChildLongClickViewIds;
-    private BaseQuickAdapter adapter;
     /**
      * use itemView instead
      */
     @Deprecated
     public View convertView;
-
+    private BaseQuickAdapter adapter;
     /**
      * Package private field to retain the associated user object and detect a change
      */
     private Object associatedObject;
-
 
     public BaseViewHolder(final View view) {
         super(view);
@@ -85,6 +76,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         convertView = view;
 
 
+    }
+
+    public Set<Integer> getNestViews() {
+        return nestViews;
     }
 
     public HashSet<Integer> getItemChildLongClickViewIds() {
@@ -370,7 +365,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * or if you can use  recyclerView.addOnItemTouch(listerer)  wo also support this menthod
      */
     @SuppressWarnings("unchecked")
-    public BaseViewHolder addOnClickListener(@IdRes final int ...viewIds) {
+    public BaseViewHolder addOnClickListener(@IdRes final int... viewIds) {
         for (int viewId : viewIds) {
             childClickViewIds.add(viewId);
             final View view = getView(viewId);
@@ -403,7 +398,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * @param viewIds add the child views id   can support childview click
      * @return
      */
-    public BaseViewHolder setNestView(@IdRes int ... viewIds) {
+    public BaseViewHolder setNestView(@IdRes int... viewIds) {
         for (int viewId : viewIds) {
             nestViews.add(viewId);
         }
@@ -422,7 +417,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      * or if you can use  recyclerView.addOnItemTouch(listerer)  wo also support this menthod
      */
     @SuppressWarnings("unchecked")
-    public BaseViewHolder addOnLongClickListener(@IdRes final int ... viewIds) {
+    public BaseViewHolder addOnLongClickListener(@IdRes final int... viewIds) {
         for (int viewId : viewIds) {
             itemChildLongClickViewIds.add(viewId);
             final View view = getView(viewId);
@@ -575,14 +570,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
         return this;
     }
+
     /**
      * Set the enabled state of this view.
      *
-     * @param viewId  The view id.
+     * @param viewId The view id.
      * @param enable The checked status;
      * @return The BaseViewHolder for chaining.
      */
-    public BaseViewHolder setEnabled(@IdRes int viewId,boolean enable) {
+    public BaseViewHolder setEnabled(@IdRes int viewId, boolean enable) {
         View view = getView(viewId);
         view.setEnabled(enable);
         return this;

@@ -25,8 +25,8 @@ import java.util.List;
 
 public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends BaseQuickAdapter<T, V> {
 
-    private SparseArray<BaseItemProvider> mItemProviders;
     protected ProviderDelegate mProviderDelegate;
+    private SparseArray<BaseItemProvider> mItemProviders;
     private MultiTypeDelegate<T> mMultiTypeDelegate;
 
     public MultipleItemRvAdapter(@Nullable List<T> data) {
@@ -161,12 +161,12 @@ public abstract class MultipleItemRvAdapter<T, V extends BaseViewHolder> extends
         }
     }
 
-    public void setMultiTypeDelegate(MultiTypeDelegate<T> multiTypeDelegate) {
-        mMultiTypeDelegate = multiTypeDelegate;
-    }
-
     public MultiTypeDelegate<T> getMultiTypeDelegate() {
         return mMultiTypeDelegate;
+    }
+
+    public void setMultiTypeDelegate(MultiTypeDelegate<T> multiTypeDelegate) {
+        mMultiTypeDelegate = multiTypeDelegate;
     }
 
 }

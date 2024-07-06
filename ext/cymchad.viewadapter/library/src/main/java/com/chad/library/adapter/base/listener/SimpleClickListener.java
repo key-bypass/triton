@@ -1,23 +1,23 @@
 package com.chad.library.adapter.base.listener;
 
+import static com.chad.library.adapter.base.BaseQuickAdapter.EMPTY_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.FOOTER_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.HEADER_VIEW;
+import static com.chad.library.adapter.base.BaseQuickAdapter.LOADING_VIEW;
+
 import android.os.Build;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.Set;
-
-import static com.chad.library.adapter.base.BaseQuickAdapter.EMPTY_VIEW;
-import static com.chad.library.adapter.base.BaseQuickAdapter.FOOTER_VIEW;
-import static com.chad.library.adapter.base.BaseQuickAdapter.HEADER_VIEW;
-import static com.chad.library.adapter.base.BaseQuickAdapter.LOADING_VIEW;
-
-import androidx.core.view.GestureDetectorCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by AllenCoder on 2016/8/03.
@@ -31,10 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public abstract class SimpleClickListener implements RecyclerView.OnItemTouchListener {
     public static String TAG = "SimpleClickListener";
-
+    protected BaseQuickAdapter baseQuickAdapter;
     private GestureDetectorCompat mGestureDetector;
     private RecyclerView recyclerView;
-    protected BaseQuickAdapter baseQuickAdapter;
     private boolean mIsPrepressed = false;
     private boolean mIsShowPress = false;
     private View mPressedView = null;
@@ -72,9 +71,100 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
     }
 
+    private void setPressViewHotSpot(final MotionEvent e, final View mPressedView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            /**
+             * when   click   Outside the region  ,mPressedView is null
+             */
+            if (mPressedView != null && mPressedView.getBackground() != null) {
+                mPressedView.getBackground().setHotspot(e.getRawX(), e.getY() - mPressedView.getY());
+            }
+        }
+    }
+
+    /**
+     * Callback method to be invoked when an item in this AdapterView has
+     * been clicked.
+     *
+     * @param adapter
+     * @param view     The view within the AdapterView that was clicked (this
+     *                 will be a view provided by the adapter)
+     * @param position The position of the view in the adapter.
+     */
+    public abstract void onItemClick(BaseQuickAdapter adapter, View view, int position);
+
+    /**
+     * callback method to be invoked when an item in this view has been
+     * click and held
+     *
+     * @param adapter
+     * @param view     The view whihin the AbsListView that was clicked
+     * @param position The position of the view int the adapter
+     * @return true if the callback consumed the long click ,false otherwise
+     */
+    public abstract void onItemLongClick(BaseQuickAdapter adapter, View view, int position);
+
+    /**
+     * callback method to be invoked when an itemchild in this view has been click
+     *
+     * @param adapter
+     * @param view     The view whihin the AbsListView that was clicked
+     * @param position The position of the view int the adapter
+     * @return true if the callback consumed the long click ,false otherwise
+     */
+    public abstract void onItemChildClick(BaseQuickAdapter adapter, View view, int position);
+
+    /**
+     * callback method to be invoked when an item in this view has been
+     * click and held
+     *
+     * @param adapter
+     * @param view     The view whihin the AbsListView that was clicked
+     * @param position The position of the view int the adapter
+     * @return true if the callback consumed the long click ,false otherwise
+     */
+    public abstract void onItemChildLongClick(BaseQuickAdapter adapter, View view, int position);
+
+    public boolean inRangeOfView(View view, MotionEvent ev) {
+        int[] location = new int[2];
+        if (view == null || !view.isShown()) {
+            return false;
+        }
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        return !(ev.getRawX() < x)
+                && !(ev.getRawX() > (x + view.getWidth()))
+                && !(ev.getRawY() < y)
+                && !(ev.getRawY() > (y + view.getHeight()));
+    }
+
+    private boolean isHeaderOrFooterPosition(int position) {
+        /**
+         *  have a headview and EMPTY_VIEW FOOTER_VIEW LOADING_VIEW
+         */
+        if (baseQuickAdapter == null) {
+            if (recyclerView != null) {
+                baseQuickAdapter = (BaseQuickAdapter) recyclerView.getAdapter();
+            } else {
+                return false;
+            }
+        }
+        int type = baseQuickAdapter.getItemViewType(position);
+        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW);
+    }
+
+    private boolean isHeaderOrFooterView(int type) {
+        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW);
+    }
+
     private class ItemTouchHelperGestureListener implements GestureDetector.OnGestureListener {
 
-        private RecyclerView recyclerView;
+        private final RecyclerView recyclerView;
+
+        ItemTouchHelperGestureListener(RecyclerView recyclerView) {
+            this.recyclerView = recyclerView;
+        }
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -90,10 +180,6 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
             }
         }
 
-        ItemTouchHelperGestureListener(RecyclerView recyclerView) {
-            this.recyclerView = recyclerView;
-        }
-
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             if (mIsPrepressed && mPressedView != null) {
@@ -104,7 +190,7 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
                 BaseViewHolder vh = (BaseViewHolder) recyclerView.getChildViewHolder(pressedView);
 
                 int position = vh.getAdapterPosition();
-                if(position == RecyclerView.NO_POSITION){
+                if (position == RecyclerView.NO_POSITION) {
                     return false;
                 }
                 if (isHeaderOrFooterPosition(position)) {
@@ -237,90 +323,6 @@ public abstract class SimpleClickListener implements RecyclerView.OnItemTouchLis
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             return false;
         }
-    }
-
-    private void setPressViewHotSpot(final MotionEvent e, final View mPressedView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            /**
-             * when   click   Outside the region  ,mPressedView is null
-             */
-            if (mPressedView != null && mPressedView.getBackground() != null) {
-                mPressedView.getBackground().setHotspot(e.getRawX(), e.getY() - mPressedView.getY());
-            }
-        }
-    }
-
-    /**
-     * Callback method to be invoked when an item in this AdapterView has
-     * been clicked.
-     * @param adapter
-     * @param view     The view within the AdapterView that was clicked (this
-     *                 will be a view provided by the adapter)
-     * @param position The position of the view in the adapter.
-     */
-    public abstract void onItemClick(BaseQuickAdapter adapter, View view, int position);
-
-    /**
-     * callback method to be invoked when an item in this view has been
-     * click and held
-     * @param adapter
-     * @param view     The view whihin the AbsListView that was clicked
-     * @param position The position of the view int the adapter
-     * @return true if the callback consumed the long click ,false otherwise
-     */
-    public abstract void onItemLongClick(BaseQuickAdapter adapter, View view, int position);
-    /**
-     * callback method to be invoked when an itemchild in this view has been click
-     * @param adapter
-     * @param view     The view whihin the AbsListView that was clicked
-     * @param position The position of the view int the adapter
-     * @return true if the callback consumed the long click ,false otherwise
-     */
-    public abstract void onItemChildClick(BaseQuickAdapter adapter, View view, int position);
-    /**
-     * callback method to be invoked when an item in this view has been
-     * click and held
-     * @param adapter
-     * @param view     The view whihin the AbsListView that was clicked
-     * @param position The position of the view int the adapter
-     * @return true if the callback consumed the long click ,false otherwise
-     */
-    public abstract void onItemChildLongClick(BaseQuickAdapter adapter, View view, int position);
-
-    public boolean inRangeOfView(View view, MotionEvent ev) {
-        int[] location = new int[2];
-        if (view == null || !view.isShown()) {
-            return false;
-        }
-        view.getLocationOnScreen(location);
-        int x = location[0];
-        int y = location[1];
-        if (ev.getRawX() < x
-                || ev.getRawX() > (x + view.getWidth())
-                || ev.getRawY() < y
-                || ev.getRawY() > (y + view.getHeight())) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isHeaderOrFooterPosition(int position) {
-        /**
-         *  have a headview and EMPTY_VIEW FOOTER_VIEW LOADING_VIEW
-         */
-        if (baseQuickAdapter == null) {
-            if (recyclerView != null) {
-                baseQuickAdapter = (BaseQuickAdapter) recyclerView.getAdapter();
-            } else {
-                return false;
-            }
-        }
-        int type = baseQuickAdapter.getItemViewType(position);
-        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW);
-    }
-
-    private boolean isHeaderOrFooterView(int type) {
-        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW);
     }
 }
 

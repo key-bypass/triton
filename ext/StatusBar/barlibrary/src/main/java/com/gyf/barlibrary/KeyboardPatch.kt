@@ -16,7 +16,7 @@ import android.widget.FrameLayout
  * Created by geyifeng on 2017/5/17.
  */
 class KeyboardPatch {
-    private var mActivity: Activity?
+    private var mActivity: Activity
     private var mWindow: Window?
     private var mDecorView: View
     private var mContentView: View
@@ -44,7 +44,7 @@ class KeyboardPatch {
         if (mContentView != mDecorView.findViewById(R.id.content)) this.mFlag = true
     }
 
-    private constructor(activity: Activity?, window: Window?, barParams: BarParams?) {
+    private constructor(activity: Activity, window: Window?, barParams: BarParams?) {
         this.mActivity = activity
         this.mWindow = window
         this.mDecorView = activity!!.window.decorView
@@ -66,9 +66,7 @@ class KeyboardPatch {
                 or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
     ) {
         mWindow!!.setSoftInputMode(mode)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDecorView.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener) //当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时，所要调用的回调函数的接口类
-        }
+        mDecorView.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener) //当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时，所要调用的回调函数的接口类
     }
 
     /**
@@ -80,23 +78,21 @@ class KeyboardPatch {
                 or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
     ) {
         mWindow!!.setSoftInputMode(mode)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDecorView.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
-        }
+        mDecorView.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
     }
 
     private val onGlobalLayoutListener = OnGlobalLayoutListener {
         val r = Rect()
-        mDecorView.getWindowVisibleDisplayFrame(r) //获取当前窗口可视区域大小的
-        val height = mDecorView.context.resources.displayMetrics.heightPixels //获取屏幕密度，不包含导航栏
+        this.mDecorView.getWindowVisibleDisplayFrame(r) //获取当前窗口可视区域大小的
+        val height = this.mDecorView.context.resources.displayMetrics.heightPixels //获取屏幕密度，不包含导航栏
         val diff = height - r.bottom
         if (diff >= 0) {
-            if (mFlag || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !OSUtils.isEMUI3_1)
-                || !mBarParams!!.navigationBarEnable || !mBarParams!!.navigationBarWithKitkatEnable
+            if (mFlag || ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) && !OSUtils.isEMUI3_1)
+                || !this.mBarParams!!.navigationBarEnable || !this.mBarParams!!.navigationBarWithKitkatEnable
             ) {
-                mContentView.setPadding(0, mContentView.paddingTop, 0, diff)
+                this.mContentView.setPadding(0, this.mContentView.paddingTop, 0, diff)
             } else {
-                mContentView.setPadding(
+                this.mContentView.setPadding(
                     0, mContentView.paddingTop,
                     0, diff + ImmersionBar.Companion.getNavigationBarHeight(mActivity)
                 )
@@ -126,7 +122,7 @@ class KeyboardPatch {
             return KeyboardPatch(activity, dialog, tag, contentView)
         }
 
-        fun patch(activity: Activity?, window: Window?, barParams: BarParams?): KeyboardPatch {
+        fun patch(activity: Activity, window: Window?, barParams: BarParams?): KeyboardPatch {
             return KeyboardPatch(activity, window, barParams)
         }
     }

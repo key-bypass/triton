@@ -15,7 +15,7 @@ import java.util.List;
  */
 public abstract class BaseQuickDiffCallback<T> extends DiffUtil.Callback {
 
-    private List<T> newList;
+    private final List<T> newList;
     private List<T> oldList;
 
     public BaseQuickDiffCallback(@Nullable List<T> newList) {

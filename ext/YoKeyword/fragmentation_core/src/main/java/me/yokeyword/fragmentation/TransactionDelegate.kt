@@ -50,7 +50,7 @@ class TransactionDelegate(private val mSupport: ISupportActivity) {
         addToBackStack: Boolean,
         allowAnimation: Boolean
     ) {
-        enqueue(fm, object : Action(Action.Companion.ACTION_LOAD) {
+        enqueue(fm, object : Action(ACTION_LOAD) {
             override fun run() {
                 bindContainerId(containerId, to)
 
