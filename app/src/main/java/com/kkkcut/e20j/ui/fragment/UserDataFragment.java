@@ -119,7 +119,7 @@ public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapt
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment$$ExternalSyntheticLambda0
             @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            public final void accept(Object obj) throws Exception {
                 UserDataFragment.this.m48x5070bf1b(z, (List) obj);
             }
         });

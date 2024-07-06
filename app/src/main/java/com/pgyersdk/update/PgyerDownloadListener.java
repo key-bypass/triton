@@ -1,4 +1,4 @@
-package com.pgyersdk.update;
+package com.kkkcut.e20j.pyger.update;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,8 +13,9 @@ import androidx.core.content.FileProvider;
 import com.pgyersdk.PgyerActivityManager;
 import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.p012c.Strings;
-
-import net.zetetic.database.sqlcipher.SQLiteDatabase;
+import com.pgyersdk.update.DialogInterfaceOnClickListenerC2084c;
+import com.pgyersdk.update.DialogInterfaceOnClickListenerC2085d;
+import com.pgyersdk.update.DownloadFileListener;
 
 import java.io.File;
 
@@ -73,7 +74,7 @@ public class PgyerDownloadListener implements DownloadFileListener {
     }
 
     @Override // com.pgyersdk.update.DownloadFileListener
-    public void downloadFailed() {
+    public void beginDownload() {
         m382a();
         if (this.f720c) {
             m381b().show();

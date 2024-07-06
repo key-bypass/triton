@@ -18,6 +18,8 @@ import com.cutting.machine.operation.cut.DataParam;
 import com.cutting.machine.operation.duplicateCut.DuplicateCutParams;
 import com.cutting.machine.operation.duplicateDecode.DuplicateDecodeParams;
 import com.google.gson.GsonBuilder;
+import com.spl.key.Key;
+import com.spl.key.mdKeyDecoderPathClass;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,7 +91,7 @@ public class AssetsJsonUtils {
         }
         int i2 = (type == 0 && (currentClamp = ClampManager.getInstance().getCurrentClamp()) != null && currentClamp.getClampStr().contains("S2")) ? 1 : type;
         Key.enumMachineType enummachinetype = Key.enumMachineType.beta;
-        int i3 = C19981.$SwitchMap$com$liying$core$MachineType[CuttingMachine.getInstance().getMachineType().ordinal()];
+        int i3 = C19981.machineType[CuttingMachine.getInstance().getMachineType().ordinal()];
         if (i3 == 1) {
             enummachinetype = Key.enumMachineType.alpha;
         } else if (i3 == 2) {
@@ -119,7 +121,7 @@ public class AssetsJsonUtils {
             str = str4;
             str2 = str5;
         }
-        String GetKeyDecoderPath = mdKeyDecoderPathClass.GetKeyDecoderPath(enummachinetype2, keyInfo.getIcCard(), i2, keyInfo.getAlign(), keyInfo.getWidth(), keyInfo.getCuts().replace(",", "-"), spaceStr, str, str2, str3, keyInfo.getType_specific_info());
+        String GetKeyDecoderPath = mdKeyDecoderPathClass.INSTANCE.GetKeyDecoderPath(enummachinetype2, keyInfo.getIcCard(), i2, keyInfo.getAlign(), keyInfo.getWidth(), keyInfo.getCuts().replace(",", "-"), spaceStr, str, str2, str3, keyInfo.getType_specific_info());
         Log.i(TAG, "getKeyDecodePathSteps: " + GetKeyDecoderPath);
         return getKeyDecodePathSteps(GetKeyDecoderPath, spaceStr.split(";")[0].split(",").length);
     }
@@ -233,7 +235,7 @@ public class AssetsJsonUtils {
         KeyInfo keyInfo = dataParam.getKeyInfo();
         Clamp clamp = dataParam.getClamp();
         int clampMode = dataParam.getClampMode();
-        switch (C19981.$SwitchMap$com$liying$core$clamp$Clamp[clamp.ordinal()]) {
+        switch (C19981.clamps[clamp.ordinal()]) {
             case 1:
                 return dataParam.isPlasticKey() ? "keyblank/cutter_e9/S1-A(No).json" : clampMode == 1 ? keyInfo.getType() == 6 ? "keyblank/cutter_e9/S1-A-D(Dimple).json" : "keyblank/cutter_e9/S1-A-D(Top).json" : keyInfo.getType() == 6 ? "keyblank/cutter_e9/S1-A(Dimple).json" : "keyblank/cutter_e9/S1-A(Top).json";
             case 2:
@@ -359,7 +361,7 @@ public class AssetsJsonUtils {
         KeyInfo keyInfo = dataParam.getKeyInfo();
         Clamp clamp = dataParam.getClamp();
         int clampMode = dataParam.getClampMode();
-        switch (C19981.$SwitchMap$com$liying$core$clamp$Clamp[clamp.ordinal()]) {
+        switch (C19981.clamps[clamp.ordinal()]) {
             case 1:
                 return dataParam.isPlasticKey() ? "keyblank/decoder_e9/S1-A(No).json" : clampMode == 1 ? keyInfo.getType() == 6 ? keyInfo.getAlign() == 0 ? "keyblank/decoder_e9/S1-A-D(DimpleShoulder).json" : "keyblank/decoder_e9/S1-A-D(DimpleTip).json" : "keyblank/decoder_e9/S1-A-D(ThreeendsTop).json" : keyInfo.getType() == 6 ? keyInfo.getAlign() == 0 ? "keyblank/decoder_e9/S1-A(DimpleShoulder).json" : "keyblank/decoder_e9/S1-A(DimpleTip).json" : "keyblank/decoder_e9/S1-A(Threeends).json";
             case 2:
@@ -403,7 +405,7 @@ public class AssetsJsonUtils {
     private static String getDuplicateDecodeLocationJsonPath(DuplicateDecodeParams duplicateDecodeParams) {
         Clamp clamp = duplicateDecodeParams.getClamp();
         int clampMode = duplicateDecodeParams.getClampMode();
-        switch (C19981.$SwitchMap$com$liying$core$clamp$Clamp[clamp.ordinal()]) {
+        switch (C19981.clamps[clamp.ordinal()]) {
             case 1:
                 return clampMode == 1 ? "duplicate/decoder_e9/S1-A-D(ThreeendsTop).json" : "duplicate/decoder_e9/S1-A(ThreeendsTop).json";
             case 2:
@@ -442,7 +444,7 @@ public class AssetsJsonUtils {
     private static String getDuplicateCutLocationJsonPath(DuplicateCutParams duplicateCutParams) {
         Clamp clamp = duplicateCutParams.getClamp();
         int clampMode = duplicateCutParams.getClampMode();
-        switch (C19981.$SwitchMap$com$liying$core$clamp$Clamp[clamp.ordinal()]) {
+        switch (C19981.clamps[clamp.ordinal()]) {
             case 1:
                 return clampMode == 1 ? "duplicate/decoder_e9/S1-A-D(ThreeendsTop).json" : "duplicate/decoder_e9/S1-A(Threeends).json";
             case 2:
@@ -481,7 +483,7 @@ public class AssetsJsonUtils {
     private static String getDuplicateCutCutterHeightLocationJsonPath(DuplicateCutParams duplicateCutParams) {
         Clamp clamp = duplicateCutParams.getClamp();
         int clampMode = duplicateCutParams.getClampMode();
-        switch (C19981.$SwitchMap$com$liying$core$clamp$Clamp[clamp.ordinal()]) {
+        switch (C19981.clamps[clamp.ordinal()]) {
             case 1:
                 return clampMode == 1 ? "duplicate/cutter_e9/S1-A-D(Top).json" : "duplicate/cutter_e9/S1-A(Top).json";
             case 2:
@@ -517,7 +519,8 @@ public class AssetsJsonUtils {
         if (TextUtils.isEmpty(str)) {
             return "";
         }
-        String replace = str.split("/")[r0.length - 1].replace(".json", "").replace("(", "[(]").replace(")", "[)]");
+        var r0 = str.split("/");
+        String replace = r0[r0.length - 1].replace(".json", "").replace("(", "[(]").replace(")", "[)]");
         try {
             InputStream open = context.getAssets().open(str);
             StringBuilder sb = new StringBuilder();
@@ -569,91 +572,53 @@ public class AssetsJsonUtils {
     /* renamed from: com.cutting.machine.utils.AssetsJsonUtils$1 */
     /* loaded from: classes2.dex */
     public static /* synthetic */ class C19981 {
-        static final /* synthetic */ int[] $SwitchMap$com$liying$core$MachineType;
+        static final int[] machineType = new int[MachineType.values().length];
+        static final int[] clamps = new int[Clamp.values().length];
 
         static {
-            int[] iArr = new int[Clamp.values().length];
-            $SwitchMap$com$liying$core$clamp$Clamp = iArr;
             try {
-                iArr[Clamp.E9S1A.ordinal()] = 1;
+
+                clamps[Clamp.E9S1A.ordinal()] = 1;
+
+                clamps[Clamp.E9S1C.ordinal()] = 2;
+
+                clamps[Clamp.E9S2A.ordinal()] = 3;
+
+                clamps[Clamp.E9S2B.ordinal()] = 4;
+
+                clamps[Clamp.E9Honda.ordinal()] = 5;
+
+                clamps[Clamp.E9S3.ordinal()] = 6;
+
+                clamps[Clamp.E9S4.ordinal()] = 7;
+
+                clamps[Clamp.S1_A.ordinal()] = 8;
+
+                clamps[Clamp.S1_B.ordinal()] = 9;
+
+                clamps[Clamp.S1_C.ordinal()] = 10;
+
+                clamps[Clamp.S1_D.ordinal()] = 11;
+
+                clamps[Clamp.S2_A.ordinal()] = 12;
+
+                clamps[Clamp.S2_B.ordinal()] = 13;
+
+                clamps[Clamp.S3.ordinal()] = 14;
+
+                clamps[Clamp.D_C.ordinal()] = 15;
+
+                clamps[Clamp.S5.ordinal()] = 16;
+
+                clamps[Clamp.S8.ordinal()] = 17;
             } catch (NoSuchFieldError unused) {
             }
             try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9S1C.ordinal()] = 2;
-            } catch (NoSuchFieldError unused2) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9S2A.ordinal()] = 3;
-            } catch (NoSuchFieldError unused3) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9S2B.ordinal()] = 4;
-            } catch (NoSuchFieldError unused4) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9Honda.ordinal()] = 5;
-            } catch (NoSuchFieldError unused5) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9S3.ordinal()] = 6;
-            } catch (NoSuchFieldError unused6) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.E9S4.ordinal()] = 7;
-            } catch (NoSuchFieldError unused7) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S1_A.ordinal()] = 8;
-            } catch (NoSuchFieldError unused8) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S1_B.ordinal()] = 9;
-            } catch (NoSuchFieldError unused9) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S1_C.ordinal()] = 10;
-            } catch (NoSuchFieldError unused10) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S1_D.ordinal()] = 11;
-            } catch (NoSuchFieldError unused11) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S2_A.ordinal()] = 12;
-            } catch (NoSuchFieldError unused12) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S2_B.ordinal()] = 13;
-            } catch (NoSuchFieldError unused13) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S3.ordinal()] = 14;
-            } catch (NoSuchFieldError unused14) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.D_C.ordinal()] = 15;
-            } catch (NoSuchFieldError unused15) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S5.ordinal()] = 16;
-            } catch (NoSuchFieldError unused16) {
-            }
-            try {
-                $SwitchMap$com$liying$core$clamp$Clamp[Clamp.S8.ordinal()] = 17;
-            } catch (NoSuchFieldError unused17) {
-            }
-            int[] iArr2 = new int[MachineType.values().length];
-            $SwitchMap$com$liying$core$MachineType = iArr2;
-            try {
-                iArr2[MachineType.Alpha.ordinal()] = 1;
-            } catch (NoSuchFieldError unused18) {
-            }
-            try {
-                $SwitchMap$com$liying$core$MachineType[MachineType.Beta.ordinal()] = 2;
-            } catch (NoSuchFieldError unused19) {
-            }
-            try {
-                $SwitchMap$com$liying$core$MachineType[MachineType.E9.ordinal()] = 3;
+                machineType[MachineType.Alpha.ordinal()] = 1;
+
+                machineType[MachineType.Beta.ordinal()] = 2;
+
+                machineType[MachineType.E9.ordinal()] = 3;
             } catch (NoSuchFieldError unused20) {
             }
         }

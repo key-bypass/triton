@@ -888,6 +888,7 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
         showLoadingDialog(getString(R.string.cutting), true);
     }
 
+
     /* JADX INFO: Access modifiers changed from: private */
     public int getStep(RadioButton radioButton) {
         if (TextUtils.isEmpty(radioButton.getText().toString().trim())) {
@@ -895,6 +896,7 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
             return 0;
         }
         int indexOf = this.rbList.indexOf(radioButton);
+        var r0 = radioButton.getText().toString().trim();
         if (indexOf == 0) {
             return (int) (Integer.parseInt(r0) / MachineData.dXScale);
         }
@@ -903,6 +905,7 @@ public class DuplicateDimpleDataFragment extends BaseBackFragment {
         }
         return (int) (Integer.parseInt(r0) / MachineData.dZScale);
     }
+
 
     private void auto() {
         List<Integer> list = this.spaceList.get(this.rowIndex);

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pgyersdk.ImageUtil;
 import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.feedback.p017a.AlertDialogBuilderC2062m;
 import com.pgyersdk.feedback.p017a.C2050a;
@@ -28,7 +31,6 @@ import com.pgyersdk.p012c.Constants;
 import com.pgyersdk.p012c.Strings;
 import com.pgyersdk.utils.ConvertUtil;
 import com.pgyersdk.utils.FileUtils;
-import com.pgyersdk.utils.ImageUtil;
 import com.pgyersdk.utils.SharedPreferenesManager;
 import com.pgyersdk.utils.StringUtil;
 import com.pgyersdk.utils.Utils;
@@ -64,7 +66,7 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
     public C2051b f647g;
 
     /* renamed from: h */
-    C2054e f648h;
+    public C2054e f648h;
 
     /* renamed from: i */
     C2050a f649i;
@@ -100,16 +102,16 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
     ObjectAnimator f659s;
 
     /* renamed from: t */
-    ObjectAnimator f660t;
+    public ObjectAnimator f660t;
 
     /* renamed from: u */
     TranslateAnimation f661u;
 
     /* renamed from: v */
-    TranslateAnimation f662v;
+    public TranslateAnimation f662v;
 
     /* renamed from: w */
-    private boolean f663w;
+    public boolean f663w;
 
     /* renamed from: x */
     private ImageView f664x;
@@ -127,7 +129,7 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
     public static class a {
 
         /* renamed from: a */
-        String f667a;
+        public String f667a;
 
         /* renamed from: b */
         ImageView f668b;
@@ -503,7 +505,7 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
 
     /* renamed from: a */
     private View m323a(Context context, a aVar, int i, Paint paint) {
-        ShapeDrawable shapeDrawable = new ShapeDrawable(new FeedbackAd(this, paint, context, i));
+        ShapeDrawable shapeDrawable = new ShapeDrawable(new FeedbackAdShape(this, paint, context, i));
         FrameLayout frameLayout = new FrameLayout(context);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(ImageUtil.m214a("iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAAAV1BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////+ORg7oAAAAHHRSTlMA+8MbFQ/vP8molVVIBtB88+S+QrSzrqVzcN99O8Pg/gAAASJJREFUSMe111mOgzAQBNC2wWbfIQtT9z/nSBESIiFgupT3X5J3d8s+VzZZ2rVA26VZUzoJFj2swYaxjygomkwGO8yUnEctvrLH8eiOQ/eDwRceJ3wh+6ocAfJqL+t6BLHxZzZOEaj+SLsawWr3Nt8eF/Tbeee4JN/sES4q1mzkcZFfT8sNl91kMUBhWMIWCna5SFBJXuEJKtPrXBqomFhEnlB6rsulWjJnoGSclFArpYHan2RQyySFWiod1DppodYKCEzYMMP2zILN1FZRh4Q6ntTFoK4k8xhQzxD7AMoIlZF69JnvhvromC+W+tyZsoIpaIhSylayEdeAqgRc0oosUbgSJTNRrBNtgqZBGeRMMu63RmPy66ZsbQdnb4yfD9rBf/ksMN7cBHqMAAAAAElFTkSuQmCC"));
         if (Build.VERSION.SDK_INT >= 16) {
@@ -513,7 +515,24 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
         textView.setBackgroundDrawable(shapeDrawable);
         textView.setClickable(true);
         textView.setTag(aVar);
-        textView.setOnClickListener(new ViewOnClickListenerC2068b(this));
+        textView.setOnClickListener(new View.OnClickListener() {
+                                        @Override // android.view.View.OnClickListener
+                                        public void onClick(View view) {
+                                            f647g.setColor(((ViewOnClickListenerC2070d.a) view.getTag()).f667a);
+
+                                            ObjectAnimator objectAnimator = f660t;
+                                            if (objectAnimator != null) {
+                                                objectAnimator.start();
+                                            } else {
+                                                TranslateAnimation translateAnimation = f662v;
+                                                if (translateAnimation != null) {
+                                                    f648h.startAnimation(translateAnimation);
+                                                }
+                                            }
+                                            f663w = false;
+                                            m326a(view);
+                                        }
+                                    });
         textView.setGravity(17);
         frameLayout.addView(textView);
         ImageView imageView = new ImageView(context);
@@ -561,7 +580,14 @@ public class ViewOnClickListenerC2070d extends RelativeLayout implements View.On
     private void m325a() {
         AlertDialogBuilderC2062m cancelable = new AlertDialogBuilderC2062m(this.f656p).m304a(true).setCancelable(true);
         AlertDialog create = cancelable.create();
-        create.setOnDismissListener(new DialogInterfaceOnDismissListenerC2069c(this, cancelable));
+        create.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override // android.content.DialogInterface.OnDismissListener
+                                        public void onDismiss(DialogInterface dialogInterface) {
+                                            cancelable.m305a();
+                                            f654n.setVisibility(8);
+                                            m327a(cancelable);
+                                        }
+                                    });
         create.show();
     }
 

@@ -98,7 +98,7 @@ public class MetroLayout extends ViewGroup {
         if (this.mAvailablePos.size() <= 1) {
             return;
         }
-        ArrayList arrayList = new ArrayList();
+        var arrayList = new ArrayList<MetroBlock>();
         MetroBlock metroBlock2 = this.mAvailablePos.get(0);
         MetroBlock metroBlock3 = this.mAvailablePos.get(1);
         int size = this.mAvailablePos.size();

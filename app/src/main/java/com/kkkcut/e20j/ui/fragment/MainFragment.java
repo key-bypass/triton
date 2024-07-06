@@ -266,7 +266,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
             }
         }, new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment$$ExternalSyntheticLambda1
             @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            public final void accept(Object obj) throws Exception {
                 MainFragment.this.m43xd5936c62((Throwable) obj);
             }
         }));

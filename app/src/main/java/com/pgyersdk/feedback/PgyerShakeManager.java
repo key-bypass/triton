@@ -3,7 +3,6 @@ package com.pgyersdk.feedback;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import com.pgyersdk.PgyerProvider;
-import com.pgyersdk.feedback.PgyerFeedbackManagerDelegate;
 
 /* JADX INFO: Access modifiers changed from: package-private */
 /* compiled from: PgyerShakeManager.java */
@@ -15,7 +14,7 @@ public class PgyerShakeManager implements ShakeListener.a {
     private static ShakeListener f685a;
 
     /* renamed from: b */
-    private static PgyerFeedbackManagerDelegate.a f686b;
+    private static PgyerFeedbackManagerDelegate.IPgyerFeedbackManagerDelegate f686b;
 
     /* renamed from: c */
     private int f687c;

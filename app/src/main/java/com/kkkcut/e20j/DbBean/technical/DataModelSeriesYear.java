@@ -2,27 +2,37 @@ package com.kkkcut.e20j.DbBean.technical;
 
 import com.kkkcut.e20j.DbBean.KeyInfoBase;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class DataModelSeriesYear extends KeyInfoBase {
     int fK_ModelSeries;
     int modelSeriesYearID;
     String seriesYearName;
     String seriesYearName_CN;
 
+    @Generated(hash = 1119503197)
+    public DataModelSeriesYear(int fK_ModelSeries, int modelSeriesYearID,
+            String seriesYearName, String seriesYearName_CN) {
+        this.fK_ModelSeries = fK_ModelSeries;
+        this.modelSeriesYearID = modelSeriesYearID;
+        this.seriesYearName = seriesYearName;
+        this.seriesYearName_CN = seriesYearName_CN;
+    }
+
+
+
+    @Generated(hash = 711987271)
+    public DataModelSeriesYear() {
+    }
+
     @Override // com.chad.library.adapter.base.entity.MultiItemEntity
     public int getItemType() {
         return 0;
     }
 
-    public DataModelSeriesYear(int i, int i2, String str, String str2) {
-        this.modelSeriesYearID = i;
-        this.fK_ModelSeries = i2;
-        this.seriesYearName = str;
-        this.seriesYearName_CN = str2;
-    }
 
-    public DataModelSeriesYear() {
-    }
 
     @Override // com.kkkcut.e20j.customView.indexlib.IndexBar.bean.BaseIndexPinyinBean
     public String getTarget() {

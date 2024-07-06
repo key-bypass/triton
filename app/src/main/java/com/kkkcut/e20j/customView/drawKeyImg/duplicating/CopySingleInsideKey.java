@@ -40,6 +40,7 @@ public class CopySingleInsideKey extends CopyKey {
             }
             if (!pointsA.get(size).isInvalid()) {
                 float pointX = getPointX(size, CopyKey.Side.A);
+                var r4 = pointsA.get(size);
                 if (pointX != 0.0f) {
                     if (size == pointsA.size() - 1) {
                         this.path.moveTo(pointX, keyRect.top + (r4.getDepth() * getRatio()));
@@ -59,7 +60,8 @@ public class CopySingleInsideKey extends CopyKey {
         float f2 = (depth2 - depth) / 2.0f;
         this.path.addArc(new RectF(pointX2 - f2, f - f2, pointX2 + f2, f + f2), -90.0f, -180.0f);
         for (int i = 0; i < pointsB.size(); i++) {
-            if (!pointsB.get(i).isInvalid()) {
+            var r1 = pointsB.get(i);
+            if (!r1.isInvalid()) {
                 float pointX3 = getPointX(i, CopyKey.Side.B);
                 if (pointX3 != 0.0f) {
                     this.path.lineTo(pointX3, keyRect.bottom - (r1.getDepth() * getRatio()));

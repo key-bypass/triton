@@ -28,7 +28,7 @@ public final class ZipUtils {
     }
 
     public static boolean zipFiles(Collection<String> collection, String str, String str2) throws IOException {
-        ZipOutputStream zipOutputStream;
+        ZipOutputStream zipOutputStream = null;
         if (collection == null || str == null) {
             return false;
         }
@@ -65,7 +65,7 @@ public final class ZipUtils {
     }
 
     public static boolean zipFiles(Collection<File> collection, File file, String str) throws IOException {
-        ZipOutputStream zipOutputStream;
+        ZipOutputStream zipOutputStream = null;
         if (collection == null || file == null) {
             return false;
         }
@@ -110,7 +110,7 @@ public final class ZipUtils {
     }
 
     public static boolean zipFile(File file, File file2, String str) throws IOException {
-        ZipOutputStream zipOutputStream;
+        ZipOutputStream zipOutputStream = null;
         if (file == null || file2 == null) {
             return false;
         }
@@ -185,6 +185,7 @@ public final class ZipUtils {
         } catch (Throwable th2) {
             th = th2;
         }
+        return false;
     }
 
     public static List<File> unzipFile(String str, String str2) throws IOException {

@@ -19,7 +19,7 @@ import java.util.Locale;
 public class ErrorHelper {
     public static void handleError(int i, StepBean stepBean) {
         ErrorBean errorBean = getErrorBean(i, stepBean);
-        ErrorHelper$$ExternalSyntheticLambda0 errorHelper$$ExternalSyntheticLambda0 = new DialogBtnCallBack() { // from class: com.cutting.machine.error.ErrorHelper$$ExternalSyntheticLambda0
+        var errorHelper$$ExternalSyntheticLambda0 = new DialogBtnCallBack() { // from class: com.cutting.machine.error.ErrorHelper$$ExternalSyntheticLambda0
             @Override // com.cutting.machine.DialogBtnCallBack
             public void onDialogButClick(boolean z) {
                 ErrorHelper.lambda$handleError$0(z);

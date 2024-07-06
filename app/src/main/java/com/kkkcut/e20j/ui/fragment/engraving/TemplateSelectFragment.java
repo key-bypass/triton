@@ -120,6 +120,11 @@ public class TemplateSelectFragment extends BaseBackFragment implements BaseQuic
     }
 
     @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+    }
+
+    @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("template", (KeyMarkingTemplate) adapter.getData().get(position));

@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.Constant;
 import com.kkkcut.e20j.DbBean.GoOperatBean;
+import com.kkkcut.e20j.DbBean.userDB.CollectionData;
 import com.kkkcut.e20j.DbBean.userDB.CutHistoryData;
 import com.kkkcut.e20j.MyApplication;
 import com.kkkcut.e20j.SpKeys;
@@ -182,9 +183,9 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         }).subscribeOn(Schedulers.io()).subscribe(bool -> {
                 Log.i("MainFragment", "accept: " + bool);
                 if (bool.booleanValue()) {
-                    MainE9Fragment.updateConfig();
+                    MainE9Fragment.this.updateConfig();
                 } else {
-                    MainE9Fragment.getConfigurationE9();
+                    MainE9Fragment.this.getConfigurationE9();
                 }
 
         }));
@@ -193,11 +194,11 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
     public void getConfigurationE9() {
         if (AppUtil.isApkInDebug(getContext())) {
             addDisposable(Observable.fromCallable(MainE9Fragment.this::m42x32abd4e4).map(obj -> {
-                MainE9Fragment.lambda$getConfigurationE9$1(obj);
+                return MainE9Fragment.lambda$getConfigurationE9$1(obj);
             }).doOnNext(configurationE9 -> {
                 MainE9Fragment.this.initDb();
             }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
-                MainE9Fragment.handleConfig((ConfigurationE9) obj);
+                MainE9Fragment.this.handleConfig(obj);
             }, obj -> ToastUtil.showToast(R.string.network_unavailable)));
         } else {
             // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment$$ExternalSyntheticLambda3
@@ -329,7 +330,7 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         if (TextUtils.isEmpty(string)) {
             goRegister();
         } else {
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getConfigE9(TUitls.getconfig(string)).subscribeOn(Schedulers.m398io()).observeOn(Schedulers.newThread()).doOnNext(configurationE9 -> {
+            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getConfigE9(TUitls.getconfig(string)).subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread()).doOnNext(configurationE9 -> {
                     Log.i("MainFragment", "config--" + configurationE9.getDatabase());
                     FileUtil.readIoStringToFile(GsonHelper.toJsonString(configurationE9), Constant.CONFIG_PATH);
                     MainE9Fragment.this.initDb();
@@ -341,7 +342,7 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         }
     }
 
-private void addDisposable(Disposable mainFragment) {
+public void addDisposable(Disposable mainFragment) {
 }
 
 private void goRegister() {
@@ -448,10 +449,10 @@ private void goRegister() {
                     }
                     throw new Exception(MainE9Fragment.this.getString(R.string.no_data_was_found));
                 }
-            }).subscribeOn(Schedulers.m398io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment$$ExternalSyntheticLambda0
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment$$ExternalSyntheticLambda0
                 @Override // io.reactivex.functions.Consumer
-                public final void accept(Object obj) {
-                    MainE9Fragment.this.m599lambda$onItemClick$7$comkkkcute20juifragmentMainE9Fragment((CutHistoryData) obj);
+                public final void accept(Object cutHistoryData) {
+                    start(KeyOperateFragment.newInstance(new GoOperatBean((CollectionData) cutHistoryData)));
                 }
             }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.13
                 @Override // io.reactivex.functions.Consumer
@@ -462,18 +463,10 @@ private void goRegister() {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$onItemClick$7$com-kkkcut-e20j-ui-fragment-MainE9Fragment, reason: not valid java name */
-    public /* synthetic */ void m599lambda$onItemClick$7$comkkkcute20juifragmentMainE9Fragment(CutHistoryData cutHistoryData) throws Exception {
-        start(KeyOperateFragment.newInstance(new GoOperatBean(cutHistoryData)));
-    }
-
     private void showDownloadDbDialog() {
-        new AlertDialog.Builder(getContext()).setTitle(R.string.resup_need_update).setPositiveButton(R.string.f1269ok, new DialogInterface.OnClickListener() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.15
-            @Override // android.content.DialogInterface.OnClickListener
-            public void onClick(DialogInterface dialogInterface, int i) {
+        new AlertDialog.Builder(getContext()).setTitle(R.string.resup_need_update).setPositiveButton(R.string.f1269ok, (dialogInterface, i) -> {
                 MainE9Fragment.this.goDataUpgradeFragment();
-            }
+
         }).show();
     }
 

@@ -23,7 +23,7 @@ public class EngraveE9PathGen {
         int i;
         int i2;
         int i3;
-        ArrayList arrayList = new ArrayList();
+        var arrayList = new ArrayList<StepBean>();
         Bitmap binaryBitmap = binaryBitmap(bitmap);
         BitmapUtil.saveBitmap(binaryBitmap, new File(Environment.getExternalStorageDirectory(), "test.bmp").getPath());
         int width = binaryBitmap.getWidth();
@@ -143,11 +143,15 @@ public class EngraveE9PathGen {
                     i7++;
                     z = z;
                 }
+                else {
+                    break;
+                }
             }
             i5++;
             i4 = z ? 1 : 0;
             break;
         }
+        return arrayList;
     }
 
     public static List<StepBean> detectKeyPosition(EngravePathGen.EngraveParam engraveParam) {

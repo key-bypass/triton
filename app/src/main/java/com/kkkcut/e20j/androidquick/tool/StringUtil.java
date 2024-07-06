@@ -50,7 +50,7 @@ public class StringUtil {
         if (j < 1024) {
             return j + "bytes";
         }
-        if (j < PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED) {
+        if (j < 1048576) {
             return decimalFormat.format(((float) j) / 1024.0f) + "KB";
         }
         if (j < 1073741824) {

@@ -21,6 +21,7 @@ import com.tencent.mmkv.MMKVRecoverStrategic;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.ListCompositeDisposable;
 import java.lang.Thread;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 /* loaded from: classes.dex */
 public class MyApplication extends MultiLanguagesApp implements MMKVHandler {
@@ -63,7 +64,7 @@ public class MyApplication extends MultiLanguagesApp implements MMKVHandler {
         }
         ToastUtil.register(this);
         SPUtils.init(this, "sec_phone");
-        SQLiteDatabase.loadLibs(this);
+        System.loadLibrary("sqlcipher");
         install();
         setUrl();
         if (MachineInfo.isE9Standard(this)) {

@@ -22,15 +22,13 @@ class BubbleUtils {
     /* JADX INFO: Access modifiers changed from: package-private */
     public static boolean isMIUI() {
         Boolean bool = miui;
+        Throwable th = null;
+        Exception e = null;
         if (bool != null) {
             return bool.booleanValue();
         }
         FileInputStream fileInputStream = null;
         try {
-            try {
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             if (Build.VERSION.SDK_INT < 26) {
                 try {
                     FileInputStream fileInputStream2 = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
@@ -46,8 +44,8 @@ class BubbleUtils {
                         }
                         miui = Boolean.valueOf(sProperties.containsKey(KEY_MIUI_MANE));
                         return miui.booleanValue();
-                    } catch (Throwable th) {
-                        th = th;
+                    } catch (Throwable th2) {
+                        th = th2;
                         fileInputStream = fileInputStream2;
                         if (fileInputStream != null) {
                             try {
@@ -77,6 +75,7 @@ class BubbleUtils {
         } catch (Throwable th2) {
             th = th2;
         }
+        return false;
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

@@ -3544,7 +3544,6 @@
     <public type="id" name="aligned" id="0x7f0a004f" />
     <public type="id" name="all" id="0x7f0a0050" />
     <public type="id" name="always" id="0x7f0a0051" />
-    <public type="id" name="anchor_view" id="0x7f0a0052" />
     <public type="id" name="animateToEnd" id="0x7f0a0053" />
     <public type="id" name="animateToStart" id="0x7f0a0054" />
     <public type="id" name="arc" id="0x7f0a0055" />

@@ -17,7 +17,7 @@ import com.pgyersdk.utils.ConvertUtil;
 public class C2054e extends LinearLayout {
 
     /* renamed from: a */
-    private Context f569a;
+    Context f569a;
 
     /* renamed from: b */
     private Paint f570b;

@@ -97,7 +97,7 @@ public class CircleIndicator extends View {
         if (attributeSet == null) {
             return;
         }
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.CircleIndicator);
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.IndexBar);
         this.mIndicatorRadius = obtainStyledAttributes.getDimensionPixelSize(4, 10);
         this.mIndicatorMargin = obtainStyledAttributes.getDimensionPixelSize(2, 40);
         this.mIndicatorBackground = obtainStyledAttributes.getColor(0, -16776961);

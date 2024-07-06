@@ -20,13 +20,13 @@ import com.pgyersdk.utils.ConvertUtil;
 public class C2066q extends Button {
 
     /* renamed from: a */
-    private String f620a;
+    String f620a;
 
     /* renamed from: b */
-    private String f621b;
+    String f621b;
 
     /* renamed from: c */
-    private Context f622c;
+    Context f622c;
 
     /* renamed from: d */
     private ShapeDrawable f623d;

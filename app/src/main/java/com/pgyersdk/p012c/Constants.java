@@ -8,9 +8,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import com.pgyersdk.utils.BinTools;
 import com.pgyersdk.utils.LogUtils;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
 /* compiled from: Constants.java */
@@ -139,8 +143,18 @@ public class Constants {
         }
         String str = f465c + ":" + android_id + ":" + m146d(context);
 
-        MessageDigest messageDigest = MessageDigest.getInstance(MessageDigestAlgorithms.SHA_1);
-        byte[] bytes = str.getBytes("UTF-8");
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance(MessageDigestAlgorithms.SHA_1);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] bytes = null;
+        try {
+            bytes = str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         messageDigest.update(bytes, 0, bytes.length);
         f470h = m141a(messageDigest.digest());
 

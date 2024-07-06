@@ -17,7 +17,7 @@ import com.pgyersdk.update.javabean.AppBean;
 public class PgyerUpdateListener implements UpdateManagerListener {
 
     /* renamed from: a */
-    private static volatile AlertDialog f727a;
+    static volatile AlertDialog f727a;
 
     /* renamed from: b */
     private boolean f728b;

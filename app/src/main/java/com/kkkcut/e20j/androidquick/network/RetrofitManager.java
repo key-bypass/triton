@@ -3,7 +3,10 @@ package com.kkkcut.e20j.androidquick.network;
 import com.kkkcut.e20j.androidquick.network.gsonconvert.CustomGsonConverterFactory;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
+
 
 /* loaded from: classes.dex */
 public class RetrofitManager {
@@ -35,7 +38,7 @@ public class RetrofitManager {
 
     private void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        var httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(httpLoggingInterceptor);
         builder.sslSocketFactory(SSLSocketClient.getNoSSLSocketFactory(), (X509TrustManager) SSLSocketClient.getTrustManager()[0]);
@@ -69,7 +72,7 @@ public class RetrofitManager {
             synchronized (RetrofitManager.class) {
                 if (singleton == null) {
                     Retrofit.Builder builder = new Retrofit.Builder();
-                    builder.baseUrl(getCommonUrl()).client(okHttpClient).addConverterFactory(CustomGsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+                    builder.baseUrl(getCommonUrl()).client(okHttpClient).addConverterFactory(CustomGsonConverterFactory.create()).addCallAdapterFactory(RxJava3CallAdapterFactory.create());
                     singleton = builder.build();
                 }
             }

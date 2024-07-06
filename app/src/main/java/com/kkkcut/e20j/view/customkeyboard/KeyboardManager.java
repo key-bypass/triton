@@ -11,9 +11,10 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import com.kkkcut.e20j.us.R;
+
 
 import com.cutting.machine.MachineInfo;
+import com.kkkcut.e20j.us.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,13 +50,13 @@ public class KeyboardManager {
     private final View.OnLayoutChangeListener mOnLayoutChangeListener = new View.OnLayoutChangeListener() { // from class: com.kkkcut.e20j.view.customkeyboard.KeyboardManager.3
         @Override // android.view.View.OnLayoutChangeListener
         public void onLayoutChange(View view, int i, int i2, int i3, int i4, int i5, int i6, int i7, int i8) {
-            Object tag = KeyboardManager.this.mRootView.getTag(R.id.scroll_height_by_keyboard);
+            Object tag = KeyboardManager.this.mRootView.getTag(R.id.gl_keyboard);
             int intValue = tag != null ? ((Integer) tag).intValue() : 0;
-            if (KeyboardManager.this.mKeyboardWithSearchView.getVisibility() == 8) {
+            if (KeyboardManager.this.mKeyboardWithSearchView.getVisibility() == View.GONE) {
                 KeyboardManager.this.mRootView.removeOnLayoutChangeListener(KeyboardManager.this.mOnLayoutChangeListener);
                 if (intValue > 0) {
                     KeyboardManager.this.mRootView.getChildAt(0).scrollBy(0, intValue * (-1));
-                    KeyboardManager.this.mRootView.setTag(R.id.scroll_height_by_keyboard, 0);
+                    KeyboardManager.this.mRootView.setTag(R.id.gl_keyboard, 0);
                     return;
                 }
                 return;
@@ -79,13 +80,13 @@ public class KeyboardManager {
             int height2 = (height + KeyboardManager.this.mKeyboardWithSearchView.getHeight()) - rect.bottom;
             if (height2 > 0) {
                 KeyboardManager.this.mRootView.getChildAt(0).scrollBy(0, height2);
-                KeyboardManager.this.mRootView.setTag(R.id.scroll_height_by_keyboard, Integer.valueOf(intValue + height2));
+                KeyboardManager.this.mRootView.setTag(R.id.gl_keyboard, Integer.valueOf(intValue + height2));
                 return;
             }
             int min = Math.min(intValue, Math.abs(height2));
             if (min > 0) {
                 KeyboardManager.this.mRootView.getChildAt(0).scrollBy(0, min * (-1));
-                KeyboardManager.this.mRootView.setTag(R.id.scroll_height_by_keyboard, Integer.valueOf(intValue - min));
+                KeyboardManager.this.mRootView.setTag(R.id.gl_keyboard, Integer.valueOf(intValue - min));
             }
         }
     };
@@ -97,7 +98,7 @@ public class KeyboardManager {
     public KeyboardManager(Activity activity) {
         this.mContext = activity;
         if (activity instanceof Activity) {
-            this.mRootView = (ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content);
+            this.mRootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
             KeyboardWithSearchView keyboardWithSearchView = (KeyboardWithSearchView) LayoutInflater.from(this.mContext).inflate(R.layout.layout_keyboard_view, (ViewGroup) null);
             this.mKeyboardWithSearchView = keyboardWithSearchView;
             keyboardWithSearchView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { // from class: com.kkkcut.e20j.view.customkeyboard.KeyboardManager.1
@@ -148,7 +149,7 @@ public class KeyboardManager {
         if (this.mRootView.indexOfChild(this.mKeyboardWithSearchView) == -1) {
             this.mRootView.addView(this.mKeyboardWithSearchView, this.mKeyboardContainerLayoutParams);
         } else {
-            this.mKeyboardWithSearchView.setVisibility(0);
+            this.mKeyboardWithSearchView.setVisibility(View.VISIBLE);
         }
         this.mKeyboardWithSearchView.setAnimation(AnimationUtils.loadAnimation(this.mContext, R.anim.bottom_in));
     }
@@ -156,7 +157,7 @@ public class KeyboardManager {
     public void hideSoftKeyboard() {
         if (this.isShow) {
             this.isShow = false;
-            this.mKeyboardWithSearchView.setVisibility(8);
+            this.mKeyboardWithSearchView.setVisibility(View.GONE);
             this.mKeyboardWithSearchView.setAnimation(AnimationUtils.loadAnimation(this.mContext, R.anim.bottom_out));
             ViewGroup viewGroup = this.mRootView;
             if (viewGroup != null) {

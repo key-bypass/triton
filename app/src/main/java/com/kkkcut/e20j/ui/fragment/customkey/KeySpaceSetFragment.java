@@ -86,7 +86,7 @@ public class KeySpaceSetFragment extends BaseBackFragment {
         EditText editText2;
         String[] split;
         TextView text;
-        CustomKey customKey = (CustomKey) getArguments().getParcelable(CUSTOMKEY);
+        CustomKey customKey = getArguments().getParcelable(CUSTOMKEY);
         this.customKey = customKey;
         String space = customKey.getSpace();
         String[] split2 = !TextUtils.isEmpty(space) ? space.split(";") : null;
@@ -110,7 +110,6 @@ public class KeySpaceSetFragment extends BaseBackFragment {
                     this.ivSpace.setImageResource(R.drawable.doublekey_tip_space);
                     break;
                 }
-                break;
             case 1:
                 this.rowCount = 1;
                 this.llSide.setVisibility(8);
@@ -138,7 +137,6 @@ public class KeySpaceSetFragment extends BaseBackFragment {
                     this.ivSpace.setImageResource(R.drawable.double_internal_tip_space);
                     break;
                 }
-                break;
             case 3:
                 this.rowCount = 1;
                 this.llSide.setVisibility(0);
@@ -168,7 +166,6 @@ public class KeySpaceSetFragment extends BaseBackFragment {
                     this.ivSpace.setImageResource(R.drawable.double_external_tip_space);
                     break;
                 }
-                break;
             case 5:
                 this.rowCount = 1;
                 this.llSide.setVisibility(0);

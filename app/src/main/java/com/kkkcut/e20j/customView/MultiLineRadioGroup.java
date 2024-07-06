@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.kkkcut.e20j.us.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -59,6 +59,7 @@ public class C2055f extends ImageButton {
         paint.getStyle();
         paint.setStyle(Paint.Style.STROKE);
         float m195a = ConvertUtil.m195a(this.f571a, 10.0f);
+        var r7 = 10.0f;
         canvas.drawLine(m195a, m195a, getHeight() - r7, getHeight() - r7, paint);
         canvas.drawLine(getHeight() - r7, m195a, m195a, getHeight() - r7, paint);
     }

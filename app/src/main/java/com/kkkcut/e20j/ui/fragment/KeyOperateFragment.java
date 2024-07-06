@@ -232,9 +232,9 @@ public class KeyOperateFragment extends BaseBackFragment {
             ResUpdateUtils.showKeyImage(getContext(), getKeyData().getKeyID(), this.ivRealKey);
             checkCodeDababaseExist(getKeyData().getSeriesID(), getKeyData().getKeyID());
         } else {
-            this.tvInfo.setVisibility(8);
-            this.llCodeFindTooth.setVisibility(8);
-            this.llLackTooth.setVisibility(8);
+            this.tvInfo.setVisibility(View.GONE);
+            this.llCodeFindTooth.setVisibility(View.GONE);
+            this.llLackTooth.setVisibility(View.GONE);
         }
     }
 
@@ -257,11 +257,11 @@ public class KeyOperateFragment extends BaseBackFragment {
             @Override // io.reactivex.functions.Consumer
             public void accept(Boolean bool) throws Exception {
                 if (bool.booleanValue()) {
-                    KeyOperateFragment.this.llLackTooth.setVisibility(0);
-                    KeyOperateFragment.this.llCodeFindTooth.setVisibility(0);
+                    KeyOperateFragment.this.llLackTooth.setVisibility(View.VISIBLE);
+                    KeyOperateFragment.this.llCodeFindTooth.setVisibility(View.VISIBLE);
                 } else {
-                    KeyOperateFragment.this.llLackTooth.setVisibility(8);
-                    KeyOperateFragment.this.llCodeFindTooth.setVisibility(8);
+                    KeyOperateFragment.this.llLackTooth.setVisibility(View.GONE);
+                    KeyOperateFragment.this.llCodeFindTooth.setVisibility(View.GONE);
                 }
             }
         }));
@@ -270,17 +270,17 @@ public class KeyOperateFragment extends BaseBackFragment {
     private void initKey(int i) {
         addDisposable(getKeyInfoDisposable(i, getKeyData().isCustomkey()).subscribeOn(Schedulers.io()).doOnSubscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda6
             @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            public final void accept(Object obj) throws Exception {
                 KeyOperateFragment.this.m29lambda$initKey$0$comkkkcute20juifragmentKeyOperateFragment((Disposable) obj);
             }
         }).doFinally(new Action() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda3
             @Override // io.reactivex.functions.Action
-            public final void run() {
+            public final void run() throws Exception {
                 KeyOperateFragment.this.m30lambda$initKey$1$comkkkcute20juifragmentKeyOperateFragment();
             }
         }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda4
             @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            public final void accept(Object obj) throws Exception {
                 KeyOperateFragment.this.m31lambda$initKey$2$comkkkcute20juifragmentKeyOperateFragment((KeyInfo) obj);
             }
         }, new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda7
@@ -323,7 +323,7 @@ public class KeyOperateFragment extends BaseBackFragment {
         if (z) {
             return Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda2
                 @Override // java.util.concurrent.Callable
-                public final Object call() {
+                public final Object call() throws Exception {
                     return KeyOperateFragment.this.m28x8f932e35(i);
                 }
             }).map(new Function() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda10
@@ -365,11 +365,11 @@ public class KeyOperateFragment extends BaseBackFragment {
     private void initButton(KeyInfo keyInfo) {
         this.angleKeyDepthCount = this.ki.getDepthName().split(";")[0].split(",").length;
         if (keyInfo.getType() == 7) {
-            this.btDecode.setVisibility(8);
+            this.btDecode.setVisibility(View.GONE);
         }
         if (keyInfo.getSpaceStr().split(";").length > 4) {
-            this.btDecode.setVisibility(8);
-            this.btCut.setVisibility(8);
+            this.btDecode.setVisibility(View.GONE);
+            this.btCut.setVisibility(View.GONE);
         }
     }
 
@@ -459,7 +459,7 @@ public class KeyOperateFragment extends BaseBackFragment {
             showAngleKeyBlankRemind();
         }
         if (this.ki.getType() == 7 || this.ki.getType() == 8 || this.ki.isDimpleMotherSonKey()) {
-            this.tvAdjust.setVisibility(8);
+            this.tvAdjust.setVisibility(View.GONE);
         }
     }
 
@@ -472,14 +472,14 @@ public class KeyOperateFragment extends BaseBackFragment {
 
     private void initSiblingKey(KeyInfo keyInfo) {
         if (getKeyData().isCustomkey()) {
-            this.btChangedSibling.setVisibility(8);
+            this.btChangedSibling.setVisibility(View.GONE);
             return;
         }
         if (TextUtils.isEmpty(keyInfo.getSiblingProfile()) && !this.isSibling && keyInfo.getKeyitemid() == 0 && TextUtils.isEmpty(this.ki.getKeyComb())) {
-            this.btChangedSibling.setVisibility(8);
+            this.btChangedSibling.setVisibility(View.GONE);
             return;
         }
-        this.tvSide.setVisibility(0);
+        this.tvSide.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(this.ki.getKeyComb())) {
             for (String str : this.ki.getKeyComb().split(",")) {
                 String[] split = str.split("-");
@@ -574,11 +574,11 @@ public class KeyOperateFragment extends BaseBackFragment {
         }
         final List<ClampDisplayBean> clampBeanList = ClampCreator.getClampBeanList(keyInfo, this.lastClamp);
         this.ki.setClampKeyBasicData(clampBeanList.get(0).getClampBean());
-        this.ivSwitchLast.setVisibility(8);
+        this.ivSwitchLast.setVisibility(View.GONE);
         if (clampBeanList.size() > 1) {
-            this.ivSwitchNext.setVisibility(0);
+            this.ivSwitchNext.setVisibility(View.VISIBLE);
         } else {
-            this.ivSwitchNext.setVisibility(8);
+            this.ivSwitchNext.setVisibility(View.GONE);
         }
         this.vpClamp.setAdapter(new ClampSwitchPagerAdapter(clampBeanList, getContext()));
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment.4
@@ -592,16 +592,16 @@ public class KeyOperateFragment extends BaseBackFragment {
 
             @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
             public void onPageSelected(int i) {
-                KeyOperateFragment.this.ki.setClampKeyBasicData(((ClampDisplayBean) clampBeanList.get(i)).getClampBean());
+                KeyOperateFragment.this.ki.setClampKeyBasicData(clampBeanList.get(i).getClampBean());
                 if (i == 0) {
-                    KeyOperateFragment.this.ivSwitchLast.setVisibility(8);
-                    KeyOperateFragment.this.ivSwitchNext.setVisibility(0);
+                    KeyOperateFragment.this.ivSwitchLast.setVisibility(View.GONE);
+                    KeyOperateFragment.this.ivSwitchNext.setVisibility(View.VISIBLE);
                 } else if (i == clampBeanList.size() - 1) {
-                    KeyOperateFragment.this.ivSwitchLast.setVisibility(0);
-                    KeyOperateFragment.this.ivSwitchNext.setVisibility(8);
+                    KeyOperateFragment.this.ivSwitchLast.setVisibility(View.VISIBLE);
+                    KeyOperateFragment.this.ivSwitchNext.setVisibility(View.GONE);
                 } else {
-                    KeyOperateFragment.this.ivSwitchLast.setVisibility(0);
-                    KeyOperateFragment.this.ivSwitchNext.setVisibility(0);
+                    KeyOperateFragment.this.ivSwitchLast.setVisibility(View.VISIBLE);
+                    KeyOperateFragment.this.ivSwitchNext.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -711,7 +711,7 @@ public class KeyOperateFragment extends BaseBackFragment {
 
     private void checkKeyCollected() {
         if (getKeyData().isCustomkey()) {
-            this.tvCollect.setVisibility(8);
+            this.tvCollect.setVisibility(View.GONE);
         }
     }
 
@@ -936,7 +936,7 @@ public class KeyOperateFragment extends BaseBackFragment {
         editDialog.setDialogBtnCallback(new EditDialog.DialogInputFinishCallBack() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment$$ExternalSyntheticLambda0
             @Override // com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
             public final void onDialogButClick(String str) {
-                KeyOperateFragment.this.m33x473e13c1(str);
+                KeyOperateFragment.this.collectKey(str);
             }
         });
         editDialog.setContentNullable(true);
@@ -997,11 +997,11 @@ public class KeyOperateFragment extends BaseBackFragment {
 
     /* JADX INFO: Access modifiers changed from: private */
     /* renamed from: collectKey, reason: merged with bridge method [inline-methods] */
-    public void m33x473e13c1(String str) {
+    public void collectKey(String str) {
         String variableSpace;
         GoOperatBean keyData = getKeyData();
-        keyData.toothCode = this.ki.getKeyToothCode();
-        keyData.remark = str;
+        keyData.setToothCode(this.ki.getKeyToothCode());
+        keyData.setRemark(str);
         final CollectionData collectionData = new CollectionData(keyData);
         if (TextUtils.isEmpty(keyData.getCuts())) {
             if (TextUtils.isEmpty(this.ki.getVariableSpace())) {
@@ -1015,22 +1015,9 @@ public class KeyOperateFragment extends BaseBackFragment {
             }
             collectionData.setCuts(variableSpace);
         }
-        addDisposable(Observable.fromCallable(new Callable<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment.8
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // java.util.concurrent.Callable
-            public Boolean call() throws Exception {
-                return Boolean.valueOf(UserDataDaoManager.getInstance(KeyOperateFragment.this.getContext()).collectKey(collectionData));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.KeyOperateFragment.7
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Boolean bool) throws Exception {
-                if (bool.booleanValue()) {
-                    ToastUtil.showToast(R.string.collection_completed);
-                } else {
-                    ToastUtil.showToast(R.string.collection_failed);
-                }
-            }
-        }));
+        addDisposable(Observable.fromCallable(() -> {
+            return Boolean.valueOf(UserDataDaoManager.getInstance(KeyOperateFragment.this.getContext()).collectKey(collectionData));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe());
     }
 
     private void cancleCollect() {
@@ -1104,7 +1091,7 @@ public class KeyOperateFragment extends BaseBackFragment {
             ToolSizeManager.setCutterSize(this.dataParam.getCutterSize());
             ToolSizeManager.setDecoderSize(this.dataParam.getDecoderSize());
             if (this.ki.getType() != 7 && this.dataParam.isPlastic()) {
-                this.btDecode.setVisibility(8);
+                this.btDecode.setVisibility(View.GONE);
             }
             if (this.dataParam.isPlastic() && TextUtils.equals(this.ki.getClampBean().getClampSide(), "A")) {
                 showErrorDialog(getString(R.string.please_use_s1b_jaw), R.drawable.error_1, null);
@@ -1228,10 +1215,10 @@ public class KeyOperateFragment extends BaseBackFragment {
                     }
                     if (operateType == OperateType.KEY_BLANK_DECODE_EXECUTE) {
                         if (this.isBarCodeScan && MachineInfo.isE20Us(getContext())) {
-                            this.llInput.setVisibility(8);
-                            this.llCodeFindTooth.setVisibility(8);
-                            this.llLackTooth.setVisibility(8);
-                            this.tvMove.setVisibility(8);
+                            this.llInput.setVisibility(View.GONE);
+                            this.llCodeFindTooth.setVisibility(View.GONE);
+                            this.llLackTooth.setVisibility(View.GONE);
+                            this.tvMove.setVisibility(View.GONE);
                         }
                         if (this.ki.getIcCard() == 601287) {
                             fix3KsKeyTooth();

@@ -321,17 +321,17 @@ public class KeyBlankCutStepsGenerateUtil {
                     r6 = true;
                 }
                 int i16 = i6;
-                if (i16 == list3.get(i13).size() - r6) {
+                if (i16 == list3.get(i13).size() - i6) {
                     String extTopCut = keyInfo.getExtTopCut();
                     if (TextUtils.isEmpty(extTopCut)) {
                         int spaceRight2 = getSpaceRight(align, i5, 250);
                         if (spaceRight2 < 0) {
                             spaceRight2 = 0;
                         }
-                        arrayList3.add(new DestPoint(spaceRight2, keyInfo.getWidth(), (boolean) r6));
+                        arrayList3.add(new DestPoint(spaceRight2, keyInfo.getWidth(), true));
                     } else {
                         String[] split2 = extTopCut.split(str);
-                        arrayList3.add(new DestPoint(Integer.parseInt(split2[r6]), Integer.parseInt(split2[0]), (boolean) r6));
+                        arrayList3.add(new DestPoint(Integer.parseInt(split2[i6]), Integer.parseInt(split2[0]), (boolean) r6));
                         int i17 = -ToolSizeManager.getCutterRadiusSize();
                         if (align == 0) {
                             i17 = ((int) (Math.abs(keyAlignInfo.getShoulder() - keyAlignInfo.getTip()) * MachineData.dYScale)) + ToolSizeManager.getCutterRadiusSize();
@@ -389,7 +389,7 @@ public class KeyBlankCutStepsGenerateUtil {
         int i;
         int cutterRadiusSize2;
         int cutterRadiusSize22;
-        double cos;
+        double cos = 0;
         int cutterRadiusSize23 = 0;
         for (List<DestPoint> list2 : list) {
             for (int i2 = 1; i2 < list2.size() - 1; i2++) {
@@ -532,7 +532,7 @@ public class KeyBlankCutStepsGenerateUtil {
                 arrayList2.add(new DestPoint(spaceLeft, calculateAnotherSideDepth(keyInfo, keyAlignInfo, depthByCode), (boolean) r5));
                 arrayList2.add(new DestPoint(spaceRight, calculateAnotherSideDepth(keyInfo, keyAlignInfo, depthByCode), (boolean) r5));
             }
-            if (i2 == sortSpace.size() - r5 ? 1 : 0) {
+            if (i2 == sortSpace.size() - (r5 ? 1 : 0)) {
                 if (align == 0) {
                     i = (int) (Math.abs(keyAlignInfo.getShoulder() - keyAlignInfo.getTip()) * MachineData.dYScale);
                 } else {
@@ -637,7 +637,7 @@ public class KeyBlankCutStepsGenerateUtil {
                     list3 = spaceWidthList;
                     r2 = true;
                 }
-                if (toothCodeArray.size() == r2) {
+                if (toothCodeArray.size() == (r2 ? 1 : 0)) {
                     arrayList2.add(new DestPoint(intValue, depthByCode, (boolean) r2));
                     arrayList2.add(new DestPoint(spaceRight, depthByCode, (boolean) r2));
                     arrayList3.add(new DestPoint(intValue, depthByCode, (boolean) r2));
@@ -649,7 +649,7 @@ public class KeyBlankCutStepsGenerateUtil {
                     arrayList3.add(new DestPoint(intValue, depthByCode, (boolean) r2));
                     arrayList3.add(new DestPoint(spaceRight, depthByCode, (boolean) r2));
                 }
-                if (i2 == toothCodeArray.get(i).size() - r2) {
+                if (i2 == toothCodeArray.get(i).size() - (r2 ? 1 : 0)) {
                     String cutSharpenType = keyInfo.getCutSharpenType();
                     if ((!TextUtils.isEmpty(cutSharpenType) ? Integer.parseInt(cutSharpenType.split(",")[0]) : 0) == 0) {
                         int spaceRight2 = getSpaceRight(align, spaceRight, 250);

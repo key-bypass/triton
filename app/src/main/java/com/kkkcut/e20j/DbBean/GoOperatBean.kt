@@ -19,11 +19,24 @@ public class GoOperatBean() : Parcelable {
     var isCustomkey: Boolean = false;
     var isn: String? = null;
     var keyID: Int = 0;
-    val remark: String? = null;
+    var remark: String? = null;
     var seriesID: Int = 0;
     var title: String? = null;
-    var toothCode: String? = null;
+    public var toothCode: String? = null;
     var toothCodeSide: String? = null;
+
+    constructor(keyChinaNum: String?, codeSeries: String?, cuts: String?, doorIgnition: Boolean, doorToIgnition: Boolean, isCustomkey: Boolean, isn: String?, keyID: Int, remark: String?, seriesID: Int, title: String?, toothCode: String?, toothCodeSide: String?) : this() {
+        this.KeyChinaNum = keyChinaNum
+        this.codeSeries = codeSeries
+        this.cuts = cuts
+        this.doorIgnition = doorIgnition
+        this.doorToIgnition = doorToIgnition
+        this.isCustomkey = isCustomkey
+        this.isn = isn
+        this.keyID = keyID
+        this.remark = remark
+        this.seriesID = seriesID
+    }
 
     fun isDoorIgnition() : Boolean {
         return this.doorIgnition
@@ -34,7 +47,7 @@ public class GoOperatBean() : Parcelable {
     }
 
 
-    constructor(modelSeries: ModelSeries, str: String?, str2: String?) :         this(modelSeries, str) {
+    constructor(modelSeries: ModelSeries, str: String?, str2: String?) : this(modelSeries, str) {
         this.isn = str2
     }
 

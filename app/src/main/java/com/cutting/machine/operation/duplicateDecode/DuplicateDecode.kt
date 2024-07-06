@@ -39,7 +39,7 @@ class DuplicateDecode : Operation {
         if (operateType == OperateType.DUPLICATE_DECODE_LOCATION) {
             val keyInfo = decodeParams!!.keyInfo
             val keyAlignInfo = OperationManager.getInstance().keyAlignInfo
-            keyInfo.decodeLength = (keyAlignInfo.decodeLength2)
+            keyInfo.decodeLength = keyAlignInfo.decodeLength2
             keyInfo.decodeWidth = (keyAlignInfo.decodeWidth2)
             keyInfo.cutDepth = (keyAlignInfo.cutDepth)
             startDuplicateDecode = if (keyInfo.keyType == KeyType.TUBULAR_KEY) {

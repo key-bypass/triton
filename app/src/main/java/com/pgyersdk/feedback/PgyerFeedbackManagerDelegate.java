@@ -3,11 +3,11 @@ package com.pgyersdk.feedback;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.kkkcut.e20j.pyger.C2077k;
 import com.pgyersdk.PgyerActivityManager;
 import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.feedback.p017a.AlertDialogBuilderC2062m;
@@ -16,6 +16,7 @@ import com.pgyersdk.p008b.CaptureExecute;
 import com.pgyersdk.p008b.FileManager;
 import com.pgyersdk.p012c.Strings;
 import com.pgyersdk.utils.AsyncTaskUtils;
+import com.pgyersdk.utils.LogUtils;
 import com.pgyersdk.utils.SharedPreferenesManager;
 import com.pgyersdk.utils.StringUtil;
 import com.pgyersdk.utils.Util;
@@ -26,10 +27,10 @@ import java.util.ArrayList;
 public class PgyerFeedbackManagerDelegate {
 
     /* renamed from: a */
-    private static String f677a = "";
+    public static String f677a = "";
 
     /* renamed from: b */
-    private static File f678b;
+    public static File f678b;
 
     /* renamed from: c */
     private static Handler f679c;
@@ -38,7 +39,7 @@ public class PgyerFeedbackManagerDelegate {
     private PgyerShakeManager f680d;
 
     /* renamed from: e */
-    private a f681e;
+    private IPgyerFeedbackManagerDelegate f681e;
 
     /* renamed from: f */
     private PgyerFeedbackManager.TYPE type;
@@ -49,7 +50,7 @@ public class PgyerFeedbackManagerDelegate {
     /* compiled from: PgyerFeedbackManagerDelegate.java */
     /* renamed from: com.pgyersdk.feedback.k$a */
     /* loaded from: classes2.dex */
-    public interface a {
+    public interface IPgyerFeedbackManagerDelegate {
         /* renamed from: a */
         void mo354a();
 
@@ -113,22 +114,36 @@ public class PgyerFeedbackManagerDelegate {
 
     /* renamed from: l */
     private void m347l() {
-        CaptureExecute.m127a(PgyerActivityManager.getInstance().getCurrentActivity(), new PgyerFeedbackManagerDelegate(this));
+        CaptureExecute.m127a(PgyerActivityManager.getInstance().getCurrentActivity(), new CaptureExecute.ICaptureExecute() {
+        @Override // com.pgyersdk.p008b.C2018d.a
+        /* renamed from: a */
+        public void mo128a(Uri uri) {
+            String unused = PgyerFeedbackManagerDelegate.f677a = uri.getPath();
+            m346k();
+        }
+
+        @Override // com.pgyersdk.p008b.C2018d.a
+        /* renamed from: a */
+        public void mo129a(Throwable th) {
+            m350c();
+            LogUtils.m217a("PgyerSDK", "Take screen shot failed", th);
+        }
+        });
     }
 
     /* renamed from: c */
     public void m350c() {
-        a aVar = this.f681e;
-        if (aVar != null) {
-            aVar.mo355b();
+        IPgyerFeedbackManagerDelegate IPgyerFeedbackManagerDelegateVar = this.f681e;
+        if (IPgyerFeedbackManagerDelegateVar != null) {
+            IPgyerFeedbackManagerDelegateVar.mo355b();
         }
     }
 
     /* renamed from: d */
     void m351d() {
-        a aVar = this.f681e;
-        if (aVar != null) {
-            aVar.mo354a();
+        IPgyerFeedbackManagerDelegate IPgyerFeedbackManagerDelegateVar = this.f681e;
+        if (IPgyerFeedbackManagerDelegateVar != null) {
+            IPgyerFeedbackManagerDelegateVar.mo354a();
         }
     }
 
@@ -195,8 +210,8 @@ public class PgyerFeedbackManagerDelegate {
         }
     }
 
-    public void m348a(a aVar) {
-        this.f681e = aVar;
+    public void m348a(IPgyerFeedbackManagerDelegate IPgyerFeedbackManagerDelegateVar) {
+        this.f681e = IPgyerFeedbackManagerDelegateVar;
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
@@ -209,10 +224,10 @@ public class PgyerFeedbackManagerDelegate {
         final /* synthetic */ AlertDialogBuilderC2062m f674a;
 
         /* renamed from: b */
-        final /* synthetic */ C2077k f675b;
+        final /* synthetic */ PgyerFeedbackManagerDelegate f675b;
 
         /* JADX INFO: Access modifiers changed from: package-private */
-        public DialogInterfaceOnDismissListenerC2075i(C2077k c2077k, AlertDialogBuilderC2062m alertDialogBuilderC2062m) {
+        public DialogInterfaceOnDismissListenerC2075i(PgyerFeedbackManagerDelegate c2077k, AlertDialogBuilderC2062m alertDialogBuilderC2062m) {
             this.f675b = c2077k;
             this.f674a = alertDialogBuilderC2062m;
         }

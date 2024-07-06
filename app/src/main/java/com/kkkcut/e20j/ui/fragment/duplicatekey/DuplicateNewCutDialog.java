@@ -238,7 +238,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     private void initSingleKeyCutDepth() {
-        if (getKeyInfo().keyType == KeyType.SINGLE_SIDE_KEY) {
+        if (getKeyInfo().getKeyType() == KeyType.SINGLE_SIDE_KEY) {
             this.llCutDepthSingleKey.setVisibility(0);
             this.tvCutDepthSingleKey.setVisibility(0);
             this.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
@@ -283,7 +283,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     private void initCutter() {
-        if (getKeyInfo().keyType == KeyType.DOUBLE_SIDE_KEY) {
+        if (getKeyInfo().getKeyType() == KeyType.DOUBLE_SIDE_KEY) {
             this.cutter_size = SPUtils.getInt(SpKeys.DOUBLE_KEY_CUTTER, 200);
         }
         this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
@@ -356,7 +356,7 @@ public class DuplicateNewCutDialog extends BottomInDialog {
     }
 
     public KeyType getKeyType() {
-        return getKeyInfo().keyType;
+        return getKeyInfo().getKeyType();
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */

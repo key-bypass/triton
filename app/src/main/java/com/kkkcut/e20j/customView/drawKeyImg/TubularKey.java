@@ -6,8 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.text.TextUtils;
-import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
+
 import com.cutting.machine.bean.KeyInfo;
+import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,13 +172,13 @@ public class TubularKey extends Key {
             } else {
                 this.paint.setColor(this.textColorExistDecimal);
             }
-            canvas.drawText(toothCodeRound2, cos - (r8.width() / 2), sin + (r8.height() / 2), this.paint);
+            canvas.drawText(toothCodeRound2, cos - ((float) this.rect.width() / 2), sin + ((float) this.rect.height() / 2), this.paint);
         }
     }
 
     @Override // com.kkkcut.e20j.customView.drawKeyImg.Key
     public ArrayList<String[]> getToothCode() {
-        ArrayList<String[]> arrayList = new ArrayList<>();
+        var arrayList = new ArrayList<String[]>();
         arrayList.add(this.toothCode);
         return arrayList;
     }
@@ -216,14 +217,14 @@ public class TubularKey extends Key {
 
     @Override // com.kkkcut.e20j.customView.drawKeyImg.Key
     List<List<Rect>> getIntegerRectContainer() {
-        ArrayList arrayList = new ArrayList();
+        var arrayList = new ArrayList();
         arrayList.add(this.integerRectListA);
         return arrayList;
     }
 
     @Override // com.kkkcut.e20j.customView.drawKeyImg.Key
     List<List<Rect>> getDecimalRectContainer() {
-        ArrayList arrayList = new ArrayList();
+        var arrayList = new ArrayList();
         arrayList.add(this.decimalRectListA);
         return arrayList;
     }

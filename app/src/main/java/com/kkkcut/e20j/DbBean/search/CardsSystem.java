@@ -5,11 +5,25 @@ import com.kkkcut.e20j.utils.DesUtil;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
 import com.cutting.machine.utils.KeyDataUtils;
 
-/* loaded from: classes.dex */
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class CardsSystem implements SearchResult {
     int KeyID;
     String parameter_info;
     String space;
+
+    @Generated(hash = 1711942837)
+    public CardsSystem(int KeyID, String parameter_info, String space) {
+        this.KeyID = KeyID;
+        this.parameter_info = parameter_info;
+        this.space = space;
+    }
+
+    @Generated(hash = 190065326)
+    public CardsSystem() {
+    }
 
     @Override // com.kkkcut.e20j.DbBean.search.SearchResult
     public String getDisplayName() {
@@ -20,16 +34,7 @@ public class CardsSystem implements SearchResult {
     public String getKeyBlankName() {
         return "";
     }
-
-    public CardsSystem(int i, String str, String str2) {
-        this.KeyID = i;
-        this.space = str;
-        this.parameter_info = str2;
-    }
-
-    public CardsSystem() {
-    }
-
+    
     @Override // com.kkkcut.e20j.DbBean.search.SearchResult
     public String getDisplayKeyID() {
         String str = "";

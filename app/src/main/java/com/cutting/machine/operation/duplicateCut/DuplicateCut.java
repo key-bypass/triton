@@ -95,7 +95,7 @@ public class DuplicateCut implements Operation {
 
     private List<StepBean> getCutPoints() {
         ArrayList arrayList = new ArrayList();
-        switch (C19951.$SwitchMap$com$liying$core$bean$KeyType[this.cutParams.getKeyInfo().keyType.ordinal()]) {
+        switch (C19951.$SwitchMap$com$liying$core$bean$KeyType[this.cutParams.getKeyInfo().getKeyType().ordinal()]) {
             case 1:
                 return new DuplicateDoubleSideKeyCut(this.cutParams).getCutPathSteps();
             case 2:

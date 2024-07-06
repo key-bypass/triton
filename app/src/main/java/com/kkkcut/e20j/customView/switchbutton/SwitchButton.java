@@ -1,6 +1,5 @@
 package com.kkkcut.e20j.customView.switchbutton;
 
-import android.R;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -25,6 +24,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+
+import com.kkkcut.e20j.us.R;
 
 /* loaded from: classes.dex */
 public class SwitchButton extends CompoundButton {
@@ -161,7 +162,7 @@ public class SwitchButton extends CompoundButton {
         duration.setInterpolator(new AccelerateDecelerateInterpolator());
         this.mPresentThumbRectF = new RectF();
         float f11 = getResources().getDisplayMetrics().density * 2.0f;
-        TypedArray obtainStyledAttributes2 = attributeSet == null ? null : getContext().obtainStyledAttributes(attributeSet, com.kkkcut.e20j.R.styleable.SwitchButton);
+        TypedArray obtainStyledAttributes2 = attributeSet == null ? null : getContext().obtainStyledAttributes(attributeSet, R.styleable.SwitchButton);
         if (obtainStyledAttributes2 != null) {
             drawable = obtainStyledAttributes2.getDrawable(11);
             ColorStateList colorStateList4 = obtainStyledAttributes2.getColorStateList(10);
@@ -300,11 +301,14 @@ public class SwitchButton extends CompoundButton {
     }
 
     private Layout makeLayout(CharSequence charSequence) {
-        return new StaticLayout(charSequence, this.mTextPaint, (int) Math.ceil(Layout.getDesiredWidth(charSequence, r2)), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+        var r2 = this.mTextPaint;
+        return new StaticLayout(charSequence, r2, (int) Math.ceil(Layout.getDesiredWidth(charSequence, r2)), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
     }
 
     @Override // android.widget.TextView, android.view.View
     protected void onMeasure(int i, int i2) {
+        var r0 = this.mOnLayout;
+        var r2 = this.mOffLayout;
         if (this.mOnLayout == null && !TextUtils.isEmpty(this.mTextOn)) {
             this.mOnLayout = makeLayout(this.mTextOn);
         }
@@ -340,7 +344,8 @@ public class SwitchButton extends CompoundButton {
         }
         if (mode == 1073741824) {
             int paddingLeft = (size - getPaddingLeft()) - getPaddingRight();
-            if (this.mThumbWidth != 0) {
+            var r2 = this.mThumbWidth;
+            if (r2 != 0) {
                 int ceil2 = ceil(r2 * this.mThumbRangeRatio);
                 int ceil3 = (this.mTextExtra + ceil) - ((ceil2 - this.mThumbWidth) + ceil(Math.max(this.mThumbMargin.left, this.mThumbMargin.right)));
                 float f = ceil2;
@@ -409,7 +414,8 @@ public class SwitchButton extends CompoundButton {
             this.mThumbHeight = this.mThumbDrawable.getIntrinsicHeight();
         }
         if (mode == 1073741824) {
-            if (this.mThumbHeight != 0) {
+            var r6 = this.mThumbHeight;
+            if (r6 != 0) {
                 this.mBackHeight = ceil(r6 + this.mThumbMargin.top + this.mThumbMargin.bottom);
                 this.mBackHeight = ceil(Math.max(r6, this.mTextHeight));
                 if ((((r6 + getPaddingTop()) + getPaddingBottom()) - Math.min(0.0f, this.mThumbMargin.top)) - Math.min(0.0f, this.mThumbMargin.bottom) > size) {
@@ -472,7 +478,8 @@ public class SwitchButton extends CompoundButton {
         if (this.mThumbWidth == 0 || (i = this.mThumbHeight) == 0 || this.mBackWidth == 0 || this.mBackHeight == 0) {
             return;
         }
-        if (this.mThumbRadius == -1.0f) {
+        var r0 = this.mThumbRadius;
+        if (r0 == -1.0f) {
             this.mThumbRadius = Math.min(r0, i) / 2;
         }
         if (this.mBackRadius == -1.0f) {
@@ -481,7 +488,8 @@ public class SwitchButton extends CompoundButton {
         int measuredWidth = (getMeasuredWidth() - getPaddingLeft()) - getPaddingRight();
         int measuredHeight = (getMeasuredHeight() - getPaddingTop()) - getPaddingBottom();
         int ceil = ceil((this.mBackWidth - Math.min(0.0f, this.mThumbMargin.left)) - Math.min(0.0f, this.mThumbMargin.right));
-        if (measuredHeight <= ceil((this.mBackHeight - Math.min(0.0f, this.mThumbMargin.top)) - Math.min(0.0f, this.mThumbMargin.bottom))) {
+        var r3 = ceil((this.mBackHeight - Math.min(0.0f, this.mThumbMargin.top)));
+        if (measuredHeight <= r3 - Math.min(0.0f, this.mThumbMargin.bottom)) {
             paddingTop = getPaddingTop() + Math.max(0.0f, this.mThumbMargin.top);
         } else {
             paddingTop = (((measuredHeight - r3) + 1) / 2) + getPaddingTop() + Math.max(0.0f, this.mThumbMargin.top);

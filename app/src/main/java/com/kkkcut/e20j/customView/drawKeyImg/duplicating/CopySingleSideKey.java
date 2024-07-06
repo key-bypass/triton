@@ -28,7 +28,7 @@ public class CopySingleSideKey extends CopyKey {
                 this.path.lineTo(getPointX(i, CopyKey.Side.A), getPointY(i, CopyKey.Side.A));
             }
         }
-        this.path.lineTo(getPointX(size - 1, CopyKey.Side.A) - (getPointsA().get(r0).getDepth() * getRatio()), getKeyRect().bottom);
+        this.path.lineTo(getPointX(size - 1, CopyKey.Side.A) - (getPointsA().get(size).getDepth() * getRatio()), getKeyRect().bottom);
         this.path.lineTo(getPointX(0, CopyKey.Side.A), getKeyRect().bottom);
         canvas.drawPath(this.path, this.paint);
     }

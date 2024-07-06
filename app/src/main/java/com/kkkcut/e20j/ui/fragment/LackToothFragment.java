@@ -305,13 +305,13 @@ public class LackToothFragment extends BaseBackFragment implements BaseQuickAdap
             }
         }
         List<CodeAndTooth> data = baseQuickAdapter.getData();
-        for (var codeAndTooth : data) {
-            if (codeAndTooth.t != 0) {
+        for (CodeAndTooth codeAndTooth : data) {
+            if (codeAndTooth.t != null) {
                 ((LackToothRes.DataBean) codeAndTooth.t).setChecked(false);
             }
         }
         CodeAndTooth codeAndTooth2 = (CodeAndTooth) data.get(i);
-        if (codeAndTooth2.t != 0) {
+        if (codeAndTooth2.t != null) {
             ((LackToothRes.DataBean) codeAndTooth2.t).setChecked(true);
         }
         LackToothRes.DataBean dataBean = (LackToothRes.DataBean) codeAndTooth2.t;

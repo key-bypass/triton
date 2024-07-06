@@ -24,7 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
 /* compiled from: ScreenshotTaker.java */
 /* renamed from: com.pgyersdk.b.c.e */
 /* loaded from: classes2.dex */
-class ScreenshotTaker {
+public class ScreenshotTaker {
     /* renamed from: a */
     public static Bitmap m120a(Activity activity, View[] viewArr) {
         if (activity != null) {
@@ -96,7 +96,8 @@ class ScreenshotTaker {
 
     /* renamed from: a */
     private static void m123a(TextureView textureView, Canvas canvas) {
-        textureView.getLocationOnScreen(new int[2]);
+        var r0 = new int[2];
+        textureView.getLocationOnScreen(r0);
         Bitmap bitmap = textureView.getBitmap();
         if (bitmap != null) {
             Paint paint = new Paint();
@@ -108,20 +109,26 @@ class ScreenshotTaker {
 
     /* renamed from: a */
     private static void m122a(GLSurfaceView gLSurfaceView, Canvas canvas) {
+        var r0 = new int[2];
         if (gLSurfaceView.getWindowToken() != null) {
-            gLSurfaceView.getLocationOnScreen(new int[2]);
+            gLSurfaceView.getLocationOnScreen(r0);
             int width = gLSurfaceView.getWidth();
             int height = gLSurfaceView.getHeight();
             int[] iArr = new int[(height + 0) * width];
             IntBuffer wrap = IntBuffer.wrap(iArr);
             wrap.position(0);
             CountDownLatch countDownLatch = new CountDownLatch(1);
-            gLSurfaceView.queueEvent(new RunnableC2014d(width, height, wrap, countDownLatch));
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            gLSurfaceView.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        countDownLatch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
             int[] iArr2 = new int[width * height];
             int i = 0;
             int i2 = 0;
@@ -144,7 +151,7 @@ class ScreenshotTaker {
     /* compiled from: ScreenshotTaker.java */
     /* renamed from: com.pgyersdk.b.c.d */
     /* loaded from: classes2.dex */
-    static class RunnableC2014d implements Runnable {
+    public class RunnableC2014d implements Runnable {
 
         /* renamed from: a */
         final /* synthetic */ int f449a;
@@ -168,17 +175,7 @@ class ScreenshotTaker {
 
         @Override // java.lang.Runnable
         public void run() {
-            EGL10 egl10 = (EGL10) EGLContext.getEGL();
-            egl10.eglWaitGL();
-            GL10 gl10 = (GL10) egl10.eglGetCurrentContext().getGL();
-            gl10.glFinish();
-            try {
-                Thread.sleep(200L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            gl10.glReadPixels(0, 0, this.f449a, this.f450b + 0, 6408, 5121, this.f451c);
-            this.f452d.countDown();
+
         }
     }
 }

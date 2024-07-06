@@ -106,7 +106,7 @@ public class TechnicalInfoModelSelectFragment extends BaseBackFragment {
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoModelSelectFragment$$ExternalSyntheticLambda0
             @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) {
+            public final void accept(Object obj) throws Exception {
                 TechnicalInfoModelSelectFragment.this.m72x167b80ce((List) obj);
             }
         }));

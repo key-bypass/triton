@@ -11,7 +11,7 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Manufacturer extends KeyInfoBase {
     String description;
     String distributorNum;
-    private boolean isChecked;
+    public boolean isChecked;
     int is_automobile;
     int is_automobile_chs;
     int is_dimple;

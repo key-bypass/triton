@@ -66,11 +66,13 @@ public class CopyMultiGrooveInsideKey extends CopyKey {
             List<DestPoint> list = this.pointsAContainer.get(i);
             setPointsA(list);
             int size = list.size();
+
             while (true) {
                 size--;
                 if (size < 0) {
                     break;
                 }
+                var r6 = list.get(size);
                 if (!list.get(size).isInvalid()) {
                     float pointX = getPointX(size, CopyKey.Side.A);
                     if (pointX != 0.0f) {
@@ -93,7 +95,8 @@ public class CopyMultiGrooveInsideKey extends CopyKey {
             float f2 = (depth2 - depth) / 2.0f;
             this.path.addArc(new RectF(pointX2 - f2, f - f2, pointX2 + f2, f + f2), -90.0f, -180.0f);
             for (int i2 = 0; i2 < list2.size(); i2++) {
-                if (!list2.get(i2).isInvalid()) {
+                var r6 = list2.get(i2);
+                if (!r6.isInvalid()) {
                     float pointX3 = getPointX(i2, CopyKey.Side.B);
                     if (pointX3 != 0.0f) {
                         this.path.lineTo(pointX3, keyRect.bottom - (r6.getDepth() * getRatio()));

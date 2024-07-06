@@ -130,24 +130,19 @@ public class AsyncTaskC2083b extends AsyncTask<Void, Integer, Long> {
         }
         DownloadFileListener downloadFileListener2 = this.f713b;
         if (downloadFileListener2 != null) {
-            downloadFileListener2.downloadFailed();
+            downloadFileListener2.beginDownload();
         }
     }
 
     /* renamed from: a */
     private File m374a() {
+        Exception e = null;
         File file;
         File file2 = new File(FileUtils.m196a().m204c(PgyerProvider.f436a));
         this.f715d = file2.getAbsolutePath();
         try {
             file = File.createTempFile("apk-", ".apk", file2);
-            try {
-                this.f714c = file.getName();
-            } catch (IOException e) {
-                e = e;
-                e.printStackTrace();
-                return file;
-            }
+            this.f714c = file.getName();
         } catch (IOException e2) {
             e = e2;
             file = null;

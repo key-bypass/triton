@@ -5,7 +5,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.kkkcut.e20j.pyger.C2077k;
 import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.p012c.Strings;
 
@@ -16,11 +15,11 @@ import com.pgyersdk.p012c.Strings;
 public class HandlerC2076j extends Handler {
 
     /* renamed from: a */
-    final /* synthetic */ C2077k f676a;
+    final /* synthetic */ PgyerFeedbackManagerDelegate f676a;
 
     /* JADX INFO: Access modifiers changed from: package-private */
     /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public HandlerC2076j(C2077k c2077k, Looper looper) {
+    public HandlerC2076j(PgyerFeedbackManagerDelegate c2077k, Looper looper) {
         super(looper);
         this.f676a = c2077k;
     }

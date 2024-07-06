@@ -17,15 +17,8 @@ public class IndexBarDataHelperImpl implements IIndexBarDataHelper {
             for (int i = 0; i < size; i++) {
                 BaseIndexPinyinBean baseIndexPinyinBean = list.get(i);
                 StringBuilder sb = new StringBuilder();
-                if (baseIndexPinyinBean.isNeedToPinyin()) {
-                    String target = baseIndexPinyinBean.getTarget();
-                    for (int i2 = 0; i2 < target.length(); i2++) {
-                        sb.append(Pinyin.toPinyin(target.charAt(i2)).toUpperCase());
-                    }
-                    baseIndexPinyinBean.setBaseIndexPinyin(sb.toString());
-                } else {
-                    sb.append(baseIndexPinyinBean.getBaseIndexPinyin());
-                }
+
+                sb.append(baseIndexPinyinBean.getBaseIndexPinyin());
             }
         }
         return this;

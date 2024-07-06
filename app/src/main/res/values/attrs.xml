@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="ViewfinderView">
+        <attr name="inner_width" format="dimension"/>
+        <attr name="inner_height" format="dimension"/>
+        <attr name="inner_margintop" format="dimension" />
+        <attr name="inner_corner_color" format="color" />
+        <attr name="inner_corner_length" format="dimension" />
+        <attr name="inner_corner_width" format="dimension" />
+        <attr name="inner_scan_bitmap" format="reference" />
+        <attr name="inner_scan_speed" format="integer" />
+        <attr name="inner_scan_iscircle" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="MultiLineRadioGroup">
+        <attr name="child_count" format="integer" />
+        <attr name="child_layout" format="integer" />
+        <attr name="child_margin_horizontal" format="dimension" />
+        <attr name="child_margin_vertical" format="dimension" />
+        <attr name="child_values" format="integer" />
+        <attr name="gravity" format="integer" />
+        <attr name="single_choice" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="SearchableSpinner">
+
+    </declare-styleable>
+    <declare-styleable name="MetroLayout">
+
+    </declare-styleable>
+
+    <declare-styleable name="SwitchButton">
+        <attr name="state_checked" format="boolean" />
+        <attr name="state_enabled" format="boolean" />
+        <attr name="state_pressed" format="boolean" />
+        <attr name="focusable" format="boolean" />
+        <attr name="android:checked" format="boolean" />
+        <attr name="android:enabled" format="boolean" />
+        <attr name="pressed" format="boolean" />
+        <attr name="clickable" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="AutoLayout_Layout">
+        <attr name="layout_auto_basewidth">
+            <flag name="width" value="1" />
+            <flag name="height" value="2" />
+            <flag name="textSize" value="4" />
+            <flag name="padding" value="8" />
+            <flag name="margin" value="16" />
+            <flag name="marginLeft" value="32" />
+            <flag name="marginTop" value="64" />
+            <flag name="marginRight" value="128" />
+            <flag name="marginBottom" value="256" />
+            <flag name="paddingLeft" value="512" />
+            <flag name="paddingTop" value="1024" />
+            <flag name="paddingRight" value="2048" />
+            <flag name="paddingBottom" value="4096" />
+        </attr>
+        <attr name="layout_auto_baseheight" format="dimension" />
+    </declare-styleable>
     <attr name="S1_A" format="string">
     </attr>
     <attr name="S1_C" format="string">
@@ -368,16 +423,6 @@
     <attr name="checkedIconVisible" format="boolean">
     </attr>
     <attr name="checkedTextViewStyle" format="reference">
-    </attr>
-    <attr name="child_count" format="integer">
-    </attr>
-    <attr name="child_layout" format="integer">
-    </attr>
-    <attr name="child_margin_horizontal" format="dimension">
-    </attr>
-    <attr name="child_margin_vertical" format="dimension">
-    </attr>
-    <attr name="child_values" format="integer">
     </attr>
     <attr name="chipBackgroundColor" format="color">
     </attr>
@@ -905,8 +950,6 @@
     </attr>
     <attr name="graph" format="reference">
     </attr>
-    <attr name="gravity" format="integer">
-    </attr>
     <attr name="haloColor" format="color">
     </attr>
     <attr name="haloRadius" format="dimension">
@@ -988,24 +1031,6 @@
     <attr name="indicatorSize" format="dimension">
     </attr>
     <attr name="initialActivityCount" format="string">
-    </attr>
-    <attr name="inner_corner_color" format="color">
-    </attr>
-    <attr name="inner_corner_length" format="dimension">
-    </attr>
-    <attr name="inner_corner_width" format="dimension">
-    </attr>
-    <attr name="inner_height" format="dimension">
-    </attr>
-    <attr name="inner_margintop" format="dimension">
-    </attr>
-    <attr name="inner_scan_bitmap" format="reference">
-    </attr>
-    <attr name="inner_scan_iscircle" format="boolean">
-    </attr>
-    <attr name="inner_scan_speed" format="integer">
-    </attr>
-    <attr name="inner_width" format="dimension">
     </attr>
     <attr name="input_control_down" format="reference">
     </attr>
@@ -1438,21 +1463,7 @@
         <enum name="center" value="1" />
         <enum name="right" value="2" />
     </attr>
-    <attr name="layout_auto_basewidth">
-        <flag name="width" value="1" />
-        <flag name="height" value="2" />
-        <flag name="textSize" value="4" />
-        <flag name="padding" value="8" />
-        <flag name="margin" value="16" />
-        <flag name="marginLeft" value="32" />
-        <flag name="marginTop" value="64" />
-        <flag name="marginRight" value="128" />
-        <flag name="marginBottom" value="256" />
-        <flag name="paddingLeft" value="512" />
-        <flag name="paddingTop" value="1024" />
-        <flag name="paddingRight" value="2048" />
-        <flag name="paddingBottom" value="4096" />
-    </attr>
+
     <attr name="motionPathRotate" format="float">
     </attr>
     <attr name="motionProgress" format="float">
@@ -1684,8 +1695,6 @@
     <attr name="singleLine" format="boolean">
     </attr>
     <attr name="singleSelection" format="boolean">
-    </attr>
-    <attr name="single_choice" format="boolean">
     </attr>
     <attr name="single_inside_custom" format="reference">
     </attr>

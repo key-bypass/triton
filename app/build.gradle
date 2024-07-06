@@ -70,11 +70,12 @@ dependencies {
     implementation libs.poi.ooxml
     implementation libs.rxandroid
     implementation libs.mmkv
-    implementation 'fm.jiecao:jiecaovideoplayer:5.8.1'
+    implementation libs.jiecaovideoplayer
     implementation libs.multidex
     implementation libs.rxjava
     implementation libs.okhttp
-    implementation 'org.greenrobot:greendao:3.3.0'
+    implementation libs.logging.interceptor
+    implementation libs.greendao
     implementation libs.eventbus
     implementation libs.commons.collections4
     implementation libs.gson
@@ -89,6 +90,8 @@ dependencies {
     implementation libs.largeimageview
     implementation libs.zip4j
     implementation libs.retrofit
+    implementation libs.adapter.rxjava3
+    implementation libs.zip4j
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
     implementation libs.zxing.core

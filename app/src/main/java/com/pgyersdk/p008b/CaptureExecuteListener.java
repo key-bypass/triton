@@ -16,15 +16,15 @@ public class CaptureExecuteListener extends SimpleScreenCapturingListener {
     final /* synthetic */ Activity f442a;
 
     /* renamed from: b */
-    final /* synthetic */ CaptureExecute.a f443b;
+    final /* synthetic */ CaptureExecute.ICaptureExecute f443b;
 
     /* renamed from: c */
     final /* synthetic */ WeakReference f444c;
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public CaptureExecuteListener(Activity activity, CaptureExecute.a aVar, WeakReference weakReference) {
+    public CaptureExecuteListener(Activity activity, CaptureExecute.ICaptureExecute ICaptureExecuteVar, WeakReference weakReference) {
         this.f442a = activity;
-        this.f443b = aVar;
+        this.f443b = ICaptureExecuteVar;
         this.f444c = weakReference;
     }
 

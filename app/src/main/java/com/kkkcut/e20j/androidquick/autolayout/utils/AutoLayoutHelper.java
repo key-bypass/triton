@@ -1,6 +1,5 @@
 package com.kkkcut.e20j.androidquick.autolayout.utils;
 
-import android.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -25,6 +24,7 @@ import com.kkkcut.e20j.androidquick.autolayout.attr.PaddingTopAttr;
 import com.kkkcut.e20j.androidquick.autolayout.attr.TextSizeAttr;
 import com.kkkcut.e20j.androidquick.autolayout.attr.WidthAttr;
 import com.kkkcut.e20j.androidquick.autolayout.config.AutoLayoutConifg;
+import com.kkkcut.e20j.us.R;
 
 /* loaded from: classes.dex */
 public class AutoLayoutHelper {
@@ -45,7 +45,7 @@ public class AutoLayoutHelper {
     private static final int INDEX_PADDING_TOP = 3;
     private static final int INDEX_TEXT_SIZE = 0;
     private static final int INDEX_WIDTH = 6;
-    private static final int[] LL = {R.attr.textSize, R.attr.padding, R.attr.paddingLeft, R.attr.paddingTop, R.attr.paddingRight, R.attr.paddingBottom, R.attr.layout_width, R.attr.layout_height, R.attr.layout_margin, R.attr.layout_marginLeft, R.attr.layout_marginTop, R.attr.layout_marginRight, R.attr.layout_marginBottom, R.attr.maxWidth, R.attr.maxHeight, R.attr.minWidth, R.attr.minHeight};
+    private static final int[] LL = {android.R.attr.textSize, android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop, android.R.attr.paddingRight, android.R.attr.paddingBottom, android.R.attr.layout_width, android.R.attr.layout_height, android.R.attr.layout_margin, android.R.attr.layout_marginLeft, android.R.attr.layout_marginTop, android.R.attr.layout_marginRight, android.R.attr.layout_marginBottom, R.attr.maxWidth, R.attr.maxHeight, R.attr.minWidth, R.attr.minHeight};
     private static AutoLayoutConifg mAutoLayoutConifg;
     private final ViewGroup mHost;
 

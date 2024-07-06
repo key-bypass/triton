@@ -12,7 +12,7 @@ public class CaptureExecute {
     /* compiled from: CaptureExecute.java */
     /* renamed from: com.pgyersdk.b.d$a */
     /* loaded from: classes2.dex */
-    public interface a {
+    public interface ICaptureExecute {
         /* renamed from: a */
         void mo128a(Uri uri);
 
@@ -21,12 +21,12 @@ public class CaptureExecute {
     }
 
     /* renamed from: a */
-    public static synchronized void m127a(Activity activity, a aVar) {
+    public static synchronized void m127a(Activity activity, ICaptureExecute ICaptureExecuteVar) {
         synchronized (CaptureExecute.class) {
             if (activity != null) {
                 if (!activity.isFinishing()) {
                     WeakReference weakReference = new WeakReference(activity);
-                    TracupCapture.m133a((Activity) weakReference.get()).m136a(new CaptureExecuteListener(activity, aVar, weakReference)).m137a();
+                    TracupCapture.m133a((Activity) weakReference.get()).m136a(new CaptureExecuteListener(activity, ICaptureExecuteVar, weakReference)).m137a();
                 }
             }
         }

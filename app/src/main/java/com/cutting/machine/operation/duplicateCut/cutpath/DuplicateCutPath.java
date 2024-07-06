@@ -77,7 +77,7 @@ public abstract class DuplicateCutPath {
     }
 
     public KeyAlign getAlign() {
-        return getDuplicateKeyData().keyAlign;
+        return getDuplicateKeyData().getKeyAlign();
     }
 
     public int getDecodeLength() {

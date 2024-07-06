@@ -3,6 +3,8 @@ package com.kkkcut.e20j.customView.switchbutton;
 import android.content.res.ColorStateList;
 import androidx.core.view.ViewCompat;
 
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
+
 /* loaded from: classes.dex */
 public class ColorUtils {
     private static final int CHECKED_ATTR = 16842912;

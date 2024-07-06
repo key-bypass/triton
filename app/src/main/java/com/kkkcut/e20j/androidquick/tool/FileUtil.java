@@ -279,45 +279,42 @@ public class FileUtil {
 
     public static StringBuilder readFile(String str, String str2) {
         File file = new File(str);
-        Throwable th;
-        Exception e;
+        Throwable th = null;
+        Exception e = null;
         StringBuilder sb = new StringBuilder("");
         BufferedReader bufferedReader = null;
         if (!file.isFile()) {
             return null;
         }
         try {
-            try {
-                BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(new FileInputStream(file), str2));
-                while (true) {
-                    try {
-                        String readLine = bufferedReader2.readLine();
-                        if (readLine != null) {
-                            if (!sb.toString().equals("")) {
-                                sb.append("\r\n");
-                            }
-                            sb.append(readLine);
-                        } else {
-                            IOUtil.close(bufferedReader2);
-                            return sb;
+            BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(new FileInputStream(file), str2));
+            while (true) {
+                try {
+                    String readLine = bufferedReader2.readLine();
+                    if (readLine != null) {
+                        if (!sb.toString().equals("")) {
+                            sb.append("\r\n");
                         }
-                    } catch (IOException e) {
-                        e = e;
-                        bufferedReader = bufferedReader2;
-                        throw new RuntimeException("IOException occurred. ", e);
-                    } catch (Throwable th) {
-                        th = th;
-                        bufferedReader = bufferedReader2;
-                        IOUtil.close(bufferedReader);
-                        throw th;
+                        sb.append(readLine);
+                    } else {
+                        IOUtil.close(bufferedReader2);
+                        return sb;
                     }
+                } catch (IOException ex) {
+                    e = ex;
+                    bufferedReader = bufferedReader2;
+                    throw new RuntimeException("IOException occurred. ", e);
+                } catch (Throwable th2) {
+                    th = th2;
+                    bufferedReader = bufferedReader2;
+                    IOUtil.close(bufferedReader);
+                    throw th;
                 }
-            } catch (Throwable th2) {
-                th = th2;
             }
-        } catch (IOException e2) {
-            e = e2;
+        } catch (Throwable th2) {
+            th = th2;
         }
+        return null;
     }
 
     public static boolean writeFile(String str, String str2, boolean z) {
@@ -325,37 +322,35 @@ public class FileUtil {
             return false;
         }
         Exception e = null;
+        Throwable th = null;
         FileWriter fileWriter = null;
         try {
+            makeDirs(str);
+            FileWriter fileWriter2 = new FileWriter(str, z);
             try {
-                makeDirs(str);
-                FileWriter fileWriter2 = new FileWriter(str, z);
-                try {
-                    fileWriter2.write(str2);
-                    IOUtil.close(fileWriter2);
-                    return true;
-                } catch (IOException e) {
-                    e = e;
-                    fileWriter = fileWriter2;
-                    throw new RuntimeException("IOException occurred. ", e);
-                } catch (Throwable th) {
-                    th = th;
-                    fileWriter = fileWriter2;
-                    IOUtil.close(fileWriter);
-                    throw th;
-                }
+                fileWriter2.write(str2);
+                IOUtil.close(fileWriter2);
+                return true;
+            } catch (IOException e2) {
+                e = e2;
+                fileWriter = fileWriter2;
+                throw new RuntimeException("IOException occurred. ", e);
             } catch (Throwable th2) {
                 th = th2;
+                fileWriter = fileWriter2;
+                IOUtil.close(fileWriter);
+                throw th;
             }
-        } catch (IOException e2) {
-            e = e2;
+        } catch (Throwable th2) {
+            th = th2;
         }
+        return false;
     }
 
     public static boolean writeFile(String str, List<String> list, boolean z) {
         int i = 0;
-        Exception e;
-        Throwable th;
+        Exception e = null;
+        Throwable th = null;
         if (list.size() == 0 || list == null) {
             return false;
         }
@@ -375,11 +370,11 @@ public class FileUtil {
                     }
                     IOUtil.close(fileWriter2);
                     return true;
-                } catch (IOException e) {
-                    e = e;
+                } catch (IOException e2) {
+                    e = e2;
                     throw new RuntimeException("IOException occurred. ", e);
-                } catch (Throwable th) {
-                    th = th;
+                } catch (Throwable th2) {
+                    th = th2;
                     fileWriter = fileWriter2;
                     IOUtil.close(fileWriter);
                     throw th;
@@ -390,6 +385,7 @@ public class FileUtil {
         } catch (Throwable th2) {
             th = th2;
         }
+        return false;
     }
 
     public static boolean writeFile(String str, String str2) {
@@ -433,14 +429,14 @@ public class FileUtil {
                             return true;
                         }
                     }
-                } catch (FileNotFoundException e) {
-                    e = e;
+                } catch (FileNotFoundException e2) {
+                    e = e2;
                     throw new RuntimeException("FileNotFoundException occurred. ", e);
                 } catch (IOException e2) {
                     e = e2;
                     throw new RuntimeException("IOException occurred. ", e);
-                } catch (Throwable th) {
-                    th = th;
+                } catch (Throwable th2) {
+                    th = th2;
                     fileOutputStream = fileOutputStream2;
                     IOUtil.close(fileOutputStream);
                     IOUtil.close(inputStream);
@@ -454,6 +450,7 @@ public class FileUtil {
         } catch (Throwable th2) {
             th = th2;
         }
+        return false;
     }
 
     public static void writeFile(InputStream inputStream, File file) throws IOException {
@@ -503,40 +500,39 @@ public class FileUtil {
 
     public static List<String> readFileToList(String str, String str2) {
         File file = new File(str);
+        Throwable th = null;
+        Exception e = null;
         ArrayList arrayList = new ArrayList();
         BufferedReader bufferedReader = null;
         if (!file.isFile()) {
             return null;
         }
         try {
-            try {
-                BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(new FileInputStream(file), str2));
-                while (true) {
-                    try {
-                        String readLine = bufferedReader2.readLine();
-                        if (readLine != null) {
-                            arrayList.add(readLine);
-                        } else {
-                            IOUtil.close(bufferedReader2);
-                            return arrayList;
-                        }
-                    } catch (IOException e) {
-                        e = e;
-                        bufferedReader = bufferedReader2;
-                        throw new RuntimeException("IOException occurred. ", e);
-                    } catch (Throwable th) {
-                        th = th;
-                        bufferedReader = bufferedReader2;
-                        IOUtil.close(bufferedReader);
-                        throw th;
+            BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(new FileInputStream(file), str2));
+            while (true) {
+                try {
+                    String readLine = bufferedReader2.readLine();
+                    if (readLine != null) {
+                        arrayList.add(readLine);
+                    } else {
+                        IOUtil.close(bufferedReader2);
+                        return arrayList;
                     }
+                } catch (IOException e2) {
+                    e = e2;
+                    bufferedReader = bufferedReader2;
+                    throw new RuntimeException("IOException occurred. ", e);
+                } catch (Throwable th2) {
+                    th = th2;
+                    bufferedReader = bufferedReader2;
+                    IOUtil.close(bufferedReader);
+                    throw th;
                 }
-            } catch (Throwable th2) {
-                th = th2;
             }
-        } catch (IOException e2) {
-            e = e2;
+        } catch (Throwable th2) {
+            th = th2;
         }
+        return null;
     }
 
     public static String getFileNameWithoutExtension(String str) {
@@ -671,6 +667,7 @@ public class FileUtil {
     public static byte[] readFile4Bytes(File file) {
         FileInputStream fileInputStream;
         FileInputStream fileInputStream2 = null;
+        Throwable th = null;
         if (!file.exists()) {
             return null;
         }
@@ -692,8 +689,8 @@ public class FileUtil {
                     }
                 }
                 return null;
-            } catch (Throwable th) {
-                th = th;
+            } catch (Throwable th2) {
+                th = th2;
                 fileInputStream2 = fileInputStream;
                 if (fileInputStream2 != null) {
                     try {
@@ -708,6 +705,7 @@ public class FileUtil {
         } catch (Throwable th2) {
             th = th2;
         }
+        return null;
     }
 
     public static String readFileContent(String str) {
@@ -921,8 +919,9 @@ public class FileUtil {
     }
 
     public static boolean saveStrToFile(String str, String str2, String str3) {
-        byte[] bytes;
-        FileOutputStream fileOutputStream;
+        byte[] bytes = null;
+        FileOutputStream fileOutputStream = null;
+        Throwable th = null;
         if (str != null && !"".equals(str)) {
             FileOutputStream fileOutputStream2 = null;
             try {
@@ -937,8 +936,8 @@ public class FileUtil {
                 }
                 fileOutputStream = new FileOutputStream(file);
             } catch (Exception unused) {
-            } catch (Throwable th) {
-                th = th;
+            } catch (Throwable th2) {
+                th = th2;
             }
             try {
                 fileOutputStream.write(bytes, 0, bytes.length);
@@ -966,7 +965,7 @@ public class FileUtil {
                     } catch (Exception unused5) {
                     }
                 }
-                throw th;
+                return false;
             }
         }
         return false;
@@ -993,6 +992,7 @@ public class FileUtil {
         } catch (Exception unused2) {
             cursor = null;
         }
+        return null;
     }
 
     public static void playSound(Context context, String str) {
@@ -1098,6 +1098,8 @@ public class FileUtil {
 
     public static boolean string2File(String str, String str2) {
         BufferedReader bufferedReader = null;
+        Exception e = null;
+        Throwable th = null;
         try {
             try {
                 File file = new File(str2);
@@ -1119,8 +1121,8 @@ public class FileUtil {
                             try {
                                 bufferedReader2.close();
                                 return true;
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                            } catch (IOException e2) {
+                                e2.printStackTrace();
                                 return true;
                             }
                         }
@@ -1137,8 +1139,8 @@ public class FileUtil {
                         }
                     }
                     return false;
-                } catch (Throwable th) {
-                    th = th;
+                } catch (Throwable th2) {
+                    th = th2;
                     bufferedReader = bufferedReader2;
                     if (bufferedReader != null) {
                         try {
@@ -1155,51 +1157,50 @@ public class FileUtil {
         } catch (Throwable th2) {
             th = th2;
         }
+        return false;
     }
 
     public static void readIoStringToFile(String str, String str2) {
         FileOutputStream fileOutputStream = null;
+        Throwable th = null;
+        Exception e = null;
         try {
             try {
-                try {
-                    File file = new File(str2);
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                    String encrypt = DesUtil.encrypt(str, DesUtil.SERVER);
-                    FileOutputStream fileOutputStream2 = new FileOutputStream(file);
-                    try {
-                        fileOutputStream2.write(encrypt.getBytes());
-                        fileOutputStream2.flush();
-                        fileOutputStream2.getFD().sync();
-                        fileOutputStream2.close();
-                    } catch (Exception e) {
-                        e = e;
-                        fileOutputStream = fileOutputStream2;
-                        e.printStackTrace();
-                        if (fileOutputStream != null) {
-                            fileOutputStream.close();
-                        }
-                    } catch (Throwable th) {
-                        th = th;
-                        fileOutputStream = fileOutputStream2;
-                        if (fileOutputStream != null) {
-                            try {
-                                fileOutputStream.close();
-                            } catch (IOException e2) {
-                                e2.printStackTrace();
-                            }
-                        }
-                        throw th;
-                    }
-                } catch (Exception e3) {
-                    e = e3;
+                File file = new File(str2);
+                if (file.exists()) {
+                    file.delete();
                 }
-            } catch (Throwable th2) {
-                th = th2;
+                String encrypt = DesUtil.encrypt(str, DesUtil.SERVER);
+                FileOutputStream fileOutputStream2 = new FileOutputStream(file);
+                try {
+                    fileOutputStream2.write(encrypt.getBytes());
+                    fileOutputStream2.flush();
+                    fileOutputStream2.getFD().sync();
+                    fileOutputStream2.close();
+                } catch (Exception e2) {
+                    e = e2;
+                    fileOutputStream = fileOutputStream2;
+                    e.printStackTrace();
+                    if (fileOutputStream != null) {
+                        fileOutputStream.close();
+                    }
+                } catch (Throwable th2) {
+                    th = th2;
+                    fileOutputStream = fileOutputStream2;
+                    if (fileOutputStream != null) {
+                        try {
+                            fileOutputStream.close();
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        }
+                    }
+                    throw th;
+                }
+            } catch (Exception e3) {
+                e = e3;
             }
-        } catch (IOException e4) {
-            e4.printStackTrace();
+        } catch (Throwable th2) {
+            th = th2;
         }
     }
 

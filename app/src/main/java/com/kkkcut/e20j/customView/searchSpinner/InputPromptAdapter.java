@@ -2,6 +2,7 @@ package com.kkkcut.e20j.customView.searchSpinner;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kkkcut.e20j.adapter.BaseAutolayoutHolder;
+import com.kkkcut.e20j.us.R;
 
 /* loaded from: classes.dex */
 public class InputPromptAdapter extends BaseQuickAdapter<String, BaseAutolayoutHolder> {

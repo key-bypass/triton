@@ -63,7 +63,7 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private Context f586D;
 
     /* renamed from: E */
-    private Handler f587E;
+    public Handler f587E;
 
     /* renamed from: F */
     View.OnTouchListener f588F;
@@ -84,22 +84,22 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     private CheckBox f593h;
 
     /* renamed from: i */
-    private C2052c f594i;
+    public C2052c f594i;
 
     /* renamed from: j */
-    C2066q f595j;
+    public C2066q f595j;
 
     /* renamed from: k */
-    private LinearLayout f596k;
+    public LinearLayout f596k;
 
     /* renamed from: l */
-    private C2055f f597l;
+    public C2055f f597l;
 
     /* renamed from: m */
     private LinearLayout f598m;
 
     /* renamed from: n */
-    private int f599n;
+    public int f599n;
 
     /* renamed from: o */
     private MediaRecorder f600o;
@@ -111,13 +111,13 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     public File f602q;
 
     /* renamed from: r */
-    private long f603r;
+    public long f603r;
 
     /* renamed from: s */
-    private long f604s;
+    public long f604s;
 
     /* renamed from: t */
-    private long f605t;
+    public long f605t;
 
     /* renamed from: u */
     private boolean f606u;
@@ -126,13 +126,13 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
     PopupWindow f607v;
 
     /* renamed from: w */
-    C2063n f608w;
+    public C2063n f608w;
 
     /* renamed from: x */
-    Timer f609x;
+    public Timer f609x;
 
     /* renamed from: y */
-    TimerTask f610y;
+    public TimerTask f610y;
 
     /* renamed from: z */
     private int f611z;
@@ -322,7 +322,7 @@ public class AlertDialogBuilderC2062m extends AlertDialog.Builder implements Vie
         this.f587E = new HandlerC2056g(this, Looper.getMainLooper());
         this.f588F = new ViewOnTouchListenerC2057h(this);
         this.f589G = new ViewOnTouchListenerC2058i(this);
-        this.f586D = new ContextThemeWrapper(context, R.style.Theme.Holo.Light);
+        this.f586D = new ContextThemeWrapper(context, R.style.Theme_Holo_Light);
     }
 
     /* renamed from: c */

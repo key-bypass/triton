@@ -1,6 +1,4 @@
 package com.pgyersdk.crash;
-
-import com.kkkcut.e20j.pyger.C2028c;
 import com.pgyersdk.utils.AsyncTaskUtils;
 import com.pgyersdk.utils.LogUtils;
 

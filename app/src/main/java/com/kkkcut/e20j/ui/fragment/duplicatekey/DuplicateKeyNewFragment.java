@@ -189,7 +189,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
                 readyDecode(2, view);
                 return;
             case R.id.rb_shoulder_1 /* 2131362644 */:
-                if (this.keyInfo.keyType == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
+                if (this.keyInfo.getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
                     this.keyInfo.setSide(1);
                 } else {
                     this.keyInfo.setSide(0);
@@ -198,7 +198,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
                 showClamp();
                 return;
             case R.id.rb_shoulder_2 /* 2131362645 */:
-                if (this.keyInfo.keyType == KeyType.DOUBLE_SIDE_KEY) {
+                if (this.keyInfo.getKeyType() == KeyType.DOUBLE_SIDE_KEY) {
                     this.keyInfo.setSide(3);
                 } else {
                     this.keyInfo.setSide(0);
@@ -207,7 +207,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
                 showClamp();
                 return;
             case R.id.rb_tip_1 /* 2131362661 */:
-                if (this.keyInfo.keyType == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
+                if (this.keyInfo.getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
                     this.keyInfo.setSide(1);
                 } else {
                     this.keyInfo.setSide(0);
@@ -216,7 +216,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
                 showClamp();
                 return;
             case R.id.rb_tip_2 /* 2131362662 */:
-                if (this.keyInfo.keyType == KeyType.DOUBLE_SIDE_KEY) {
+                if (this.keyInfo.getKeyType() == KeyType.DOUBLE_SIDE_KEY) {
                     this.keyInfo.setSide(3);
                 } else {
                     this.keyInfo.setSide(0);
@@ -234,7 +234,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
         Clamp clamp = clampTag.getClamp();
         int clampMode = clampTag.getClampMode();
         if (ClampManager.getInstance().checkHasCalibrated(clamp)) {
-            initDecodeData(this.keyInfo.keyType);
+            initDecodeData(this.keyInfo.getKeyType());
             changeClampStatus(i);
             this.decodeParams = DuplicateDecodeParams.DecodeParamsBuilder.aDecodeParams().withDecodeSize(ToolSizeManager.getDecoderSize()).withKeyInfo(this.keyInfo).withClamp(clamp).withClampMode(clampMode).withDensity(30).build();
             showConductiveTestRemind(OperationType.decode);
@@ -364,7 +364,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
         if (CuttingMachine.getInstance().isE9()) {
             return;
         }
-        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.keyType.ordinal()]) {
+        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.getKeyType().ordinal()]) {
             case 1:
                 if (this.keyInfo.getKeyAlign() == KeyAlign.SHOULDERS_ALIGN) {
                     if (i == 0) {
@@ -489,7 +489,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
     }
 
     private void showE9Clamp(KeyAlign keyAlign) {
-        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.keyType.ordinal()]) {
+        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.getKeyType().ordinal()]) {
             case 1:
                 this.llClamp0.setVisibility(0);
                 this.llClamp1.setVisibility(0);
@@ -555,7 +555,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
     }
 
     private void showAlphaBetaClamp(KeyAlign keyAlign) {
-        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.keyType.ordinal()]) {
+        switch (AnonymousClass5.$SwitchMap$com$liying$core$bean$KeyType[this.keyInfo.getKeyType().ordinal()]) {
             case 1:
                 this.llClamp0.setVisibility(0);
                 this.llClamp1.setVisibility(0);
@@ -811,7 +811,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
             if (eventCode == 43) {
                 DuplicateBean duplicateBean = (DuplicateBean) eventCenter.getData();
                 ToolSizeManager.setCutterSize(duplicateBean.getCutterSize());
-                int i = SPUtils.getInt(SpKeys.SPEED + this.keyInfo.keyType.getValue(), this.keyInfo.keyType == KeyType.DIMPLE_KEY ? 3 : 15);
+                int i = SPUtils.getInt(SpKeys.SPEED + this.keyInfo.getKeyType().getValue(), this.keyInfo.getKeyType() == KeyType.DIMPLE_KEY ? 3 : 15);
                 this.cutParams = DuplicateCutParams.DuplicateCutParamsBuilder.aDuplicateCutParams().withCutDepth(0).withCutSpeed(i).withKeyInfo(this.keyInfo).withDecoderSize(ToolSizeManager.getDecoderSize()).withCutterSize(ToolSizeManager.getCutterSize()).withClamp(this.decodeParams.getClamp()).withClampMode(this.decodeParams.getClampMode()).singleSideKeyCutDepthFix(duplicateBean.getCutDepthSingleKey()).withLayer(duplicateBean.getLayerCut()).build();
                 Speed.setSpeed(i);
                 showClearClampRemind(OperationType.cut);
@@ -907,7 +907,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
         if (i == 1) {
             int i5 = i4 * 2;
             pathDataList.get(i5).addDestPoint(destPoint);
-            if (this.keyInfo.keyType == KeyType.DOUBLE_SIDE_KEY && this.keyInfo.getSide() == 0) {
+            if (this.keyInfo.getKeyType() == KeyType.DOUBLE_SIDE_KEY && this.keyInfo.getSide() == 0) {
                 pathDataList.get(i5 + 1).addDestPoint(destPoint.m600clone());
                 return;
             }
@@ -929,7 +929,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
             }));
             showLoadingDialog("100%", true);
             saveCutNumber();
-            CutCountHelper.getInstance().addCutCount(this.keyInfo.keyType);
+            CutCountHelper.getInstance().addCutCount(this.keyInfo.getKeyType());
         }
     }
 
@@ -938,14 +938,14 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
         KeyAlignInfo keyAlignInfo = OperationManager.getInstance().getKeyAlignInfo();
         Iterator<SinglePathData> it = pathDataList.iterator();
         while (it.hasNext()) {
-            DuplicateUtil.reducePoint(this.keyInfo.keyType, this.keyInfo.getKeyAlign(), keyAlignInfo, it.next().getDestPointList());
+            DuplicateUtil.reducePoint(this.keyInfo.getKeyType(), this.keyInfo.getKeyAlign(), keyAlignInfo, it.next().getDestPointList());
         }
         new DuplicateNewCutDialog(getActivity(), this.decodeParams).show();
         dismissLoadingDialog();
     }
 
     private void showConductiveTestRemind(final OperationType operationType) {
-        if (this.keyInfo.keyType == KeyType.LEFT_GROOVE || this.keyInfo.keyType == KeyType.RIGHT_GROOVE || this.keyInfo.keyType == KeyType.TWO_GROOVE || this.keyInfo.keyType == KeyType.THREE_GROOVE) {
+        if (this.keyInfo.getKeyType() == KeyType.LEFT_GROOVE || this.keyInfo.getKeyType() == KeyType.RIGHT_GROOVE || this.keyInfo.getKeyType() == KeyType.TWO_GROOVE || this.keyInfo.getKeyType() == KeyType.THREE_GROOVE) {
             WarningDialog warningDialog = new WarningDialog(getContext());
             warningDialog.setCancelBtVisible(true);
             warningDialog.setRemind(getString(R.string.duplicate_conductive_test));
@@ -996,7 +996,7 @@ public class DuplicateKeyNewFragment extends BaseBackFragment {
         } else if (clamp == Clamp.E9S3) {
             remindDialog.setRemindImg(R.drawable.clear_clamp_tubular_e9);
         }
-        if (this.keyInfo.keyType == KeyType.TWO_GROOVE || this.keyInfo.keyType == KeyType.THREE_GROOVE || this.keyInfo.keyType == KeyType.LEFT_GROOVE || this.keyInfo.keyType == KeyType.RIGHT_GROOVE || this.keyInfo.keyType == KeyType.SIDE_HOLE) {
+        if (this.keyInfo.getKeyType() == KeyType.TWO_GROOVE || this.keyInfo.getKeyType() == KeyType.THREE_GROOVE || this.keyInfo.getKeyType() == KeyType.LEFT_GROOVE || this.keyInfo.getKeyType() == KeyType.RIGHT_GROOVE || this.keyInfo.getKeyType() == KeyType.SIDE_HOLE) {
             remindDialog.setRemindMsg(getString(R.string.please_use_specify_decoder_cutter, "0.5mm", "1.0mm") + "\n" + getString(R.string.clean_the_groove_from_chips));
         } else if (operationType == OperationType.cut) {
             StringBuilder sb = new StringBuilder();

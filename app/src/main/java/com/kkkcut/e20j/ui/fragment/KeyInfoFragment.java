@@ -23,6 +23,8 @@ import com.kkkcut.e20j.utils.UnitUtils;
 import com.cutting.machine.MachineInfo;
 import com.cutting.machine.bean.KeyInfo;
 import com.cutting.machine.error.ErrorCode;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
+
 import java.util.HashMap;
 
 /* loaded from: classes.dex */

@@ -1,12 +1,10 @@
 package com.pgyersdk.feedback;
 
-import com.pgyersdk.feedback.PgyerFeedbackManagerDelegate;
-
 /* JADX INFO: Access modifiers changed from: package-private */
 /* compiled from: PgyerShakeManager.java */
 /* renamed from: com.pgyersdk.feedback.l */
 /* loaded from: classes2.dex */
-public class C2078l implements PgyerFeedbackManagerDelegate.a {
+public class C2078l implements PgyerFeedbackManagerDelegate.IPgyerFeedbackManagerDelegate {
 
     /* renamed from: a */
     final /* synthetic */ PgyerShakeManager f684a;

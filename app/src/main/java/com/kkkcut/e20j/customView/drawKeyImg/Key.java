@@ -760,7 +760,7 @@ public abstract class Key extends View {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    public java.lang.String getDoorIgnitionSideBDepthStr(com.cutting.machine.OperateType r14, boolean r15) {
+    public String getDoorIgnitionSideBDepthStr(OperateType r14, boolean r15) {
         /*
             Method dump skipped, instructions count: 243
             To view this dump change 'Code comments level' option to 'DEBUG'
@@ -998,6 +998,7 @@ public abstract class Key extends View {
                     }
                 }
             } else {
+                var r8 = this.keyinfo.getThick();
                 int intValue2 = (int) ((list.get(0).intValue() - r8) + ((list.get(1).intValue() - list.get(0).intValue()) * parseFloat));
                 if ((this.keyinfo.getType() == 0 || this.keyinfo.getType() == 1 || this.keyinfo.getType() == 4 || this.keyinfo.getType() == 3 || this.keyinfo.getType() == 9) && intValue2 > this.keyinfo.getWidth()) {
                     intValue2 = this.keyinfo.getWidth();
@@ -1036,6 +1037,7 @@ public abstract class Key extends View {
             String str2 = split[0];
             float parseFloat = Float.parseFloat("0." + split[1]);
             if ("?".equals(str2)) {
+                var r8 = this.keyinfo.getThick();
                 return (int) ((list.get(0).intValue() - r8) + ((list.get(1).intValue() - list.get(0).intValue()) * parseFloat));
             }
             int indexOf = list2.indexOf(str2);
@@ -1493,8 +1495,8 @@ public abstract class Key extends View {
         int i;
         int cutterRadiusSize2;
         int cutterRadiusSize22;
-        double cos;
-        int cutterRadiusSize23;
+        double cos = 0;
+        int cutterRadiusSize23 = 0;
         double d;
         for (List<DestPoint> list2 : list) {
             for (int i2 = 1; i2 < list2.size() - 1; i2++) {
@@ -1814,7 +1816,7 @@ public abstract class Key extends View {
         int i2 = 0;
         while (i2 < arrayList.size()) {
             int i3 = 0;
-            int r3 = z ? 1 : 0;
+            boolean r3 = z;
             while (i3 < arrayList.get(i2).length) {
                 int depthByCode = getDepthByCode(this.allDepths.get(i2), this.allDepthNames.get(i2), arrayList.get(i2)[i3]);
                 int intValue = this.allSpaces.get(i2).get(i3).intValue();
@@ -1837,7 +1839,7 @@ public abstract class Key extends View {
                         } else if (this.keyinfo.getIcCard() == 1372) {
                             arrayList4.add(new DestPoint(spaceLeft + 200, keyAlignInfo.getDecodeWidth() - 380, true, r3));
                         } else if (this.keyinfo.getSide() == 0) {
-                            Iterator<Integer> it = this.allDepths.get(r3).iterator();
+                            Iterator<Integer> it = this.allDepths.get(this.keyinfo.getSide()).iterator();
                             int i4 = 0;
                             while (it.hasNext()) {
                                 i4 = Math.max(i4, it.next().intValue());
@@ -1890,7 +1892,7 @@ public abstract class Key extends View {
                     }
                 }
                 i3++;
-                r3 = 0;
+                r3 = false;
             }
             i2++;
             z = false;
@@ -1996,7 +1998,7 @@ public abstract class Key extends View {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    private java.util.List<java.util.List<com.cutting.machine.bean.DestPoint>> getSingleInsideGrooveKeyPoint(com.cutting.machine.KeyAlignInfo r20, java.lang.String r21) {
+    private List<List<DestPoint>> getSingleInsideGrooveKeyPoint(KeyAlignInfo r20, String r21) {
         /*
             Method dump skipped, instructions count: 882
             To view this dump change 'Code comments level' option to 'DEBUG'

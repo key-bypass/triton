@@ -686,7 +686,7 @@ public class OtherSettingFragment extends BaseBackFragment {
 
     public void import2Sql(FileSystem fileSystem) {
         String str = "/data/data/" + MyApplication.getInstance().getPackageName() + "/databases/userData.db";
-        UsbFile rootDirectory = fileSystem.getRootDirectory();
+        UsbFile rootDirectory = (UsbFile) fileSystem.getRootDirectories().iterator().next();
         File file = new File(Environment.getExternalStorageDirectory(), "userDb.xls");
         try {
             UsbFile search = rootDirectory.search("/userDb.xls");

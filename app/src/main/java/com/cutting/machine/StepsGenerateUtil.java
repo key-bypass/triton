@@ -330,7 +330,8 @@ public class StepsGenerateUtil {
     public static List<StepBean> generateHighDecodeSteps(KeyAlignInfo keyAlignInfo) {
         int high1;
         ArrayList arrayList = new ArrayList();
-        int ceil = (int) ((keyAlignInfo.getDecodeWidth2() != 0 ? r1 / ((int) Math.ceil(r1 / 25)) : 25) / MachineData.dXScale);
+        var r1 = keyAlignInfo.getDecodeWidth2();
+        int ceil = (int) ((r1 != 0 ? r1 / ((int) Math.ceil(r1 / 25)) : 25) / MachineData.dXScale);
         arrayList.add(StepBeanFactory.getStepBean(0, 0, UnitConvertUtil.yKey2Machine(ToolSizeManager.getDecoderRadius()), 0, getSpeedStr(0), SL_R()));
         int clampFace = keyAlignInfo.getClampFace();
         Clamp currentClamp = ClampManager.getInstance().getCurrentClamp();
@@ -897,7 +898,7 @@ public class StepsGenerateUtil {
             double d = (radiusOfCircle + i8) - i5;
             int i9 = i2;
             int i10 = cutterRadiusSize2;
-            double acos = Math.acos(((Math.pow(d, 2.0d) + Math.pow(i8, 2.0d)) - Math.pow(radiusOfCircle, 2.0d)) / ((r12 * 2) * i8));
+            double acos = Math.acos(((Math.pow(d, 2.0d) + Math.pow(i8, 2.0d)) - Math.pow(radiusOfCircle, 2.0d)) / ((radiusOfCircle * 2) * i8));
             double radians2 = Math.toRadians(180.0d) + radians;
             double d2 = radians2 + acos;
             double d3 = radians2 - acos;
@@ -981,7 +982,7 @@ public class StepsGenerateUtil {
     }
 
     private static List<StepBean> generateDoubleInSideKeyCutSteps(KeyAlignInfo keyAlignInfo, int i, List<List<CutPoint>> list, List<List<CutPoint>> list2) {
-        float f;
+        float f = 0;
         float f2 = 0;
         int i2;
         int i3;
@@ -1215,8 +1216,8 @@ public class StepsGenerateUtil {
     }
 
     private static List<StepBean> generateSingleInSideKeyCutSteps(KeyInfo keyInfo, KeyAlignInfo keyAlignInfo, int i, List<List<CutPoint>> list, List<List<CutPoint>> list2, boolean z) {
-        float f;
-        float f2;
+        float f = 0;
+        float f2 = 0;
         int i2;
         int i3;
         int i4;

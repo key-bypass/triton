@@ -174,8 +174,13 @@ public class OperationManager extends Observable {
                             if (file == null) {
                                 file = new File(OperationManager.this.context.getExternalFilesDir(""), "SerialLog_" + new Date().getTime() + ".txt");
                             }
-                            FileWriter fileWriter2 = new FileWriter(file, true);
-                            try {
+                FileWriter fileWriter2 = null;
+                try {
+                    fileWriter2 = new FileWriter(file, true);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
                                 fileWriter2.write(new String(OperationManager.this.logs));
                                 OperationManager.this.logs.setLength(0);
                                 fileWriter2.close();
@@ -184,7 +189,11 @@ public class OperationManager extends Observable {
                                 e = e;
                                 System.out.println(e.getMessage());
                                 if (fileWriter != null) {
-                                    fileWriter.close();
+                                    try {
+                                        fileWriter.close();
+                                    } catch (IOException ex) {
+                                        throw new RuntimeException(ex);
+                                    }
                                 }
                             } catch (Throwable th) {
                                 fileWriter = fileWriter2;
@@ -196,8 +205,12 @@ public class OperationManager extends Observable {
                                         e2.printStackTrace();
                                     }
                                 }
-                                throw th;
-                            }
+                    try {
+                        throw th;
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
             }
         }
@@ -269,9 +282,10 @@ public class OperationManager extends Observable {
         if (keyInfo != null) {
             this.keyinfo = keyInfo;
         }
+        var self = this;
         Thread thread = new Thread() {
             public void run() {
-                this.startExecution(AssetsJsonUtils.json2Steps(AssetsJsonUtils.getJsonStringFromAssets(OperationManager.this.context, str)), operateType);
+                self.startExecution(AssetsJsonUtils.json2Steps(AssetsJsonUtils.getJsonStringFromAssets(OperationManager.this.context, str)), operateType);
             }
         };
         thread.start();
@@ -282,7 +296,7 @@ public class OperationManager extends Observable {
         if (operationParamBase != null) {
             KeyInfoBase keyInfo = operationParamBase.getKeyInfo();
             if (keyInfo != null) {
-                this.keyinfo = keyInfo;
+                this.keyinfo = (KeyInfo)keyInfo;
             }
             this.userSetting = operationParamBase;
             Clamp clamp = operationParamBase.getClamp();
@@ -369,12 +383,12 @@ public class OperationManager extends Observable {
         if (getKeyInfo() == null) {
             return 0;
         }
-        return getKeyInfo().extDoublekeyDepthSteps;
+        return getKeyInfo().getExtDoublekeyDepthSteps();
     }
 
     private boolean isNewHonda() {
         if (getKeyInfo() != null) {
-            return getKeyInfo().isNewHonda;
+            return getKeyInfo().isNewHonda();
         }
         return false;
     }
@@ -672,7 +686,7 @@ public class OperationManager extends Observable {
     private int[] getDuplicateCutDepth() {
         List<PointXyz> list = this.zList;
         list.remove(list.size() - 1);
-        if (getKeyInfo().keyType == KeyType.SINGLE_INSIDE_GROOVE_KEY || getKeyInfo().keyType == KeyType.DOUBLE_INSIDE_GROOVE_KEY || getKeyInfo().keyType == KeyType.TWO_GROOVE || getKeyInfo().keyType == KeyType.THREE_GROOVE || getKeyInfo().keyType == KeyType.LEFT_GROOVE || getKeyInfo().keyType == KeyType.RIGHT_GROOVE) {
+        if (getKeyInfo().getKeyType() == KeyType.SINGLE_INSIDE_GROOVE_KEY || getKeyInfo().getKeyType() == KeyType.DOUBLE_INSIDE_GROOVE_KEY || getKeyInfo().getKeyType() == KeyType.TWO_GROOVE || getKeyInfo().getKeyType() == KeyType.THREE_GROOVE || getKeyInfo().getKeyType() == KeyType.LEFT_GROOVE || getKeyInfo().getKeyType() == KeyType.RIGHT_GROOVE) {
             this.groovePosition = new ArrayList();
             ArrayList arrayList = new ArrayList();
             int i = 0;
@@ -964,7 +978,7 @@ public class OperationManager extends Observable {
         } else {
             x = serialResBean.getX();
         }
-        if (getKeyInfo() != null && getKeyInfo().keyType == KeyType.DOUBLE_OUTSIDE_GROOVE_KEY) {
+        if (getKeyInfo() != null && getKeyInfo().getKeyType() == KeyType.DOUBLE_OUTSIDE_GROOVE_KEY) {
             if (str.equals("1")) {
                 abs5 = Math.abs(x - this.keyAlignInfo.getLeft());
                 decoderRadius22 = getDecoderSize2();
@@ -977,7 +991,7 @@ public class OperationManager extends Observable {
                 str = "1";
             }
         } else {
-            if (getKeyInfo() != null && (getKeyInfo().keyType == KeyType.DOUBLE_INSIDE_GROOVE_KEY || getKeyInfo().keyType == KeyType.TWO_GROOVE || getKeyInfo().keyType == KeyType.THREE_GROOVE || getKeyInfo().keyType == KeyType.LEFT_GROOVE || getKeyInfo().keyType == KeyType.RIGHT_GROOVE)) {
+            if (getKeyInfo() != null && (getKeyInfo().getKeyType() == KeyType.DOUBLE_INSIDE_GROOVE_KEY || getKeyInfo().getKeyType() == KeyType.TWO_GROOVE || getKeyInfo().getKeyType() == KeyType.THREE_GROOVE || getKeyInfo().getKeyType() == KeyType.LEFT_GROOVE || getKeyInfo().getKeyType() == KeyType.RIGHT_GROOVE)) {
                 if (str.equals("1")) {
                     abs = Math.abs(x - this.keyAlignInfo.getLeft());
                     decoderSize2 = getDecoderSize2();
@@ -985,7 +999,7 @@ public class OperationManager extends Observable {
                     abs = Math.abs(x - this.keyAlignInfo.getRight());
                     decoderSize2 = getDecoderSize2();
                 }
-            } else if (getKeyInfo() != null && getKeyInfo().keyType == KeyType.DOUBLE_SIDE_KEY) {
+            } else if (getKeyInfo() != null && getKeyInfo().getKeyType() == KeyType.DOUBLE_SIDE_KEY) {
                 if (ClampManager.getInstance().getCurrentClamp().getClampStr().contains("S2")) {
                     abs = Math.abs(x - this.keyAlignInfo.getRight());
                     decoderSize2 = getDecoderSize2();
@@ -1003,7 +1017,7 @@ public class OperationManager extends Observable {
                             str = "2";
                         } else {
                             abs3 = Math.abs(x - this.keyAlignInfo.getCenter()) - getDecoderRadius2();
-                            keyWidthSteps = getKeyInfo().keyWidthSteps / 2;
+                            keyWidthSteps = getKeyInfo().getKeyWidthSteps() / 2;
                         }
                     } else if (this.isDuplicateDecode) {
                         abs4 = Math.abs(x - this.keyAlignInfo.getCenter());
@@ -1012,15 +1026,15 @@ public class OperationManager extends Observable {
                         str = "1";
                     } else {
                         abs3 = Math.abs(x - this.keyAlignInfo.getCenter()) - getDecoderRadius2();
-                        keyWidthSteps = getKeyInfo().keyWidthSteps / 2;
+                        keyWidthSteps = getKeyInfo().getKeyWidthSteps() / 2;
                     }
                     abs = abs3 + keyWidthSteps;
                 }
-            } else if (getKeyInfo() != null && (getKeyInfo().keyType == KeyType.SINGLE_INSIDE_GROOVE_KEY || getKeyInfo().keyType == KeyType.SINGLE_OUTSIDE_GROOVE_KEY)) {
-                if (getKeyInfo().side == 0 || getKeyInfo().side == 5) {
+            } else if (getKeyInfo() != null && (getKeyInfo().getKeyType() == KeyType.SINGLE_INSIDE_GROOVE_KEY || getKeyInfo().getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY)) {
+                if (getKeyInfo().getSide() == 0 || getKeyInfo().getSide() == 5) {
                     abs2 = Math.abs(x - this.keyAlignInfo.getLeft());
                     decoderSize22 = getDecoderSize2();
-                } else if (getKeyInfo().side == 6) {
+                } else if (getKeyInfo().getSide() == 6) {
                     if (str.equals("1")) {
                         abs2 = Math.abs(x - this.keyAlignInfo.getLeft());
                         decoderSize22 = getDecoderSize2();
@@ -1033,18 +1047,18 @@ public class OperationManager extends Observable {
                     decoderSize22 = getDecoderSize2();
                 }
                 abs = abs2 - decoderSize22;
-                if (!this.isDuplicateDecode && ClampManager.getInstance().getCurrentClamp() == Clamp.S1_C && getKeyInfo().keyType == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
+                if (!this.isDuplicateDecode && ClampManager.getInstance().getCurrentClamp() == Clamp.S1_C && getKeyInfo().getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY) {
                     OperationParamBase operationParamBase = this.userSetting;
                     if ((operationParamBase instanceof DataParam) && ((DataParam) operationParamBase).isSlantCorrection()) {
                         decoderSize2 = (7 - (Integer.parseInt(str2) - 1)) * UnitConvertUtil.cmm2StepY(6);
                     }
                 }
-            } else if (getKeyInfo() != null && getKeyInfo().keyType == KeyType.SINGLE_SIDE_KEY) {
+            } else if (getKeyInfo() != null && getKeyInfo().getKeyType() == KeyType.SINGLE_SIDE_KEY) {
                 abs = Math.abs(x - this.keyAlignInfo.getRight());
                 decoderSize2 = getDecoderSize2();
-            } else if (getKeyInfo() != null && (getKeyInfo().keyType == KeyType.TUBULAR_KEY || getKeyInfo().keyType == KeyType.SIDE_HOLE)) {
+            } else if (getKeyInfo() != null && (getKeyInfo().getKeyType() == KeyType.TUBULAR_KEY || getKeyInfo().getKeyType() == KeyType.SIDE_HOLE)) {
                 abs = Math.abs(serialResBean.getZ() - this.keyAlignInfo.getKeyFace());
-            } else if (getKeyInfo() != null && (getKeyInfo().keyType == KeyType.DIMPLE_KEY || getKeyInfo().keyType == KeyType.SIDE_TOOTH_3KS_KEY)) {
+            } else if (getKeyInfo() != null && (getKeyInfo().getKeyType() == KeyType.DIMPLE_KEY || getKeyInfo().getKeyType() == KeyType.SIDE_TOOTH_3KS_KEY)) {
                 int z = serialResBean.getZ();
                 int y2 = serialResBean.getY();
                 int x2 = serialResBean.getX();
@@ -1078,7 +1092,7 @@ public class OperationManager extends Observable {
         } else {
             y = serialResBean.getY();
         }
-        if (getKeyInfo().keyAlign == KeyAlign.SHOULDERS_ALIGN) {
+        if (getKeyInfo().getKeyAlign() == KeyAlign.SHOULDERS_ALIGN) {
             xKey2MachineDire = UnitConvertUtil.xKey2MachineDire(y - this.keyAlignInfo.getShoulder());
         } else {
             xKey2MachineDire = UnitConvertUtil.xKey2MachineDire(y - this.keyAlignInfo.getTip());
@@ -1311,71 +1325,8 @@ public class OperationManager extends Observable {
                 public void run() {
                     File file;
                     FileWriter fileWriter = null;
-                    try {
-                        try {
-                            try {
-                                File[] listFiles = OperationManager.this.context.getExternalFilesDir("").listFiles();
-                                if (listFiles != null) {
-                                    int length = listFiles.length;
-                                    for (int i = 0; i < length; i++) {
-                                        file = listFiles[i];
-                                        if (file.getName().startsWith(CoreConstant.SERIAL_FILE_NAME) && file.isFile()) {
-                                            break;
-                                        }
-                                    }
-                                }
-                                file = null;
-                                if (file == null) {
-                                    file = new File(OperationManager.this.context.getExternalFilesDir(""), "SerialLog_" + new Date().getTime() + ".txt");
-                                }
-                                FileWriter fileWriter2 = new FileWriter(file, true);
-                                try {
-                                    fileWriter2.write(new String(OperationManager.this.logs));
-                                    OperationManager.this.logs.setLength(0);
-                                    fileWriter2.close();
-                                } catch (Exception e) {
-                                    fileWriter = fileWriter2;
-                                    e = e;
-                                    System.out.println(e.getMessage());
-                                    if (fileWriter != null) {
-                                        fileWriter.close();
-                                    }
-                                } catch (Throwable th) {
-                                    fileWriter = fileWriter2;
-                                    th = th;
-                                    if (fileWriter != null) {
-                                        try {
-                                            fileWriter.close();
-                                        } catch (IOException e2) {
-                                            e2.printStackTrace();
-                                        }
-                                    }
-                                    throw th;
-                                }
-                            } catch (Exception e3) {
-                                e = e3;
-                            }
-                        } catch (Throwable th2) {
-                            th = th2;
-                        }
-                    } catch (IOException e4) {
-                        e4.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-
-        /* renamed from: com.cutting.machine.communication.OperationManager$7$1 */
-        /* loaded from: classes2.dex */
-        class AnonymousClass1 extends Thread {
-            AnonymousClass1() {
-            }
-
-            @Override // java.lang.Thread, java.lang.Runnable
-            public void run() {
-                File file;
-                FileWriter fileWriter = null;
-                try {
+                    Exception e = null;
+                    Throwable th = null;
                     try {
                         try {
                             File[] listFiles = OperationManager.this.context.getExternalFilesDir("").listFiles();
@@ -1397,16 +1348,16 @@ public class OperationManager extends Observable {
                                 fileWriter2.write(new String(OperationManager.this.logs));
                                 OperationManager.this.logs.setLength(0);
                                 fileWriter2.close();
-                            } catch (Exception e) {
+                            } catch (Exception e2) {
                                 fileWriter = fileWriter2;
-                                e = e;
+                                e = e2;
                                 System.out.println(e.getMessage());
                                 if (fileWriter != null) {
                                     fileWriter.close();
                                 }
-                            } catch (Throwable th) {
+                            } catch (Throwable th2) {
                                 fileWriter = fileWriter2;
-                                th = th;
+                                th = th2;
                                 if (fileWriter != null) {
                                     try {
                                         fileWriter.close();
@@ -1422,8 +1373,67 @@ public class OperationManager extends Observable {
                     } catch (Throwable th2) {
                         th = th2;
                     }
-                } catch (IOException e4) {
-                    e4.printStackTrace();
+                }
+            }.start();
+        }
+
+        /* renamed from: com.cutting.machine.communication.OperationManager$7$1 */
+        /* loaded from: classes2.dex */
+        class AnonymousClass1 extends Thread {
+            AnonymousClass1() {
+            }
+
+            @Override // java.lang.Thread, java.lang.Runnable
+            public void run() {
+                File file;
+                FileWriter fileWriter = null;
+                Exception e = null;
+                Throwable th = null;
+                try {
+                    try {
+                        File[] listFiles = OperationManager.this.context.getExternalFilesDir("").listFiles();
+                        if (listFiles != null) {
+                            int length = listFiles.length;
+                            for (int i = 0; i < length; i++) {
+                                file = listFiles[i];
+                                if (file.getName().startsWith(CoreConstant.SERIAL_FILE_NAME) && file.isFile()) {
+                                    break;
+                                }
+                            }
+                        }
+                        file = null;
+                        if (file == null) {
+                            file = new File(OperationManager.this.context.getExternalFilesDir(""), "SerialLog_" + new Date().getTime() + ".txt");
+                        }
+                        FileWriter fileWriter2 = new FileWriter(file, true);
+                        try {
+                            fileWriter2.write(new String(OperationManager.this.logs));
+                            OperationManager.this.logs.setLength(0);
+                            fileWriter2.close();
+                        } catch (Exception e2) {
+                            fileWriter = fileWriter2;
+                            e = e2;
+                            System.out.println(e.getMessage());
+                            if (fileWriter != null) {
+                                fileWriter.close();
+                            }
+                        } catch (Throwable th2) {
+                            fileWriter = fileWriter2;
+                            th = th2;
+                            if (fileWriter != null) {
+                                try {
+                                    fileWriter.close();
+                                } catch (IOException e2) {
+                                    e2.printStackTrace();
+                                }
+                            }
+                            throw th;
+                        }
+                    } catch (Exception e3) {
+                        e = e3;
+                    }
+                } catch (Throwable th2) {
+                    th = th2;
                 }
             }
         }

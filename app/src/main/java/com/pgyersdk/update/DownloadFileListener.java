@@ -4,7 +4,7 @@ import java.io.File;
 
 /* loaded from: classes2.dex */
 public interface DownloadFileListener {
-    void downloadFailed();
+    void beginDownload();
 
     void downloadSuccessful(File file);
 

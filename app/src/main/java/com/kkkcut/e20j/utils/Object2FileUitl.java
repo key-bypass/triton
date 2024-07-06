@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.SyncFailedException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.Cipher;
@@ -20,7 +21,7 @@ public class Object2FileUitl {
     private static String PASSWORD = "2A5DFG6QEWt9m6k2";
 
     public static boolean Object2File(Object obj, String str) {
-        FileOutputStream fileOutputStream;
+        FileOutputStream fileOutputStream = null;
         SecretKeySpec secretKeySpec = new SecretKeySpec(PASSWORD.getBytes(), Algorithm);
         Cipher cipher = null;
         try {
@@ -52,8 +53,14 @@ public class Object2FileUitl {
                     cipherOutputStream.close();
                     fileOutputStream.close();
                     return true;
+                } catch (SyncFailedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 } finally {
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             } finally {
             }
         } finally {
@@ -63,17 +70,18 @@ public class Object2FileUitl {
     public static Object file2Object(String str) {
         ObjectInputStream objectInputStream;
         Exception e = null;
+        Object readObject = null;
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(PASSWORD.getBytes(), Algorithm);
             Cipher cipher = Cipher.getInstance(Algorithm);
             cipher.init(2, secretKeySpec);
             objectInputStream = new ObjectInputStream(new CipherInputStream(new BufferedInputStream(new FileInputStream(str)), cipher));
             try {
-                Object readObject = objectInputStream.readObject();
+                readObject = objectInputStream.readObject();
                 objectInputStream.close();
                 return readObject;
-            } catch (Exception e) {
-                e = e;
+            } catch (Exception ex) {
+                e = ex;
                 e.printStackTrace();
                 if (objectInputStream != null) {
                     try {
@@ -88,5 +96,6 @@ public class Object2FileUitl {
             e = e3;
             objectInputStream = null;
         }
+        return readObject;
     }
 }

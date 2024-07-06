@@ -1,5 +1,6 @@
 package com.pgyersdk.update;
 
+import com.kkkcut.e20j.pyger.update.PgyerDownloadListener;
 import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.utils.AsyncTaskUtils;
 import com.pgyersdk.utils.FileUtils;
@@ -88,7 +89,7 @@ public class PgyUpdateManager {
             if (Utils.m249b()) {
                 AsyncTaskUtils.m194a(new AsyncTaskC2083b(str, f706c));
             } else {
-                f706c.downloadFailed();
+                f706c.beginDownload();
             }
         }
     }

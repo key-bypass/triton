@@ -80,7 +80,7 @@ public class DimpleKey extends Key {
                 if (!DimpleKey.this.canScroll) {
                     return true;
                 }
-                DimpleKey.this.baseY = (int) (r1.baseY - f2);
+                DimpleKey.this.baseY = (int) (DimpleKey.this.baseY - f2);
                 if (DimpleKey.this.baseY > AutoUtils.getPercentHeightSize(10)) {
                     DimpleKey.this.baseY = AutoUtils.getPercentHeightSize(10);
                 }

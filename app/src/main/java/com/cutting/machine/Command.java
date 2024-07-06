@@ -8,9 +8,10 @@ import com.cutting.machine.error.ErrorCode;
 import com.cutting.machine.error.ErrorHelper;
 import com.cutting.machine.utils.ConversionUtils;
 
-import org.apache.poi.ss.formula.ptg.Ptg;
-
 import java.util.List;
+import org.apache.poi.ss.formula.ptg.NumberPtg;
+import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.ss.formula.ptg.RefErrorPtg;
 
 /* loaded from: classes2.dex */
 public class Command {
@@ -53,7 +54,8 @@ public class Command {
     public static byte _bW = 87;
 
     public static byte[] BuzzerOperation(int i, int i2) {
-        byte[] bArr = {_bK, _bB, 2, (byte) i, (byte) i2, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bB, 2, (byte) i, (byte) i2, 0};
+        bArr = new byte[] {_bK, _bB, 2, (byte) i, (byte) i2, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -95,7 +97,8 @@ public class Command {
         if (i5 > MachineData.zAxisMax / MachineData.dZScale) {
             i5 = (int) (MachineData.zAxisMax / MachineData.dZScale);
         }
-        byte[] bArr = {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], (byte) i, (byte) i2, 0, 1, ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], (byte) i, (byte) i2, 0, 1, ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], 0};
+        bArr = new byte[] {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], (byte) i, (byte) i2, 0, 1, ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -119,7 +122,8 @@ public class Command {
             ErrorHelper.handleError(600);
             return null;
         }
-        byte[] bArr = {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], 1, (byte) i, 0, 1, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], 1, (byte) i, 0, 1, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], 0};
+        bArr = new byte[] {_bK, _bT, ConversionUtils.intConvertHex(16)[1], ConversionUtils.intConvertHex(16)[0], 1, (byte) i, 0, 1, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(65535)[1], ConversionUtils.intConvertHex(65535)[0], ConversionUtils.intConvertHex(i5)[1], ConversionUtils.intConvertHex(i5)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -161,7 +165,8 @@ public class Command {
         if (i4 > MachineData.zAxisMax / MachineData.dZScale) {
             i4 = (int) (MachineData.zAxisMax / MachineData.dZScale);
         }
-        byte[] bArr = {_bK, _bC, ConversionUtils.intConvertHex(14)[1], ConversionUtils.intConvertHex(14)[0], (byte) i, (byte) i5, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bC, ConversionUtils.intConvertHex(14)[1], ConversionUtils.intConvertHex(14)[0], (byte) i, (byte) i5, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], 0};
+        bArr = new byte[] {_bK, _bC, ConversionUtils.intConvertHex(14)[1], ConversionUtils.intConvertHex(14)[0], (byte) i, (byte) i5, ConversionUtils.intConvertHex(i2)[1], ConversionUtils.intConvertHex(i2)[0], ConversionUtils.intConvertHex(i3)[1], ConversionUtils.intConvertHex(i3)[0], ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], ConversionUtils.intConvertHex(i8)[1], ConversionUtils.intConvertHex(i8)[0], ConversionUtils.intConvertHex(i7)[1], ConversionUtils.intConvertHex(i7)[0], ConversionUtils.intConvertHex(i6)[1], ConversionUtils.intConvertHex(i6)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -238,63 +243,68 @@ public class Command {
     }
 
     public static byte[] QueryChipID() {
-        byte[] bArr = {_bK, _bD, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bD, 0, 0};
+        bArr = new byte[] {_bK, _bD, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] IssueRrrorCode(int i) {
-        byte[] bArr = {_bK, _bE, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bE, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], 0};
+        bArr = new byte[] {_bK, _bE, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] queryDecoderPosition() {
-        byte[] bArr = {_bK, _bG, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bG, 0, 0};
+        bArr = new byte[] {_bK, _bG, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] TurnOffSpindle() {
-        byte[] bArr = {_bK, _bH, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bH, 0, 0};
+        bArr = new byte[] {_bK, _bH, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] takePhoto() {
-        byte[] bArr = {_bK, _bL, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bL, 0, 0};
+        bArr = new byte[] {_bK, _bL, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] SpindleOperation(int i) {
-        byte[] bArr = {_bK, _bM, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bM, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], 0};
+        bArr = new byte[] {_bK, _bM, 2, ConversionUtils.intConvertHex(i)[1], ConversionUtils.intConvertHex(i)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] QuerySpindleSpeed() {
-        byte[] bArr = {_bK, _bN, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bN, 0, 0};
+        bArr = new byte[] {_bK, _bN, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] controlLight(int i) {
-        byte[] bArr = new byte[5];
-        bArr[0] = _bK;
-        bArr[1] = _bO;
-        bArr[2] = 1;
-        bArr[3] = (byte) i;
-        bArr[4] = ConversionUtils.CheckSum(bArr);
-        bArr[5] = 10;
+        byte[] bArr = {_bK, _bO, 1, (byte)i, 0 };
+        bArr = new byte[] {_bK, _bO, 1, (byte)i, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] ReadSpecifyLocationData(int i) {
-        byte[] bArr = {_bK, _bR, 2, (byte) i, Ptg.CLASS_ARRAY, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bR, 2, (byte) i, Ptg.CLASS_ARRAY, 0};
+        bArr = new byte[] {_bK, _bR, 2, (byte) i, Ptg.CLASS_ARRAY, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] OpenDoorCuttingSettings(int i) {
-        byte[] bArr = {_bK, _bS, 1, (byte) i, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bS, 1, (byte) i, 0, 0};
+        bArr = new byte[]{_bK, _bS, 1, (byte) i, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] readyUpgradeFirmware() {
-        byte[] bArr = {_bK, _bU, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bU, 0, 0, 0};
+        bArr = new byte[]{_bK, _bU, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -309,14 +319,17 @@ public class Command {
         bArr2[2] = ConversionUtils.intConvertHex(bArr.length + 1)[1];
         bArr2[3] = ConversionUtils.intConvertHex(bArr.length + 1)[0];
         bArr2[4] = (byte) i;
-        System.arraycopy(bArr, 0, bArr2, 5, bArr.length);
+        for (int i2 = 0; i2 < bArr.length; i2++) {
+            bArr2[i2 + 5] = bArr[i2];
+        }
         bArr2[bArr.length + 5] = ConversionUtils.CheckSum(bArr2);
         bArr2[bArr.length + 6] = 10;
         return bArr2;
     }
 
     public static byte[] QueryFirmwareVersion() {
-        byte[] bArr = {_bK, _bV, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bV, 0, 0};
+        bArr = new byte[] {_bK, _bV, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
@@ -328,7 +341,9 @@ public class Command {
         bArr[2] = (byte) (contentBytes.length + 2);
         bArr[3] = (byte) i;
         bArr[4] = (byte) contentBytes.length;
-        System.arraycopy(contentBytes, 0, bArr, 5, contentBytes.length);
+        for (int i2 = 0; i2 < contentBytes.length; i2++) {
+            bArr[i2 + 5] = contentBytes[i2];
+        }
         int length = contentBytes.length + 5;
         bArr[length] = ConversionUtils.CheckSum(bArr);
         bArr[length + 1] = 10;
@@ -343,7 +358,9 @@ public class Command {
         bArr[0] = RefErrorPtg.sid;
         bArr[1] = (byte) i;
         bArr[2] = length;
-        System.arraycopy(bytes, 0, bArr, 3, bytes.length);
+        for (int i3 = 0; i3 < bytes.length; i3++) {
+            bArr[i3 + 3] = bytes[i3];
+        }
         bArr[i2 - 2] = ConversionUtils.CheckSum(bArr);
         bArr[i2 - 1] = NumberPtg.sid;
         return bArr;
@@ -351,12 +368,14 @@ public class Command {
 
     public static byte[] duplicateDecode(int i, int i2, int i3, int i4, int i5) {
         Log.i(TAG, "duplicateDistance: " + i4);
-        byte[] bArr = {_bK, _bF, 12, (byte) i5, (byte) i, ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], (byte) i3, (byte) i2, ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _bF, 12, (byte) i5, (byte) i, ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], (byte) i3, (byte) i2, ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], 0};
+        bArr = new byte[] {_bK, _bF, 12, (byte) i5, (byte) i, ConversionUtils.intConvertHex(i4)[1], ConversionUtils.intConvertHex(i4)[0], (byte) i3, (byte) i2, ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.intConvertHex(1000)[1], ConversionUtils.intConvertHex(1000)[0], ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 
     public static byte[] OnductiveTestOperation() {
-        byte[] bArr = {_bK, _b9, 0, ConversionUtils.CheckSum(bArr), 10};
+        byte[] bArr = {_bK, _b9, 0, 0};
+        bArr = new byte[]{_bK, _b9, 0, ConversionUtils.CheckSum(bArr), 10};
         return bArr;
     }
 }

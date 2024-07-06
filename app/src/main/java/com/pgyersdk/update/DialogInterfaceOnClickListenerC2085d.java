@@ -2,6 +2,8 @@ package com.pgyersdk.update;
 
 import android.content.DialogInterface;
 
+import com.kkkcut.e20j.pyger.update.PgyerDownloadListener;
+
 /* JADX INFO: Access modifiers changed from: package-private */
 /* compiled from: PgyerDownloadListener.java */
 /* renamed from: com.pgyersdk.update.d */

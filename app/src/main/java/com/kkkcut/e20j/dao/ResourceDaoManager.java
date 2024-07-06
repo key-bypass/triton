@@ -75,7 +75,7 @@ public class ResourceDaoManager {
             return "0";
         }
         try {
-            return DesUtil.decrypt(getDaoSession().getDbVersionDao().queryBuilder().unique().getVersion(), DesUtil.DATABASE);
+            return DesUtil.decrypt(getDaoSession().getLocalDbVersionDao().queryBuilder().unique().getLocResVer(), DesUtil.DATABASE);
         } catch (Exception e) {
             e.printStackTrace();
             return "0";

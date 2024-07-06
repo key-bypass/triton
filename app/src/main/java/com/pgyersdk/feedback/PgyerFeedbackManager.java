@@ -1,6 +1,5 @@
 package com.pgyersdk.feedback;
 
-import com.kkkcut.e20j.pyger.C2077k;
 import com.pgyersdk.feedback.p017a.AlertDialogBuilderC2062m;
 import com.pgyersdk.utils.Util;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ public class PgyerFeedbackManager {
     private static PgyerFeedbackManager f546a;
 
     /* renamed from: b */
-    private C2077k f547b;
+    private PgyerFeedbackManagerDelegate f547b;
 
     /* loaded from: classes2.dex */
     public static class PgyerFeedbackBuilder {
@@ -108,7 +107,7 @@ public class PgyerFeedbackManager {
     }
 
     /* renamed from: b */
-    public C2077k m257b() {
+    public PgyerFeedbackManagerDelegate m257b() {
         return this.f547b;
     }
 
@@ -126,9 +125,9 @@ public class PgyerFeedbackManager {
 
     private PgyerFeedbackManager(int i, TYPE type, Map<String, String> map, boolean z) {
         if (z) {
-            this.f547b = new C2077k(i, type, new JSONObject(map).toString());
+            this.f547b = new PgyerFeedbackManagerDelegate(i, type, new JSONObject(map).toString());
         } else {
-            this.f547b = new C2077k(type, new JSONObject(map).toString());
+            this.f547b = new PgyerFeedbackManagerDelegate(type, new JSONObject(map).toString());
         }
     }
 }
