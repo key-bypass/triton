@@ -44,7 +44,6 @@ class SupportActivityDelegate(support: ISupportActivity?) {
      */
     fun extraTransaction(): ExtraTransaction {
         return ExtraTransactionImpl(
-            mSupport as FragmentActivity,
             topFragment,
             transactionDelegate,
             true

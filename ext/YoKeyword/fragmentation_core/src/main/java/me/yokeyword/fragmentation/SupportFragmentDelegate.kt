@@ -20,7 +20,7 @@ import me.yokeyword.fragmentation.helper.internal.ResultRecord
 import me.yokeyword.fragmentation.helper.internal.TransactionRecord
 import me.yokeyword.fragmentation.helper.internal.VisibleDelegate
 
-class SupportFragmentDelegate(support: ISupportFragment?) {
+class SupportFragmentDelegate(support: ISupportFragment) {
     private var mRootStatus = STATUS_UN_ROOT
 
     private var mIsSharedElement = false
@@ -45,8 +45,9 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
     var mNewBundle: Bundle? = null
     private var mSaveInstanceState: Bundle? = null
 
-    private val mSupportF: ISupportFragment
-    private val mFragment: Fragment?
+    private val mSupportF: ISupportFragment = support
+    private val mFragment: Fragment
+        get() = mSupportF as Fragment
     var activity: FragmentActivity? = null
         protected set
     private var mSupport: ISupportActivity? = null
@@ -60,10 +61,9 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
      * 额外的事务：自定义Tag，添加SharedElement动画，操作非回退栈Fragment
      */
     fun extraTransaction(): ExtraTransaction {
-        if (mTransactionDelegate == null) throw RuntimeException(mFragment!!.javaClass.simpleName + " not attach!")
+        if (mTransactionDelegate == null) throw RuntimeException(mFragment.javaClass.simpleName + " not attach!")
 
         return ExtraTransactionImpl(
-            mSupport as FragmentActivity?,
             mSupportF,
             mTransactionDelegate!!,
             false
@@ -83,29 +83,29 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
     fun onCreate(savedInstanceState: Bundle?) {
         visibleDelegate.onCreate(savedInstanceState)
 
-        val bundle = mFragment!!.arguments
+        val bundle = mFragment.arguments
         if (bundle != null) {
             mRootStatus = bundle.getInt(
-                TransactionDelegate.Companion.FRAGMENTATION_ARG_ROOT_STATUS,
+                TransactionDelegate.FRAGMENTATION_ARG_ROOT_STATUS,
                 STATUS_UN_ROOT
             )
             mIsSharedElement = bundle.getBoolean(
-                TransactionDelegate.Companion.FRAGMENTATION_ARG_IS_SHARED_ELEMENT,
+                TransactionDelegate.FRAGMENTATION_ARG_IS_SHARED_ELEMENT,
                 false
             )
-            mContainerId = bundle.getInt(TransactionDelegate.Companion.FRAGMENTATION_ARG_CONTAINER)
+            mContainerId = bundle.getInt(TransactionDelegate.FRAGMENTATION_ARG_CONTAINER)
             mReplaceMode =
-                bundle.getBoolean(TransactionDelegate.Companion.FRAGMENTATION_ARG_REPLACE, false)
+                bundle.getBoolean(TransactionDelegate.FRAGMENTATION_ARG_REPLACE, false)
             mCustomEnterAnim = bundle.getInt(
-                TransactionDelegate.Companion.FRAGMENTATION_ARG_CUSTOM_ENTER_ANIM,
+                TransactionDelegate.FRAGMENTATION_ARG_CUSTOM_ENTER_ANIM,
                 Int.MIN_VALUE
             )
             mCustomExitAnim = bundle.getInt(
-                TransactionDelegate.Companion.FRAGMENTATION_ARG_CUSTOM_EXIT_ANIM,
+                TransactionDelegate.FRAGMENTATION_ARG_CUSTOM_EXIT_ANIM,
                 Int.MIN_VALUE
             )
             mCustomPopExitAnim = bundle.getInt(
-                TransactionDelegate.Companion.FRAGMENTATION_ARG_CUSTOM_POP_EXIT_ANIM,
+                TransactionDelegate.FRAGMENTATION_ARG_CUSTOM_POP_EXIT_ANIM,
                 Int.MIN_VALUE
             )
         }
@@ -116,11 +116,11 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
             savedInstanceState.classLoader = javaClass.classLoader
             mSaveInstanceState = savedInstanceState
             mFragmentAnimator =
-                savedInstanceState.getParcelable<FragmentAnimator>(TransactionDelegate.Companion.FRAGMENTATION_STATE_SAVE_ANIMATOR)
+                savedInstanceState.getParcelable(TransactionDelegate.FRAGMENTATION_STATE_SAVE_ANIMATOR)
             mIsHidden =
-                savedInstanceState.getBoolean(TransactionDelegate.Companion.FRAGMENTATION_STATE_SAVE_IS_HIDDEN)
+                savedInstanceState.getBoolean(TransactionDelegate.FRAGMENTATION_STATE_SAVE_IS_HIDDEN)
             mContainerId =
-                savedInstanceState.getInt(TransactionDelegate.Companion.FRAGMENTATION_ARG_CONTAINER)
+                savedInstanceState.getInt(TransactionDelegate.FRAGMENTATION_ARG_CONTAINER)
         }
 
         mAnimHelper = AnimatorHelper(activity!!.applicationContext, mFragmentAnimator)
@@ -183,14 +183,14 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
     fun onSaveInstanceState(outState: Bundle) {
         visibleDelegate.onSaveInstanceState(outState)
         outState.putParcelable(
-            TransactionDelegate.Companion.FRAGMENTATION_STATE_SAVE_ANIMATOR,
+            TransactionDelegate.FRAGMENTATION_STATE_SAVE_ANIMATOR,
             mFragmentAnimator
         )
         outState.putBoolean(
-            TransactionDelegate.Companion.FRAGMENTATION_STATE_SAVE_IS_HIDDEN,
+            TransactionDelegate.FRAGMENTATION_STATE_SAVE_IS_HIDDEN,
             mFragment!!.isHidden
         )
-        outState.putInt(TransactionDelegate.Companion.FRAGMENTATION_ARG_CONTAINER, mContainerId)
+        outState.putInt(TransactionDelegate.FRAGMENTATION_ARG_CONTAINER, mContainerId)
     }
 
     fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -365,13 +365,13 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
      * @see .startForResult
      */
     fun setFragmentResult(resultCode: Int, bundle: Bundle?) {
-        val args = mFragment!!.arguments
-        if (args == null || !args.containsKey(TransactionDelegate.Companion.FRAGMENTATION_ARG_RESULT_RECORD)) {
+        val args = mFragment.arguments
+        if (args == null || !args.containsKey(TransactionDelegate.FRAGMENTATION_ARG_RESULT_RECORD)) {
             return
         }
 
         val resultRecord =
-            args.getParcelable<ResultRecord>(TransactionDelegate.Companion.FRAGMENTATION_ARG_RESULT_RECORD)
+            args.getParcelable<ResultRecord>(TransactionDelegate.FRAGMENTATION_ARG_RESULT_RECORD)
         if (resultRecord != null) {
             resultRecord.resultCode = resultCode
             resultRecord.resultBundle = bundle
@@ -589,7 +589,7 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
             toFragment,
             0,
             ISupportFragment.Companion.STANDARD,
-            if (addToBackStack) TransactionDelegate.Companion.TYPE_REPLACE else TransactionDelegate.Companion.TYPE_REPLACE_DONT_BACK
+            if (addToBackStack) TransactionDelegate.TYPE_REPLACE else TransactionDelegate.TYPE_REPLACE_DONT_BACK
         )
     }
 
@@ -629,7 +629,7 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
             targetFragmentClass.name,
             includeTargetFragment,
             afterPopTransactionRunnable,
-            mFragment!!.fragmentManager,
+            mFragment.fragmentManager,
             popAnim
         )
     }
@@ -639,7 +639,7 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
         targetFragmentClass: Class<*>,
         includeTargetFragment: Boolean,
         afterPopTransactionRunnable: Runnable? = null,
-        popAnim: Int = TransactionDelegate.Companion.DEFAULT_POPTO_ANIM
+        popAnim: Int = TransactionDelegate.DEFAULT_POPTO_ANIM
     ) {
         mTransactionDelegate!!.popTo(
             targetFragmentClass.name,
@@ -651,11 +651,11 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
     }
 
     fun popQuiet() {
-        mTransactionDelegate!!.popQuiet(mFragment!!.fragmentManager, mFragment)
+        mTransactionDelegate!!.popQuiet(mFragment.fragmentManager, mFragment)
     }
 
     private val childFragmentManager: FragmentManager
-        get() = mFragment!!.childFragmentManager
+        get() = mFragment.childFragmentManager
 
     private val topFragment: ISupportFragment?
         get() = SupportHelper.getTopFragment(childFragmentManager)
@@ -675,7 +675,6 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
 
     private val mNotifyEnterAnimEndRunnable: Runnable = object : Runnable {
         override fun run() {
-            if (mFragment == null) return
             mSupportF.onEnterAnimationEnd(mSaveInstanceState)
 
             if (mRootViewClickable) return
@@ -691,8 +690,6 @@ class SupportFragmentDelegate(support: ISupportFragment?) {
 
     init {
         if (support !is Fragment) throw RuntimeException("Must extends Fragment")
-        this.mSupportF = support
-        this.mFragment = support
     }
 
     private fun compatSharedElements() {

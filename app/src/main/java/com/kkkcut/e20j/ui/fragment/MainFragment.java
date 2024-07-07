@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -252,7 +255,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment$$ExternalSyntheticLambda2
             @Override // java.util.concurrent.Callable
             public final Object call() {
-                return MainFragment.this.m41xc6c90224();
+                return MainFragment.this.readConfigurationFromLocal();
             }
         }).doOnNext(new Consumer<Configuration>() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.3
             @Override // io.reactivex.functions.Consumer
@@ -262,7 +265,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment$$ExternalSyntheticLambda0
             @Override // io.reactivex.functions.Consumer
             public final void accept(Object obj) {
-                MainFragment.this.m42xce2e3743((Configuration) obj);
+                MainFragment.this.handleConfig((Configuration) obj);
             }
         }, new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment$$ExternalSyntheticLambda1
             @Override // io.reactivex.functions.Consumer
@@ -287,7 +290,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
 
     /* JADX INFO: Access modifiers changed from: private */
     /* renamed from: handleConfig, reason: merged with bridge method [inline-methods] */
-    public void m42xce2e3743(Configuration configuration) {
+    public void handleConfig(Configuration configuration) {
         Resources resources;
         int identifier;
         MachineInfo.setMachineTypeAndRegion(MyApplication.getInstance(), configuration.getId());
@@ -371,7 +374,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
 
     /* JADX INFO: Access modifiers changed from: private */
     /* renamed from: readConfigurationFromLocal, reason: merged with bridge method [inline-methods] */
-    public Configuration m41xc6c90224() {
+    public Configuration readConfigurationFromLocal() {
         if (AppUtil.isApkInDebug(getContext())) {
             return GsonHelper.fromJson(readConfigurationFromAssets(), Configuration.class);
         }
@@ -391,7 +394,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
                 SPUtils.put(SpKeys.CONFIG_UPDATE, AssetVersionUtil.getAssetsDbVersion(MainFragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA));
             }).observeOn(AndroidSchedulers.mainThread()).subscribe( configuration -> {
                 ToastUtil.showToast(R.string.update_finish);
-                MainFragment.this.m42xce2e3743(configuration);
+                MainFragment.this.handleConfig(configuration);
             }, th -> MainFragment.this.getConfiguration()));
         }
     }
@@ -490,6 +493,25 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.drawerLayout = (DrawerLayout) layoutInflater.inflate(R.layout.fragment_main, null);
+        this.rvExtraFuntion = this.drawerLayout.findViewById(R.id.rv_extra_funtion);
+        this.rvHousekey = this.drawerLayout.findViewById(R.id.rv_housekey);
+        this.rvCarkay = this.drawerLayout.findViewById(R.id.rv_carkay);
+        this.tvTitleCarkey = this.drawerLayout.findViewById(R.id.about_us);
+        this.tvTitleHousekey = this.drawerLayout.findViewById(R.id.tv_title_house_key);
+        this.flAdvSearch = this.drawerLayout.findViewById(R.id.fl_adv_search);
+        this.tvSearch = this.drawerLayout.findViewById(R.id.tv_search);
+        this.versionUpdate = this.drawerLayout.findViewById(R.id.version_update);
+        this.llBarCode = this.drawerLayout.findViewById(R.id.ll_bar_code);
+        this.aboutUs = this.drawerLayout.findViewById(R.id.about_us);
+        this.tvSoftVersion = this.drawerLayout.findViewById(R.id.tv_soft_version);
+        this.tvDbVersion = this.drawerLayout.findViewById(R.id.tv_db_version);
+        return this.drawerLayout;
+    }
+
     private void showDownloadDbDialog() {
         new AlertDialog.Builder(getContext()).setTitle(R.string.resup_need_update).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() { // from class: com.kkkcut.e20j.ui.fragment.MainFragment.11
             @Override // android.content.DialogInterface.OnClickListener
@@ -520,7 +542,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         if (eventCode == 3) {
             Configuration configuration2 = this.configuration1;
             if (configuration2 != null) {
-                m42xce2e3743(configuration2);
+                handleConfig(configuration2);
                 return;
             }
             return;
@@ -569,7 +591,7 @@ public class MainFragment extends BaseBackFragment implements BaseQuickAdapter.O
         if (eventCode == 44) {
             updateConfig();
         } else if (eventCode == 45 && (configuration = this.configuration1) != null) {
-            m42xce2e3743(configuration);
+            handleConfig(configuration);
         }
     }
 

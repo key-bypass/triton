@@ -82,7 +82,7 @@
             android:name="notch.config"
             android:value="portrait|landscape"/>
         <provider
-            android:name="pgyersdk.PgyerProvider"
+            android:name="com.pgyersdk.PgyerProvider"
             android:exported="false"
             android:authorities="com.kkkcut.e20j.us.com.pgyer.provider"/>
         <meta-data

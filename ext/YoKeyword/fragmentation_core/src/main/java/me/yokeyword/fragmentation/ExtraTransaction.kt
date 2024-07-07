@@ -6,7 +6,6 @@ import androidx.annotation.AnimRes
 import androidx.annotation.AnimatorRes
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import me.yokeyword.fragmentation.ISupportFragment.LaunchMode
 import me.yokeyword.fragmentation.helper.internal.TransactionRecord
@@ -148,12 +147,11 @@ abstract class ExtraTransaction {
      * Impl
      */
     internal class ExtraTransactionImpl<T : ISupportFragment?>(
-        private val mActivity: FragmentActivity?,
         private val mSupportF: T,
         private val mTransactionDelegate: TransactionDelegate,
         private val mFromActivity: Boolean
     ) : ExtraTransaction(), DontAddToBackStackTransaction {
-        private val mFragment: Fragment? = mSupportF as Fragment
+        private val mFragment: Fragment = mSupportF as Fragment
         private val mRecord = TransactionRecord()
 
         override fun setTag(tag: String?): ExtraTransaction {
@@ -194,7 +192,7 @@ abstract class ExtraTransaction {
         }
 
         override fun loadRootFragment(containerId: Int, toFragment: ISupportFragment) {
-            loadRootFragment(containerId, toFragment, true, false)
+            loadRootFragment(containerId, toFragment, addToBackStack = true, allowAnim = false)
         }
 
         override fun loadRootFragment(
@@ -227,7 +225,7 @@ abstract class ExtraTransaction {
                 targetFragmentTag,
                 includeTargetFragment,
                 null,
-                TransactionDelegate.Companion.DEFAULT_POPTO_ANIM
+                TransactionDelegate.DEFAULT_POPTO_ANIM
             )
         }
 
@@ -251,7 +249,7 @@ abstract class ExtraTransaction {
                 targetFragmentTag,
                 includeTargetFragment,
                 null,
-                TransactionDelegate.Companion.DEFAULT_POPTO_ANIM
+                TransactionDelegate.DEFAULT_POPTO_ANIM
             )
         }
 
@@ -273,7 +271,7 @@ abstract class ExtraTransaction {
                     targetFragmentTag,
                     includeTargetFragment,
                     afterPopTransactionRunnable,
-                    mFragment!!.childFragmentManager,
+                    mFragment.childFragmentManager,
                     popAnim
                 )
             }
@@ -286,13 +284,13 @@ abstract class ExtraTransaction {
                 mSupportF,
                 toFragment,
                 0,
-                ISupportFragment.Companion.STANDARD,
-                TransactionDelegate.Companion.TYPE_ADD_WITHOUT_HIDE
+                ISupportFragment.STANDARD,
+                TransactionDelegate.TYPE_ADD_WITHOUT_HIDE
             )
         }
 
         override fun start(toFragment: ISupportFragment) {
-            start(toFragment, ISupportFragment.Companion.STANDARD)
+            start(toFragment, ISupportFragment.STANDARD)
         }
 
         override fun startDontHideSelf(toFragment: ISupportFragment) {
@@ -302,8 +300,8 @@ abstract class ExtraTransaction {
                 mSupportF,
                 toFragment,
                 0,
-                ISupportFragment.Companion.STANDARD,
-                TransactionDelegate.Companion.TYPE_ADD_WITHOUT_HIDE
+                ISupportFragment.STANDARD,
+                TransactionDelegate.TYPE_ADD_WITHOUT_HIDE
             )
         }
 
@@ -315,7 +313,7 @@ abstract class ExtraTransaction {
                 toFragment,
                 0,
                 launchMode,
-                TransactionDelegate.Companion.TYPE_ADD_WITHOUT_HIDE
+                TransactionDelegate.TYPE_ADD_WITHOUT_HIDE
             )
         }
 
@@ -327,7 +325,7 @@ abstract class ExtraTransaction {
                 toFragment,
                 0,
                 launchMode,
-                TransactionDelegate.Companion.TYPE_ADD
+                TransactionDelegate.TYPE_ADD
             )
         }
 
@@ -338,8 +336,8 @@ abstract class ExtraTransaction {
                 mSupportF,
                 toFragment,
                 requestCode,
-                ISupportFragment.Companion.STANDARD,
-                TransactionDelegate.Companion.TYPE_ADD_RESULT
+                ISupportFragment.STANDARD,
+                TransactionDelegate.TYPE_ADD_RESULT
             )
         }
 
@@ -350,8 +348,8 @@ abstract class ExtraTransaction {
                 mSupportF,
                 toFragment,
                 requestCode,
-                ISupportFragment.Companion.STANDARD,
-                TransactionDelegate.Companion.TYPE_ADD_RESULT_WITHOUT_HIDE
+                ISupportFragment.STANDARD,
+                TransactionDelegate.TYPE_ADD_RESULT_WITHOUT_HIDE
             )
         }
 
@@ -382,17 +380,12 @@ abstract class ExtraTransaction {
                 mSupportF,
                 toFragment,
                 0,
-                ISupportFragment.Companion.STANDARD,
-                TransactionDelegate.Companion.TYPE_REPLACE
+                ISupportFragment.STANDARD,
+                TransactionDelegate.TYPE_REPLACE
             )
         }
 
         private val fragmentManager: FragmentManager?
-            get() {
-                if (mFragment == null) {
-                    return mActivity!!.supportFragmentManager
-                }
-                return mFragment.fragmentManager
-            }
+            get() = mFragment.fragmentManager
     }
 }

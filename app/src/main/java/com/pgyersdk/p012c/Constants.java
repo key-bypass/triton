@@ -7,13 +7,17 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import com.pgyersdk.utils.BinTools;
 import com.pgyersdk.utils.LogUtils;
+import com.pgyersdk.utils.Util;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
@@ -216,88 +220,47 @@ public class Constants {
         Code decompiled incorrectly, please refer to instructions dump.
         To view partially-correct code enable 'Show inconsistent code' option in preferences
     */
-    public static void m142a(android.content.Context r8) {
-        /*
-            java.lang.String r0 = ""
-            boolean r1 = com.pgyersdk.p016f.C2047l.m241c()
-            if (r1 != 0) goto Ld
-            java.lang.String r8 = com.pgyersdk.p012c.C2022a.f476n
-            com.pgyersdk.p012c.C2022a.f471i = r8
-            return
-        Ld:
-            java.lang.String r1 = "phone"
-            java.lang.Object r1 = r8.getSystemService(r1)     // Catch: java.lang.Exception -> L5a
-            android.telephony.TelephonyManager r1 = (android.telephony.TelephonyManager) r1     // Catch: java.lang.Exception -> L5a
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch: java.lang.Exception -> L5a
-            r2.<init>()     // Catch: java.lang.Exception -> L5a
-            r2.append(r0)     // Catch: java.lang.Exception -> L5a
-            java.lang.String r3 = r1.getDeviceId()     // Catch: java.lang.Exception -> L5a
-            r2.append(r3)     // Catch: java.lang.Exception -> L5a
-            java.lang.String r2 = r2.toString()     // Catch: java.lang.Exception -> L5a
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch: java.lang.Exception -> L57
-            r3.<init>()     // Catch: java.lang.Exception -> L57
-            r3.append(r0)     // Catch: java.lang.Exception -> L57
-            java.lang.String r1 = r1.getSimSerialNumber()     // Catch: java.lang.Exception -> L57
-            r3.append(r1)     // Catch: java.lang.Exception -> L57
-            java.lang.String r1 = r3.toString()     // Catch: java.lang.Exception -> L57
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch: java.lang.Exception -> L55
-            r3.<init>()     // Catch: java.lang.Exception -> L55
-            r3.append(r0)     // Catch: java.lang.Exception -> L55
-            android.content.ContentResolver r8 = r8.getContentResolver()     // Catch: java.lang.Exception -> L55
-            java.lang.String r4 = "android_id"
-            java.lang.String r8 = android.provider.Settings.Secure.getString(r8, r4)     // Catch: java.lang.Exception -> L55
-            r3.append(r8)     // Catch: java.lang.Exception -> L55
-            java.lang.String r8 = r3.toString()     // Catch: java.lang.Exception -> L55
-            goto L65
-        L55:
-            r8 = move-exception
-            goto L5d
-        L57:
-            r8 = move-exception
-            r1 = r0
-            goto L5d
-        L5a:
-            r8 = move-exception
-            r1 = r0
-            r2 = r1
-        L5d:
-            r8.printStackTrace()
-            java.lang.String r8 = com.pgyersdk.p012c.C2022a.f476n
-            com.pgyersdk.p012c.C2022a.f471i = r8
-            r8 = r0
-        L65:
-            boolean r0 = r2.equals(r0)
-            r3 = 32
-            if (r0 == 0) goto L88
-            java.util.UUID r8 = new java.util.UUID
-            int r0 = r2.hashCode()
-            long r4 = (long) r0
-            long r2 = r4 << r3
-            int r0 = r1.hashCode()
-            long r0 = (long) r0
-            long r0 = r0 | r2
-            r2 = 0
-            r8.<init>(r2, r0)
-            java.lang.String r8 = r8.toString()
-            com.pgyersdk.p012c.C2022a.f471i = r8
-            goto La6
-        L88:
-            java.util.UUID r0 = new java.util.UUID
-            int r8 = r8.hashCode()
-            long r4 = (long) r8
-            int r8 = r2.hashCode()
-            long r6 = (long) r8
-            long r2 = r6 << r3
-            int r8 = r1.hashCode()
-            long r6 = (long) r8
-            long r1 = r2 | r6
-            r0.<init>(r4, r1)
-            java.lang.String r8 = r0.toString()
-            com.pgyersdk.p012c.C2022a.f471i = r8
-        La6:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.pgyersdk.p012c.C2022a.m142a(android.content.Context):void");
+    public static void m142a(Context context) {
+        String str;
+        String str2;
+        String str3 = "";
+        Exception e = null;
+        if (!Util.m241c()) {
+            f471i = f476n;
+            return;
+        }
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService("phone");
+            str2 = "" + telephonyManager.getDeviceId();
+            try {
+                str = "" + telephonyManager.getSimSerialNumber();
+                try {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("");
+                    sb.append(Settings.Secure.getString(context.getContentResolver(), "android_id"));
+                    str3 = sb.toString();
+                } catch (Exception e2) {
+                    e = e2;
+                    e.printStackTrace();
+                    f471i = f476n;
+                    str3 = "";
+                    if (!str2.equals("")) {
+                    }
+                }
+            } catch (Exception e2) {
+                e = e2;
+                str = "";
+            }
+        } catch (Exception e3) {
+            e = e3;
+            str = "";
+            str2 = str;
+        }
+        if (!str2.equals("")) {
+            f471i = new UUID(0L, str.hashCode() | (str2.hashCode() << 32)).toString();
+        } else {
+            f471i = new UUID(str3.hashCode(), (str2.hashCode() << 32) | str.hashCode()).toString();
+        }
     }
 
     private static int m140a(Context context, PackageManager packageManager) {

@@ -6,6 +6,9 @@ import com.pgyersdk.PgyerProvider;
 import com.pgyersdk.p012c.Constants;
 import com.pgyersdk.p013d.DeviceHelper;
 import com.pgyersdk.utils.AsyncTaskUtils;
+import com.pgyersdk.utils.HttpURLConnectionBuilder;
+import com.pgyersdk.utils.SteamToStringUtil;
+
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,9 +71,6 @@ public class Api {
         return hashMap;
     }
 
-    /* compiled from: Api.java */
-    /* renamed from: com.pgyersdk.a.a$a */
-    /* loaded from: classes2.dex */
     public static class a extends AsyncTask<Void, Void, HashMap<String, String>> {
 
         /* renamed from: a */
@@ -81,83 +81,54 @@ public class Api {
 
         /* JADX INFO: Access modifiers changed from: protected */
         /* JADX WARN: Code restructure failed: missing block: B:12:0x0054, code lost:
-        
+
             if (r4 != null) goto L20;
          */
         /* JADX WARN: Code restructure failed: missing block: B:14:0x0066, code lost:
-        
+
             return r3.f439b;
          */
         /* JADX WARN: Code restructure failed: missing block: B:16:0x0061, code lost:
-        
+
             r4.disconnect();
          */
         /* JADX WARN: Code restructure failed: missing block: B:21:0x005f, code lost:
-        
+
             if (r4 == null) goto L21;
          */
         @Override // android.os.AsyncTask
         /* renamed from: a, reason: merged with bridge method [inline-methods] */
         /*
             Code decompiled incorrectly, please refer to instructions dump.
-            To view partially-correct code enable 'Show inconsistent code' option in preferences
         */
-        public java.util.HashMap<java.lang.String, java.lang.String> doInBackground(java.lang.Void... r4) {
-            /*
-                r3 = this;
-                java.util.Map r4 = com.pgyersdk.p007a.C2001a.m101b()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                com.pgyersdk.f.d r0 = new com.pgyersdk.f.d     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r1.<init>()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r2 = "http://www.pgyer.com/apiv1"
-                r1.append(r2)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r2 = com.pgyersdk.p007a.C2001a.m99a()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r1.append(r2)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r1 = r1.toString()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r0.<init>(r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r1 = "POST"
-                com.pgyersdk.f.d r0 = r0.m207a(r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                android.content.Context r1 = com.pgyersdk.PgyerProvider.f436a     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r2 = 0
-                com.pgyersdk.f.d r4 = r0.m209a(r4, r1, r2, r2)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.net.HttpURLConnection r4 = r4.m210a()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r3.f438a = r4     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r4.connect()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.util.HashMap<java.lang.String, java.lang.String> r4 = r3.f439b     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r0 = "status"
-                java.net.HttpURLConnection r1 = r3.f438a     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                int r1 = r1.getResponseCode()     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r1 = java.lang.String.valueOf(r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r4.put(r0, r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.util.HashMap<java.lang.String, java.lang.String> r4 = r3.f439b     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r0 = "response"
-                java.net.HttpURLConnection r1 = r3.f438a     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.lang.String r1 = com.pgyersdk.p016f.C2045j.m234a(r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                r4.put(r0, r1)     // Catch: java.lang.Throwable -> L57 java.lang.Exception -> L59
-                java.net.HttpURLConnection r4 = r3.f438a
-                if (r4 == 0) goto L64
-                goto L61
-            L57:
-                r4 = move-exception
-                goto L67
-            L59:
-                r4 = move-exception
-                r4.printStackTrace()     // Catch: java.lang.Throwable -> L57
-                java.net.HttpURLConnection r4 = r3.f438a
-                if (r4 == 0) goto L64
-            L61:
-                r4.disconnect()
-            L64:
-                java.util.HashMap<java.lang.String, java.lang.String> r4 = r3.f439b
-                return r4
-            L67:
-                java.net.HttpURLConnection r0 = r3.f438a
-                if (r0 == 0) goto L6e
-                r0.disconnect()
-            L6e:
-                throw r4
-            */
-            throw new UnsupportedOperationException("Method not decompiled: com.pgyersdk.p007a.C2001a.a.doInBackground(java.lang.Void[]):java.util.HashMap");
+        public HashMap<String, String> doInBackground(Void... voidArr) {
+            HttpURLConnection httpURLConnection;
+            try {
+                try {
+                    Map<String, String> m101b = Api.m101b();
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("http://www.pgyer.com/apiv1");
+                    sb.append(Api.f437a);
+                    HttpURLConnection m210a = new HttpURLConnectionBuilder(sb.toString()).m207a("POST").m209a(m101b, PgyerProvider.f436a, null, null).m210a();
+                    this.f438a = m210a;
+                    m210a.connect();
+                    this.f439b.put("status", String.valueOf(this.f438a.getResponseCode()));
+                    this.f439b.put("response", SteamToStringUtil.m234a(this.f438a));
+                    httpURLConnection = this.f438a;
+                    return (HashMap<String, String>) m101b;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    httpURLConnection = this.f438a;
+                }
+
+            } catch (Throwable th) {
+                HttpURLConnection httpURLConnection2 = this.f438a;
+                if (httpURLConnection2 != null) {
+                    httpURLConnection2.disconnect();
+                }
+                throw th;
+            }
+            return null;
         }
 
         /* JADX INFO: Access modifiers changed from: protected */

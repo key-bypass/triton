@@ -2,13 +2,17 @@ package com.kkkcut.e20j.ui.activity;
 
 import static io.reactivex.rxjava3.schedulers.Schedulers.io;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.kkkcut.e20j.Constant;
 import com.kkkcut.e20j.MyApplication;
@@ -80,6 +84,8 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     TextView tvLogo;
 
     TextView tvTitle;
+
+    LinearLayout layout;
     private long DOUBLE_CLICK_TIME = 0;
     long[] mHits = new long[10];
 
@@ -95,6 +101,18 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
 
     @Override // com.kkkcut.e20j.driver.communication.OnSerialMessageComingListener
     public void onSerialMessageComing(String str, OperateType operateType) {
+    }
+
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.layout = findViewById(R.id.activity_frame);
+        this.ivHome = findViewById(R.id.iv_home);
+        this.ivMenu = findViewById(R.id.iv_menu);
+        this.ivMessage = findViewById(R.id.iv_message);
+        this.tvBack = findViewById(R.id.tv_back);
+        this.tvLogo = findViewById(R.id.tv_logo);
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
