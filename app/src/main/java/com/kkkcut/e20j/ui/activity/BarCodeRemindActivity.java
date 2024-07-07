@@ -12,6 +12,7 @@ import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.base.HideStatusActivity;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityBarCodeRemindBinding;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,23 +21,8 @@ public class BarCodeRemindActivity extends HideStatusActivity {
     public static final String BAR_CODE = "bar_code";
     public static final String ID = "ID";
 
-    ImageView iv1;
+    ActivityBarCodeRemindBinding binding;
 
-    ImageView iv2;
-
-    ImageView iv3;
-
-    LinearLayout ll1;
-
-    LinearLayout ll2;
-
-    LinearLayout ll3;
-
-    TextView tv1;
-
-    TextView tv2;
-
-    TextView tv3;
     private Type type;
     private static final int[] hu66Arr = {909, 1309};
     private static final int[] toy48Arr = {872, 1309};
@@ -50,6 +36,13 @@ public class BarCodeRemindActivity extends HideStatusActivity {
         TOY48,
         HU101,
         HU100
+    }
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.binding = ActivityBarCodeRemindBinding.inflate(getLayoutInflater());
+        setContentView(this.binding.getRoot());
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
@@ -68,42 +61,42 @@ public class BarCodeRemindActivity extends HideStatusActivity {
     protected void initViewsAndEvents() {
         int intExtra = getIntent().getIntExtra(ID, 0);
         if (intExtra == 909 || intExtra == 1309) {
-            this.ll3.setVisibility(8);
-            this.iv1.setImageResource(R.drawable.bar_code_909);
-            this.ll1.setTag(909);
-            this.iv2.setImageResource(R.drawable.bar_code_1309);
-            this.ll2.setTag(1309);
-            this.tv1.setText("Copy by this option if the original key without extra cutting");
-            this.tv2.setText("Copy by this option if the original key with extra cutting");
+            this.binding.ll3.setVisibility(8);
+            this.binding.iv1.setImageResource(R.drawable.bar_code_909);
+            this.binding.ll1.setTag(909);
+            this.binding.iv2.setImageResource(R.drawable.bar_code_1309);
+            this.binding.ll2.setTag(1309);
+            this.binding.tv1.setText("Copy by this option if the original key without extra cutting");
+            this.binding.tv2.setText("Copy by this option if the original key with extra cutting");
             this.type = Type.HU66;
         }
         if (intExtra == 872 || intExtra == 1510) {
-            this.iv1.setImageResource(R.drawable.bar_code_872);
-            this.ll1.setTag(872);
-            this.iv2.setImageResource(R.drawable.bar_code_1510);
-            this.ll2.setTag(1510);
-            this.iv3.setImageResource(R.drawable.bar_code_1510_1);
-            this.ll3.setTag(1510);
-            this.tv1.setText("Copy by this option if both sides work");
-            this.tv2.setText("Copy by this option if only one side works");
-            this.tv3.setText("Copy by this option if only one side works");
+            this.binding.iv1.setImageResource(R.drawable.bar_code_872);
+            this.binding.ll1.setTag(872);
+            this.binding.iv2.setImageResource(R.drawable.bar_code_1510);
+            this.binding.ll2.setTag(1510);
+            this.binding.iv3.setImageResource(R.drawable.bar_code_1510_1);
+            this.binding.ll3.setTag(1510);
+            this.binding.tv1.setText("Copy by this option if both sides work");
+            this.binding.tv2.setText("Copy by this option if only one side works");
+            this.binding.tv3.setText("Copy by this option if only one side works");
             this.type = Type.TOY48;
         }
         if (intExtra == 1097 || intExtra == 1373) {
-            this.ll3.setVisibility(8);
-            this.iv1.setImageResource(R.drawable.bar_code_1097);
-            this.ll1.setTag(1097);
-            this.iv2.setImageResource(R.drawable.bar_code_1373);
-            this.ll2.setTag(1373);
+            this.binding.ll3.setVisibility(8);
+            this.binding.iv1.setImageResource(R.drawable.bar_code_1097);
+            this.binding.ll1.setTag(1097);
+            this.binding.iv2.setImageResource(R.drawable.bar_code_1373);
+            this.binding.ll2.setTag(1373);
             this.type = Type.HU100;
         }
         if (intExtra == 1370 || intExtra == 1407 || intExtra == 998) {
-            this.iv1.setImageResource(R.drawable.bar_code_998);
-            this.ll1.setTag(998);
-            this.iv2.setImageResource(R.drawable.bar_code_1370);
-            this.ll2.setTag(1370);
-            this.iv3.setImageResource(R.drawable.bar_code_1407);
-            this.ll3.setTag(1407);
+            this.binding.iv1.setImageResource(R.drawable.bar_code_998);
+            this.binding.ll1.setTag(998);
+            this.binding.iv2.setImageResource(R.drawable.bar_code_1370);
+            this.binding.ll2.setTag(1370);
+            this.binding.iv3.setImageResource(R.drawable.bar_code_1407);
+            this.binding.ll3.setTag(1407);
             this.type = Type.HU101;
         }
     }

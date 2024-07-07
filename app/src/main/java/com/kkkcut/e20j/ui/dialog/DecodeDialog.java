@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
@@ -21,6 +16,7 @@ import com.cutting.machine.bean.KeyType;
 import com.cutting.machine.clamp.ClampUtil;
 import com.cutting.machine.operation.cut.DataParam;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.DialogDecodeBinding;
 
 import java.util.Locale;
 import org.greenrobot.eventbus.EventBus;
@@ -30,38 +26,14 @@ public class DecodeDialog extends BottomInDialog {
     public static final String PARAM = "param";
     private static final String TAG = "DecodeDialog";
 
-    TextView btCancle;
+    private DialogDecodeBinding binding;
 
-    TextView btDecode;
-
-    CheckBox cbSlantCorrection;
     private DataParam decodeParams;
     private int decoderSize;
     boolean dimpleDuplicate;
     boolean isRound;
 
-    ImageView ivClamp;
-
-    ImageView ivDecoder;
-
-    LinearLayout llDecodeSlowly;
-
-    RadioButton rb50;
-
-    RadioGroup rgDecodeSize;
-
-    CheckBox sbRound;
     private int timeValue;
-
-    TextView tvDecodeSlowly;
-
-    TextView tvDecoderSize;
-
-    TextView tvRound;
-
-    TextView tvSlantCorrection;
-
-    TextView tvTimeValue;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
     public int getContentLayoutID() {
@@ -72,11 +44,13 @@ public class DecodeDialog extends BottomInDialog {
         super(activity);
         this.dimpleDuplicate = false;
         this.decodeParams = dataParam;
+        this.binding = DialogDecodeBinding.inflate(activity.getLayoutInflater());
     }
 
     public DecodeDialog(Activity activity, DataParam dataParam, boolean z) {
         this(activity, dataParam);
         this.dimpleDuplicate = z;
+        this.binding = DialogDecodeBinding.inflate(activity.getLayoutInflater());
     }
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
@@ -90,74 +64,74 @@ public class DecodeDialog extends BottomInDialog {
 
     private void initHu64SlantCorrection() {
         if (getKeyInfo().getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY && getKeyInfo().getSide() == 1 && TextUtils.equals(getKeyInfo().getClampBean().getClampNum(), "S1") && TextUtils.equals(getKeyInfo().getClampBean().getClampSide(), "C")) {
-            this.tvSlantCorrection.setVisibility(0);
-            this.cbSlantCorrection.setVisibility(0);
+            this.binding.tvSlantCorrection.setVisibility(0);
+            this.binding.cbSlantCorrection.setVisibility(0);
             if (this.decodeParams.isSlantCorrection()) {
-                this.cbSlantCorrection.setChecked(true);
+                this.binding.cbSlantCorrection.setChecked(true);
             } else {
-                this.cbSlantCorrection.setChecked(false);
+                this.binding.cbSlantCorrection.setChecked(false);
             }
         }
     }
 
     private void initPause() {
         this.timeValue = SPUtils.getInt(SpKeys.DECODE_PAUSE, 0);
-        this.tvTimeValue.setText(this.timeValue + "s");
+        this.binding.tvTimeValue.setText(this.timeValue + "s");
     }
 
     private void initRound() {
         if (this.dimpleDuplicate) {
             this.isRound = false;
-            this.sbRound.setVisibility(8);
-            this.tvRound.setVisibility(8);
-            this.tvTimeValue.setVisibility(8);
-            this.tvDecodeSlowly.setVisibility(8);
-            this.llDecodeSlowly.setVisibility(8);
+            this.binding.sbRound.setVisibility(8);
+            this.binding.tvRound.setVisibility(8);
+            this.binding.tvTimeValue.setVisibility(8);
+            this.binding.tvDecodeSlowly.setVisibility(8);
+            this.binding.llDecodeSlowly.setVisibility(8);
             return;
         }
         String setting_round = getKeyInfo().getSetting_round();
         String readBittingRule = getKeyInfo().getReadBittingRule();
         if (!TextUtils.isEmpty(setting_round)) {
             if ("1".equals(setting_round)) {
-                this.tvRound.setVisibility(8);
-                this.sbRound.setVisibility(8);
+                this.binding.tvRound.setVisibility(8);
+                this.binding.sbRound.setVisibility(8);
                 this.isRound = true;
                 return;
             } else if ("2".equals(setting_round)) {
-                this.tvRound.setVisibility(8);
-                this.sbRound.setVisibility(8);
+                this.binding.tvRound.setVisibility(8);
+                this.binding.sbRound.setVisibility(8);
                 this.isRound = false;
                 return;
             } else {
                 boolean z = SPUtils.getBoolean("round", true);
                 this.isRound = z;
-                this.sbRound.setChecked(z);
+                this.binding.sbRound.setChecked(z);
                 return;
             }
         }
         if (!TextUtils.isEmpty(readBittingRule) && ("1".equals(readBittingRule) || "11".equals(readBittingRule))) {
-            this.tvRound.setVisibility(8);
-            this.sbRound.setVisibility(8);
+            this.binding.tvRound.setVisibility(8);
+            this.binding.sbRound.setVisibility(8);
         } else {
             boolean z2 = SPUtils.getBoolean("round", true);
             this.isRound = z2;
-            this.sbRound.setChecked(z2);
+            this.binding.sbRound.setChecked(z2);
         }
     }
 
     private void initDecoder() {
         if (getKeyInfo().getType() == 6) {
-            this.ivDecoder.setImageResource(R.drawable.decoder_dimple);
-            this.tvDecoderSize.setVisibility(8);
+            this.binding.ivDecoder.setImageResource(R.drawable.decoder_dimple);
+            this.binding.tvCutterSize.setVisibility(8);
         } else {
-            this.ivDecoder.setImageResource(R.drawable.decoder_normal);
+            this.binding.ivDecoder.setImageResource(R.drawable.decoder_normal);
         }
         this.decoderSize = this.decodeParams.getDecoderSize();
-        this.tvDecoderSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
+        this.binding.tvCutterSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
         if (getKeyInfo().getType() == 1) {
-            this.rgDecodeSize.setVisibility(0);
+            this.binding.rgDecodeSize.setVisibility(0);
             if (this.decoderSize == 50) {
-                this.rb50.setChecked(true);
+                this.binding.rb50.setChecked(true);
             }
         }
     }
@@ -189,7 +163,7 @@ public class DecodeDialog extends BottomInDialog {
                 return;
             case R.id.iv_time_add /* 2131362353 */:
                 this.timeValue++;
-                this.tvTimeValue.setText(this.timeValue + "s");
+                this.binding.tvTimeValue.setText(this.timeValue + "s");
                 SPUtils.put(SpKeys.DECODE_PAUSE, this.timeValue);
                 return;
             case R.id.iv_time_reduce /* 2131362354 */:
@@ -198,7 +172,7 @@ public class DecodeDialog extends BottomInDialog {
                     return;
                 }
                 this.timeValue = i - 1;
-                this.tvTimeValue.setText(this.timeValue + "s");
+                this.binding.tvTimeValue.setText(this.timeValue + "s");
                 SPUtils.put(SpKeys.DECODE_PAUSE, this.timeValue);
                 return;
             default:
@@ -215,7 +189,7 @@ public class DecodeDialog extends BottomInDialog {
         this.decodeParams.setClamp(ClampUtil.getClamp(getKeyInfo()));
         this.decodeParams.setClampMode(ClampUtil.getClampMode(getKeyInfo()));
         this.decodeParams.setDecoderSize(this.decoderSize);
-        this.decodeParams.setSlantCorrection(this.cbSlantCorrection.isChecked());
+        this.decodeParams.setSlantCorrection(this.binding.cbSlantCorrection.isChecked());
         bundle.putParcelable("param", this.decodeParams);
         EventBus.getDefault().post(new EventCenter(39, bundle));
     }
@@ -223,7 +197,7 @@ public class DecodeDialog extends BottomInDialog {
     private void initClamp() {
         int clampBigImg = ClampCreator.getClampBigImg(getKeyInfo());
         if (clampBigImg != 0) {
-            this.ivClamp.setImageResource(clampBigImg);
+            this.binding.ivClamp.setImageResource(clampBigImg);
         }
     }
 
@@ -236,7 +210,7 @@ public class DecodeDialog extends BottomInDialog {
         if (id == R.id.rb_100) {
             if (z) {
                 this.decoderSize = 100;
-                this.tvDecoderSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
+                this.binding.tvCutterSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
                 return;
             }
             return;
@@ -244,7 +218,7 @@ public class DecodeDialog extends BottomInDialog {
         if (id == R.id.rb_50) {
             if (z) {
                 this.decoderSize = 50;
-                this.tvDecoderSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
+                this.binding.tvCutterSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.decoderSize / 100.0f)));
                 return;
             }
             return;

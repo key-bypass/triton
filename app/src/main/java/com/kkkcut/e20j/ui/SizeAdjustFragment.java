@@ -2,7 +2,9 @@ package com.kkkcut.e20j.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentSizeAdjustBinding;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.kkkcut.e20j.utils.UnitUtils;
 import com.cutting.machine.bean.KeyInfo;
@@ -25,17 +28,19 @@ import org.greenrobot.eventbus.EventBus;
 public class SizeAdjustFragment extends BaseBackFragment {
     private static final String KEYINFO = "SizeAdjustFragment";
 
-    CheckBox cbAllSpace;
-
-    CheckBox cbAllSpaceWidth;
     KeyInfo keyInfo;
+
     private TextView lastText;
 
-    LinearLayout llSizeContainer;
+    FragmentSizeAdjustBinding binding;
 
-    TextView tvSpaceValue;
-
-    TextView tvSpaceWidthValue;
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.binding = FragmentSizeAdjustBinding.inflate(getLayoutInflater());
+        var view = this.binding.getRoot();
+        return view;
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected int getContentViewLayoutID() {
@@ -63,7 +68,7 @@ public class SizeAdjustFragment extends BaseBackFragment {
         List<List<Integer>> spaceWidthList = this.keyInfo.getSpaceWidthList();
         initSpaceIndex(spaceList);
         initSpaceAndSpaceWidth(spaceList, spaceWidthList);
-        ((LinearLayout) this.llSizeContainer.getChildAt(1)).getChildAt(1).performClick();
+        ((LinearLayout) this.binding.sizeContainer.getChildAt(1)).getChildAt(1).performClick();
     }
 
     private void initSpaceAndSpaceWidth(List<List<Integer>> list, List<List<Integer>> list2) {
@@ -89,11 +94,11 @@ public class SizeAdjustFragment extends BaseBackFragment {
                 linearLayout2.addView(getSpaceText(String.valueOf(list4.get(i2)), 1), getLayoutParams());
             }
             if (i == 0) {
-                this.llSizeContainer.addView(linearLayout);
+                this.binding.sizeContainer.addView(linearLayout);
             } else {
-                this.llSizeContainer.addView(linearLayout, getContainerLayoutParam());
+                this.binding.sizeContainer.addView(linearLayout, getContainerLayoutParam());
             }
-            this.llSizeContainer.addView(linearLayout2, getContainerLayoutParam());
+            this.binding.sizeContainer.addView(linearLayout2, getContainerLayoutParam());
         }
     }
 
@@ -128,7 +133,7 @@ public class SizeAdjustFragment extends BaseBackFragment {
                 linearLayout.addView(textView, layoutParams);
             }
         }
-        this.llSizeContainer.addView(linearLayout);
+        this.binding.sizeContainer.addView(linearLayout);
     }
 
     private TextView getSpaceText(String str, int i) {
@@ -168,9 +173,9 @@ public class SizeAdjustFragment extends BaseBackFragment {
             }
             SizeAdjustFragment.this.lastText = textView;
             if (((Integer) textView.getTag()).intValue() == 0) {
-                SizeAdjustFragment.this.tvSpaceValue.setText(textView.getText().toString().trim());
+                SizeAdjustFragment.this.binding.tvSpaceValue.setText(textView.getText().toString().trim());
             } else {
-                SizeAdjustFragment.this.tvSpaceWidthValue.setText(textView.getText().toString().trim());
+                SizeAdjustFragment.this.binding.tvSpaceWidthValue.setText(textView.getText().toString().trim());
             }
         }
     }
@@ -197,14 +202,14 @@ public class SizeAdjustFragment extends BaseBackFragment {
             case R.id.bt_save /* 2131361969 */:
                 ArrayList arrayList = new ArrayList();
                 ArrayList arrayList2 = new ArrayList();
-                int childCount = this.llSizeContainer.getChildCount();
+                int childCount = this.binding.sizeContainer.getChildCount();
                 StringBuilder sb = new StringBuilder();
                 StringBuilder sb2 = new StringBuilder();
                 int i = 1;
                 int i2 = 1;
                 while (i2 < childCount - 1) {
                     ArrayList arrayList3 = new ArrayList();
-                    LinearLayout linearLayout = (LinearLayout) this.llSizeContainer.getChildAt(i2);
+                    LinearLayout linearLayout = (LinearLayout) this.binding.sizeContainer.getChildAt(i2);
                     for (int i3 = 1; i3 < linearLayout.getChildCount(); i3++) {
                         String trim = ((TextView) linearLayout.getChildAt(i3)).getText().toString().trim();
                         if (SPUtils.getBoolean(SpKeys.UNIT_INCH)) {
@@ -219,7 +224,7 @@ public class SizeAdjustFragment extends BaseBackFragment {
                         }
                         arrayList3.add(Integer.valueOf(Integer.parseInt(trim)));
                     }
-                    LinearLayout linearLayout2 = (LinearLayout) this.llSizeContainer.getChildAt(i2 + 1);
+                    LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(i2 + 1);
                     ArrayList arrayList4 = new ArrayList();
                     for (int i4 = 1; i4 < linearLayout2.getChildCount(); i4++) {
                         String trim2 = ((TextView) linearLayout2.getChildAt(i4)).getText().toString().trim();
@@ -304,9 +309,9 @@ public class SizeAdjustFragment extends BaseBackFragment {
         }
         LinearLayout linearLayout = (LinearLayout) textView.getParent();
         int indexOfChild = linearLayout.indexOfChild(this.lastText);
-        int indexOfChild2 = this.llSizeContainer.indexOfChild(linearLayout);
+        int indexOfChild2 = this.binding.sizeContainer.indexOfChild(linearLayout);
         if (indexOfChild2 > 1) {
-            LinearLayout linearLayout2 = (LinearLayout) this.llSizeContainer.getChildAt(indexOfChild2 - 1);
+            LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(indexOfChild2 - 1);
             if (linearLayout2.getChildCount() > indexOfChild) {
                 linearLayout2.getChildAt(indexOfChild).performClick();
             } else {
@@ -323,9 +328,9 @@ public class SizeAdjustFragment extends BaseBackFragment {
         }
         LinearLayout linearLayout = (LinearLayout) textView.getParent();
         int indexOfChild = linearLayout.indexOfChild(this.lastText);
-        int indexOfChild2 = this.llSizeContainer.indexOfChild(linearLayout);
-        if (indexOfChild2 < this.llSizeContainer.getChildCount() - 1) {
-            LinearLayout linearLayout2 = (LinearLayout) this.llSizeContainer.getChildAt(indexOfChild2 + 1);
+        int indexOfChild2 = this.binding.sizeContainer.indexOfChild(linearLayout);
+        if (indexOfChild2 < this.binding.sizeContainer.getChildCount() - 1) {
+            LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(indexOfChild2 + 1);
             if (linearLayout2.getChildCount() > indexOfChild) {
                 linearLayout2.getChildAt(indexOfChild).performClick();
             } else {
@@ -361,13 +366,13 @@ public class SizeAdjustFragment extends BaseBackFragment {
     }
 
     private void moveToDefault() {
-        ((TextView) ((LinearLayout) this.llSizeContainer.getChildAt(1)).getChildAt(1)).performClick();
+        ((LinearLayout) this.binding.sizeContainer.getChildAt(1)).getChildAt(1).performClick();
     }
 
     private void modifySpace(int i) {
         selectSpaceDefault();
-        modifySingleValue(this.tvSpaceValue, i);
-        if (this.cbAllSpace.isChecked()) {
+        modifySingleValue(this.binding.tvSpaceValue, i);
+        if (this.binding.cbAllSpace.isChecked()) {
             modifyAll(this.lastText, i);
         } else {
             modifySingleValue(this.lastText, i);
@@ -376,8 +381,8 @@ public class SizeAdjustFragment extends BaseBackFragment {
 
     private void modifySpaceWidth(int i) {
         selectSpaceWidthDefault();
-        modifySingleValue(this.tvSpaceWidthValue, i);
-        if (this.cbAllSpaceWidth.isChecked()) {
+        modifySingleValue(this.binding.tvSpaceWidthValue, i);
+        if (this.binding.cbAllSpaceWidth.isChecked()) {
             modifyAll(this.lastText, i);
         } else {
             modifySingleValue(this.lastText, i);
@@ -403,7 +408,7 @@ public class SizeAdjustFragment extends BaseBackFragment {
         TextView textView = this.lastText;
         if (textView == null || ((Integer) textView.getTag()).intValue() == 1) {
             TextView textView2 = this.lastText;
-            ((TextView) ((LinearLayout) this.llSizeContainer.getChildAt(textView2 != null ? this.llSizeContainer.indexOfChild((View) textView2.getParent()) - 1 : 1)).getChildAt(1)).performClick();
+            ((TextView) ((LinearLayout) this.binding.sizeContainer.getChildAt(textView2 != null ? this.binding.sizeContainer.indexOfChild((View) textView2.getParent()) - 1 : 1)).getChildAt(1)).performClick();
         }
     }
 
@@ -411,7 +416,7 @@ public class SizeAdjustFragment extends BaseBackFragment {
         TextView textView = this.lastText;
         if (textView == null || ((Integer) textView.getTag()).intValue() == 0) {
             TextView textView2 = this.lastText;
-            ((TextView) ((LinearLayout) this.llSizeContainer.getChildAt(textView2 != null ? this.llSizeContainer.indexOfChild((View) textView2.getParent()) + 1 : 2)).getChildAt(1)).performClick();
+            ((TextView) ((LinearLayout) this.binding.sizeContainer.getChildAt(textView2 != null ? this.binding.sizeContainer.indexOfChild((View) textView2.getParent()) + 1 : 2)).getChildAt(1)).performClick();
         }
     }
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/activity_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/title_layout"/>
+    <include layout="@layout/title_layout" app:title="@{1}" android:id="@+id/title_layout" />
     <FrameLayout
         android:layout_gravity="top"
         android:id="@+id/content_frame"

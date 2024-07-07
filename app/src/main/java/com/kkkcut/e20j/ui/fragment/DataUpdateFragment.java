@@ -1,8 +1,11 @@
 package com.kkkcut.e20j.ui.fragment;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -11,6 +14,7 @@ import com.kkkcut.e20j.androidquick.tool.AppUtil;
 import com.kkkcut.e20j.androidquick.tool.ToastUtil;
 import com.kkkcut.e20j.dao.ResUpdateDaoManager;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentUpdateBinding;
 import com.kkkcut.e20j.utils.AppUpdateUtil;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
 import com.kkkcut.e20j.utils.ThemeUtils;
@@ -28,47 +32,16 @@ import java.util.concurrent.TimeUnit;
 
 /* loaded from: classes.dex */
 public class DataUpdateFragment extends BaseBackFragment {
+    private FragmentUpdateBinding binding;
 
-    Button btErrorUpdate;
-
-    Button btImgUpdate;
-
-    Button btMainDbUpdate;
-
-    Button btResUpdate;
-
-    Button btSoftwareUpdate;
-
-    TextView tvNameApp;
-
-    TextView tvNameErr;
-
-    TextView tvNameImgs;
-
-    TextView tvNameMainDb;
-
-    TextView tvNameRes;
-
-    TextView tvValueCurrentError;
-
-    TextView tvValueCurrentImg;
-
-    TextView tvValueCurrentMainDb;
-
-    TextView tvValueCurrentRes;
-
-    TextView tvValueCurrentSoftware;
-
-    TextView tvValueNewError;
-
-    TextView tvValueNewImg;
-
-    TextView tvValueNewMainDb;
-
-    TextView tvValueNewRes;
-
-    TextView tvValueNewSoftware;
-
+    @Override
+    public View onCreateView (LayoutInflater inflater,
+                              ViewGroup container,
+                              Bundle savedInstanceState) {
+        binding = FragmentUpdateBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
+    }
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected int getContentViewLayoutID() {
         return R.layout.fragment_update;
@@ -94,7 +67,7 @@ public class DataUpdateFragment extends BaseBackFragment {
             public void accept(LocalDbVersion localDbVersion) throws Exception {
                 String localMainDbName = ResUpdateUtils.getLocalMainDbName();
                 if (TextUtils.equals(localDbVersion.getSvResName(), localMainDbName)) {
-                    DataUpdateFragment.this.tvNameMainDb.setText(DataUpdateFragment.this.getString(R.string.resup_data_res, localMainDbName));
+                    DataUpdateFragment.this.binding.tvNameMainDb.setText(DataUpdateFragment.this.getString(R.string.resup_data_res, localMainDbName));
                     String mainDbVersion = ResUpdateDaoManager.getInstance().getMainDbVersion(localMainDbName);
                     String svResVer = localDbVersion.getSvResVer();
                     if (TextUtils.isEmpty(mainDbVersion)) {
@@ -103,13 +76,13 @@ public class DataUpdateFragment extends BaseBackFragment {
                     if (TextUtils.isEmpty(svResVer)) {
                         svResVer = "0";
                     }
-                    DataUpdateFragment.this.tvValueCurrentMainDb.setText(mainDbVersion);
-                    DataUpdateFragment.this.tvValueNewMainDb.setText(svResVer);
+                    DataUpdateFragment.this.binding.tvValueCurrentMainDb.setText(mainDbVersion);
+                    DataUpdateFragment.this.binding.tvValueNewMainDb.setText(svResVer);
                     if (Float.parseFloat(svResVer) > Float.parseFloat(mainDbVersion)) {
-                        DataUpdateFragment.this.tvValueNewMainDb.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
-                        DataUpdateFragment.this.btMainDbUpdate.setVisibility(0);
+                        DataUpdateFragment.this.binding.tvValueNewMainDb.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
+                        DataUpdateFragment.this.binding.btMainDbUpdate.setVisibility(0);
                     } else {
-                        DataUpdateFragment.this.btMainDbUpdate.setVisibility(8);
+                        DataUpdateFragment.this.binding.btMainDbUpdate.setVisibility(8);
                     }
                 }
                 if (TextUtils.equals(localDbVersion.getSvResName(), ResUpdateUtils.RES)) {
@@ -121,13 +94,13 @@ public class DataUpdateFragment extends BaseBackFragment {
                     if (TextUtils.isEmpty(svResVer2)) {
                         svResVer2 = "0";
                     }
-                    DataUpdateFragment.this.tvValueCurrentRes.setText(resDbVersion);
-                    DataUpdateFragment.this.tvValueNewRes.setText(svResVer2);
+                    DataUpdateFragment.this.binding.tvValueCurrentRes.setText(resDbVersion);
+                    DataUpdateFragment.this.binding.tvValueNewRes.setText(svResVer2);
                     if (Float.parseFloat(svResVer2) > Float.parseFloat(resDbVersion)) {
-                        DataUpdateFragment.this.tvValueNewRes.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
-                        DataUpdateFragment.this.btResUpdate.setVisibility(0);
+                        DataUpdateFragment.this.binding.tvValueNewRes.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
+                        DataUpdateFragment.this.binding.btResUpdate.setVisibility(0);
                     } else {
-                        DataUpdateFragment.this.btResUpdate.setVisibility(8);
+                        DataUpdateFragment.this.binding.btResUpdate.setVisibility(8);
                     }
                 }
                 if (TextUtils.equals(localDbVersion.getSvResName(), ResUpdateUtils.ERROR_CODE)) {
@@ -139,13 +112,13 @@ public class DataUpdateFragment extends BaseBackFragment {
                     if (TextUtils.isEmpty(svResVer3)) {
                         svResVer3 = "0";
                     }
-                    DataUpdateFragment.this.tvValueCurrentError.setText(locResVer);
-                    DataUpdateFragment.this.tvValueNewError.setText(svResVer3);
+                    DataUpdateFragment.this.binding.tvValueCurrentError.setText(locResVer);
+                    DataUpdateFragment.this.binding.tvValueNewError.setText(svResVer3);
                     if (!ResUpdateUtils.localErrorDbExist() || Float.parseFloat(svResVer3) > Float.parseFloat(locResVer)) {
-                        DataUpdateFragment.this.tvValueNewError.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
-                        DataUpdateFragment.this.btErrorUpdate.setVisibility(0);
+                        DataUpdateFragment.this.binding.tvValueNewError.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
+                        DataUpdateFragment.this.binding.btErrorUpdate.setVisibility(0);
                     } else {
-                        DataUpdateFragment.this.btErrorUpdate.setVisibility(8);
+                        DataUpdateFragment.this.binding.btErrorUpdate.setVisibility(8);
                     }
                 }
                 if (TextUtils.equals(localDbVersion.getLocResName(), ResUpdateUtils.IMAGE_DB)) {
@@ -157,30 +130,30 @@ public class DataUpdateFragment extends BaseBackFragment {
                     if (TextUtils.isEmpty(svResVer4)) {
                         svResVer4 = "0";
                     }
-                    DataUpdateFragment.this.tvValueCurrentImg.setText(locResVer2);
-                    DataUpdateFragment.this.tvValueNewImg.setText(svResVer4);
+                    DataUpdateFragment.this.binding.tvValueCurrentImgs.setText(locResVer2);
+                    DataUpdateFragment.this.binding.tvValueNewImgs.setText(svResVer4);
                     if (Float.parseFloat(svResVer4) > Float.parseFloat(locResVer2)) {
-                        DataUpdateFragment.this.tvValueNewImg.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
-                        DataUpdateFragment.this.btImgUpdate.setVisibility(0);
+                        DataUpdateFragment.this.binding.tvValueNewImgs.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
+                        DataUpdateFragment.this.binding.btImgsUpdate.setVisibility(0);
                     } else {
-                        DataUpdateFragment.this.btImgUpdate.setVisibility(8);
+                        DataUpdateFragment.this.binding.btImgsUpdate.setVisibility(8);
                     }
                 }
                 if (TextUtils.equals(localDbVersion.getLocResName(), ResUpdateUtils.APP)) {
-                    DataUpdateFragment.this.tvNameApp.setText(ResUpdateUtils.APP);
+                    DataUpdateFragment.this.binding.tvNameApp.setText(ResUpdateUtils.APP);
                     String versionName = AppUtil.getVersionName(DataUpdateFragment.this.getContext());
                     String svResVer5 = localDbVersion.getSvResVer();
                     if (TextUtils.isEmpty(versionName)) {
                         versionName = "0";
                     }
                     String str = TextUtils.isEmpty(svResVer5) ? "0" : svResVer5;
-                    DataUpdateFragment.this.tvValueCurrentSoftware.setText(versionName);
-                    DataUpdateFragment.this.tvValueNewSoftware.setText(str);
+                    DataUpdateFragment.this.binding.tvValueCurrentSoftware.setText(versionName);
+                    DataUpdateFragment.this.binding.tvValueNewSoftware.setText(str);
                     if (Float.parseFloat(str) > Float.parseFloat(versionName)) {
-                        DataUpdateFragment.this.tvValueNewSoftware.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
-                        DataUpdateFragment.this.btSoftwareUpdate.setVisibility(0);
+                        DataUpdateFragment.this.binding.tvValueNewSoftware.setTextColor(DataUpdateFragment.this.getResources().getColor(R.color.color_ff205f));
+                        DataUpdateFragment.this.binding.btSoftwareUpdate.setVisibility(0);
                     } else {
-                        DataUpdateFragment.this.btSoftwareUpdate.setVisibility(8);
+                        DataUpdateFragment.this.binding.btSoftwareUpdate.setVisibility(8);
                     }
                 }
             }
@@ -190,13 +163,13 @@ public class DataUpdateFragment extends BaseBackFragment {
                 ToastUtil.showToast(th.getMessage());
             }
         }));
-        addDisposable((Disposable) RxView.clicks(this.btSoftwareUpdate).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
+        addDisposable((Disposable) RxView.clicks(this.binding.btSoftwareUpdate).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
             AppUpdateUtil.checkUpdate(DataUpdateFragment.this.getActivity());
         }));
-        update(this.btMainDbUpdate, this.tvValueCurrentMainDb, this.tvValueNewMainDb, ResUpdateDaoManager.getInstance().getMainDb(ResUpdateUtils.getLocalMainDbName()));
-        update(this.btResUpdate, this.tvValueCurrentRes, this.tvValueNewRes, ResUpdateDaoManager.getInstance().getResDb());
-        update(this.btErrorUpdate, this.tvValueCurrentError, this.tvValueNewError, ResUpdateDaoManager.getInstance().getErrorDb());
-        update(this.btImgUpdate, this.tvValueCurrentImg, this.tvValueNewImg, ResUpdateDaoManager.getInstance().getImgListDb(), true);
+        update(this.binding.btMainDbUpdate, this.binding.tvValueCurrentMainDb, this.binding.tvValueNewMainDb, ResUpdateDaoManager.getInstance().getMainDb(ResUpdateUtils.getLocalMainDbName()));
+        update(this.binding.btResUpdate, this.binding.tvValueCurrentRes, this.binding.tvValueNewRes, ResUpdateDaoManager.getInstance().getResDb());
+        update(this.binding.btErrorUpdate, this.binding.tvValueCurrentError, this.binding.tvValueNewError, ResUpdateDaoManager.getInstance().getErrorDb());
+        update(this.binding.btImgsUpdate, this.binding.tvValueCurrentImgs, this.binding.tvValueNewImgs, ResUpdateDaoManager.getInstance().getImgListDb(), true);
     }
 
     private void update(View view, TextView textView, TextView textView2, LocalDbVersion localDbVersion) {

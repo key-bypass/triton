@@ -1,6 +1,7 @@
 package com.kkkcut.e20j.ui.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.viewpager.widget.PagerAdapter;
@@ -8,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cutting.machine.MachineInfo;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentHelpCenterBinding;
 
 import spa.lyh.cn.lib_largeimageview.LargeImageView;
 
@@ -15,11 +17,19 @@ import spa.lyh.cn.lib_largeimageview.LargeImageView;
 public class HelpCenterFragment extends BaseBackFragment {
     private int lastIndex;
 
-    ViewPager vp;
+    FragmentHelpCenterBinding binding;
+
     private int[] pics_en = {R.drawable.help1_en, R.drawable.help2_en};
     private int[] pics_ch = {R.drawable.help1_ch, R.drawable.help2_ch};
     private int[] pics_easy = {R.drawable.help1_easy, R.drawable.help2_easy};
     private int[] pics_us = {R.drawable.help1_us, R.drawable.help2_us};
+
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.binding = FragmentHelpCenterBinding.inflate(layoutInflater, viewGroup, false);
+        return this.binding.getRoot();
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected int getContentViewLayoutID() {
@@ -40,7 +50,7 @@ public class HelpCenterFragment extends BaseBackFragment {
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected void initViewsAndEvents() {
-        this.vp.setAdapter(new PagerAdapter() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.1
+        this.binding.viewpager.setAdapter(new PagerAdapter() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.1
             @Override // androidx.viewpager.widget.PagerAdapter
             public boolean isViewFromObject(View view, Object obj) {
                 return view == obj;
@@ -64,7 +74,7 @@ public class HelpCenterFragment extends BaseBackFragment {
                 viewGroup.removeView((View) obj);
             }
         });
-        this.vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.2
+        this.binding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.2
             @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
             public void onPageScrollStateChanged(int i) {
             }
@@ -76,7 +86,7 @@ public class HelpCenterFragment extends BaseBackFragment {
             @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
             public void onPageSelected(int i) {
                 if (HelpCenterFragment.this.lastIndex != i) {
-                    View childAt = HelpCenterFragment.this.vp.getChildAt(HelpCenterFragment.this.lastIndex);
+                    View childAt = HelpCenterFragment.this.binding.viewpager.getChildAt(HelpCenterFragment.this.lastIndex);
                     LargeImageView largeImageView = childAt instanceof LargeImageView ? (LargeImageView) childAt : null;
                     if (largeImageView != null) {
                         largeImageView.setScale(1.0f);

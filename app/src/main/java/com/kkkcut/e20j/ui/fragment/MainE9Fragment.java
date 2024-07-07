@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -49,6 +52,8 @@ import com.kkkcut.e20j.ui.fragment.keyselect.BrandSelectFragment;
 import com.kkkcut.e20j.ui.fragment.setting.SettingFragment;
 import com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoBrandSelectFragment;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentMainBinding;
+import com.kkkcut.e20j.us.databinding.FragmentMainE9Binding;
 import com.kkkcut.e20j.utils.AppUpdateUtil;
 import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
@@ -73,27 +78,18 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
     private String companyStr;
     ConfigurationE9 configuration1;
 
-    View devideLanguage;
+    FragmentMainE9Binding binding;
 
-    DrawerLayout drawerLayout;
 
-    TextView helpCenter;
-
-    ImageView ivService;
-
-    TextView languageChoice;
     private String languageStr;
     private String machineName;
 
-    RecyclerView rvCarkay;
-
-    RecyclerView rvExtraFuntion;
-
-    TextView tvDbVersion;
-
-    TextView tvSeries;
-
-    TextView tvSoftVersion;
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.binding = FragmentMainE9Binding.inflate(layoutInflater, viewGroup, false);
+        return this.binding.getRoot();
+    }
 
     /* JADX INFO: Access modifiers changed from: private */
     public void initDb() {
@@ -123,14 +119,14 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
     private void initView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        this.rvExtraFuntion.setLayoutManager(linearLayoutManager);
+        this.binding.rvBottom.setLayoutManager(linearLayoutManager);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        this.rvCarkay.addItemDecoration(new SpaceItemDecoration(AutoUtils.getPercentWidthSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentWidthSize(38), AutoUtils.getPercentHeightSize(15)));
-        this.rvCarkay.setLayoutManager(gridLayoutManager);
+        this.binding.rvCenter.addItemDecoration(new SpaceItemDecoration(AutoUtils.getPercentWidthSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentWidthSize(38), AutoUtils.getPercentHeightSize(15)));
+        this.binding.rvCenter.setLayoutManager(gridLayoutManager);
         ((FrameActivity) getActivity()).showLogo();
         setSeries();
-        this.helpCenter.setVisibility(View.GONE);
+        this.binding.helpCenter.setVisibility(View.GONE);
     }
 
     /* loaded from: classes.dex */
@@ -159,14 +155,14 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
     private void setSeries() {
         String string = SPUtils.getString("series");
         if (!TextUtils.isEmpty(string)) {
-            this.tvSeries.setText(getString(R.string.sn_xx) + string);
+            this.binding.tvSeries.setText(getString(R.string.sn_xx) + string);
         }
-        this.tvSoftVersion.setText(getString(R.string.version) + AppUtil.getVersionName(getContext()));
+        this.binding.tvSoftVersion.setText(getString(R.string.version) + AppUtil.getVersionName(getContext()));
         String dbVersion = KeyInfoDaoManager.getInstance().getDbVersion();
         if (TextUtils.isEmpty(dbVersion)) {
             return;
         }
-        this.tvDbVersion.setText(getString(R.string.db_version) + dbVersion);
+        this.binding.tvDbVersion.setText(getString(R.string.db_version) + dbVersion);
     }
 
     private void checkConfigUpdate() {
@@ -232,10 +228,10 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         SPUtils.put(SpKeys.MACHINE_ID, id);
         MachineInfo.setMachineTypeAndRegion(MyApplication.getInstance(), id);
         if (MachineInfo.isChineseMachine()) {
-            this.devideLanguage.setVisibility(View.GONE);
-            this.languageChoice.setVisibility(View.GONE);
+            this.binding.viewDevideLanguage.setVisibility(View.GONE);
+            this.binding.languageChoice.setVisibility(View.GONE);
             LocalManageUtil.saveSelectLanguage(getContext(), "zh");
-            this.ivService.setVisibility(View.VISIBLE);
+            this.binding.ivService.setVisibility(View.VISIBLE);
         }
         FrameActivity frameActivity = (FrameActivity) getActivity();
         frameActivity.checkHaveNewMessage();
@@ -251,10 +247,10 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         }
         HomepageEExtraFunctionAdapter homepageEExtraFunctionAdapter = new HomepageEExtraFunctionAdapter(configurationE9.getBottom_layout());
         homepageEExtraFunctionAdapter.setOnItemClickListener(this);
-        this.rvExtraFuntion.setAdapter(homepageEExtraFunctionAdapter);
+        this.binding.rvBottom.setAdapter(homepageEExtraFunctionAdapter);
         HomeCenterRvE9Adapter homeCenterRvE9Adapter = new HomeCenterRvE9Adapter(configurationE9.getCenter_layout());
         homeCenterRvE9Adapter.setOnItemClickListener(this);
-        this.rvCarkay.setAdapter(homeCenterRvE9Adapter);
+        this.binding.rvCenter.setAdapter(homeCenterRvE9Adapter);
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -286,11 +282,11 @@ public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter
         ConfigurationE9 configurationE9;
         int eventCode = eventCenter.getEventCode();
         if (eventCode == 10) {
-            if (this.drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                this.drawerLayout.closeDrawer(Gravity.RIGHT);
+            if (this.binding.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
+                this.binding.drawerlayout.closeDrawer(Gravity.RIGHT);
                 return;
             } else {
-                this.drawerLayout.openDrawer(Gravity.RIGHT);
+                this.binding.drawerlayout.openDrawer(Gravity.RIGHT);
                 return;
             }
         }
@@ -505,8 +501,8 @@ private void goRegister() {
     }
 
     private void closeDrawer() {
-        if (this.drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-            this.drawerLayout.closeDrawer(Gravity.RIGHT);
+        if (this.binding.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
+            this.binding.drawerlayout.closeDrawer(Gravity.RIGHT);
         }
     }
 

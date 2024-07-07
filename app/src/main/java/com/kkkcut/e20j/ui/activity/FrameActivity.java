@@ -41,6 +41,7 @@ import com.kkkcut.e20j.ui.fragment.MainE9Fragment;
 import com.kkkcut.e20j.ui.fragment.MainFragment;
 import com.kkkcut.e20j.ui.fragment.MessageFragment;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityFrameBinding;
 import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.ThemeUtils;
@@ -72,20 +73,10 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     private CertificationDialog certificationDialog;
     private ErrorDialog errorDialog;
 
-    ImageView ivHome;
-
-    ImageView ivMenu;
-
-    ImageView ivMessage;
     private LoadingDialog loadingDialog;
 
-    TextView tvBack;
+    private ActivityFrameBinding binding;
 
-    TextView tvLogo;
-
-    TextView tvTitle;
-
-    LinearLayout layout;
     private long DOUBLE_CLICK_TIME = 0;
     long[] mHits = new long[10];
 
@@ -105,14 +96,11 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
 
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        this.layout = findViewById(R.id.activity_frame);
-        this.ivHome = findViewById(R.id.iv_home);
-        this.ivMenu = findViewById(R.id.iv_menu);
-        this.ivMessage = findViewById(R.id.iv_message);
-        this.tvBack = findViewById(R.id.tv_back);
-        this.tvLogo = findViewById(R.id.tv_logo);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityFrameBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
     }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
@@ -166,7 +154,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     public void checkHaveNewMessage() {
-        this.ivMessage.setImageResource(ThemeUtils.getResId(this, R.attr.icon_message));
+        this.binding.titleLayout.ivMessage.setImageResource(ThemeUtils.getResId(this, R.attr.icon_message));
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -323,34 +311,34 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     public void showLogo() {
-        this.tvLogo.setVisibility(0);
-        this.ivMenu.setVisibility(0);
-        this.ivMessage.setVisibility(0);
-        this.tvBack.setVisibility(8);
-        this.ivHome.setVisibility(8);
+        this.binding.titleLayout.tvLogo.setVisibility(0);
+        this.binding.titleLayout.ivMenu.setVisibility(0);
+        this.binding.titleLayout.ivMessage.setVisibility(0);
+        this.binding.titleLayout.tvBack.setVisibility(8);
+        this.binding.titleLayout.ivHome.setVisibility(8);
         setTittle("");
     }
 
     public void hideLogo() {
-        this.tvLogo.setVisibility(8);
-        this.ivMenu.setVisibility(8);
-        this.ivMessage.setVisibility(8);
-        this.tvBack.setVisibility(0);
-        this.ivHome.setVisibility(0);
+        this.binding.titleLayout.tvLogo.setVisibility(8);
+        this.binding.titleLayout.ivMenu.setVisibility(8);
+        this.binding.titleLayout.ivMessage.setVisibility(8);
+        this.binding.titleLayout.tvBack.setVisibility(0);
+        this.binding.titleLayout.ivHome.setVisibility(0);
     }
 
     public void setMachineName(String str) {
-        if (this.tvLogo == null || TextUtils.isEmpty(str)) {
+        if (this.binding.titleLayout.tvLogo == null || TextUtils.isEmpty(str)) {
             return;
         }
-        this.tvLogo.setText(str);
+        this.binding.titleLayout.tvLogo.setText(str);
     }
 
     public void setLogo(int i) {
         Drawable drawable = getResources().getDrawable(i);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        this.tvLogo.setCompoundDrawablePadding(20);
-        this.tvLogo.setCompoundDrawables(drawable, null, null, null);
+        this.binding.titleLayout.tvLogo.setCompoundDrawablePadding(20);
+        this.binding.titleLayout.tvLogo.setCompoundDrawables(drawable, null, null, null);
     }
 
     @Override // androidx.appcompat.app.AppCompatActivity, android.app.Activity, android.view.KeyEvent.Callback
@@ -593,7 +581,7 @@ public class FrameActivity extends BaseCustomKeyBoardActivity implements OnSeria
     }
 
     public TextView getTvBack() {
-        return this.tvBack;
+        return this.binding.titleLayout.tvBack;
     }
 
     @Override // com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity

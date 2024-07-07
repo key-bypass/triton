@@ -2,10 +2,10 @@ package com.kkkcut.e20j.ui.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.view.ViewGroup;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,17 +23,15 @@ import com.kkkcut.e20j.dao.ToothCodeDaoManager;
 import com.kkkcut.e20j.net.Apis;
 import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.activity.FrameActivity;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentCodeFindToothBinding;
 import com.kkkcut.e20j.utils.GetUUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -46,14 +44,16 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
     public static final String SERIES = "series";
     private CodeFindToothAdapter adapter;
 
-    Button btSearchOnline;
-
-    EditText etSearch;
-
-    RecyclerView rvToothList;
     private ToothCodeDaoManager toothCodeDaoManager;
 
-    TextView tvSeries;
+    FragmentCodeFindToothBinding binding;
+
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.binding = FragmentCodeFindToothBinding.inflate(layoutInflater, viewGroup, false);
+        return this.binding.getRoot();
+    }
 
     @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
     protected int getContentViewLayoutID() {
@@ -74,18 +74,18 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
     protected void initViewsAndEvents() {
         String string = getArguments().getString("series");
         if (!TextUtils.isEmpty(string)) {
-            this.tvSeries.setText(string);
+            this.binding.tvSeries.setText(string);
         }
         this.toothCodeDaoManager = new ToothCodeDaoManager(getArguments().getInt("keyID"));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        this.rvToothList.setLayoutManager(linearLayoutManager);
+        this.binding.rvToothList.setLayoutManager(linearLayoutManager);
         CodeFindToothAdapter codeFindToothAdapter = new CodeFindToothAdapter();
         this.adapter = codeFindToothAdapter;
         codeFindToothAdapter.setOnItemClickListener(this);
-        this.rvToothList.setAdapter(this.adapter);
-        this.rvToothList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        ((FrameActivity) getActivity()).bindToEditor(this.etSearch, 0);
+        this.binding.rvToothList.setAdapter(this.adapter);
+        this.binding.rvToothList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
+        ((FrameActivity) getActivity()).bindToEditor(this.binding.etSearch, 0);
     }
 
     private void doSearch(final String str, final String str2) {
@@ -113,7 +113,7 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
     }
 
     public void onViewClicked(View view) {
-        String trim = this.etSearch.getText().toString().trim();
+        String trim = this.binding.etSearch.getText().toString().trim();
         if (TextUtils.isEmpty(trim)) {
             ToastUtil.showToast(R.string.not_null);
             return;
@@ -126,12 +126,12 @@ public class CodeFindToothFragment extends BaseBackFragment implements BaseQuick
             case R.id.bt_search_offline /* 2131361973 */:
                 doSearch(trim, string);
                 hideSoftInput();
-                this.etSearch.clearFocus();
+                this.binding.etSearch.clearFocus();
                 return;
             case R.id.bt_search_online /* 2131361974 */:
                 doSearchOnline(trim, string);
                 hideSoftInput();
-                this.etSearch.clearFocus();
+                this.binding.etSearch.clearFocus();
                 return;
             default:
                 return;

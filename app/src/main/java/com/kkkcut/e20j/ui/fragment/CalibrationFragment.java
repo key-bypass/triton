@@ -1,7 +1,10 @@
 package com.kkkcut.e20j.ui.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -12,6 +15,7 @@ import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.dialog.RemindDialog;
 import com.kkkcut.e20j.ui.dialog.WarningDialog;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.FragmentCalibrationBinding;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.cutting.machine.Command;
 import com.cutting.machine.CuttingMachine;
@@ -28,44 +32,20 @@ import com.cutting.machine.operation.calibrate.CalibrationParams;
 public class CalibrationFragment extends BaseBackFragment {
     public static final String TAG = "CalibrationFragment";
 
-    Button btCarClampB;
 
-    Button btCarClampD;
-
-    Button btDistanceCalibrateS1a;
-
-    Button btSingleKeyClampB;
     CalibrationParams calibrationParams;
     private boolean isE9;
 
-    LinearLayout llAngleKeyClamp;
+    FragmentCalibrationBinding binding;
 
-    LinearLayout llBlankCutClamp;
-
-    LinearLayout llCarClamp;
-
-    LinearLayout llCroossKeyClamp;
-
-    LinearLayout llDistanceCalibrate;
-
-    LinearLayout llMarkingClamp;
-
-    LinearLayout llSingleSideClamp;
-
-    LinearLayout llTubularClamp;
-
-    RadioButton rbAngleClamp;
-
-    RadioButton rbBlankCutClamp;
-
-    RadioButton rbCrossKeyClamp;
-
-    RadioButton rbMarkingClamp;
-
-    RadioButton rbSingleSideClamp;
-
-    RadioButton rbTubularClamp;
     private RemindDialog remindDialog;
+
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        this.binding = FragmentCalibrationBinding.inflate(layoutInflater, viewGroup, false);
+        return this.binding.getRoot();
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected int getContentViewLayoutID() {
@@ -79,22 +59,22 @@ public class CalibrationFragment extends BaseBackFragment {
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     protected void initViewsAndEvents() {
         if (MachineInfo.isChineseMachine()) {
-            this.rbTubularClamp.setVisibility(8);
-            this.rbMarkingClamp.setVisibility(8);
-            this.btDistanceCalibrateS1a.setVisibility(8);
-            this.rbBlankCutClamp.setVisibility(8);
-            this.rbCrossKeyClamp.setVisibility(8);
+            this.binding.rbTubularClamp.setVisibility(8);
+            this.binding.rbMarkingClamp.setVisibility(8);
+            this.binding.btDistanceCalibrateS1a.setVisibility(8);
+            this.binding.rbBlankCutClamp.setVisibility(8);
+            this.binding.rbCrossKeyClamp.setVisibility(8);
         }
         boolean isE9Standard = MachineInfo.isE9Standard(getContext());
         this.isE9 = isE9Standard;
         if (isE9Standard) {
-            this.btDistanceCalibrateS1a.setVisibility(8);
-            this.btCarClampB.setVisibility(8);
-            this.btCarClampD.setVisibility(8);
-            this.rbBlankCutClamp.setVisibility(8);
-            this.rbAngleClamp.setVisibility(8);
-            this.rbCrossKeyClamp.setVisibility(8);
-            this.btSingleKeyClampB.setVisibility(8);
+            this.binding.btDistanceCalibrateS1a.setVisibility(8);
+            this.binding.btCarClampB.setVisibility(8);
+            this.binding.btCarClampD.setVisibility(8);
+            this.binding.rbBlankCutClamp.setVisibility(8);
+            this.binding.rbAngleClamp.setVisibility(8);
+            this.binding.rbCrossKeyClamp.setVisibility(8);
+            this.binding.btDistanceCalibrateS1a.setVisibility(8);
         }
     }
 
@@ -275,105 +255,105 @@ public class CalibrationFragment extends BaseBackFragment {
         switch (compoundButton.getId()) {
             case R.id.rb_angle_clamp /* 2131362599 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(0);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(0);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_autonmobile_clamp /* 2131362600 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(0);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(0);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_blank_cut_clamp /* 2131362601 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(0);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(0);
                     return;
                 }
                 return;
             case R.id.rb_cross_key_clamp /* 2131362605 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(0);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(0);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_distance_calibrate /* 2131362608 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(0);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(0);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_marking_clamp /* 2131362629 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(0);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(0);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_single_side_clmap /* 2131362653 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(8);
-                    this.llSingleSideClamp.setVisibility(0);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(8);
+                    this.binding.llSingleSideClamp.setVisibility(0);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;
             case R.id.rb_tubular_clamp /* 2131362663 */:
                 if (z) {
-                    this.llDistanceCalibrate.setVisibility(8);
-                    this.llCarClamp.setVisibility(8);
-                    this.llAngleKeyClamp.setVisibility(8);
-                    this.llTubularClamp.setVisibility(0);
-                    this.llSingleSideClamp.setVisibility(8);
-                    this.llMarkingClamp.setVisibility(8);
-                    this.llCroossKeyClamp.setVisibility(8);
-                    this.llBlankCutClamp.setVisibility(8);
+                    this.binding.llDistanceCalibrate.setVisibility(8);
+                    this.binding.llCarClamp.setVisibility(8);
+                    this.binding.llAngleKeyClamp.setVisibility(8);
+                    this.binding.llTubularClamp.setVisibility(0);
+                    this.binding.llSingleSideClamp.setVisibility(8);
+                    this.binding.llMarkingClamp.setVisibility(8);
+                    this.binding.llCrossKeyClamp.setVisibility(8);
+                    this.binding.llBlankCutCalibrate.setVisibility(8);
                     return;
                 }
                 return;

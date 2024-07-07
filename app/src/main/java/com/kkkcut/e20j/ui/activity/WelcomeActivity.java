@@ -2,7 +2,9 @@ package com.kkkcut.e20j.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import com.kkkcut.e20j.androidquick.tool.AppUtil;
@@ -10,11 +12,21 @@ import com.kkkcut.e20j.androidquick.tool.SPUtils;
 import com.kkkcut.e20j.base.HideStatusActivity;
 import com.kkkcut.e20j.presenter.SplashPresenter;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityLanuchBinding;
 import com.kkkcut.e20j.view.SplashView;
 
 /* loaded from: classes.dex */
 public class WelcomeActivity extends HideStatusActivity implements SplashView {
     private SplashPresenter splashPresenter;
+
+    ActivityLanuchBinding binding;
+
+    @Override
+    public void onCreate(Bundle bundle, PersistableBundle persistableBundle) {
+        super.onCreate(bundle, persistableBundle);
+        this.binding = ActivityLanuchBinding.inflate(getLayoutInflater());
+        setContentView(this.binding.getRoot());
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected int getContentViewLayoutID() {
@@ -27,7 +39,7 @@ public class WelcomeActivity extends HideStatusActivity implements SplashView {
         int identifier;
         this.splashPresenter = new SplashPresenter(this, this);
         String packageName = AppUtil.getPackageName(this);
-        ImageView imageView = (ImageView) findViewById(R.id.iv_splash);
+        ImageView imageView = findViewById(R.id.iv_splash);
         if (packageName.endsWith(".us")) {
             imageView.setImageResource(R.drawable.welcome_spl);
             return;

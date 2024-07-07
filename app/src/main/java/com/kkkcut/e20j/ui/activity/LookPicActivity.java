@@ -3,10 +3,12 @@ package com.kkkcut.e20j.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.widget.ImageView;
 import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
 import com.kkkcut.e20j.base.HideStatusActivity;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityLookPicBinding;
 import com.kkkcut.e20j.utils.ResUpdateUtils;
 
 /* loaded from: classes.dex */
@@ -15,7 +17,14 @@ public class LookPicActivity extends HideStatusActivity {
     public static final String RES_ID = "ResId";
     public static final String isKeyImg = "isKeyImg";
 
-    ImageView ivPhoto;
+    ActivityLookPicBinding binding;
+
+    @Override
+    public void onCreate(Bundle bundle, PersistableBundle persistableBundle) {
+        super.onCreate(bundle, persistableBundle);
+        this.binding = ActivityLookPicBinding.inflate(getLayoutInflater());
+        setContentView(this.binding.getRoot());
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected int getContentViewLayoutID() {
@@ -42,9 +51,9 @@ public class LookPicActivity extends HideStatusActivity {
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected void initViewsAndEvents() {
         if (getIntent().getBooleanExtra(isKeyImg, false)) {
-            ResUpdateUtils.showKeyImage(this, getIntent().getIntExtra(RES_ID, 0), this.ivPhoto);
+            ResUpdateUtils.showKeyImage(this, getIntent().getIntExtra(RES_ID, 0), this.binding.ivShow);
         } else {
-            this.ivPhoto.setImageResource(getIntent().getIntExtra(RES_ID, 0));
+            this.binding.ivShow.setImageResource(getIntent().getIntExtra(RES_ID, 0));
         }
     }
 

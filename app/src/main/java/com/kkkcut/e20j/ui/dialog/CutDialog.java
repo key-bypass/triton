@@ -5,13 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.kkkcut.e20j.SpKeys;
 import com.kkkcut.e20j.androidquick.tool.SPUtils;
@@ -19,6 +14,7 @@ import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
 import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.DialogCutBinding;
 import com.kkkcut.e20j.utils.SpecificParamUtils;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.cutting.machine.MachineInfo;
@@ -34,19 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 public class CutDialog extends BottomInDialog {
     private static final String TAG = "CutDialog";
 
-    Button bt15mm;
-
-    Button bt20mm;
-
-    Button bt25mm;
-
-    CheckBox cbFast;
-
-    CheckBox cbHighHandleMode;
-
-    CheckBox cbPlasticKey;
-
-    CheckBox cbSlantCorrection;
+    DialogCutBinding binding;
     private int cutDepth;
     private int cutDepthSingleKey;
     private int cutSpeed;
@@ -56,84 +40,6 @@ public class CutDialog extends BottomInDialog {
     private boolean dimpleDuplicate;
 
 
-    ImageView ivClamp;
-
-    ImageView ivCutter;
-
-    ImageView ivDepth;
-
-    LinearLayout llCutDepth;
-
-    LinearLayout llCutDepthSingleKey;
-
-    LinearLayout llCutSpeed;
-
-    LinearLayout llCutterSize;
-
-    LinearLayout llDepth;
-
-    LinearLayout llDepthContainer;
-
-    LinearLayout llHighHandleMode;
-
-    LinearLayout llHu101Length;
-
-    LinearLayout llIndex;
-
-    LinearLayout llPlasticKey;
-
-    RadioButton rb50;
-
-    RadioButton rbLayer1;
-
-    RadioButton rbLayer2;
-
-    RadioButton rbLayer3;
-
-    RadioButton rbShapeGentle;
-
-    RadioButton rbShapeJagged;
-
-    RadioButton rbUpDownCutting;
-
-    RadioGroup rgCutMode;
-    RadioGroup rgCutShape;
-
-    RadioGroup rgDecodeSize;
-
-    RadioGroup rgLayerCut;
-
-    TextView tvCutDepth;
-
-    TextView tvCutDepthSingleKey;
-
-    TextView tvCutMode;
-
-    TextView tvCutShape;
-
-    TextView tvCutSpeed;
-
-    TextView tvCutterSize;
-
-    TextView tvCutterSizeRemind;
-
-    TextView tvDepthValue;
-
-    TextView tvDepthValueSingleKey;
-
-    TextView tvLayerCut;
-
-    TextView tvLengthValue;
-
-    TextView tvSlantCorrection;
-
-    TextView tvSpeedValue;
-
-    TextView tvTitleDecoderDize;
-
-    TextView tvTitleDepth;
-
-    TextView tvTitleHu101;
 
     @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
     public int getContentLayoutID() {
@@ -142,6 +48,7 @@ public class CutDialog extends BottomInDialog {
 
     public CutDialog(Activity activity, DataParam dataParam) {
         super(activity);
+        this.binding = DialogCutBinding.inflate(activity.getLayoutInflater());
         this.dataParam = dataParam;
     }
 
@@ -172,23 +79,23 @@ public class CutDialog extends BottomInDialog {
 
     private void initHu101Length() {
         if (getKeyInfo().getType() == 3) {
-            this.llHu101Length.setVisibility(0);
-            this.tvTitleHu101.setVisibility(0);
-            this.tvLengthValue.setText(String.valueOf(this.dataParam.getHu101ExtCutFix()));
+            this.binding.llHu101Length.setVisibility(0);
+            this.binding.tvTitleHu101.setVisibility(0);
+            this.binding.tvLengthValue.setText(String.valueOf(this.dataParam.getHu101ExtCutFix()));
         } else {
-            this.llHu101Length.setVisibility(8);
-            this.tvTitleHu101.setVisibility(8);
+            this.binding.llHu101Length.setVisibility(8);
+            this.binding.tvTitleHu101.setVisibility(8);
         }
     }
 
     private void initHu64SlantCorrection() {
         if (getKeyInfo().getKeyType() == KeyType.SINGLE_OUTSIDE_GROOVE_KEY && getKeyInfo().getSide() == 1 && TextUtils.equals(getKeyInfo().getClampBean().getClampNum(), "S1") && TextUtils.equals(getKeyInfo().getClampBean().getClampSide(), "C")) {
-            this.tvSlantCorrection.setVisibility(0);
-            this.cbSlantCorrection.setVisibility(0);
+            this.binding.tvSlantCorrection.setVisibility(0);
+            this.binding.cbSlantCorrection.setVisibility(0);
             if (this.dataParam.isSlantCorrection()) {
-                this.cbSlantCorrection.setChecked(true);
+                this.binding.cbSlantCorrection.setChecked(true);
             } else {
-                this.cbSlantCorrection.setChecked(false);
+                this.binding.cbSlantCorrection.setChecked(false);
             }
         }
     }
@@ -196,10 +103,10 @@ public class CutDialog extends BottomInDialog {
     private void initDecoder() {
         this.decoderSize = this.dataParam.getDecoderSize();
         if (getKeyInfo().getType() == 1) {
-            this.rgDecodeSize.setVisibility(0);
-            this.tvTitleDecoderDize.setVisibility(0);
+            this.binding.rgDecodeSize.setVisibility(0);
+            this.binding.tvDecoderSize.setVisibility(0);
             if (this.decoderSize == 50) {
-                this.rb50.setChecked(true);
+                this.binding.rb50.setChecked(true);
             }
         }
     }
@@ -207,148 +114,148 @@ public class CutDialog extends BottomInDialog {
     private void initSingleKeyCutDepth() {
         this.cutDepthSingleKey = this.dataParam.getSingleSideKeyCutDepthFix();
         if (getKeyInfo().getType() == 1 && getKeyInfo().getCutDepth() == 0) {
-            this.llCutDepthSingleKey.setVisibility(0);
-            this.tvCutDepthSingleKey.setVisibility(0);
-            this.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
+            this.binding.llCutDepthSingleKey.setVisibility(0);
+            this.binding.tvCutDepthSingleKey.setVisibility(0);
+            this.binding.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
             return;
         }
-        this.llCutDepthSingleKey.setVisibility(8);
-        this.tvCutDepthSingleKey.setVisibility(8);
+        this.binding.llCutDepthSingleKey.setVisibility(8);
+        this.binding.tvCutDepthSingleKey.setVisibility(8);
     }
 
     private void initHighHandleMode() {
         if (MachineInfo.isE9Standard(getContext()) && !SPUtils.getBoolean(SpKeys.Not_detect_decoder_position)) {
-            this.llHighHandleMode.setVisibility(0);
-            this.cbHighHandleMode.setChecked(this.dataParam.isHighHandleMode());
+            this.binding.llHighHandleMode.setVisibility(0);
+            this.binding.cbHighHandleMode.setChecked(this.dataParam.isHighHandleMode());
         } else {
-            this.llHighHandleMode.setVisibility(8);
+            this.binding.llHighHandleMode.setVisibility(8);
         }
     }
 
     private void initDimpleCutMode() {
         if (this.dimpleDuplicate) {
-            this.rgCutMode.setVisibility(8);
-            this.tvCutMode.setVisibility(8);
+            this.binding.rgCutMode.setVisibility(8);
+            this.binding.tvCutMode.setVisibility(8);
             return;
         }
         if (getKeyInfo().getSpaceWidthStr().contains("-")) {
-            this.rgCutMode.setVisibility(8);
-            this.tvCutMode.setVisibility(8);
+            this.binding.rgCutMode.setVisibility(8);
+            this.binding.tvCutMode.setVisibility(8);
             return;
         }
         if (getKeyInfo().getType() == 6) {
-            this.rgCutMode.setVisibility(0);
-            this.tvCutMode.setVisibility(0);
+            this.binding.rgCutMode.setVisibility(0);
+            this.binding.tvCutMode.setVisibility(0);
         } else {
-            this.rgCutMode.setVisibility(8);
-            this.tvCutMode.setVisibility(8);
+            this.binding.rgCutMode.setVisibility(8);
+            this.binding.tvCutMode.setVisibility(8);
         }
         if (SPUtils.getBoolean(SpKeys.DIMPLE_UP_DOWN_CUTTING)) {
-            this.rbUpDownCutting.setChecked(true);
+            this.binding.rbUpDownCutting.setChecked(true);
         }
     }
 
     private void initFastMode() {
         if (this.dataParam.isQuickCut()) {
-            this.cbFast.setChecked(true);
+            this.binding.cbFast.setChecked(true);
         }
     }
 
     private void initCutSpeed() {
         int i = SPUtils.getInt(SpKeys.SPEED + getKeyInfo().getType(), getKeyInfo().getType() == 6 ? 3 : 15);
         this.cutSpeed = i;
-        this.tvSpeedValue.setText(String.valueOf(i));
+        this.binding.tvSpeedValue.setText(String.valueOf(i));
     }
 
     private void initPlasticKey() {
         if (getKeyInfo().getAlign() == 0 && getKeyInfo().getLength() == 0) {
-            this.llPlasticKey.setVisibility(8);
+            this.binding.llPlasticKey.setVisibility(8);
             return;
         }
         if (getKeyInfo().getType() == 5 || getKeyInfo().getType() == 3 || getKeyInfo().getType() == 2 || getKeyInfo().getType() == 4) {
-            this.llPlasticKey.setVisibility(0);
+            this.binding.llPlasticKey.setVisibility(0);
             if (this.dataParam.isPlasticKey()) {
-                this.cbPlasticKey.performClick();
+                this.binding.cbPlasticKey.performClick();
                 return;
             }
             return;
         }
-        this.llPlasticKey.setVisibility(8);
+        this.binding.llPlasticKey.setVisibility(8);
     }
 
     private void initLayerCut() {
         if (getKeyInfo().getType() == 5 || getKeyInfo().getType() == 2) {
-            this.tvLayerCut.setVisibility(0);
-            this.rgLayerCut.setVisibility(0);
+            this.binding.tvLayerCut.setVisibility(0);
+            this.binding.rgLayerCut.setVisibility(0);
             int i = SPUtils.getInt(SpKeys.LAYERCUT, 3);
             if (i == 1) {
-                this.rbLayer1.setChecked(true);
+                this.binding.rbLayer1.setChecked(true);
                 return;
             } else if (i == 2) {
-                this.rbLayer2.setChecked(true);
+                this.binding.rbLayer2.setChecked(true);
                 return;
             } else {
                 if (i != 3) {
                     return;
                 }
-                this.rbLayer3.setChecked(true);
+                this.binding.rbLayer3.setChecked(true);
                 return;
             }
         }
-        this.tvLayerCut.setVisibility(8);
-        this.rgLayerCut.setVisibility(8);
+        this.binding.tvLayerCut.setVisibility(8);
+        this.binding.rgLayerCut.setVisibility(8);
     }
 
     private void initCutDepth() {
         this.cutDepth = this.dataParam.getCutDepth();
         if (getKeyInfo().getType() == 5 || getKeyInfo().getType() == 3 || getKeyInfo().getType() == 4 || getKeyInfo().getType() == 2) {
-            this.llCutDepth.setVisibility(0);
-            this.tvCutDepth.setVisibility(0);
+            this.binding.llCutDepth.setVisibility(0);
+            this.binding.tvCutDepth.setVisibility(0);
             if (this.dataParam.getCutDepth() == 0) {
                 this.cutDepth = 110;
             } else {
                 this.cutDepth = this.dataParam.getCutDepth();
             }
-            this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
+            this.binding.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
             return;
         }
-        this.llCutDepth.setVisibility(8);
-        this.tvCutDepth.setVisibility(8);
+        this.binding.llCutDepth.setVisibility(8);
+        this.binding.tvCutDepth.setVisibility(8);
     }
 
     private void initCutShape() {
         if (getKeyInfo().getType() == 1 && getKeyInfo().getCutDepth() == 0) {
-            this.tvCutShape.setVisibility(0);
-            this.rgCutShape.setVisibility(0);
+            this.binding.tvCutShape.setVisibility(0);
+            this.binding.rgCutShape.setVisibility(0);
             int i = SPUtils.getInt(SpKeys.SINGLEKEY_CUT_SHAPE, 1);
             if (i == 1) {
-                this.rbShapeGentle.setChecked(true);
+                this.binding.rbShapeGentle.setChecked(true);
                 return;
             } else {
                 if (i != 2) {
                     return;
                 }
-                this.rbShapeJagged.setChecked(true);
+                this.binding.rbShapeJagged.setChecked(true);
                 return;
             }
         }
-        this.tvCutShape.setVisibility(8);
-        this.rgCutShape.setVisibility(8);
+        this.binding.tvCutShape.setVisibility(8);
+        this.binding.rgCutShape.setVisibility(8);
     }
 
     private void initCutter() {
         if (getKeyInfo().getType() == 6 || getKeyInfo().getType() == 92) {
             if (getKeyInfo().getSpaceWidthStr().contains("-")) {
-                this.ivCutter.setImageResource(R.drawable.cutter_dimple_2);
+                this.binding.ivCutter.setImageResource(R.drawable.cutter_dimple_2);
             } else {
-                this.ivCutter.setImageResource(R.drawable.cutter_dimple_1);
+                this.binding.ivCutter.setImageResource(R.drawable.cutter_dimple_1);
             }
-            this.llCutterSize.setVisibility(8);
-            this.bt15mm.setVisibility(8);
-            this.bt20mm.setVisibility(8);
-            this.bt25mm.setVisibility(8);
+            this.binding.llCutterSize.setVisibility(8);
+            this.binding.bt15mm.setVisibility(8);
+            this.binding.bt20mm.setVisibility(8);
+            this.binding.bt25mm.setVisibility(8);
         } else {
-            this.ivCutter.setImageResource(R.drawable.cutter_normal);
+            this.binding.ivCutter.setImageResource(R.drawable.cutter_normal);
         }
         int cutterSize = ToolSizeManager.getCutterSize();
         Log.i(TAG, "initCutter: " + cutterSize);
@@ -360,8 +267,8 @@ public class CutDialog extends BottomInDialog {
                     param = split[1];
                 }
             }
-            this.tvCutterSizeRemind.setVisibility(0);
-            this.tvCutterSizeRemind.setText(String.format(getActivity().getResources().getString(R.string.please_use_smm_milling_cutter), param));
+            this.binding.tvCutterSizeRemind.setVisibility(0);
+            this.binding.tvCutterSizeRemind.setText(String.format(getActivity().getResources().getString(R.string.please_use_smm_milling_cutter), param));
         }
         if (cutterSize > 0) {
             this.cutter_size = cutterSize;
@@ -378,7 +285,7 @@ public class CutDialog extends BottomInDialog {
         } else {
             this.cutter_size = 200;
         }
-        this.tvCutterSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.cutter_size / 100.0f)));
+        this.binding.tvCutterSize.setText(String.format(Locale.US, "%.1fmm", Float.valueOf(this.cutter_size / 100.0f)));
     }
 
     public void onViewClicked(View view) {
@@ -386,15 +293,15 @@ public class CutDialog extends BottomInDialog {
         switch (view.getId()) {
             case R.id.bt_1_5mm /* 2131361901 */:
                 this.cutter_size = 150;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                 return;
             case R.id.bt_2_0mm /* 2131361902 */:
                 this.cutter_size = 200;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                 return;
             case R.id.bt_2_5mm /* 2131361903 */:
                 this.cutter_size = 250;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                 return;
             case R.id.bt_cancle /* 2131361909 */:
                 dismiss();
@@ -441,7 +348,7 @@ public class CutDialog extends BottomInDialog {
                 });
                 return;
             case R.id.cb_fast /* 2131362024 */:
-                if (this.cbFast.isChecked()) {
+                if (this.binding.cbFast.isChecked()) {
                     WarningDialog warningDialog2 = new WarningDialog(getContext());
                     warningDialog2.setRemind(getContext().getString(R.string.quick_cut_remind));
                     warningDialog2.setCancelText(getContext().getString(R.string.cancel));
@@ -452,7 +359,7 @@ public class CutDialog extends BottomInDialog {
                             if (z) {
                                 return;
                             }
-                            CutDialog.this.cbFast.setChecked(false);
+                            CutDialog.this.binding.cbFast.setChecked(false);
                         }
                     });
                     warningDialog2.show();
@@ -464,13 +371,13 @@ public class CutDialog extends BottomInDialog {
                 return;
             case R.id.iv_depth_add /* 2131362293 */:
                 this.cutDepth += 5;
-                this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
+                this.binding.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
                 return;
             case R.id.iv_depth_add_single_key /* 2131362294 */:
                 int i2 = this.cutDepthSingleKey;
                 if (i2 < 100) {
                     this.cutDepthSingleKey = i2 + 50;
-                    this.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
+                    this.binding.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
                     return;
                 }
                 return;
@@ -479,13 +386,13 @@ public class CutDialog extends BottomInDialog {
                 if (i3 > 5) {
                     this.cutDepth = i3 - 5;
                 }
-                this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
+                this.binding.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
                 return;
             case R.id.iv_depth_reduce_single_key /* 2131362296 */:
                 int i4 = this.cutDepthSingleKey;
                 if (i4 > -100) {
                     this.cutDepthSingleKey = i4 - 50;
-                    this.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
+                    this.binding.tvDepthValueSingleKey.setText((this.cutDepthSingleKey / 100.0f) + "mm");
                     return;
                 }
                 return;
@@ -493,7 +400,7 @@ public class CutDialog extends BottomInDialog {
                 int hu101ExtCutFix = this.dataParam.getHu101ExtCutFix() + 10;
                 if (hu101ExtCutFix <= 200) {
                     this.dataParam.setHu101ExtCutFix(hu101ExtCutFix);
-                    this.tvLengthValue.setText(String.valueOf(hu101ExtCutFix));
+                    this.binding.tvLengthValue.setText(String.valueOf(hu101ExtCutFix));
                     return;
                 }
                 return;
@@ -501,7 +408,7 @@ public class CutDialog extends BottomInDialog {
                 int hu101ExtCutFix2 = this.dataParam.getHu101ExtCutFix() - 10;
                 if (hu101ExtCutFix2 >= -200) {
                     this.dataParam.setHu101ExtCutFix(hu101ExtCutFix2);
-                    this.tvLengthValue.setText(String.valueOf(hu101ExtCutFix2));
+                    this.binding.tvLengthValue.setText(String.valueOf(hu101ExtCutFix2));
                     return;
                 }
                 return;
@@ -509,12 +416,12 @@ public class CutDialog extends BottomInDialog {
                 int i5 = this.cutter_size;
                 if (i5 < 250) {
                     this.cutter_size = i5 + 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                    this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                     return;
                 }
                 if (i5 < 500) {
                     this.cutter_size = i5 + 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                    this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                     return;
                 }
                 return;
@@ -522,12 +429,12 @@ public class CutDialog extends BottomInDialog {
                 int i6 = this.cutter_size;
                 if (i6 > 250) {
                     this.cutter_size = i6 - 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                    this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                     return;
                 }
                 if (i6 > 100) {
                     this.cutter_size = i6 - 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
+                    this.binding.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
                     return;
                 }
                 return;
@@ -535,7 +442,7 @@ public class CutDialog extends BottomInDialog {
                 if (this.cutSpeed < (getKeyInfo().getType() != 6 ? 25 : 5)) {
                     int i7 = this.cutSpeed + 1;
                     this.cutSpeed = i7;
-                    this.tvSpeedValue.setText(String.valueOf(i7));
+                    this.binding.tvSpeedValue.setText(String.valueOf(i7));
                     SPUtils.put(SpKeys.SPEED + getKeyInfo().getType(), this.cutSpeed);
                     return;
                 }
@@ -545,7 +452,7 @@ public class CutDialog extends BottomInDialog {
                 if (i8 > 1) {
                     int i9 = i8 - 1;
                     this.cutSpeed = i9;
-                    this.tvSpeedValue.setText(String.valueOf(i9));
+                    this.binding.tvSpeedValue.setText(String.valueOf(i9));
                     SPUtils.put(SpKeys.SPEED + getKeyInfo().getType(), this.cutSpeed);
                     return;
                 }
@@ -568,13 +475,13 @@ public class CutDialog extends BottomInDialog {
         this.dataParam.setCutSpeed(this.cutSpeed);
         this.dataParam.setCutDepth(this.cutDepth);
         this.dataParam.setLayer(SPUtils.getInt(SpKeys.LAYERCUT, 2));
-        this.dataParam.setPlastic(this.cbPlasticKey.isChecked());
-        this.dataParam.setQuickCut(this.cbFast.isChecked());
+        this.dataParam.setPlastic(this.binding.cbPlasticKey.isChecked());
+        this.dataParam.setQuickCut(this.binding.cbFast.isChecked());
         this.dataParam.setSingleSideKeyCutDepthFix(this.cutDepthSingleKey);
         this.dataParam.setSingleSideKeyCutShape(SPUtils.getInt(SpKeys.SINGLEKEY_CUT_SHAPE, 1));
         this.dataParam.setDimpleUpDownCut(SPUtils.getBoolean(SpKeys.DIMPLE_UP_DOWN_CUTTING));
-        this.dataParam.setHighHandleMode(this.cbHighHandleMode.isChecked());
-        this.dataParam.setSlantCorrection(this.cbSlantCorrection.isChecked());
+        this.dataParam.setHighHandleMode(this.binding.cbHighHandleMode.isChecked());
+        this.dataParam.setSlantCorrection(this.binding.cbSlantCorrection.isChecked());
         bundle.putParcelable("param", this.dataParam);
         EventBus.getDefault().post(new EventCenter(1, bundle));
         if (this.dimpleDuplicate) {
@@ -586,7 +493,7 @@ public class CutDialog extends BottomInDialog {
     private void initClamp() {
         int clampBigImg = ClampCreator.getClampBigImg(getKeyInfo());
         if (clampBigImg != 0) {
-            this.ivClamp.setImageResource(clampBigImg);
+            this.binding.ivClamp.setImageResource(clampBigImg);
         }
     }
 
@@ -606,18 +513,18 @@ public class CutDialog extends BottomInDialog {
                 if (getKeyInfo().getAlign() == 1) {
                     if (z) {
                         if (MachineInfo.isE9()) {
-                            this.ivClamp.setImageResource(R.drawable.car_clamp_remind_e9s1a_tip_plastic);
+                            this.binding.ivClamp.setImageResource(R.drawable.car_clamp_remind_e9s1a_tip_plastic);
                             return;
                         } else {
-                            this.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip_plastic);
+                            this.binding.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip_plastic);
                             return;
                         }
                     }
                     if (MachineInfo.isE9()) {
-                        this.ivClamp.setImageResource(R.drawable.a9_laser_stop_4_side_big_e9);
+                        this.binding.ivClamp.setImageResource(R.drawable.a9_laser_stop_4_side_big_e9);
                         return;
                     } else {
-                        this.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip);
+                        this.binding.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip);
                         return;
                     }
                 }
@@ -627,7 +534,7 @@ public class CutDialog extends BottomInDialog {
                     } else {
                         this.cutDepth = 115;
                     }
-                    this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
+                    this.binding.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
                     return;
                 }
                 return;
@@ -692,8 +599,8 @@ public class CutDialog extends BottomInDialog {
 
     private void initDimpleDepth() {
         if (this.dimpleDuplicate) {
-            this.tvTitleDepth.setVisibility(0);
-            this.llDepthContainer.setVisibility(0);
+            this.binding.tvTitleDepth.setVisibility(0);
+            this.binding.llDepthContainer.setVisibility(0);
             String[] split = getKeyInfo().getKeyToothCode().split(";");
             int i = 0;
             for (String str : split) {
@@ -703,7 +610,7 @@ public class CutDialog extends BottomInDialog {
             while (i2 < split.length + 1) {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(30, 20);
                 layoutParams.setMargins(0, 1, 0, 0);
-                this.llIndex.addView(getText(i2 == 0 ? "" : String.valueOf(i2), true), layoutParams);
+                this.binding.llIndex.addView(getText(i2 == 0 ? "" : String.valueOf(i2), true), layoutParams);
                 LinearLayout linearLayout = new LinearLayout(getContext());
                 linearLayout.setOrientation(0);
                 for (int i3 = 0; i3 < i; i3++) {
@@ -724,7 +631,7 @@ public class CutDialog extends BottomInDialog {
                     layoutParams2.setMargins(1, 1, 0, 0);
                     linearLayout.addView(textView, layoutParams2);
                 }
-                this.llDepth.addView(linearLayout);
+                this.binding.llDepth.addView(linearLayout);
                 i2++;
             }
         }

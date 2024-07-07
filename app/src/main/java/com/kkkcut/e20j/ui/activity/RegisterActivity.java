@@ -1,5 +1,7 @@
 package com.kkkcut.e20j.ui.activity;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +21,7 @@ import com.kkkcut.e20j.net.Apis;
 import com.kkkcut.e20j.net.TUitls;
 import com.kkkcut.e20j.ui.dialog.LoadingDialog;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityRegisterBinding;
 import com.kkkcut.e20j.utils.AssetVersionUtil;
 import com.kkkcut.e20j.utils.GetUUID;
 import com.kkkcut.e20j.utils.UnifiedErrorUtil;
@@ -38,12 +41,18 @@ import static io.reactivex.rxjava3.schedulers.Schedulers.io;
 /* loaded from: classes.dex */
 public class RegisterActivity extends BaseCustomKeyBoardActivity {
     private static final String TAG = "RegisterActivity";
-    EditText etSn;
-    EditText etRegCode;
-    TextView tvCpu;
+
+    private ActivityRegisterBinding binding;
 
     private ListCompositeDisposable listCompositeDisposable = new ListCompositeDisposable();
     private LoadingDialog loadingDialog;
+
+    @Override
+    public void onCreate(Bundle bundle, PersistableBundle persistableBundle) {
+        super.onCreate(bundle, persistableBundle);
+        this.binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(this.binding.getRoot());
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected int getContentViewLayoutID() {
@@ -56,19 +65,19 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected void initViewsAndEvents() {
-        bindToEditor(this.etSn, 0);
-        bindToEditor(this.etRegCode, 0);
-        this.etSn.postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.activity.RegisterActivity.1
+        bindToEditor(this.binding.etSn, 0);
+        bindToEditor(this.binding.etRegCode, 0);
+        this.binding.etSn.postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.activity.RegisterActivity.1
             @Override // java.lang.Runnable
             public void run() {
-                RegisterActivity.this.etSn.requestFocus();
+                RegisterActivity.this.binding.etSn.requestFocus();
             }
         }, 300L);
         String uuid = GetUUID.getUUID();
         if (TextUtils.isEmpty(uuid)) {
             return;
         }
-        this.tvCpu.setText(uuid);
+        this.binding.tvCpu.setText(uuid);
     }
 
     public void onViewClicked() {
@@ -76,7 +85,7 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
     }
 
     private void registration() {
-        String trim = this.etSn.getText().toString().trim();
+        String trim = this.binding.etSn.getText().toString().trim();
         if (TextUtils.isEmpty(trim)) {
             ToastUtil.showToast(R.string.not_null);
             return;
@@ -85,7 +94,7 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
             ToastUtil.showToast(R.string.serial_number_is_not_correct);
             return;
         }
-        String trim2 = this.etRegCode.getText().toString().trim();
+        String trim2 = this.binding.etRegCode.getText().toString().trim();
         if (TextUtils.isEmpty(trim2)) {
             ToastUtil.showToast(R.string.not_null);
             return;
@@ -130,7 +139,7 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
                     }
                     Log.i(RegisterActivity.TAG, "database:" + configuration.getDatabase());
                     FileUtil.readIoStringToFile(GsonHelper.toJsonString(configuration), Constant.CONFIG_PATH);
-                    SPUtils.put("series", RegisterActivity.this.etSn.getText().toString().trim());
+                    SPUtils.put("series", RegisterActivity.this.binding.etSn.getText().toString().trim());
                     int assetsDbVersion = AssetVersionUtil.getAssetsDbVersion(RegisterActivity.this.getAssets(), Constant.CONFIG_UPDATA);
                     Log.i(RegisterActivity.TAG, "asset配置文件版本: " + assetsDbVersion);
                     SPUtils.put(SpKeys.CONFIG_UPDATE, assetsDbVersion);
@@ -192,8 +201,8 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
     @Override // androidx.appcompat.app.AppCompatActivity, androidx.core.app.ComponentActivity, android.app.Activity, android.view.Window.Callback
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
         if (keyEvent.getKeyCode() == 66) {
-            if (this.etSn.hasFocus()) {
-                this.etRegCode.requestFocus();
+            if (this.binding.etSn.hasFocus()) {
+                this.binding.etRegCode.requestFocus();
                 return true;
             }
             registration();
@@ -218,7 +227,7 @@ public class RegisterActivity extends BaseCustomKeyBoardActivity {
     /* JADX INFO: Access modifiers changed from: package-private */
     public void onSnChanged(CharSequence charSequence) {
         if (charSequence.length() == 10) {
-            this.etRegCode.requestFocus();
+            this.binding.etRegCode.requestFocus();
         }
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.cutting.machine.communication.OperationManager;
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
 import com.kkkcut.e20j.base.BaseFActivity;
 import com.kkkcut.e20j.us.R;
+import com.kkkcut.e20j.us.databinding.ActivityFirmwareUpdateBinding;
 import com.kkkcut.e20j.utils.AssetVersionUtil;
 
 import java.io.IOException;
@@ -28,13 +30,14 @@ public class FirmwareUpdateActivity extends BaseFActivity {
     List<byte[]> data = new ArrayList();
     private int index;
 
-    ProgressBar progressBar;
+    ActivityFirmwareUpdateBinding binding;
 
-    TextView tvCurrentVersion;
-
-    TextView tvNewVersion;
-
-    TextView tvProgress;
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.binding = ActivityFirmwareUpdateBinding.inflate(getLayoutInflater());
+        setContentView(this.binding.getRoot());
+    }
 
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected int getContentViewLayoutID() {
@@ -55,8 +58,8 @@ public class FirmwareUpdateActivity extends BaseFActivity {
     /* JADX WARN: Type inference failed for: r0v4, types: [com.kkkcut.e20j.ui.activity.FirmwareUpdateActivity$1] */
     @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
     protected void initViewsAndEvents() {
-        this.tvCurrentVersion.setText(getIntent().getStringExtra(CURRENT_VERSION));
-        this.tvNewVersion.setText(getIntent().getStringExtra(NEW_VERSION));
+        this.binding.tvCurrentVersion.setText(getIntent().getStringExtra(CURRENT_VERSION));
+        this.binding.tvNewVersion.setText(getIntent().getStringExtra(NEW_VERSION));
         new Thread() { // from class: com.kkkcut.e20j.ui.activity.FirmwareUpdateActivity.1
             @Override // java.lang.Thread, java.lang.Runnable
             public void run() {
@@ -87,12 +90,12 @@ public class FirmwareUpdateActivity extends BaseFActivity {
         if (f > 100.0f) {
             f = 100.0f;
         }
-        ProgressBar progressBar = this.progressBar;
-        if (progressBar == null || this.tvProgress == null) {
+        ProgressBar progressBar = this.binding.progress;
+        if (progressBar == null || this.binding.tvProgress == null) {
             return;
         }
         progressBar.setProgress((int) f);
-        this.tvProgress.setText(String.format("%.1f%%", Float.valueOf(f)));
+        this.binding.tvProgress.setText(String.format("%.1f%%", Float.valueOf(f)));
     }
 
     @Override // com.kkkcut.e20j.base.BaseActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity
