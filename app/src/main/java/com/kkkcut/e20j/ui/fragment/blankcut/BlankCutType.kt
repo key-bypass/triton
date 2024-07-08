@@ -1,7 +1,7 @@
-package com.kkkcut.e20j.ui.fragment.blankcut;
+package com.kkkcut.e20j.ui.fragment.blankcut
 
 /* loaded from: classes.dex */
-public enum BlankCutType {
+enum class BlankCutType(val flag: Int) {
     KEY_HEAD(1),
     THICKNESS(2),
     WIDTH(3),
@@ -18,15 +18,5 @@ public enum BlankCutType {
     HY18R(14),
     KW16ToKW15(15),
     LXP90To80K(16),
-    KW14ToKW15(17);
-
-    private int flag;
-
-    BlankCutType(int i) {
-        this.flag = i;
-    }
-
-    public int getFlag() {
-        return this.flag;
-    }
+    KW14ToKW15(17)
 }

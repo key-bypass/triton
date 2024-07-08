@@ -1,40 +1,43 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.widget.TextView;
-import com.kkkcut.e20j.DbBean.userDB.JpushMsg;
-import com.kkkcut.e20j.us.R;
+import android.os.Bundle
+import android.os.Parcelable
+import android.widget.TextView
+import com.kkkcut.e20j.DbBean.userDB.JpushMsg
+import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
-public class MessageDetailFragment extends BaseBackFragment {
-    private static final String JPUSH_MSG = "jpushMsg";
+class MessageDetailFragment() : BaseBackFragment() {
+    var tvContent: TextView? = null
 
-    TextView tvContent;
+    var tvTitle: TextView? = null
 
-    TextView tvTitle;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_message_detail;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_message_detail
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static MessageDetailFragment newInstance(JpushMsg jpushMsg) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(JPUSH_MSG, jpushMsg);
-        MessageDetailFragment messageDetailFragment = new MessageDetailFragment();
-        messageDetailFragment.setArguments(bundle);
-        return messageDetailFragment;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val jpushMsg: JpushMsg? = getArguments()!!.getParcelable<Parcelable>(JPUSH_MSG) as JpushMsg?
+        tvTitle!!.setText(jpushMsg!!.getTitle())
+        tvContent!!.setText(jpushMsg.getContent())
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        JpushMsg jpushMsg = (JpushMsg) getArguments().getParcelable(JPUSH_MSG);
-        this.tvTitle.setText(jpushMsg.getTitle());
-        this.tvContent.setText(jpushMsg.getContent());
+    companion object {
+        private val JPUSH_MSG: String = "jpushMsg"
+
+        fun newInstance(jpushMsg: JpushMsg?): MessageDetailFragment {
+            val bundle: Bundle = Bundle()
+            bundle.putParcelable(JPUSH_MSG, jpushMsg)
+            val messageDetailFragment: MessageDetailFragment = MessageDetailFragment()
+            messageDetailFragment.setArguments(bundle)
+            return messageDetailFragment
+        }
     }
 }

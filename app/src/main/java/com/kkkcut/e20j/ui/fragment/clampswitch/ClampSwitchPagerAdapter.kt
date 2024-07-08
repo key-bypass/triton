@@ -1,60 +1,49 @@
-package com.kkkcut.e20j.ui.fragment.clampswitch;
+package com.kkkcut.e20j.ui.fragment.clampswitch
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import androidx.viewpager.widget.PagerAdapter;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.viewpager.widget.PagerAdapter
 
 /* loaded from: classes.dex */
-public class ClampSwitchPagerAdapter extends PagerAdapter {
-    List<ImageView> imageViewList = new ArrayList();
-    List<ClampDisplayBean> imgRes;
+class ClampSwitchPagerAdapter(private var imgRes: List<ClampDisplayBean>, context: Context) :
+    PagerAdapter() {
+    private var imageViewList = ArrayList<ImageView>()
 
-    @Override // androidx.viewpager.widget.PagerAdapter
-    public boolean isViewFromObject(View view, Object obj) {
-        return view == obj;
+    // androidx.viewpager.widget.PagerAdapter
+    override fun isViewFromObject(view: View, obj: Any): Boolean {
+        return view === obj
     }
 
-    public ClampSwitchPagerAdapter(List<ClampDisplayBean> list, Context context) {
-        this.imgRes = list;
-        for (int i = 0; i < list.size(); i++) {
-            ImageView imageView = new ImageView(context);
-            imageView.setImageResource(list.get(i).getDrawable());
-            imageView.setPadding(5, 5, 5, 5);
-            this.imageViewList.add(imageView);
+    init {
+        for (i in imgRes.indices) {
+            val imageView = ImageView(context)
+            imageView.setImageResource(imgRes[i].drawable)
+            imageView.setPadding(5, 5, 5, 5)
+            imageViewList.add(imageView)
         }
     }
 
-    @Override // androidx.viewpager.widget.PagerAdapter
-    public int getCount() {
-        List<ClampDisplayBean> list = this.imgRes;
-        if (list == null) {
-            return 0;
-        }
-        return list.size();
+    // androidx.viewpager.widget.PagerAdapter
+    override fun getCount(): Int {
+        val list = this.imgRes ?: return 0
+        return list.size
     }
 
-    @Override // androidx.viewpager.widget.PagerAdapter
-    public void destroyItem(ViewGroup viewGroup, int i, Object obj) {
-        viewGroup.removeView((View) obj);
+    // androidx.viewpager.widget.PagerAdapter
+    override fun destroyItem(viewGroup: ViewGroup, i: Int, obj: Any) {
+        viewGroup.removeView(obj as View)
     }
 
-    @Override // androidx.viewpager.widget.PagerAdapter
-    public float getPageWidth(int i) {
-        return super.getPageWidth(i);
+    // androidx.viewpager.widget.PagerAdapter
+    override fun instantiateItem(viewGroup: ViewGroup, i: Int): Any {
+        val imageView = imageViewList[i]
+        viewGroup.addView(imageView)
+        return imageView
     }
 
-    @Override // androidx.viewpager.widget.PagerAdapter
-    public Object instantiateItem(ViewGroup viewGroup, int i) {
-        ImageView imageView = this.imageViewList.get(i);
-        viewGroup.addView(imageView);
-        return imageView;
-    }
-
-    public View getViewByPosition(int i) {
-        return this.imageViewList.get(i);
+    fun getViewByPosition(i: Int): View {
+        return imageViewList[i]
     }
 }

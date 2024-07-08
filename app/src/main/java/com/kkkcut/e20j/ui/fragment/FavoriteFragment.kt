@@ -1,267 +1,261 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.GoOperatBean;
-import com.kkkcut.e20j.DbBean.userDB.CollectionData;
-import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.adapter.FavoriteAdapter;
-import com.kkkcut.e20j.androidquick.network.RetrofitManager;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.bean.gsonBean.GetTestData;
-import com.kkkcut.e20j.dao.UserDataDaoManager;
-import com.kkkcut.e20j.net.Apis;
-import com.kkkcut.e20j.net.TUitls;
-import com.kkkcut.e20j.ui.dialog.EditDialog;
-import com.kkkcut.e20j.ui.dialog.RemindDialog;
-import com.kkkcut.e20j.us.R;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener
+import com.kkkcut.e20j.DbBean.GoOperatBean
+import com.kkkcut.e20j.DbBean.userDB.CollectionData
+import com.kkkcut.e20j.MyApplication
+import com.kkkcut.e20j.adapter.FavoriteAdapter
+import com.kkkcut.e20j.androidquick.network.RetrofitManager
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.bean.gsonBean.GetTestData
+import com.kkkcut.e20j.dao.UserDataDaoManager
+import com.kkkcut.e20j.driver.communication.DataBean
+import com.kkkcut.e20j.net.Apis
+import com.kkkcut.e20j.net.TUitls
+import com.kkkcut.e20j.ui.dialog.EditDialog
+import com.kkkcut.e20j.ui.dialog.RemindDialog
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentFavoriteBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.Random
+import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
-public class FavoriteFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
-    private static final int PAGE_SIZE = 50;
-    private static final String TYPE = "type";
-    FavoriteAdapter adapter;
+class FavoriteFragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener,
+    BaseQuickAdapter.OnItemChildClickListener {
+    var binding: FragmentFavoriteBinding? = null
+    var adapter: FavoriteAdapter? = null
 
-    Button btGetTestData;
 
-    EditText etSearch;
-    private int pageIndex;
+    private var pageIndex: Int = 0
 
-    RecyclerView rvUserData;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_favorite;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View? {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentFavoriteBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    static /* synthetic */ int access$008(FavoriteFragment favoriteFragment) {
-        int i = favoriteFragment.pageIndex;
-        favoriteFragment.pageIndex = i + 1;
-        return i;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_favorite
     }
 
-    public static FavoriteFragment newInstance() {
-        Bundle bundle = new Bundle();
-        FavoriteFragment favoriteFragment = new FavoriteFragment();
-        favoriteFragment.setArguments(bundle);
-        return favoriteFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        this.rvUserData.setLayoutManager(linearLayoutManager);
-        this.rvUserData.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        FavoriteAdapter favoriteAdapter = new FavoriteAdapter();
-        this.adapter = favoriteAdapter;
-        this.rvUserData.setAdapter(favoriteAdapter);
-        getDataList(0, 50, false);
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(getContext())
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL)
+        binding!!.rvUserData.setLayoutManager(linearLayoutManager)
+        binding!!.rvUserData.addItemDecoration(DividerItemDecoration(getContext(), 1))
+        val favoriteAdapter: FavoriteAdapter = FavoriteAdapter()
+        this.adapter = favoriteAdapter
+        binding!!.rvUserData.setAdapter(favoriteAdapter)
+        getDataList(0, 50, false)
         if (MyApplication.getInstance().isShowRealDepth()) {
-            this.btGetTestData.setVisibility(View.VISIBLE);
+            binding!!.btGetTestData.setVisibility(View.VISIBLE)
         }
-        this.adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.1
-            @Override // com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener
-            public void onLoadMoreRequested() {
-                FavoriteFragment.access$008(FavoriteFragment.this);
-                Log.d(FavoriteFragment.TAG, "onLoadMoreRequested() called" + FavoriteFragment.this.pageIndex);
-                FavoriteFragment favoriteFragment = FavoriteFragment.this;
-                favoriteFragment.getDataList(favoriteFragment.pageIndex, 50, false);
+
+        adapter!!.setOnLoadMoreListener(RequestLoadMoreListener({
+            pageIndex++
+            Log.d(TAG, "onLoadMoreRequested() called" + this@FavoriteFragment.pageIndex)
+            val favoriteFragment: FavoriteFragment = this@FavoriteFragment
+            favoriteFragment.getDataList(favoriteFragment.pageIndex, 50, false)
+        }), binding!!.rvUserData)
+        adapter!!.setOnItemChildClickListener(this)
+        adapter!!.setOnItemClickListener(this)
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    fun getDataList(i: Int, i2: Int, z: Boolean) {
+        val str: String = binding!!.etSearch.getText().toString().trim { it <= ' ' }
+        val subscribe: Disposable = Observable.fromCallable {
+            UserDataDaoManager.getInstance(requireContext()
+            ).getCollection(i, i2, str)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ list: List<CollectionData> ->
+            if (z) {
+                adapter!!.setNewData(list)
+            } else {
+                adapter!!.addData(list)
             }
-        }, this.rvUserData);
-        this.adapter.setOnItemChildClickListener(this);
-        this.adapter.setOnItemClickListener(this);
+            if (list.size < 50) {
+                adapter!!.loadMoreEnd(false)
+            } else {
+                adapter!!.loadMoreComplete()
+            }
+        }, { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    public void getDataList(final int i, final int i2, final boolean z) {
-        final String trim = this.etSearch.getText().toString().trim();
-        Disposable subscribe = Observable.fromCallable(() -> FavoriteFragment.this.m26x9c541203(i, i2, trim)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
-                FavoriteFragment.this.m27x55cb9fa2(z, obj);
-
-        });
-        clearDisposable();
-        addDisposable(subscribe);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getDataList$1$com-kkkcut-e20j-ui-fragment-FavoriteFragment, reason: not valid java name */
-    public /* synthetic */ void m27x55cb9fa2(boolean z, List list) throws Exception {
-        if (z) {
-            this.adapter.setNewData(list);
-        } else {
-            this.adapter.addData((Collection) list);
-        }
-        if (list.size() < 50) {
-            this.adapter.loadMoreEnd(false);
-        } else {
-            this.adapter.loadMoreComplete();
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: getData, reason: merged with bridge method [inline-methods] */
-    public List m26x9c541203(int i, int i2, String str) {
-        return UserDataDaoManager.getInstance(getContext()).getCollection(i, i2, str);
-    }
-
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
-    public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        int id = view.getId();
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
+    override fun onItemChildClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val id: Int = view.getId()
         if (id == R.id.iv_delete) {
-            UserDataDaoManager.getInstance(getContext()).deleteCollection((CollectionData) baseQuickAdapter.getData().get(i));
-            baseQuickAdapter.remove(i);
+            UserDataDaoManager.getInstance(getContext())
+                .deleteCollection(baseQuickAdapter.getData().get(i) as CollectionData?)
+            baseQuickAdapter.remove(i)
         } else {
             if (id != R.id.iv_edit) {
-                return;
+                return
             }
-            showEditDialog(baseQuickAdapter.getData().get(i), (TextView) ((View) view.getParent().getParent()).findViewById(R.id.tv_remark));
+            showEditDialog(
+                baseQuickAdapter.getData().get(i),
+                (view.getParent().getParent() as View).findViewById(
+                    R.id.tv_remark
+                )
+            )
         }
     }
 
-    private void showEditDialog(final Object obj, final TextView textView) {
-        final String remark = ((CollectionData) obj).getRemark();
-        EditDialog editDialog = new EditDialog(getContext());
-        editDialog.setTip(getString(R.string.enter_remarks));
+    private fun showEditDialog(obj: Any, textView: TextView) {
+        val remark: String = (obj as CollectionData).getRemark()
+        val editDialog: EditDialog = EditDialog(getContext())
+        editDialog.setTip(getString(R.string.enter_remarks))
         if (!TextUtils.isEmpty(remark)) {
-            editDialog.setEditTextContent(remark);
+            editDialog.setEditTextContent(remark)
         }
-        editDialog.setDialogBtnCallback(new EditDialog.DialogInputFinishCallBack() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.2
-            @Override // com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
-            public void onDialogButClick(String str) {
-                if (TextUtils.isEmpty(str) || str.equals(remark)) {
-                    return;
-                }
-                textView.setText(str);
-                CollectionData collectionData = (CollectionData) obj;
-                collectionData.setRemark(str);
-                UserDataDaoManager.getInstance(FavoriteFragment.this.getContext()).collectKey(collectionData);
+
+        editDialog.setDialogBtnCallback { str: String ->
+            if (!TextUtils.isEmpty(str) && (str != remark)) {
+                textView.text = str
+                val collectionData: CollectionData = obj
+                collectionData.remark = str
+                UserDataDaoManager.getInstance(this@FavoriteFragment.requireContext())
+                    .collectKey(collectionData)
             }
-        });
-        editDialog.show();
+        }
+        editDialog.show()
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        getArguments().getInt(TYPE);
-        start(KeyOperateFragment.newInstance(new GoOperatBean((CollectionData) baseQuickAdapter.getData().get(i))));
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        arguments!!.getInt(TYPE)
+        start(
+            KeyOperateFragment.newInstance(
+                GoOperatBean(
+                    (baseQuickAdapter.data[i] as CollectionData?)!!
+                )
+            )
+        )
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        getArguments().getInt(TYPE);
-        return getString(R.string.favorites);
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        arguments!!.getInt(TYPE)
+        return getString(R.string.favorites)
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.id
         if (id != R.id.bt_delete_all) {
             if (id != R.id.bt_get_test_data) {
-                return;
+                return
             }
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getTestData(TUitls.getTestData(SPUtils.getString("series", "E219082007"))).subscribeOn(Schedulers.io()).flatMap(new Function<GetTestData, ObservableSource<GetTestData.DataListBean>>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.8
-                @Override // io.reactivex.functions.Function
-                public ObservableSource<GetTestData.DataListBean> apply(GetTestData getTestData) throws Exception {
-                    if (!"0".equals(getTestData.getCode())) {
-                        Log.i(FavoriteFragment.TAG, "getCode: 0");
-                        return null;
-                    }
-                    List<GetTestData.DataListBean> data_list = getTestData.getData_list();
-                    if (data_list == null) {
-                        Log.i(FavoriteFragment.TAG, "data_list: null");
-                        return null;
-                    }
-                    return Observable.fromIterable(data_list);
-                }
-            }).map(new Function<GetTestData.DataListBean, CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.7
-                @Override // io.reactivex.functions.Function
-                public CollectionData apply(GetTestData.DataListBean dataListBean) throws Exception {
-                    new Random().nextInt(Integer.MAX_VALUE);
-                    CollectionData collectionData = new CollectionData();
-                    collectionData.setTitle(dataListBean.getTitle());
-                    collectionData.setToothCode(dataListBean.getTooth_Code());
-                    collectionData.setBasicDataID(Integer.parseInt(dataListBean.getBasic_data_ID()));
-                    collectionData.setCuts(dataListBean.getCuts());
-                    return collectionData;
-                }
-            }).doOnNext(new Consumer<CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.6
-                @Override // io.reactivex.functions.Consumer
-                public void accept(CollectionData collectionData) throws Exception {
-                    UserDataDaoManager.getInstance(FavoriteFragment.this.getContext()).collectKey(collectionData);
-                }
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.4
-                @Override // io.reactivex.functions.Consumer
-                public void accept(CollectionData collectionData) throws Exception {
-                    Log.i(FavoriteFragment.TAG, "accept: " + collectionData.getTitle());
-                    FavoriteFragment.this.adapter.addData(collectionData);
-                }
-            }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.5
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Throwable th) throws Exception {
-                    Log.i(FavoriteFragment.TAG, "throwable: " + th.getMessage());
-                }
-            }));
+
+            addDisposable(
+                RetrofitManager.getInstance().createApi(Apis::class.java)
+                    .getTestData(TUitls.getTestData(SPUtils.getString("series", "E219082007")))
+                    .subscribeOn(
+                        Schedulers.io()
+                    ).flatMap { getTestData ->
+                        if ("0" != getTestData.code) {
+                            Log.i(TAG, "getCode: 0")
+                        }
+                        var dataList: List<GetTestData.DataListBean>? = getTestData.data_list
+                        if (dataList == null) {
+                            Log.i(TAG, "data_list: null")
+                        }
+                        if (dataList == null) {
+                            dataList = ArrayList()
+                        }
+                        return@flatMap Observable.fromIterable(dataList)
+                    }.map { dataListBean: GetTestData.DataListBean ->
+                        Random().nextInt(Int.MAX_VALUE)
+                        val collectionData = CollectionData()
+                        collectionData.title = dataListBean.title
+                        collectionData.toothCode = dataListBean.tooth_Code
+                        collectionData.basicDataID = dataListBean.basic_data_ID.toInt()
+                        collectionData.cuts = dataListBean.cuts
+                        collectionData
+                    }.doOnNext { collectionData: CollectionData? ->
+                        UserDataDaoManager.getInstance(
+                            this@FavoriteFragment.getContext()
+                        ).collectKey(collectionData)
+                    }.observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe(
+                    { collectionData: CollectionData ->
+                        Log.i(TAG, "accept: " + collectionData.title)
+                        adapter!!.addData(collectionData)
+                    }, { th: Throwable -> Log.i(TAG, "throwable: " + th.message) },
+                        { dismissLoadingDialog() }
+                )
+            )
         } else {
-            RemindDialog remindDialog = new RemindDialog(getContext());
-            remindDialog.setRemindMsg(getString(R.string.delete_all_recordes));
-            remindDialog.setDialogBtnCallback(new RemindDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.3
-                @Override // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
-                public void onDialogButClick(boolean z) {
-                    if (z) {
-                        FavoriteFragment.this.deleteAll();
-                    }
+            val remindDialog = RemindDialog(getContext())
+            remindDialog.setRemindMsg(getString(R.string.delete_all_recordes))
+
+            remindDialog.setDialogBtnCallback { z: Boolean ->
+                if (z) {
+                    this@FavoriteFragment.deleteAll()
                 }
-            });
-            remindDialog.show();
+            }
+            remindDialog.show()
         }
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void deleteAll() {
-        addDisposable(Observable.fromCallable(new Callable<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.10
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // java.util.concurrent.Callable
-            public Boolean call() throws Exception {
-                return Boolean.valueOf(UserDataDaoManager.getInstance(FavoriteFragment.this.getContext()).deleteAllCollections());
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.FavoriteFragment.9
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Boolean bool) throws Exception {
-                if (bool.booleanValue()) {
-                    FavoriteFragment.this.adapter.setNewData(null);
+    fun deleteAll() {
+        addDisposable(
+            Observable.fromCallable(Callable {
+                UserDataDaoManager.getInstance(
+                    this@FavoriteFragment.getContext()
+                ).deleteAllCollections()
+            }).subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribe({ bool: Boolean ->
+                if (bool) {
+                    adapter!!.setNewData(null)
                 }
-            }
-        }));
+            },
+            { dismissLoadingDialog() })
+        )
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public void afterTextChanged(Editable editable) {
-        this.pageIndex = 0;
-        getDataList(0, 50, true);
+    fun afterTextChanged(editable: Editable?) {
+        this.pageIndex = 0
+        getDataList(0, 50, true)
+    }
+
+    companion object {
+        private val PAGE_SIZE: Int = 50
+        private val TYPE: String = "type"
+
+        fun newInstance(): FavoriteFragment {
+            val bundle: Bundle = Bundle()
+            val favoriteFragment: FavoriteFragment = FavoriteFragment()
+            favoriteFragment.setArguments(bundle)
+            return favoriteFragment
+        }
     }
 }

@@ -1,107 +1,189 @@
-package com.kkkcut.e20j.ui.fragment.customkey;
+package com.kkkcut.e20j.ui.fragment.customkey
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import com.kkkcut.e20j.DbBean.userDB.CustomKey;
-import com.kkkcut.e20j.androidquick.autolayout.widget.AutoRadioGroup;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.utils.ThemeUtils;
+import android.os.Bundle
+import android.os.Parcelable
+import android.view.View
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import com.kkkcut.e20j.DbBean.userDB.CustomKey
+import com.kkkcut.e20j.androidquick.autolayout.widget.AutoRadioGroup
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.utils.ThemeUtils
 
 /* loaded from: classes.dex */
-public class KeyAlignSelectFragment extends BaseBackFragment {
-    private static final String CUSTOMKEY = "CUSTOMKEY";
-    CustomKey customKey;
+class KeyAlignSelectFragment() : BaseBackFragment() {
+    var customKey: CustomKey? = null
 
-    RadioButton rbShoulder;
+    var rbShoulder: RadioButton? = null
 
-    RadioButton rbTip;
+    var rbTip: RadioButton? = null
 
-    AutoRadioGroup rg1;
+    var rg1: AutoRadioGroup? = null
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_key_align_select;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_key_align_select
     }
 
-    public static KeyAlignSelectFragment newInstance(CustomKey customKey) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(CUSTOMKEY, customKey);
-        KeyAlignSelectFragment keyAlignSelectFragment = new KeyAlignSelectFragment();
-        keyAlignSelectFragment.setArguments(bundle);
-        return keyAlignSelectFragment;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.please_choose_key_align_method)
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.please_choose_key_align_method);
-    }
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val customKey: CustomKey? =
+            getArguments()!!.getParcelable<Parcelable>(CUSTOMKEY) as CustomKey?
+        this.customKey = customKey
+        when (customKey!!.getType()) {
+            0 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doublekey_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doublekey_tip_custom
+                    )
+                )
+            }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        CustomKey customKey = (CustomKey) getArguments().getParcelable(CUSTOMKEY);
-        this.customKey = customKey;
-        switch (customKey.getType()) {
-            case 0:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doublekey_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doublekey_tip_custom));
-                break;
-            case 1:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singlekey_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singlekey_tip_custom));
-                break;
-            case 2:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doubleinside_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doubleinside_tip_custom));
-                break;
-            case 3:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singleoutside_down_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singleoutside_down_tip_custom));
-                break;
-            case 4:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doubleoutside_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.doubleoutside_tip_custom));
-                break;
-            case 5:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singleinside_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.singleinside_tip_custom));
-                break;
-            case 6:
-                this.rbShoulder.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.dimple_shoulder_custom));
-                this.rbTip.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.dimple_tip_custom));
-                break;
+            1 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singlekey_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singlekey_tip_custom
+                    )
+                )
+            }
+
+            2 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doubleinside_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doubleinside_tip_custom
+                    )
+                )
+            }
+
+            3 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singleoutside_down_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singleoutside_down_tip_custom
+                    )
+                )
+            }
+
+            4 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doubleoutside_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.doubleoutside_tip_custom
+                    )
+                )
+            }
+
+            5 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singleinside_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.singleinside_tip_custom
+                    )
+                )
+            }
+
+            6 -> {
+                rbShoulder!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.dimple_shoulder_custom
+                    )
+                )
+                rbTip!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        getContext(),
+                        R.attr.dimple_tip_custom
+                    )
+                )
+            }
         }
-        if (this.customKey.getAlign() == 1) {
-            this.rbTip.setChecked(true);
+        if (this.customKey!!.getAlign() == 1) {
+            rbTip!!.setChecked(true)
         } else {
-            this.rbShoulder.setChecked(true);
+            rbShoulder!!.setChecked(true)
         }
-        this.rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyAlignSelectFragment.1
-            @Override // android.widget.RadioGroup.OnCheckedChangeListener
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        rg1!!.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyAlignSelectFragment.1
+            // android.widget.RadioGroup.OnCheckedChangeListener
+            override fun onCheckedChanged(radioGroup: RadioGroup, i: Int) {
                 if (i == R.id.rb_shoulder) {
-                    KeyAlignSelectFragment.this.customKey.setAlign(0);
+                    this@KeyAlignSelectFragment.customKey!!.setAlign(0)
                 } else {
                     if (i != R.id.rb_tip) {
-                        return;
+                        return
                     }
-                    KeyAlignSelectFragment.this.customKey.setAlign(1);
+                    this@KeyAlignSelectFragment.customKey!!.setAlign(1)
                 }
             }
-        });
+        })
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.getId()
         if (id == R.id.bt_last) {
-            onBack();
+            onBack()
         } else {
             if (id != R.id.bt_next) {
-                return;
+                return
             }
-            start(KeySpaceSetFragment.newInstance(this.customKey));
+            start(KeySpaceSetFragment.Companion.newInstance(this.customKey))
+        }
+    }
+
+    companion object {
+        private val CUSTOMKEY: String = "CUSTOMKEY"
+        fun newInstance(customKey: CustomKey?): KeyAlignSelectFragment {
+            val bundle: Bundle = Bundle()
+            bundle.putParcelable(CUSTOMKEY, customKey)
+            val keyAlignSelectFragment: KeyAlignSelectFragment = KeyAlignSelectFragment()
+            keyAlignSelectFragment.setArguments(bundle)
+            return keyAlignSelectFragment
         }
     }
 }

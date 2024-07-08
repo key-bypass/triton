@@ -16,10 +16,6 @@ class TechnicalInfoBradAdapter(protected var mContext: Context) :
     protected var mDatas: List<DataManufacturer>? = null
     protected var mInflater: LayoutInflater = LayoutInflater.from(mContext)
 
-    /* loaded from: classes.dex */
-    interface OnKeySelectItemClickListener {
-        fun onItemClick(i: Int)
-    }
 
     fun setDatas(list: List<DataManufacturer>?) {
         this.mDatas = list
@@ -61,7 +57,9 @@ class TechnicalInfoBradAdapter(protected var mContext: Context) :
         var tvContent: TextView = view.findViewById<View>(R.id.tv_content) as TextView
     }
 
-    fun setOnKeySelectItemClickListener(onKeySelectItemClickListener: OnKeySelectItemClickListener?) {
+    var onKeySelectItemClickListener: OnKeySelectItemClickListener?
+        get() = this.listener
+        set(onKeySelectItemClickListener) {
         this.listener = onKeySelectItemClickListener
     }
 }

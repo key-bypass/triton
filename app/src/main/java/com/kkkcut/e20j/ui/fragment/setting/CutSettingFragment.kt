@@ -1,266 +1,335 @@
-package com.kkkcut.e20j.ui.fragment.setting;
+package com.kkkcut.e20j.ui.fragment.setting
 
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
-public class CutSettingFragment extends BaseBackFragment {
-    public static final String CANCLE_REDUCE_LAST_CUT_FEED = "cancle_reduce_last_feed";
-    public static final String CUT_MORE_THAN_ONCE = "cut_more_than_once";
-    public static final String REDUCE_CUT_FEED = "reduce_feed";
-    public static final String STRENGTHEN_ROUTE_PLAN = "strengthen_route_plan";
-    public static final String TAG = "CutSettingFragment";
+class CutSettingFragment() : BaseBackFragment() {
+    var cbAngle1: CheckBox? = null
 
-    CheckBox cbAngle1;
+    var cbAngle2: CheckBox? = null
 
-    CheckBox cbAngle2;
+    var cbAngle3: CheckBox? = null
 
-    CheckBox cbAngle3;
+    var cbAngle4: CheckBox? = null
 
-    CheckBox cbAngle4;
+    var cbDimple1: CheckBox? = null
 
-    CheckBox cbDimple1;
+    var cbDimple2: CheckBox? = null
 
-    CheckBox cbDimple2;
+    var cbDimple3: CheckBox? = null
 
-    CheckBox cbDimple3;
+    var cbDimple4: CheckBox? = null
 
-    CheckBox cbDimple4;
+    var cbDoubleExternal1: CheckBox? = null
 
-    CheckBox cbDoubleExternal1;
+    var cbDoubleExternal2: CheckBox? = null
 
-    CheckBox cbDoubleExternal2;
+    var cbDoubleExternal3: CheckBox? = null
 
-    CheckBox cbDoubleExternal3;
+    var cbDoubleExternal4: CheckBox? = null
 
-    CheckBox cbDoubleExternal4;
+    var cbDoubleInternal1: CheckBox? = null
 
-    CheckBox cbDoubleInternal1;
+    var cbDoubleInternal2: CheckBox? = null
 
-    CheckBox cbDoubleInternal2;
+    var cbDoubleInternal3: CheckBox? = null
 
-    CheckBox cbDoubleInternal3;
+    var cbDoubleInternal4: CheckBox? = null
 
-    CheckBox cbDoubleInternal4;
+    var cbDoublekey1: CheckBox? = null
 
-    CheckBox cbDoublekey1;
+    var cbDoublekey2: CheckBox? = null
 
-    CheckBox cbDoublekey2;
+    var cbDoublekey3: CheckBox? = null
 
-    CheckBox cbDoublekey3;
+    var cbDoublekey4: CheckBox? = null
 
-    CheckBox cbDoublekey4;
+    var cbSingleExternal1: CheckBox? = null
 
-    CheckBox cbSingleExternal1;
+    var cbSingleExternal2: CheckBox? = null
 
-    CheckBox cbSingleExternal2;
+    var cbSingleExternal3: CheckBox? = null
 
-    CheckBox cbSingleExternal3;
+    var cbSingleExternal4: CheckBox? = null
 
-    CheckBox cbSingleExternal4;
+    var cbSingleInternal1: CheckBox? = null
 
-    CheckBox cbSingleInternal1;
+    var cbSingleInternal2: CheckBox? = null
 
-    CheckBox cbSingleInternal2;
+    var cbSingleInternal3: CheckBox? = null
 
-    CheckBox cbSingleInternal3;
+    var cbSingleInternal4: CheckBox? = null
 
-    CheckBox cbSingleInternal4;
+    var cbSinglekey1: CheckBox? = null
 
-    CheckBox cbSinglekey1;
+    var cbSinglekey2: CheckBox? = null
 
-    CheckBox cbSinglekey2;
+    var cbSinglekey3: CheckBox? = null
 
-    CheckBox cbSinglekey3;
+    var cbSinglekey4: CheckBox? = null
 
-    CheckBox cbSinglekey4;
+    var cbTubular1: CheckBox? = null
 
-    CheckBox cbTubular1;
+    var cbTubular2: CheckBox? = null
 
-    CheckBox cbTubular2;
+    var cbTubular3: CheckBox? = null
 
-    CheckBox cbTubular3;
+    var cbTubular4: CheckBox? = null
 
-    CheckBox cbTubular4;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_cut_setting;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_cut_setting
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.cbSinglekey1.setChecked(SPUtils.getBoolean("cut_more_than_once1", false));
-        this.cbDoublekey1.setChecked(SPUtils.getBoolean("cut_more_than_once0", true));
-        this.cbSingleInternal1.setChecked(SPUtils.getBoolean("cut_more_than_once5", false));
-        this.cbSingleExternal1.setChecked(SPUtils.getBoolean("cut_more_than_once3", false));
-        this.cbDoubleInternal1.setChecked(SPUtils.getBoolean("cut_more_than_once2", false));
-        this.cbDoubleExternal1.setChecked(SPUtils.getBoolean("cut_more_than_once4", false));
-        this.cbDimple1.setChecked(SPUtils.getBoolean("cut_more_than_once6", false));
-        this.cbTubular1.setChecked(SPUtils.getBoolean("cut_more_than_once8", false));
-        this.cbAngle1.setChecked(SPUtils.getBoolean("cut_more_than_once7", false));
-        this.cbSinglekey2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed1", false));
-        this.cbDoublekey2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed0", false));
-        this.cbSingleInternal2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed5", false));
-        this.cbSingleExternal2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed3", false));
-        this.cbDoubleInternal2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed2", false));
-        this.cbDoubleExternal2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed4", false));
-        this.cbDimple2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed6", false));
-        this.cbTubular2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed8", false));
-        this.cbAngle2.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed7", false));
-        this.cbSinglekey3.setChecked(SPUtils.getBoolean("reduce_feed1", false));
-        this.cbDoublekey3.setChecked(SPUtils.getBoolean("reduce_feed0", false));
-        this.cbSingleInternal3.setChecked(SPUtils.getBoolean("reduce_feed5", false));
-        this.cbSingleExternal3.setChecked(SPUtils.getBoolean("reduce_feed3", false));
-        this.cbDoubleInternal3.setChecked(SPUtils.getBoolean("reduce_feed2", false));
-        this.cbDoubleExternal3.setChecked(SPUtils.getBoolean("reduce_feed4", false));
-        this.cbDimple3.setChecked(SPUtils.getBoolean("reduce_feed6", false));
-        this.cbTubular3.setChecked(SPUtils.getBoolean("reduce_feed8", false));
-        this.cbAngle3.setChecked(SPUtils.getBoolean("reduce_feed7", false));
-        this.cbSinglekey4.setChecked(SPUtils.getBoolean("strengthen_route_plan1", false));
-        this.cbDoublekey4.setChecked(SPUtils.getBoolean("strengthen_route_plan0", false));
-        this.cbSingleInternal4.setChecked(SPUtils.getBoolean("strengthen_route_plan5", false));
-        this.cbSingleExternal4.setChecked(SPUtils.getBoolean("strengthen_route_plan3", true));
-        this.cbDoubleInternal4.setChecked(SPUtils.getBoolean("strengthen_route_plan2", false));
-        this.cbDoubleExternal4.setChecked(SPUtils.getBoolean("strengthen_route_plan4", false));
-        this.cbDimple4.setChecked(SPUtils.getBoolean("strengthen_route_plan6", false));
-        this.cbTubular4.setChecked(SPUtils.getBoolean("strengthen_route_plan8", false));
-        this.cbAngle4.setChecked(SPUtils.getBoolean("strengthen_route_plan7", false));
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        cbSinglekey1!!.setChecked(SPUtils.getBoolean("cut_more_than_once1", false))
+        cbDoublekey1!!.setChecked(SPUtils.getBoolean("cut_more_than_once0", true))
+        cbSingleInternal1!!.setChecked(SPUtils.getBoolean("cut_more_than_once5", false))
+        cbSingleExternal1!!.setChecked(SPUtils.getBoolean("cut_more_than_once3", false))
+        cbDoubleInternal1!!.setChecked(SPUtils.getBoolean("cut_more_than_once2", false))
+        cbDoubleExternal1!!.setChecked(SPUtils.getBoolean("cut_more_than_once4", false))
+        cbDimple1!!.setChecked(SPUtils.getBoolean("cut_more_than_once6", false))
+        cbTubular1!!.setChecked(SPUtils.getBoolean("cut_more_than_once8", false))
+        cbAngle1!!.setChecked(SPUtils.getBoolean("cut_more_than_once7", false))
+        cbSinglekey2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed1", false))
+        cbDoublekey2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed0", false))
+        cbSingleInternal2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed5", false))
+        cbSingleExternal2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed3", false))
+        cbDoubleInternal2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed2", false))
+        cbDoubleExternal2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed4", false))
+        cbDimple2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed6", false))
+        cbTubular2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed8", false))
+        cbAngle2!!.setChecked(SPUtils.getBoolean("cancle_reduce_last_feed7", false))
+        cbSinglekey3!!.setChecked(SPUtils.getBoolean("reduce_feed1", false))
+        cbDoublekey3!!.setChecked(SPUtils.getBoolean("reduce_feed0", false))
+        cbSingleInternal3!!.setChecked(SPUtils.getBoolean("reduce_feed5", false))
+        cbSingleExternal3!!.setChecked(SPUtils.getBoolean("reduce_feed3", false))
+        cbDoubleInternal3!!.setChecked(SPUtils.getBoolean("reduce_feed2", false))
+        cbDoubleExternal3!!.setChecked(SPUtils.getBoolean("reduce_feed4", false))
+        cbDimple3!!.setChecked(SPUtils.getBoolean("reduce_feed6", false))
+        cbTubular3!!.setChecked(SPUtils.getBoolean("reduce_feed8", false))
+        cbAngle3!!.setChecked(SPUtils.getBoolean("reduce_feed7", false))
+        cbSinglekey4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan1", false))
+        cbDoublekey4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan0", false))
+        cbSingleInternal4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan5", false))
+        cbSingleExternal4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan3", true))
+        cbDoubleInternal4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan2", false))
+        cbDoubleExternal4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan4", false))
+        cbDimple4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan6", false))
+        cbTubular4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan8", false))
+        cbAngle4!!.setChecked(SPUtils.getBoolean("strengthen_route_plan7", false))
     }
 
-    public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
-        int id = compoundButton.getId();
-        switch (id) {
-            case R.id.cb_angle_1 /* 2131361995 */:
-                SPUtils.put("cut_more_than_once7", z);
-                return;
-            case R.id.cb_angle_2 /* 2131361996 */:
-                SPUtils.put("cancle_reduce_last_feed7", z);
-                return;
-            case R.id.cb_angle_3 /* 2131361997 */:
-                SPUtils.put("reduce_feed7", z);
-                return;
-            case R.id.cb_angle_4 /* 2131361998 */:
-                SPUtils.put("strengthen_route_plan7", z);
-                return;
-            default:
-                switch (id) {
-                    case R.id.cb_dimple_1 /* 2131362006 */:
-                        SPUtils.put("cut_more_than_once6", z);
-                        return;
-                    case R.id.cb_dimple_2 /* 2131362007 */:
-                        SPUtils.put("cancle_reduce_last_feed6", z);
-                        return;
-                    case R.id.cb_dimple_3 /* 2131362008 */:
-                        SPUtils.put("reduce_feed6", z);
-                        return;
-                    case R.id.cb_dimple_4 /* 2131362009 */:
-                        SPUtils.put("strengthen_route_plan6", z);
-                        return;
-                    default:
-                        switch (id) {
-                            case R.id.cb_double_external_1 /* 2131362011 */:
-                                SPUtils.put("cut_more_than_once4", z);
-                                return;
-                            case R.id.cb_double_external_2 /* 2131362012 */:
-                                SPUtils.put("cancle_reduce_last_feed4", z);
-                                return;
-                            case R.id.cb_double_external_3 /* 2131362013 */:
-                                SPUtils.put("reduce_feed4", z);
-                                return;
-                            case R.id.cb_double_external_4 /* 2131362014 */:
-                                SPUtils.put("strengthen_route_plan4", z);
-                                return;
-                            case R.id.cb_double_internal_1 /* 2131362015 */:
-                                SPUtils.put("cut_more_than_once2", z);
-                                return;
-                            case R.id.cb_double_internal_2 /* 2131362016 */:
-                                SPUtils.put("cancle_reduce_last_feed2", z);
-                                return;
-                            case R.id.cb_double_internal_3 /* 2131362017 */:
-                                SPUtils.put("reduce_feed2", z);
-                                return;
-                            case R.id.cb_double_internal_4 /* 2131362018 */:
-                                SPUtils.put("strengthen_route_plan2", z);
-                                return;
-                            case R.id.cb_doublekey_1 /* 2131362019 */:
-                                SPUtils.put("cut_more_than_once0", z);
-                                return;
-                            case R.id.cb_doublekey_2 /* 2131362020 */:
-                                SPUtils.put("cancle_reduce_last_feed0", z);
-                                return;
-                            case R.id.cb_doublekey_3 /* 2131362021 */:
-                                SPUtils.put("reduce_feed0", z);
-                                return;
-                            case R.id.cb_doublekey_4 /* 2131362022 */:
-                                SPUtils.put("strengthen_route_plan0", z);
-                                return;
-                            default:
-                                switch (id) {
-                                    case R.id.cb_single_external_1 /* 2131362033 */:
-                                        SPUtils.put("cut_more_than_once3", z);
-                                        return;
-                                    case R.id.cb_single_external_2 /* 2131362034 */:
-                                        SPUtils.put("cancle_reduce_last_feed3", z);
-                                        return;
-                                    case R.id.cb_single_external_3 /* 2131362035 */:
-                                        SPUtils.put("reduce_feed3", z);
-                                        return;
-                                    case R.id.cb_single_external_4 /* 2131362036 */:
-                                        SPUtils.put("strengthen_route_plan3", z);
-                                        return;
-                                    case R.id.cb_single_internal_1 /* 2131362037 */:
-                                        SPUtils.put("cut_more_than_once5", z);
-                                        return;
-                                    case R.id.cb_single_internal_2 /* 2131362038 */:
-                                        SPUtils.put("cancle_reduce_last_feed5", z);
-                                        return;
-                                    case R.id.cb_single_internal_3 /* 2131362039 */:
-                                        SPUtils.put("reduce_feed5", z);
-                                        return;
-                                    case R.id.cb_single_internal_4 /* 2131362040 */:
-                                        SPUtils.put("strengthen_route_plan5", z);
-                                        return;
-                                    case R.id.cb_singlekey_1 /* 2131362041 */:
-                                        SPUtils.put("cut_more_than_once1", z);
-                                        return;
-                                    case R.id.cb_singlekey_2 /* 2131362042 */:
-                                        SPUtils.put("cancle_reduce_last_feed1", z);
-                                        return;
-                                    case R.id.cb_singlekey_3 /* 2131362043 */:
-                                        SPUtils.put("reduce_feed1", z);
-                                        return;
-                                    case R.id.cb_singlekey_4 /* 2131362044 */:
-                                        SPUtils.put("strengthen_route_plan1", z);
-                                        return;
-                                    default:
-                                        switch (id) {
-                                            case R.id.cb_tubular_1 /* 2131362046 */:
-                                                SPUtils.put("cut_more_than_once8", z);
-                                                return;
-                                            case R.id.cb_tubular_2 /* 2131362047 */:
-                                                SPUtils.put("cancle_reduce_last_feed8", z);
-                                                return;
-                                            case R.id.cb_tubular_3 /* 2131362048 */:
-                                                SPUtils.put("reduce_feed8", z);
-                                                return;
-                                            case R.id.cb_tubular_4 /* 2131362049 */:
-                                                SPUtils.put("strengthen_route_plan8", z);
-                                                return;
-                                            default:
-                                                return;
-                                        }
-                                }
-                        }
+    fun onCheckedChanged(compoundButton: CompoundButton, z: Boolean) {
+        val id: Int = compoundButton.getId()
+        when (id) {
+            R.id.cb_angle_1 -> {
+                SPUtils.put("cut_more_than_once7", z)
+                return
+            }
+
+            R.id.cb_angle_2 -> {
+                SPUtils.put("cancle_reduce_last_feed7", z)
+                return
+            }
+
+            R.id.cb_angle_3 -> {
+                SPUtils.put("reduce_feed7", z)
+                return
+            }
+
+            R.id.cb_angle_4 -> {
+                SPUtils.put("strengthen_route_plan7", z)
+                return
+            }
+
+            else -> when (id) {
+                R.id.cb_dimple_1 -> {
+                    SPUtils.put("cut_more_than_once6", z)
+                    return
                 }
+
+                R.id.cb_dimple_2 -> {
+                    SPUtils.put("cancle_reduce_last_feed6", z)
+                    return
+                }
+
+                R.id.cb_dimple_3 -> {
+                    SPUtils.put("reduce_feed6", z)
+                    return
+                }
+
+                R.id.cb_dimple_4 -> {
+                    SPUtils.put("strengthen_route_plan6", z)
+                    return
+                }
+
+                else -> when (id) {
+                    R.id.cb_double_external_1 -> {
+                        SPUtils.put("cut_more_than_once4", z)
+                        return
+                    }
+
+                    R.id.cb_double_external_2 -> {
+                        SPUtils.put("cancle_reduce_last_feed4", z)
+                        return
+                    }
+
+                    R.id.cb_double_external_3 -> {
+                        SPUtils.put("reduce_feed4", z)
+                        return
+                    }
+
+                    R.id.cb_double_external_4 -> {
+                        SPUtils.put("strengthen_route_plan4", z)
+                        return
+                    }
+
+                    R.id.cb_double_internal_1 -> {
+                        SPUtils.put("cut_more_than_once2", z)
+                        return
+                    }
+
+                    R.id.cb_double_internal_2 -> {
+                        SPUtils.put("cancle_reduce_last_feed2", z)
+                        return
+                    }
+
+                    R.id.cb_double_internal_3 -> {
+                        SPUtils.put("reduce_feed2", z)
+                        return
+                    }
+
+                    R.id.cb_double_internal_4 -> {
+                        SPUtils.put("strengthen_route_plan2", z)
+                        return
+                    }
+
+                    R.id.cb_doublekey_1 -> {
+                        SPUtils.put("cut_more_than_once0", z)
+                        return
+                    }
+
+                    R.id.cb_doublekey_2 -> {
+                        SPUtils.put("cancle_reduce_last_feed0", z)
+                        return
+                    }
+
+                    R.id.cb_doublekey_3 -> {
+                        SPUtils.put("reduce_feed0", z)
+                        return
+                    }
+
+                    R.id.cb_doublekey_4 -> {
+                        SPUtils.put("strengthen_route_plan0", z)
+                        return
+                    }
+
+                    else -> when (id) {
+                        R.id.cb_single_external_1 -> {
+                            SPUtils.put("cut_more_than_once3", z)
+                            return
+                        }
+
+                        R.id.cb_single_external_2 -> {
+                            SPUtils.put("cancle_reduce_last_feed3", z)
+                            return
+                        }
+
+                        R.id.cb_single_external_3 -> {
+                            SPUtils.put("reduce_feed3", z)
+                            return
+                        }
+
+                        R.id.cb_single_external_4 -> {
+                            SPUtils.put("strengthen_route_plan3", z)
+                            return
+                        }
+
+                        R.id.cb_single_internal_1 -> {
+                            SPUtils.put("cut_more_than_once5", z)
+                            return
+                        }
+
+                        R.id.cb_single_internal_2 -> {
+                            SPUtils.put("cancle_reduce_last_feed5", z)
+                            return
+                        }
+
+                        R.id.cb_single_internal_3 -> {
+                            SPUtils.put("reduce_feed5", z)
+                            return
+                        }
+
+                        R.id.cb_single_internal_4 -> {
+                            SPUtils.put("strengthen_route_plan5", z)
+                            return
+                        }
+
+                        R.id.cb_singlekey_1 -> {
+                            SPUtils.put("cut_more_than_once1", z)
+                            return
+                        }
+
+                        R.id.cb_singlekey_2 -> {
+                            SPUtils.put("cancle_reduce_last_feed1", z)
+                            return
+                        }
+
+                        R.id.cb_singlekey_3 -> {
+                            SPUtils.put("reduce_feed1", z)
+                            return
+                        }
+
+                        R.id.cb_singlekey_4 -> {
+                            SPUtils.put("strengthen_route_plan1", z)
+                            return
+                        }
+
+                        else -> when (id) {
+                            R.id.cb_tubular_1 -> {
+                                SPUtils.put("cut_more_than_once8", z)
+                                return
+                            }
+
+                            R.id.cb_tubular_2 -> {
+                                SPUtils.put("cancle_reduce_last_feed8", z)
+                                return
+                            }
+
+                            R.id.cb_tubular_3 -> {
+                                SPUtils.put("reduce_feed8", z)
+                                return
+                            }
+
+                            R.id.cb_tubular_4 -> {
+                                SPUtils.put("strengthen_route_plan8", z)
+                                return
+                            }
+
+                            else -> return
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    companion object {
+        val CANCLE_REDUCE_LAST_CUT_FEED: String = "cancle_reduce_last_feed"
+        val CUT_MORE_THAN_ONCE: String = "cut_more_than_once"
+        val REDUCE_CUT_FEED: String = "reduce_feed"
+        val STRENGTHEN_ROUTE_PLAN: String = "strengthen_route_plan"
+        val TAG: String = "CutSettingFragment"
     }
 }

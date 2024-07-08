@@ -11,8 +11,9 @@ import android.widget.FrameLayout;
 
 import com.kkkcut.e20j.us.R;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
+
 
 /* loaded from: classes.dex */
 public abstract class BottomInDialog {

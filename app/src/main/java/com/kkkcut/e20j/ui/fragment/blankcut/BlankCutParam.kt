@@ -1,31 +1,14 @@
-package com.kkkcut.e20j.ui.fragment.blankcut;
+package com.kkkcut.e20j.ui.fragment.blankcut
 
 /* loaded from: classes.dex */
-public class BlankCutParam {
-    private int cutterSize;
-    private int speed;
+class BlankCutParam {
+    var cutterSize: Int = 0
+    var speed: Int = 0
 
-    public BlankCutParam(int i, int i2) {
-        this.cutterSize = i;
-        this.speed = i2;
+    constructor(i: Int, i2: Int) {
+        this.cutterSize = i
+        this.speed = i2
     }
 
-    public BlankCutParam() {
-    }
-
-    public int getCutterSize() {
-        return this.cutterSize;
-    }
-
-    public void setCutterSize(int i) {
-        this.cutterSize = i;
-    }
-
-    public int getSpeed() {
-        return this.speed;
-    }
-
-    public void setSpeed(int i) {
-        this.speed = i;
-    }
+    constructor()
 }

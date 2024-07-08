@@ -18,10 +18,6 @@ class ModelSelectAdapter(protected var mContext: Context) : RecyclerView.Adapter
     protected var mDatas: List<Model> = listOf()
     protected var mInflater: LayoutInflater = LayoutInflater.from(mContext)
 
-    /* loaded from: classes.dex */
-    interface OnKeySelectItemClickListener {
-        fun onItemClick(i: Int)
-    }
 
     var datas: List<Model>
         get() = this.mDatas
@@ -74,9 +70,11 @@ class ModelSelectAdapter(protected var mContext: Context) : RecyclerView.Adapter
         }
     }
 
-    fun setOnKeySelectItemClickListener(onKeySelectItemClickListener: OnKeySelectItemClickListener?) {
-        this.listener = onKeySelectItemClickListener
-    }
+    var onKeySelectItemClickListener: OnKeySelectItemClickListener?
+        get() = this.listener
+        set(value) {
+            this.listener = value
+        }
 
     companion object {
         private const val TAG = "ModelSelectAdapter"

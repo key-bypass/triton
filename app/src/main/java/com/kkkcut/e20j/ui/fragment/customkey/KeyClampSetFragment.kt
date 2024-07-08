@@ -1,157 +1,172 @@
-package com.kkkcut.e20j.ui.fragment.customkey;
+package com.kkkcut.e20j.ui.fragment.customkey
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import com.kkkcut.e20j.DbBean.userDB.CustomKey;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.dao.UserDataDaoManager;
-import com.kkkcut.e20j.ui.dialog.EditDialog;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-
-import org.greenrobot.eventbus.EventBus;
+import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.CompoundButton
+import android.widget.RadioButton
+import com.kkkcut.e20j.DbBean.userDB.CustomKey
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.dao.UserDataDaoManager
+import com.kkkcut.e20j.ui.dialog.EditDialog
+import com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
+import com.kkkcut.e20j.us.R
+import org.greenrobot.eventbus.EventBus
 
 /* loaded from: classes.dex */
-public class KeyClampSetFragment extends BaseBackFragment {
-    private static final String CUSTOMKEY = "CUSTOMKEY";
+class KeyClampSetFragment() : BaseBackFragment() {
+    var btNext: Button? = null
+    private var customKey: CustomKey? = null
 
-    Button btNext;
-    private CustomKey customKey;
+    var rbClamp1: RadioButton? = null
 
-    RadioButton rbClamp1;
+    var rbClamp2: RadioButton? = null
 
-    RadioButton rbClamp2;
+    var rbClamp3: RadioButton? = null
 
-    RadioButton rbClamp3;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_key_clamp_set;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_key_clamp_set
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static KeyClampSetFragment newInstance(CustomKey customKey) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(CUSTOMKEY, customKey);
-        KeyClampSetFragment keyClampSetFragment = new KeyClampSetFragment();
-        keyClampSetFragment.setArguments(bundle);
-        return keyClampSetFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        CustomKey customKey = (CustomKey) getArguments().getParcelable(CUSTOMKEY);
-        this.customKey = customKey;
-        customKey.setClampNum("S1");
-        this.rbClamp2.setChecked(true);
-        int type = this.customKey.getType();
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val customKey: CustomKey? =
+            getArguments()!!.getParcelable<Parcelable>(CUSTOMKEY) as CustomKey?
+        this.customKey = customKey
+        customKey!!.setClampNum("S1")
+        rbClamp2!!.setChecked(true)
+        val type: Int = this.customKey!!.getType()
         if (type == 0) {
-            if (this.customKey.getAlign() == 0) {
-                this.rbClamp1.setBackgroundResource(R.drawable.custom_clamp_s1_c_shoulder);
-                this.rbClamp2.setBackgroundResource(R.drawable.custom_clamp_s1_d_shoulder);
+            if (this.customKey!!.getAlign() == 0) {
+                rbClamp1!!.setBackgroundResource(R.drawable.custom_clamp_s1_c_shoulder)
+                rbClamp2!!.setBackgroundResource(R.drawable.custom_clamp_s1_d_shoulder)
             } else {
-                this.rbClamp1.setBackgroundResource(R.drawable.custom_clamp_s1_c_tip);
-                this.rbClamp2.setBackgroundResource(R.drawable.custom_clamp_s1_d_tip);
+                rbClamp1!!.setBackgroundResource(R.drawable.custom_clamp_s1_c_tip)
+                rbClamp2!!.setBackgroundResource(R.drawable.custom_clamp_s1_d_tip)
             }
-            if (this.customKey.getClampSide().equals("C")) {
-                this.rbClamp1.setChecked(true);
+            if ((this.customKey!!.getClampSide() == "C")) {
+                rbClamp1!!.setChecked(true)
             }
-            this.rbClamp3.setVisibility(8);
-            return;
+            rbClamp3!!.setVisibility(8)
+            return
         }
-        if (type == 2 || type == 3 || type == 4 || type == 5 || type == 6) {
-            if (this.customKey.getAlign() == 0) {
-                this.rbClamp1.setBackgroundResource(R.drawable.custom_clamp_s1_a_shoulder);
-                this.rbClamp2.setBackgroundResource(R.drawable.custom_clamp_s1_b_shoulder);
-                this.rbClamp3.setBackgroundResource(R.drawable.custom_clamp_s1_b_side_shoulder);
+        if ((type == 2) || (type == 3) || (type == 4) || (type == 5) || (type == 6)) {
+            if (this.customKey!!.getAlign() == 0) {
+                rbClamp1!!.setBackgroundResource(R.drawable.custom_clamp_s1_a_shoulder)
+                rbClamp2!!.setBackgroundResource(R.drawable.custom_clamp_s1_b_shoulder)
+                rbClamp3!!.setBackgroundResource(R.drawable.custom_clamp_s1_b_side_shoulder)
             } else {
-                this.rbClamp1.setBackgroundResource(R.drawable.custom_clamp_s1_a_tip);
-                this.rbClamp2.setBackgroundResource(R.drawable.custom_clamp_s1_b_tip);
-                this.rbClamp3.setBackgroundResource(R.drawable.custom_clamp_s1_b_side_tip);
+                rbClamp1!!.setBackgroundResource(R.drawable.custom_clamp_s1_a_tip)
+                rbClamp2!!.setBackgroundResource(R.drawable.custom_clamp_s1_b_tip)
+                rbClamp3!!.setBackgroundResource(R.drawable.custom_clamp_s1_b_side_tip)
             }
-            if (this.customKey.getClampSide().equals("A")) {
-                this.rbClamp1.setChecked(true);
+            if ((this.customKey!!.getClampSide() == "A")) {
+                rbClamp1!!.setChecked(true)
             }
-            if (this.customKey.getClampSide().equals("B") && this.customKey.getClampSlot().equals("1")) {
-                this.rbClamp3.setChecked(true);
+            if ((this.customKey!!.getClampSide() == "B") && (this.customKey!!.getClampSlot() == "1")) {
+                rbClamp3!!.setChecked(true)
             }
         }
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.getId()
         if (id == R.id.bt_last) {
-            onBack();
-            return;
+            onBack()
+            return
         }
         if (id != R.id.bt_next) {
-            return;
+            return
         }
-        Log.i(TAG, "onViewClicked: " + this.customKey.getClampNum() + "-:" + this.customKey.getClampSide() + "-:" + this.customKey.getClampSlot());
-        showEditDialog(this.customKey);
+        Log.i(
+            TAG,
+            "onViewClicked: " + customKey!!.getClampNum() + "-:" + customKey!!.getClampSide() + "-:" + customKey!!.getClampSlot()
+        )
+        showEditDialog(this.customKey)
     }
 
-    public void onCheckedChange(CompoundButton compoundButton, boolean z) {
-        switch (compoundButton.getId()) {
-            case R.id.rb_clamp_1 /* 2131362602 */:
+    fun onCheckedChange(compoundButton: CompoundButton, z: Boolean) {
+        when (compoundButton.getId()) {
+            R.id.rb_clamp_1 -> {
                 if (z) {
-                    if (this.customKey.getType() == 0) {
-                        this.customKey.setClampSide("C");
+                    if (customKey!!.getType() == 0) {
+                        customKey!!.setClampSide("C")
                     } else {
-                        this.customKey.setClampSide("A");
+                        customKey!!.setClampSide("A")
                     }
-                    this.customKey.setClampSlot("0");
-                    return;
+                    customKey!!.setClampSlot("0")
+                    return
                 }
-                return;
-            case R.id.rb_clamp_2 /* 2131362603 */:
-                if (z) {
-                    if (this.customKey.getType() == 0) {
-                        this.customKey.setClampSide("D");
-                    } else {
-                        this.customKey.setClampSide("B");
-                    }
-                    this.customKey.setClampSlot("0");
-                    return;
-                }
-                return;
-            case R.id.rb_clamp_3 /* 2131362604 */:
-                if (z) {
-                    this.customKey.setClampSide("B");
-                    this.customKey.setClampSlot("1");
-                    return;
-                }
-                return;
-            default:
-                return;
-        }
-    }
-
-    private void showEditDialog(final CustomKey customKey) {
-        EditDialog editDialog = new EditDialog(getContext());
-        editDialog.setTip(getString(R.string.please_input_the_key_name));
-        String keyname = customKey.getKeyname();
-        if (!TextUtils.isEmpty(keyname)) {
-            editDialog.setEditTextContent(keyname);
-        }
-        editDialog.setDialogBtnCallback(new EditDialog.DialogInputFinishCallBack() { // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyClampSetFragment.1
-            @Override // com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
-            public void onDialogButClick(String str) {
-                customKey.setKeyname(str);
-                UserDataDaoManager.getInstance(KeyClampSetFragment.this.getContext()).saveCustomKey(customKey);
-                KeyClampSetFragment.this.start(CustomKeyListFragment.newInstance(), 2);
-                EventBus.getDefault().post(new EventCenter(11));
+                return
             }
-        });
-        editDialog.show();
+
+            R.id.rb_clamp_2 -> {
+                if (z) {
+                    if (customKey!!.getType() == 0) {
+                        customKey!!.setClampSide("D")
+                    } else {
+                        customKey!!.setClampSide("B")
+                    }
+                    customKey!!.setClampSlot("0")
+                    return
+                }
+                return
+            }
+
+            R.id.rb_clamp_3 -> {
+                if (z) {
+                    customKey!!.setClampSide("B")
+                    customKey!!.setClampSlot("1")
+                    return
+                }
+                return
+            }
+
+            else -> return
+        }
+    }
+
+    private fun showEditDialog(customKey: CustomKey?) {
+        val editDialog: EditDialog = EditDialog(getContext())
+        editDialog.setTip(getString(R.string.please_input_the_key_name))
+        val keyname: String = customKey!!.getKeyname()
+        if (!TextUtils.isEmpty(keyname)) {
+            editDialog.setEditTextContent(keyname)
+        }
+        editDialog.setDialogBtnCallback(object : DialogInputFinishCallBack {
+            // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyClampSetFragment.1
+            // com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
+            override fun onDialogButClick(str: String) {
+                customKey.setKeyname(str)
+                UserDataDaoManager.getInstance(this@KeyClampSetFragment.getContext())
+                    .saveCustomKey(customKey)
+                this@KeyClampSetFragment.start(CustomKeyListFragment.Companion.newInstance(), 2)
+                EventBus.getDefault().post(EventCenter<Any?>(11))
+            }
+        })
+        editDialog.show()
+    }
+
+    companion object {
+        private val CUSTOMKEY: String = "CUSTOMKEY"
+
+        fun newInstance(customKey: CustomKey?): KeyClampSetFragment {
+            val bundle: Bundle = Bundle()
+            bundle.putParcelable(CUSTOMKEY, customKey)
+            val keyClampSetFragment: KeyClampSetFragment = KeyClampSetFragment()
+            keyClampSetFragment.setArguments(bundle)
+            return keyClampSetFragment
+        }
     }
 }

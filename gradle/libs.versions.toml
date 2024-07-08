@@ -28,7 +28,7 @@ reactiveStreams = "1.0.4"
 relinker = "1.4.5"
 retrofit = "2.11.0"
 rxandroid = "3.0.2"
-rxbinding = "3.1.0"
+rxbinding = "4.0.0"
 rxjava = "3.1.5"
 sqlcipherAndroid = "4.6.0"
 sqlite = "2.4.0"
@@ -71,7 +71,7 @@ reactive-streams = { module = "org.reactivestreams:reactive-streams", version.re
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
-rxbinding = { module = "com.jakewharton.rxbinding3:rxbinding", version.ref = "rxbinding" }
+rxbinding = { module = "com.jakewharton.rxbinding4:rxbinding", version.ref = "rxbinding" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 sqlcipher-android = { module = "net.zetetic:sqlcipher-android", version.ref = "sqlcipherAndroid" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }

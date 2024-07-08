@@ -75,7 +75,7 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
     public String setTitleStr() {
         BlankCutBean blankCutBean = this.blankCutBean;
         if (blankCutBean != null) {
-            return blankCutBean.getName();
+            return blankCutBean.name;
         }
         return null;
     }
@@ -205,12 +205,9 @@ public abstract class BaseBlankCutParamSetFragment extends BaseBackFragment {
             OperationManager.getInstance().startExecution(arrayList, OperateType.MODIFY_KEY_BLANK_EXECUTE);
             return;
         }
-        addDisposable(Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Long l) throws Exception {
-                BaseBlankCutParamSetFragment.this.dismissLoadingDialog();
-            }
-        }));
+        // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.base.BaseBlankCutParamSetFragment.1
+// io.reactivex.functions.Consumer
+        addDisposable(Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(l -> BaseBlankCutParamSetFragment.this.dismissLoadingDialog(), th -> this.dismissLoadingDialog()));
         showLoadingDialog("100%", true);
         this.isSecondSide = !this.isSecondSide;
         onCutFinish();

@@ -33,8 +33,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.disposables.ListCompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.internal.disposables.ListCompositeDisposable;
+
 
 /* loaded from: classes.dex */
 public class UsbSerialManager implements Communication, ErrorHandle {

@@ -1,112 +1,100 @@
-package com.kkkcut.e20j.ui.fragment.keyselect;
+package com.kkkcut.e20j.ui.fragment.keyselect
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.Manufacturer;
-import com.kkkcut.e20j.DbBean.Model;
-import com.kkkcut.e20j.adapter.KeySelectAdapter;
-import com.kkkcut.e20j.base.BaseFragment;
-import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.us.R;
-
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.kkkcut.e20j.DbBean.Manufacturer
+import com.kkkcut.e20j.DbBean.Model
+import com.kkkcut.e20j.DbBean.ModelYear
+import com.kkkcut.e20j.adapter.KeySelectAdapter
+import com.kkkcut.e20j.base.BaseFragment
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentKeyselectBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
-public class KeySelectFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener {
+class KeySelectFragment() : BaseFragment(), BaseQuickAdapter.OnItemClickListener {
+    var binding: FragmentKeyselectBinding? = null
 
-    EditText etSearch;
-
-    IndexBar indexBar;
-
-    RecyclerView rvCategoryList;
-
-    TextView tvSideBarHint;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_keyselect;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View? {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        binding = FragmentKeyselectBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    public static KeySelectFragment newInstance(int i) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("category", i);
-        KeySelectFragment keySelectFragment = new KeySelectFragment();
-        keySelectFragment.setArguments(bundle);
-        return keySelectFragment;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_keyselect
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        this.rvCategoryList.setLayoutManager(linearLayoutManager);
-        getManufacturers();
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL)
+        binding!!.rvCategoryList.setLayoutManager(linearLayoutManager)
+        manufacturers
     }
 
-    private void getManufacturers() {
-        getArguments().getInt("category");
+    private val manufacturers: Unit
+        get() {
+            arguments!!.getInt("category")
+        }
+
+    private fun getModels(i: Int) {
+        addDisposable(
+            Observable.fromCallable { KeyInfoDaoManager.getInstance().getModels(i) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                { list: List<Model> ->
+                    val keySelectAdapter = KeySelectAdapter<Model>(list)
+                    keySelectAdapter.onItemClickListener = this
+                    binding!!.rvCategoryList.setAdapter(keySelectAdapter)
+                }, { th -> this.dismissLoadingDialog() }
+            ))
+
     }
 
-    private void getModels(final int i) {
-        addDisposable(Observable.fromCallable(() -> {
-                List models;
-                models = KeyInfoDaoManager.getInstance().getModels(i);
-                return models;
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> KeySelectFragment.this.m58xac7dfe5(obj)));
+    private fun getModelYears(i: Int) {
+        addDisposable(
+            Observable.fromCallable { KeyInfoDaoManager.getInstance().getModelYears(i) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ list: List<ModelYear> ->
+                val keySelectAdapter = KeySelectAdapter<ModelYear>(list)
+                keySelectAdapter.onItemClickListener = this
+                binding!!.rvCategoryList.setAdapter(keySelectAdapter)
+            }, {this.dismissLoadingDialog()})
+        )
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getModels$1$com-kkkcut-e20j-ui-fragment-keyselect-KeySelectFragment, reason: not valid java name */
-    public /* synthetic */ void m58xac7dfe5(List list) throws Exception {
-        KeySelectAdapter keySelectAdapter = new KeySelectAdapter(list);
-        keySelectAdapter.setOnItemClickListener(this);
-        this.rvCategoryList.setAdapter(keySelectAdapter);
-    }
-
-    private void getModelYears(final int i) {
-        addDisposable(Observable.fromCallable(() -> {
-                List modelYears;
-                modelYears = KeyInfoDaoManager.getInstance().getModelYears(i);
-                return modelYears;
-
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
-                KeySelectFragment.this.m57xd564af6a(obj);
-
-        }));
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getModelYears$3$com-kkkcut-e20j-ui-fragment-keyselect-KeySelectFragment, reason: not valid java name */
-    public /* synthetic */ void m57xd564af6a(List list) throws Exception {
-        KeySelectAdapter keySelectAdapter = new KeySelectAdapter(list);
-        keySelectAdapter.setOnItemClickListener(this);
-        this.rvCategoryList.setAdapter(keySelectAdapter);
-    }
-
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        int itemViewType = baseQuickAdapter.getItemViewType(i);
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val itemViewType: Int = baseQuickAdapter.getItemViewType(i)
         if (itemViewType == 0) {
-            getModels(((Manufacturer) baseQuickAdapter.getData().get(i)).getManufacturerId());
+            getModels((baseQuickAdapter.data[i] as Manufacturer).manufacturerId)
         } else {
             if (itemViewType != 1) {
-                return;
+                return
             }
-            getModelYears(((Model) baseQuickAdapter.getData().get(i)).getModelID());
+            getModelYears((baseQuickAdapter.data[i] as Model).modelID)
+        }
+    }
+
+    companion object {
+        fun newInstance(i: Int): KeySelectFragment {
+            val bundle = Bundle()
+            bundle.putInt("category", i)
+            val keySelectFragment = KeySelectFragment()
+            keySelectFragment.setArguments(bundle)
+            return keySelectFragment
         }
     }
 }

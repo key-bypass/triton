@@ -1,531 +1,623 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.cutting.machine.MachineInfo;
-import com.kkkcut.e20j.Constant;
-import com.kkkcut.e20j.DbBean.GoOperatBean;
-import com.kkkcut.e20j.DbBean.userDB.CollectionData;
-import com.kkkcut.e20j.DbBean.userDB.CutHistoryData;
-import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.adapter.HomeCenterRvE9Adapter;
-import com.kkkcut.e20j.adapter.HomepageEExtraFunctionAdapter;
-import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
-import com.kkkcut.e20j.androidquick.network.RetrofitManager;
-import com.kkkcut.e20j.androidquick.tool.AppUtil;
-import com.kkkcut.e20j.androidquick.tool.FileUtil;
-import com.kkkcut.e20j.androidquick.tool.GsonHelper;
-import com.kkkcut.e20j.androidquick.tool.NetUtil;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.tool.ToastUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.bean.gsonBean.ConfigurationE9;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.dao.UserDataDaoManager;
-import com.kkkcut.e20j.net.Apis;
-import com.kkkcut.e20j.net.TUitls;
-import com.kkkcut.e20j.p005ui.fragment.blankcut.KeyBlankCutTypeSelectFragment;
-import com.kkkcut.e20j.ui.activity.E9RegisterActivity;
-import com.kkkcut.e20j.ui.activity.FrameActivity;
-import com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment;
-import com.kkkcut.e20j.ui.fragment.duplicatekey.DuplicateKeyNewFragment;
-import com.kkkcut.e20j.ui.fragment.engraving.KeyMarkingE9Fragment;
-import com.kkkcut.e20j.ui.fragment.keyselect.BrandSelectFragment;
-import com.kkkcut.e20j.ui.fragment.setting.SettingFragment;
-import com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoBrandSelectFragment;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.FragmentMainBinding;
-import com.kkkcut.e20j.us.databinding.FragmentMainE9Binding;
-import com.kkkcut.e20j.utils.AppUpdateUtil;
-import com.kkkcut.e20j.utils.AssetVersionUtil;
-import com.kkkcut.e20j.utils.ResUpdateUtils;
-import com.kkkcut.e20j.utils.lan.LocalManageUtil;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.Callable;
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Rect
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.Constant
+import com.kkkcut.e20j.DbBean.GoOperatBean
+import com.kkkcut.e20j.DbBean.userDB.CollectionData
+import com.kkkcut.e20j.DbBean.userDB.CutHistoryData
+import com.kkkcut.e20j.MyApplication
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.adapter.HomeCenterRvE9Adapter
+import com.kkkcut.e20j.adapter.HomepageEExtraFunctionAdapter
+import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
+import com.kkkcut.e20j.androidquick.network.RetrofitManager
+import com.kkkcut.e20j.androidquick.tool.AppUtil
+import com.kkkcut.e20j.androidquick.tool.FileUtil
+import com.kkkcut.e20j.androidquick.tool.GsonHelper
+import com.kkkcut.e20j.androidquick.tool.NetUtil
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.tool.ToastUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.bean.gsonBean.ConfigurationE9
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.dao.UserDataDaoManager
+import com.kkkcut.e20j.net.Apis
+import com.kkkcut.e20j.net.TUitls
+import com.kkkcut.e20j.ui.activity.E9RegisterActivity
+import com.kkkcut.e20j.ui.activity.FrameActivity
+import com.kkkcut.e20j.ui.fragment.customkey.CustomKeyListFragment
+import com.kkkcut.e20j.ui.fragment.duplicatekey.DuplicateKeyNewFragment
+import com.kkkcut.e20j.ui.fragment.engraving.KeyMarkingE9Fragment
+import com.kkkcut.e20j.ui.fragment.keyselect.BrandSelectFragment
+import com.kkkcut.e20j.ui.fragment.setting.SettingFragment
+import com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoBrandSelectFragment
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentMainE9Binding
+import com.kkkcut.e20j.utils.AppUpdateUtil
+import com.kkkcut.e20j.utils.AssetVersionUtil
+import com.kkkcut.e20j.utils.ResUpdateUtils
+import com.kkkcut.e20j.utils.lan.LocalManageUtil
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 
 /* loaded from: classes.dex */
-public class MainE9Fragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
-    private static final int REGISTER = 1;
-    public static final String TAG = "MainFragment";
-    private String companyStr;
-    ConfigurationE9 configuration1;
+class MainE9Fragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener {
+    private var companyStr: String? = null
+    var configuration1: ConfigurationE9? = null
 
-    FragmentMainE9Binding binding;
+    var binding: FragmentMainE9Binding? = null
 
 
-    private String languageStr;
-    private String machineName;
+    private var languageStr: String? = null
+    private var machineName: String? = null
 
-    @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        super.onCreateView(layoutInflater, viewGroup, bundle);
-        this.binding = FragmentMainE9Binding.inflate(layoutInflater, viewGroup, false);
-        return this.binding.getRoot();
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentMainE9Binding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void initDb() {
+    fun initDb() {
     }
 
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_main_e9;
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_main_e9
     }
 
-    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static MainE9Fragment newInstance() {
-        return new MainE9Fragment();
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        setUserVisibleHint(true)
+        initView()
+        checkConfigUpdate()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        setUserVisibleHint(true);
-        initView();
-        checkConfigUpdate();
-    }
-
-    private void initView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        this.binding.rvBottom.setLayoutManager(linearLayoutManager);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        gridLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        this.binding.rvCenter.addItemDecoration(new SpaceItemDecoration(AutoUtils.getPercentWidthSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentWidthSize(38), AutoUtils.getPercentHeightSize(15)));
-        this.binding.rvCenter.setLayoutManager(gridLayoutManager);
-        ((FrameActivity) getActivity()).showLogo();
-        setSeries();
-        this.binding.helpCenter.setVisibility(View.GONE);
+    private fun initView() {
+        val linearLayoutManager = LinearLayoutManager(getContext())
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL)
+        binding!!.rvBottom.setLayoutManager(linearLayoutManager)
+        val gridLayoutManager = GridLayoutManager(getContext(), 2)
+        gridLayoutManager.setOrientation(RecyclerView.HORIZONTAL)
+        binding!!.rvCenter.addItemDecoration(
+            SpaceItemDecoration(
+                AutoUtils.getPercentWidthSize(20),
+                AutoUtils.getPercentHeightSize(20),
+                AutoUtils.getPercentWidthSize(38),
+                AutoUtils.getPercentHeightSize(15)
+            )
+        )
+        binding!!.rvCenter.setLayoutManager(gridLayoutManager)
+        (getActivity() as FrameActivity?)!!.showLogo()
+        setSeries()
+        binding!!.helpCenter.visibility = View.GONE
     }
 
     /* loaded from: classes.dex */
-    public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-        private int bottom;
-        private int left;
-        private int right;
-        private int top;
-
-        public SpaceItemDecoration(int i, int i2, int i3, int i4) {
-            this.top = i2;
-            this.left = i;
-            this.right = i3;
-            this.bottom = i4;
-        }
-
-        @Override // androidx.recyclerview.widget.RecyclerView.ItemDecoration
-        public void getItemOffsets(Rect rect, View view, RecyclerView recyclerView, RecyclerView.State state) {
-            rect.left = this.left;
-            rect.top = this.top;
-            rect.bottom = this.bottom;
-            rect.right = this.right;
+    inner class SpaceItemDecoration(
+        private val left: Int,
+        private val top: Int,
+        private val right: Int,
+        private val bottom: Int
+    ) : RecyclerView.ItemDecoration() {
+        // androidx.recyclerview.widget.RecyclerView.ItemDecoration
+        override fun getItemOffsets(
+            rect: Rect,
+            view: View,
+            recyclerView: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            rect.left = this.left
+            rect.top = this.top
+            rect.bottom = this.bottom
+            rect.right = this.right
         }
     }
 
-    private void setSeries() {
-        String string = SPUtils.getString("series");
+    private fun setSeries() {
+        val string: String = SPUtils.getString("series")
         if (!TextUtils.isEmpty(string)) {
-            this.binding.tvSeries.setText(getString(R.string.sn_xx) + string);
+            binding!!.tvSeries.setText(getString(R.string.sn_xx) + string)
         }
-        this.binding.tvSoftVersion.setText(getString(R.string.version) + AppUtil.getVersionName(getContext()));
-        String dbVersion = KeyInfoDaoManager.getInstance().getDbVersion();
+        binding!!.tvSoftVersion.setText(
+            getString(R.string.version) + AppUtil.getVersionName(
+                getContext()
+            )
+        )
+        val dbVersion: String = KeyInfoDaoManager.getInstance().getDbVersion()
         if (TextUtils.isEmpty(dbVersion)) {
-            return;
+            return
         }
-        this.binding.tvDbVersion.setText(getString(R.string.db_version) + dbVersion);
+        binding!!.tvDbVersion.setText(getString(R.string.db_version) + dbVersion)
     }
 
-    private void checkConfigUpdate() {
-        addDisposable(Observable.fromCallable(() -> {
-                if (AppUtil.isApkInDebug(MainE9Fragment.this.getContext()) || !NetUtil.isNetworkConnected(MainE9Fragment.this.getContext())) {
-                    return false;
-                }
-                if (!new File(Constant.CONFIG_PATH).exists()) {
-                    Log.i("MainFragment", "配置文件不存在: ");
-                    return true;
-                }
-                return Boolean.valueOf(AssetVersionUtil.getAssetsDbVersion(MainE9Fragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA) > SPUtils.getInt(SpKeys.CONFIG_UPDATE, 0));
-
-        }).subscribeOn(Schedulers.io()).subscribe(bool -> {
-                Log.i("MainFragment", "accept: " + bool);
-                if (bool.booleanValue()) {
-                    MainE9Fragment.this.updateConfig();
-                } else {
-                    MainE9Fragment.this.getConfigurationE9();
-                }
-
-        }));
-    }
-
-    public void getConfigurationE9() {
-        if (AppUtil.isApkInDebug(getContext())) {
-            addDisposable(Observable.fromCallable(MainE9Fragment.this::m42x32abd4e4).map(obj -> {
-                return MainE9Fragment.lambda$getConfigurationE9$1(obj);
-            }).doOnNext(configurationE9 -> {
-                MainE9Fragment.this.initDb();
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(obj -> {
-                MainE9Fragment.this.handleConfig(obj);
-            }, obj -> ToastUtil.showToast(R.string.network_unavailable)));
-        } else {
-            // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment$$ExternalSyntheticLambda3
-// io.reactivex.functions.Consumer
-            addDisposable(Observable.fromCallable(MainE9Fragment.this::readConfigurationFromLocal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(MainE9Fragment.this::handleConfig, (Consumer) obj -> MainE9Fragment.this.m46xc4364d1e((Throwable) obj)));
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public static /* synthetic */ ConfigurationE9 lambda$getConfigurationE9$1(String str) throws Exception {
-        return GsonHelper.fromJson(str, ConfigurationE9.class);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getConfigurationE9$6$com-kkkcut-e20j-ui-fragment-MainE9Fragment */
-    public /* synthetic */ void m46xc4364d1e(Throwable th) throws Exception {
-        Log.i("MainFragment", "getConfigurationE9: " + th.getMessage());
-        goRegister();
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: handleConfig, reason: merged with bridge method [inline-methods] and merged with bridge method [inline-methods] */
-    public void handleConfig(ConfigurationE9 configurationE9) {
-        int identifier;
-        this.configuration1 = configurationE9;
-        this.languageStr = configurationE9.getLanguage();
-        this.companyStr = configurationE9.getCompany();
-        this.machineName = configurationE9.getTitle_layout().getModel().getName();
-        ((FrameActivity) getActivity()).setMachineName(this.machineName);
-        String id = configurationE9.getId();
-        SPUtils.put(SpKeys.MACHINE_ID, id);
-        MachineInfo.setMachineTypeAndRegion(MyApplication.getInstance(), id);
-        if (MachineInfo.isChineseMachine()) {
-            this.binding.viewDevideLanguage.setVisibility(View.GONE);
-            this.binding.languageChoice.setVisibility(View.GONE);
-            LocalManageUtil.saveSelectLanguage(getContext(), "zh");
-            this.binding.ivService.setVisibility(View.VISIBLE);
-        }
-        FrameActivity frameActivity = (FrameActivity) getActivity();
-        frameActivity.checkHaveNewMessage();
-        String img = configurationE9.getTitle_layout().getLogo().getImg();
-        if (!TextUtils.isEmpty(img) && !MachineInfo.isE20Neutral(getContext()) && (identifier = getResources().getIdentifier(img, "drawable", getContext().getPackageName())) != 0) {
-            frameActivity.setLogo(identifier);
-        }
-        String welcome_logo = configurationE9.getWelcome_logo();
-        if (!TextUtils.isEmpty(welcome_logo)) {
-            SPUtils.put("welcome", welcome_logo);
-        } else {
-            SPUtils.put("welcome", "welcome_kukai");
-        }
-        HomepageEExtraFunctionAdapter homepageEExtraFunctionAdapter = new HomepageEExtraFunctionAdapter(configurationE9.getBottom_layout());
-        homepageEExtraFunctionAdapter.setOnItemClickListener(this);
-        this.binding.rvBottom.setAdapter(homepageEExtraFunctionAdapter);
-        HomeCenterRvE9Adapter homeCenterRvE9Adapter = new HomeCenterRvE9Adapter(configurationE9.getCenter_layout());
-        homeCenterRvE9Adapter.setOnItemClickListener(this);
-        this.binding.rvCenter.setAdapter(homeCenterRvE9Adapter);
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    public void checkResUpdate(final Context context, String str) {
-        // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.5
-// io.reactivex.functions.Consumer
-        addDisposable(ResUpdateUtils.checkResUpdate(getContext(), str,  updateBean -> {
-            if (updateBean.isUpdate()) {
-                new AlertDialog.Builder(context).setIcon(R.drawable.upgrade).setTitle(R.string.ResUpdate).setMessage(updateBean.getUpdateLog()).setCancelable(false).setPositiveButton(R.string.f1269ok, (dialogInterface, i) -> {
-                        MainE9Fragment.this.goDataUpgradeFragment();
-                }).setNegativeButton(R.string.cancel, null).show();
+    private fun checkConfigUpdate() {
+        addDisposable(Observable.fromCallable<Boolean> {
+            if (AppUtil.isApkInDebug(this@MainE9Fragment.context) || !NetUtil.isNetworkConnected(
+                    this@MainE9Fragment.context
+                )
+            ) {
+                return@fromCallable false
             }
-        }, th -> ToastUtil.showToast(th.getMessage())));
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    public void goDataUpgradeFragment() {
-        start(DataUpdateFragment.newInstance());
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: readConfigrationFromLocal, reason: merged with bridge method [inline-methods] */
-    public ConfigurationE9 readConfigurationFromLocal() {
-        return GsonHelper.fromJson(FileUtil.readIoToString(Constant.CONFIG_PATH), ConfigurationE9.class);
-    }
-
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
-        ConfigurationE9 configurationE9;
-        int eventCode = eventCenter.getEventCode();
-        if (eventCode == 10) {
-            if (this.binding.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
-                this.binding.drawerlayout.closeDrawer(Gravity.RIGHT);
-                return;
+            if (!File(Constant.CONFIG_PATH).exists()) {
+                Log.i("MainFragment", "配置文件不存在: ")
+                return@fromCallable true
+            }
+            AssetVersionUtil.getAssetsDbVersion(
+                context!!.assets,
+                Constant.CONFIG_UPDATA
+            ) > SPUtils.getInt(SpKeys.CONFIG_UPDATE, 0)
+        }.subscribeOn(Schedulers.io()).subscribe({ bool: Boolean ->
+            Log.i("MainFragment", "accept: $bool")
+            if (bool) {
+                this@MainE9Fragment.updateConfig()
             } else {
-                this.binding.drawerlayout.openDrawer(Gravity.RIGHT);
-                return;
+                this@MainE9Fragment.configurationE9
+            }
+        }, { dismissLoadingDialog() }))
+    }
+
+    val configurationE9: Unit
+        get() {
+            if (AppUtil.isApkInDebug(context)) {
+                addDisposable(
+                    Observable.fromCallable<String> {
+                        try {
+                            val open: InputStream = context!!.assets.open("config_e9.json")
+                            val bArr = ByteArray(open.available())
+                            open.read(bArr)
+                            return@fromCallable String(bArr)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }.toString()
+                    }.map { it: String ->
+                        GsonHelper.fromJson(it, ConfigurationE9::class.java)
+                    }.doOnNext {
+                        this@MainE9Fragment.initDb()
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                            { obj: ConfigurationE9 ->
+                                this@MainE9Fragment.handleConfig(obj)
+                            },
+                            { ToastUtil.showToast(R.string.network_unavailable) }, { dismissLoadingDialog() }
+                        )
+                )
+            } else {
+                addDisposable(
+                    Observable.fromCallable { this@MainE9Fragment.readConfigurationFromLocal() }
+                        .subscribeOn(
+                            Schedulers.io()
+                        ).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                         {
+                            this@MainE9Fragment.handleConfig(
+                                it
+                            )
+                        },
+                        { th -> Log.i("MainFragment", "getConfigurationE9: " + th.message)
+                            goRegister() },
+                            { dismissLoadingDialog() }
+                    )
+                )
+            }
+        }
+
+
+    /* JADX INFO: Access modifiers changed from: private */ /* renamed from: handleConfig, reason: merged with bridge method [inline-methods] and merged with bridge method [inline-methods] */
+    fun handleConfig(configurationE9: ConfigurationE9) {
+        var identifier = 0
+        this.configuration1 = configurationE9
+        this.languageStr = configurationE9.getLanguage()
+        this.companyStr = configurationE9.getCompany()
+        this.machineName = configurationE9.getTitle_layout().getModel().getName()
+        (getActivity() as FrameActivity?)!!.setMachineName(this.machineName)
+        val id: String = configurationE9.getId()
+        SPUtils.put(SpKeys.MACHINE_ID, id)
+        MachineInfo.setMachineTypeAndRegion(MyApplication.getInstance(), id)
+        if (MachineInfo.isChineseMachine()) {
+            binding!!.viewDevideLanguage.setVisibility(View.GONE)
+            binding!!.languageChoice.setVisibility(View.GONE)
+            LocalManageUtil.saveSelectLanguage(getContext(), "zh")
+            binding!!.ivService.setVisibility(View.VISIBLE)
+        }
+        val frameActivity: FrameActivity? = getActivity() as FrameActivity?
+        frameActivity!!.checkHaveNewMessage()
+        val img: String = configurationE9.getTitle_layout().getLogo().getImg()
+        if (!TextUtils.isEmpty(img) && !MachineInfo.isE20Neutral(getContext()) && ((getResources().getIdentifier(
+                img,
+                "drawable",
+                getContext()!!.getPackageName()
+            ).also({ identifier = it })) != 0)
+        ) {
+            frameActivity.setLogo(identifier)
+        }
+        val welcome_logo: String = configurationE9.getWelcome_logo()
+        if (!TextUtils.isEmpty(welcome_logo)) {
+            SPUtils.put("welcome", welcome_logo)
+        } else {
+            SPUtils.put("welcome", "welcome_kukai")
+        }
+        val homepageEExtraFunctionAdapter =
+            HomepageEExtraFunctionAdapter(configurationE9.bottom_layout)
+        homepageEExtraFunctionAdapter.onItemClickListener = this
+        binding!!.rvBottom.setAdapter(homepageEExtraFunctionAdapter)
+        val homeCenterRvE9Adapter =
+            HomeCenterRvE9Adapter(configurationE9.center_layout)
+        homeCenterRvE9Adapter.onItemClickListener = this
+        binding!!.rvCenter.setAdapter(homeCenterRvE9Adapter)
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    fun checkResUpdate(context: Context?, str: String?) {
+        addDisposable(
+            ResUpdateUtils.checkResUpdate(getContext(), str,
+                // io.reactivex.functions.Consumer
+                { updateBean ->
+
+                    // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.4
+                    if (updateBean.isUpdate) {
+                        AlertDialog.Builder(context).setIcon(R.drawable.upgrade)
+                            .setTitle(R.string.ResUpdate).setMessage(updateBean.updateLog)
+                            .setCancelable(false).setPositiveButton(
+                                R.string.f1269ok
+                            ) { dialogInterface, i ->
+                                // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.4.1
+                                // android.content.DialogInterface.OnClickListener
+                                this@MainE9Fragment.goDataUpgradeFragment()
+                            }.setNegativeButton(
+                                R.string.cancel,
+                                null as DialogInterface.OnClickListener?
+                            ).show()
+                    }
+                }, // io.reactivex.functions.Consumer
+                { th ->
+                    // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.5
+                    ToastUtil.showToast(th.message)
+                })
+        )
+    }
+
+    fun goDataUpgradeFragment() {
+        start(DataUpdateFragment.newInstance())
+    }
+
+    fun readConfigurationFromLocal(): ConfigurationE9 {
+        return GsonHelper.fromJson(
+            FileUtil.readIoToString(Constant.CONFIG_PATH),
+            ConfigurationE9::class.java
+        )
+    }
+
+    override fun onEventComing(eventCenter: EventCenter<*>) {
+        val eventCode: Int = eventCenter.eventCode
+        if (eventCode == 10) {
+            if (binding!!.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
+                binding!!.drawerlayout.closeDrawer(Gravity.RIGHT)
+                return
+            } else {
+                binding!!.drawerlayout.openDrawer(Gravity.RIGHT)
+                return
             }
         }
         if (eventCode == 37) {
-            addDisposable(Observable.create(observableEmitter -> {
+            addDisposable(
+                Observable.create<String> { observableEmitter ->
                     while (true) {
-                        String string = SPUtils.getString(SpKeys.MACHINE_ID);
+                        val string: String = SPUtils.getString(SpKeys.MACHINE_ID)
                         if (!TextUtils.isEmpty(string)) {
-                            observableEmitter.onNext(string);
-                            observableEmitter.onComplete();
-                            return;
+                            observableEmitter.onNext(string)
+                            observableEmitter.onComplete()
+                            return@create
                         }
-                        Thread.sleep(500L);
+                        Thread.sleep(500L)
                     }
-
-            }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(str -> {
-                MainE9Fragment mainE9Fragment = MainE9Fragment.this;
-                mainE9Fragment.checkResUpdate(mainE9Fragment.getContext(), (String)str);
-            }));
-            return;
+                }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( { str: Any? ->
+                        val mainE9Fragment: MainE9Fragment = this@MainE9Fragment
+                        mainE9Fragment.checkResUpdate(
+                            mainE9Fragment.context,
+                            str as String?
+                        )
+                    }, { dismissLoadingDialog() })
+            )
+            return
         }
         if (eventCode == 40) {
-            startActivityForResult(new Intent(getContext(), E9RegisterActivity.class), 1);
-            return;
+            startActivityForResult(Intent(context, E9RegisterActivity::class.java), 1)
+            return
         }
         if (eventCode == 44) {
-            updateConfig();
-        } else if (eventCode == 45 && (configurationE9 = this.configuration1) != null) {
-            handleConfig(configurationE9);
+            updateConfig()
+        } else if (eventCode == 45 && (configuration1.also { handleConfig(it!!) }) != null) {
         }
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void updateConfig() {
-        String string = SPUtils.getString(SpKeys.CONFIGURATION_FILE);
-        Log.i("MainFragment", "updateConfig: " + string);
+    fun updateConfig() {
+        val string: String = SPUtils.getString(SpKeys.CONFIGURATION_FILE)
+        Log.i("MainFragment", "updateConfig: $string")
         if (TextUtils.isEmpty(string)) {
-            goRegister();
+            goRegister()
         } else {
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getConfigE9(TUitls.getconfig(string)).subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread()).doOnNext(configurationE9 -> {
-                    Log.i("MainFragment", "config--" + configurationE9.getDatabase());
-                    FileUtil.readIoStringToFile(GsonHelper.toJsonString(configurationE9), Constant.CONFIG_PATH);
-                    MainE9Fragment.this.initDb();
-                    SPUtils.put(SpKeys.CONFIG_UPDATE, AssetVersionUtil.getAssetsDbVersion(MainE9Fragment.this.getContext().getAssets(), Constant.CONFIG_UPDATA));
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(configurationE9 -> {
-                    ToastUtil.showToast(R.string.update_finish);
-                    MainE9Fragment.this.handleConfig(configurationE9);
-            },  th -> MainE9Fragment.this.getConfigurationE9()));
+            addDisposable(
+                (RetrofitManager.getInstance().createApi(Apis::class.java) as Apis).getConfigE9(
+                    TUitls.getconfig(string)
+                ).subscribeOn(
+                    Schedulers.io()
+                ).observeOn(Schedulers.newThread()).doOnNext { configurationE9: ConfigurationE9 ->
+                    Log.i("MainFragment", "config--" + configurationE9.database)
+                    FileUtil.readIoStringToFile(
+                        GsonHelper.toJsonString(configurationE9),
+                        Constant.CONFIG_PATH
+                    )
+                    this@MainE9Fragment.initDb()
+                    SPUtils.put(
+                        SpKeys.CONFIG_UPDATE, AssetVersionUtil.getAssetsDbVersion(
+                            context!!.assets, Constant.CONFIG_UPDATA
+                        )
+                    )
+                }.observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    { configurationE9: ConfigurationE9 ->
+                        ToastUtil.showToast(R.string.update_finish)
+                        this@MainE9Fragment.handleConfig(configurationE9)
+                    }, { this@MainE9Fragment.configurationE9 }, { dismissLoadingDialog() }
+                )
+            )
         }
     }
 
-public void addDisposable(Disposable mainFragment) {
-}
-
-private void goRegister() {
-        addDisposable((Disposable) Observable.create(new ObservableOnSubscribe<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.12
-            @Override // io.reactivex.ObservableOnSubscribe
-            public void subscribe(ObservableEmitter<Boolean> observableEmitter) throws Exception {
+    private fun goRegister() {
+        addDisposable(
+            Observable.create<Boolean> {
                 do {
-                } while (!MyApplication.getInstance().isSerialInit());
-                observableEmitter.onNext(true);
-                observableEmitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.11
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Boolean bool) throws Exception {
-                MainE9Fragment.this.startActivityForResult(new Intent(MainE9Fragment.this.getContext(), (Class<?>) E9RegisterActivity.class), 1);
-            }
-        }));
+                    } while (!MyApplication.getInstance().isSerialInit)
+                    it.onNext(true)
+                    it.onComplete()
+
+            }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                {
+                    this@MainE9Fragment.startActivityForResult(
+                        Intent(
+                            this@MainE9Fragment.context,
+                            E9RegisterActivity::class.java as Class<*>?
+                        ), 1
+                    )
+                }, { dismissLoadingDialog() })
+        )
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: readConfigurationE9FromAssets, reason: merged with bridge method [inline-methods] */
-    public String m42x32abd4e4() {
-        try {
-            InputStream open = getContext().getAssets().open("config_e9.json");
-            byte[] bArr = new byte[open.available()];
-            open.read(bArr);
-            return new String(bArr);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>?, view: View, i: Int) {
         if (!ResUpdateUtils.resDownloadFinished()) {
-            showDownloadDbDialog();
-            return;
+            showDownloadDbDialog()
+            return
         }
-        if (view.getTag() != null) {
-            int intValue = ((Integer) view.getTag()).intValue();
-            switch (intValue) {
-                case R.string.automobile /* 2131886161 */:
-                    goKeySelect(1, intValue);
-                    return;
-                case R.string.blank_cut /* 2131886172 */:
-                    start(KeyBlankCutTypeSelectFragment.newInstance());
-                    break;
-                case R.string.calibration /* 2131886197 */:
-                case R.string.setup /* 2131886784 */:
-                    start(CalibrationFragment.newInstance());
-                    return;
-                case R.string.chinese_car /* 2131886217 */:
-                    goKeySelect(6, intValue);
-                    return;
-                case R.string.cut_history /* 2131886268 */:
-                    start(UserDataFragment.newInstance(0));
-                    return;
-                case R.string.dimple /* 2131886318 */:
-                    goKeySelect(3, intValue);
-                    return;
-                case R.string.duplicating_key /* 2131886361 */:
-                    start(DuplicateKeyNewFragment.newInstance());
-                    return;
-                case R.string.favorites /* 2131886386 */:
-                    start(UserDataFragment.newInstance(1));
-                    return;
-                case R.string.key_marking /* 2131886469 */:
-                    start(KeyMarkingE9Fragment.newInstance());
-                    return;
-                case R.string.last_key /* 2131886482 */:
-                    break;
-                case R.string.motorcycle /* 2131886524 */:
-                    goKeySelect(2, intValue);
-                    return;
-                case R.string.my_key_info /* 2131886563 */:
-                    start(CustomKeyListFragment.newInstance());
-                    return;
-                case R.string.search /* 2131886757 */:
-                    start(SearchFragment.newInstance());
-                    return;
-                case R.string.service /* 2131886782 */:
-                    start(SupportFragment.newInstance());
-                    return;
-                case R.string.single_standard /* 2131886803 */:
-                    goKeySelect(4, intValue);
-                    return;
-                case R.string.technical_information /* 2131886832 */:
-                    start(TechnicalInfoBrandSelectFragment.newInstance());
-                    return;
-                case R.string.tubular /* 2131886851 */:
-                    goKeySelect(5, intValue);
-                    return;
-                default:
-                    return;
+        if (view.tag != null) {
+            when (val intValue: Int = (view.tag as Int)) {
+                R.string.automobile -> {
+                    goKeySelect(1, intValue)
+                    return
+                }
+
+                R.string.blank_cut -> start(com.kkkcut.e20j.ui.fragment.blankcut.KeyBlankCutTypeSelectFragment.newInstance())
+                R.string.calibration, R.string.setup -> {
+                    start(CalibrationFragment.newInstance())
+                    return
+                }
+
+                R.string.chinese_car -> {
+                    goKeySelect(6, intValue)
+                    return
+                }
+
+                R.string.cut_history -> {
+                    start(UserDataFragment.newInstance(0))
+                    return
+                }
+
+                R.string.dimple -> {
+                    goKeySelect(3, intValue)
+                    return
+                }
+
+                R.string.duplicating_key -> {
+                    start(DuplicateKeyNewFragment.newInstance())
+                    return
+                }
+
+                R.string.favorites -> {
+                    start(UserDataFragment.newInstance(1))
+                    return
+                }
+
+                R.string.key_marking -> {
+                    start(KeyMarkingE9Fragment.newInstance())
+                    return
+                }
+
+                R.string.last_key -> {}
+                R.string.motorcycle -> {
+                    goKeySelect(2, intValue)
+                    return
+                }
+
+                R.string.my_key_info -> {
+                    start(CustomKeyListFragment.newInstance())
+                    return
+                }
+
+                R.string.search -> {
+                    start(SearchFragment.newInstance())
+                    return
+                }
+
+                R.string.service -> {
+                    start(SupportFragment.newInstance())
+                    return
+                }
+
+                R.string.single_standard -> {
+                    goKeySelect(4, intValue)
+                    return
+                }
+
+                R.string.technical_information -> {
+                    start(TechnicalInfoBrandSelectFragment.newInstance())
+                    return
+                }
+
+                R.string.tubular -> {
+                    goKeySelect(5, intValue)
+                    return
+                }
+
+                else -> return
             }
-            addDisposable(Observable.fromCallable(new Callable<CutHistoryData>() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.14
-                /* JADX WARN: Can't rename method to resolve collision */
-                @Override // java.util.concurrent.Callable
-                public CutHistoryData call() throws Exception {
-                    CutHistoryData lastCutHistory = UserDataDaoManager.getInstance(MainE9Fragment.this.getContext()).getLastCutHistory();
-                    if (lastCutHistory != null) {
-                        return lastCutHistory;
-                    }
-                    throw new Exception(MainE9Fragment.this.getString(R.string.no_data_was_found));
-                }
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment$$ExternalSyntheticLambda0
-                @Override // io.reactivex.functions.Consumer
-                public final void accept(Object cutHistoryData) {
-                    start(KeyOperateFragment.newInstance(new GoOperatBean((CollectionData) cutHistoryData)));
-                }
-            }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.MainE9Fragment.13
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Throwable th) throws Exception {
-                    ToastUtil.showToast(th.getMessage());
-                }
-            }));
+            addDisposable(
+                Observable.fromCallable{
+                        val lastCutHistory: CutHistoryData? =
+                            UserDataDaoManager.getInstance(this@MainE9Fragment.context)
+                                .getLastCutHistory()
+                        if (lastCutHistory != null) {
+                            return@fromCallable lastCutHistory
+                        }
+                        throw Exception(this@MainE9Fragment.getString(R.string.no_data_was_found))
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        start(KeyOperateFragment.newInstance(GoOperatBean(((it as CollectionData?)!!))))
+                    }, { th ->
+                        ToastUtil.showToast(th.message)
+                    }, { dismissLoadingDialog() })
+            )
         }
     }
 
-    private void showDownloadDbDialog() {
-        new AlertDialog.Builder(getContext()).setTitle(R.string.resup_need_update).setPositiveButton(R.string.f1269ok, (dialogInterface, i) -> {
-                MainE9Fragment.this.goDataUpgradeFragment();
-
-        }).show();
+    private fun showDownloadDbDialog() {
+        AlertDialog.Builder(getContext()).setTitle(R.string.resup_need_update).setPositiveButton(
+            R.string.f1269ok
+        ) { _: DialogInterface?, i: Int ->
+            this@MainE9Fragment.goDataUpgradeFragment()
+        }.show()
     }
 
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.about_us /* 2131361812 */:
-                closeDrawer();
-                start(AboutFragment.newInstance(this.machineName, SPUtils.getString("series"), this.companyStr));
-                return;
-            case R.id.data_update /* 2131362087 */:
-                closeDrawer();
-                goDataUpgradeFragment();
-                return;
-            case R.id.help_center /* 2131362243 */:
-                closeDrawer();
-                start(HelpCenterFragment.newInstance());
-                return;
-            case R.id.iv_service /* 2131362331 */:
-                start(SupportFragment.newInstance());
-                return;
-            case R.id.language_choice /* 2131362373 */:
-                closeDrawer();
-                start(LanguageSwitchFragment.newInstance(this.languageStr));
-                return;
-            case R.id.setting /* 2131362764 */:
-                closeDrawer();
-                start(SettingFragment.newInstance());
-                return;
-            case R.id.version_update /* 2131363067 */:
-                closeDrawer();
-                AppUpdateUtil.checkUpdate(getActivity());
-                return;
-            default:
-                return;
+    fun onViewClicked(view: View) {
+        when (view.id) {
+            R.id.about_us -> {
+                closeDrawer()
+                start(
+                    AboutFragment.newInstance(
+                        this.machineName,
+                        SPUtils.getString("series"),
+                        this.companyStr
+                    )
+                )
+                return
+            }
+
+            R.id.data_update -> {
+                closeDrawer()
+                goDataUpgradeFragment()
+                return
+            }
+
+            R.id.help_center -> {
+                closeDrawer()
+                start(HelpCenterFragment.newInstance())
+                return
+            }
+
+            R.id.iv_service -> {
+                start(SupportFragment.newInstance())
+                return
+            }
+
+            R.id.language_choice -> {
+                closeDrawer()
+                start(LanguageSwitchFragment.newInstance(this.languageStr))
+                return
+            }
+
+            R.id.setting -> {
+                closeDrawer()
+                start(SettingFragment.newInstance())
+                return
+            }
+
+            R.id.version_update -> {
+                closeDrawer()
+                AppUpdateUtil.checkUpdate(activity)
+                return
+            }
+
+            else -> return
         }
     }
 
-    private void closeDrawer() {
-        if (this.binding.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
-            this.binding.drawerlayout.closeDrawer(Gravity.RIGHT);
+    private fun closeDrawer() {
+        if (binding!!.drawerlayout.isDrawerOpen(Gravity.RIGHT)) {
+            binding!!.drawerlayout.closeDrawer(Gravity.RIGHT)
         }
     }
 
-    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment, com.kkkcut.e20j.base.BaseFFragment, androidx.fragment.app.Fragment
-    public void onHiddenChanged(boolean z) {
-        super.onHiddenChanged(z);
+    // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment, com.kkkcut.e20j.base.BaseFFragment, androidx.fragment.app.Fragment
+    override fun onHiddenChanged(z: Boolean) {
+        super.onHiddenChanged(z)
         if (z) {
-            ((FrameActivity) getActivity()).hideLogo();
+            (activity as FrameActivity?)!!.hideLogo()
         } else {
-            ((FrameActivity) getActivity()).showLogo();
+            (activity as FrameActivity?)!!.showLogo()
         }
     }
 
-    private void goKeySelect(int i, int i2) {
-        start(BrandSelectFragment.newInstance(i, i2));
+    private fun goKeySelect(i: Int, i2: Int) {
+        start(BrandSelectFragment.newInstance(i, i2))
     }
 
-    @Override // androidx.fragment.app.Fragment
-    public void onActivityResult(int i, int i2, Intent intent) {
-        Log.d("MainFragment", "onActivityResult() called with: requestCode = [" + i + "], resultCode = [" + i2 + "], data = [" + intent + "]");
+    // androidx.fragment.app.Fragment
+    override fun onActivityResult(i: Int, i2: Int, intent: Intent?) {
+        Log.d(
+            "MainFragment",
+            "onActivityResult() called with: requestCode = [$i], resultCode = [$i2], data = [$intent]"
+        )
         if (i == 1) {
-            getConfigurationE9();
-            setSeries();
+            configurationE9
+            setSeries()
+        }
+    }
+
+    companion object {
+        private val REGISTER: Int = 1
+        val TAG: String = "MainFragment"
+        fun newInstance(): MainE9Fragment {
+            return MainE9Fragment()
         }
     }
 }

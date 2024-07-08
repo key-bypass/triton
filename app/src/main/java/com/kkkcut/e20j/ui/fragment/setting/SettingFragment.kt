@@ -1,137 +1,153 @@
-package com.kkkcut.e20j.ui.fragment.setting;
+package com.kkkcut.e20j.ui.fragment.setting
 
-import android.os.Bundle;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import androidx.fragment.app.Fragment;
-
-import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.driver.pl2303.UsbSerialManager;
-import com.kkkcut.e20j.ui.dialog.RemindDialog;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.utils.CutCountHelper;
+import android.os.Bundle
+import android.widget.CompoundButton
+import android.widget.RadioButton
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.kkkcut.e20j.MyApplication
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.driver.pl2303.UsbSerialManager
+import com.kkkcut.e20j.ui.dialog.RemindDialog
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.utils.CutCountHelper
+import com.kkkcut.e20j.utils.CutCountHelper.ReadCutCountListener
 
 /* loaded from: classes.dex */
-public class SettingFragment extends BaseBackFragment {
-    private Fragment currentFragment;
+class SettingFragment() : BaseBackFragment() {
+    private var currentFragment: Fragment? = null
 
-    RadioButton rbCutSetting;
+    var rbCutSetting: RadioButton? = null
 
-    RadioButton rb_space_Width;
+    var rb_space_Width: RadioButton? = null
 
-    TextView tvCutCount;
+    var tvCutCount: TextView? = null
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_setting;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_setting
     }
 
-    public static SettingFragment newInstance() {
-        Bundle bundle = new Bundle();
-        SettingFragment settingFragment = new SettingFragment();
-        settingFragment.setArguments(bundle);
-        return settingFragment;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.setting)
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.setting);
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.currentFragment = SpeedSetFragment.newInstance();
-        getChildFragmentManager().beginTransaction().add(R.id.container, this.currentFragment, SpeedSetFragment.TAG).commit();
-        if (MyApplication.getInstance().isShowRealDepth()) {
-            this.rb_space_Width.setVisibility(0);
-            this.rbCutSetting.setVisibility(0);
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        this.currentFragment = SpeedSetFragment.newInstance()
+        getChildFragmentManager().beginTransaction()
+            .add(R.id.container, this.currentFragment!!, SpeedSetFragment.TAG).commit()
+        if (MyApplication.getInstance().isShowRealDepth) {
+            rb_space_Width!!.visibility = 0
+            rbCutSetting!!.visibility = 0
         }
-        CutCountHelper.getInstance().getCutCount(new CutCountHelper.ReadCutCountListener() { // from class: com.kkkcut.e20j.ui.fragment.setting.SettingFragment.1
-            @Override // com.kkkcut.e20j.utils.CutCountHelper.ReadCutCountListener
-            public void onReadFinish(String str) {
-                SettingFragment.this.tvCutCount.setText(str);
+        CutCountHelper.getInstance().getCutCount(object : ReadCutCountListener {
+            // from class: com.kkkcut.e20j.ui.fragment.setting.SettingFragment.1
+            // com.kkkcut.e20j.utils.CutCountHelper.ReadCutCountListener
+            override fun onReadFinish(str: String) {
+                tvCutCount!!.setText(str)
             }
-        });
+        })
     }
 
 
-    public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
-        switch (compoundButton.getId()) {
-            case R.id.rb_cut_setting /* 2131362606 */:
+    fun onCheckedChanged(compoundButton: CompoundButton, z: Boolean) {
+        when (compoundButton.getId()) {
+            R.id.rb_cut_setting -> {
                 if (z) {
-                    switchPage(CutSettingFragment.TAG, CutSettingFragment.class);
-                    return;
+                    switchPage(CutSettingFragment.Companion.TAG, CutSettingFragment::class.java)
+                    return
                 }
-                return;
-            case R.id.rb_other /* 2131362634 */:
+                return
+            }
+
+            R.id.rb_other -> {
                 if (z) {
-                    switchPage(OtherSettingFragment.TAG, OtherSettingFragment.class);
-                    return;
+                    switchPage(OtherSettingFragment.Companion.TAG, OtherSettingFragment::class.java)
+                    return
                 }
-                return;
-            case R.id.rb_space_Width /* 2131362654 */:
+                return
+            }
+
+            R.id.rb_space_Width -> {
                 if (z) {
-                    switchPage(SpaceWidthSetting.TAG, SpaceWidthSetting.class);
-                    return;
+                    switchPage(SpaceWidthSetting.Companion.TAG, SpaceWidthSetting::class.java)
+                    return
                 }
-                return;
-            case R.id.rb_speed /* 2131362655 */:
+                return
+            }
+
+            R.id.rb_speed -> {
                 if (z) {
-                    switchPage(SpeedSetFragment.TAG, SpeedSetFragment.class);
-                    return;
+                    switchPage(SpeedSetFragment.Companion.TAG, SpeedSetFragment::class.java)
+                    return
                 }
-                return;
-            default:
-                return;
+                return
+            }
+
+            else -> return
         }
     }
 
-    private void switchPage(String str, Class cls) {
-        Fragment findFragmentByTag = getChildFragmentManager().findFragmentByTag(str);
+    private fun switchPage(str: String, cls: Class<*>) {
+        val findFragmentByTag: Fragment? = getChildFragmentManager().findFragmentByTag(str)
         if (findFragmentByTag == null) {
-            Fragment fragment = null;
+            var fragment: Fragment? = null
             try {
                 try {
-                    fragment = (Fragment) cls.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
+                    fragment = cls.newInstance() as Fragment?
+                } catch (e: InstantiationException) {
+                    e.printStackTrace()
                 }
-                getChildFragmentManager().beginTransaction().add(R.id.container, fragment, str).hide(this.currentFragment).commit();
-                this.currentFragment = fragment;
-                return;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return;
+                getChildFragmentManager().beginTransaction().add(R.id.container, (fragment)!!, str)
+                    .hide(
+                        (currentFragment)!!
+                    ).commit()
+                this.currentFragment = fragment
+                return
+            } catch (e2: Exception) {
+                e2.printStackTrace()
+                return
             }
         }
-        getChildFragmentManager().beginTransaction().hide(this.currentFragment).show(findFragmentByTag).commit();
-        this.currentFragment = findFragmentByTag;
+        getChildFragmentManager().beginTransaction().hide((currentFragment)!!)
+            .show(findFragmentByTag).commit()
+        this.currentFragment = findFragmentByTag
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
+    // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun onEventComing(eventCenter: EventCenter<*>) {
         if (eventCenter.getEventCode() == 21) {
-            this.rb_space_Width.setVisibility(0);
-            this.rbCutSetting.setVisibility(0);
+            rb_space_Width!!.setVisibility(0)
+            rbCutSetting!!.setVisibility(0)
         }
     }
 
-    public void onClick() {
-        RemindDialog remindDialog = new RemindDialog(getContext());
-        remindDialog.setRemindMsg(getString(R.string.do_you_want_to_exit_the_program));
-        remindDialog.setDialogBtnCallback(new RemindDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.setting.SettingFragment.2
-            @Override // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
-            public void onDialogButClick(boolean z) {
+    fun onClick() {
+        val remindDialog: RemindDialog = RemindDialog(getContext())
+        remindDialog.setRemindMsg(getString(R.string.do_you_want_to_exit_the_program))
+        remindDialog.setDialogBtnCallback(object : RemindDialog.DialogBtnCallBack {
+            // from class: com.kkkcut.e20j.ui.fragment.setting.SettingFragment.2
+            // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
+            override fun onDialogButClick(z: Boolean) {
                 if (z) {
-                    UsbSerialManager.getInstance().stop();
-                    SettingFragment.this.getActivity().finish();
-                    System.exit(0);
+                    UsbSerialManager.getInstance().stop()
+                    getActivity()!!.finish()
+                    System.exit(0)
                 }
             }
-        });
-        remindDialog.show();
+        })
+        remindDialog.show()
+    }
+
+    companion object {
+        fun newInstance(): SettingFragment {
+            val bundle: Bundle = Bundle()
+            val settingFragment: SettingFragment = SettingFragment()
+            settingFragment.setArguments(bundle)
+            return settingFragment
+        }
     }
 }

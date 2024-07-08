@@ -1,82 +1,98 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Build;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import com.kkkcut.e20j.base.BaseFragment;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.utils.DesUtil;
-import java.io.IOException;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.kkkcut.e20j.base.BaseFragment
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentTestBinding
+import com.kkkcut.e20j.utils.DesUtil
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request.Builder
+import okhttp3.RequestBody
+import okhttp3.Response
+import org.apache.commons.math3.analysis.FunctionUtils.add
+import java.io.IOException
+
 
 /* loaded from: classes.dex */
-public class TestFragment extends BaseFragment {
+class TestFragment : BaseFragment() {
+    var binding: FragmentTestBinding? = null
 
-    Button clear;
-
-    EditText paramDes;
-
-    TextView responseDec;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_test;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentTestBinding.inflate(layoutInflater, viewGroup, false)
+        this.binding!!.commit.setOnClickListener { onViewClicked(it) }
+        this.binding!!.param.setShowSoftInputOnFocus(false)
+        return binding!!.getRoot()
     }
 
-    public static TestFragment newInstance() {
-        return new TestFragment();
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_test
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            this.paramDes.setShowSoftInputOnFocus(false);
-        }
+    override fun initViewsAndEvents() {
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id = view.id
         if (id == R.id.clear) {
-            this.paramDes.setText("");
-            return;
+            binding!!.param.setText("")
+            return
         }
         if (id != R.id.commit) {
-            return;
+            return
         }
-        String encrypt = DesUtil.encrypt(this.paramDes.getText().toString().trim(), DesUtil.SERVER);
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Log.i(TAG, "param: " + encrypt);
-        okHttpClient.newCall(new Request.Builder().url("http://192.168.0.200:8086/MobilePhoneAppService.ashx").post(new FormBody.Builder().add("T", encrypt).build()).build()).enqueue(new Callback() { // from class: com.kkkcut.e20j.ui.fragment.TestFragment.1
-            @Override // okhttp3.Callback
-            public void onFailure(Call call, IOException iOException) {
-                Log.d(TestFragment.TAG, "onFailure: " + iOException.getMessage());
+        val encrypt = DesUtil.encrypt(binding!!.param.getText().toString().trim(), DesUtil.SERVER)
+        val okHttpClient = OkHttpClient()
+        Log.i(TAG, "param: $encrypt")
+        val builder = Builder()
+        okHttpClient.newCall(
+            builder.url("http://192.168.0.200:8086/MobilePhoneAppService.ashx")
+                .post(FormBody.Builder().add("T", encrypt).build()).build()
+        ).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(TAG, "onFailure: " + e.message)
             }
 
-            @Override // okhttp3.Callback
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TestFragment.TAG, response.protocol() + " " + response.code() + " " + response.message());
-                Headers headers = response.headers();
-                for (int i = 0; i < headers.size(); i++) {
-                    Log.d(TestFragment.TAG, headers.name(i) + ":" + headers.value(i));
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                Log.d(TAG,
+                    (response.protocol.toString() + " " + response.code).toString() + " " + response.message
+                )
+                val headers = response.headers
+                for (i in 0 until headers.size) {
+                    Log.d(TAG, headers.name(i) + ":" + headers.value(i))
                 }
-                String string = response.body().string();
-                Log.i(TestFragment.TAG, "onResponse: " + string);
+                val string = response.body!!.string()
+                Log.i(TAG, "onResponse: $string")
                 try {
-                    String decrypt = DesUtil.decrypt(string, DesUtil.SERVER);
-                    Log.i(TestFragment.TAG, "返回: " + decrypt);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    val decrypt = DesUtil.decrypt(string, DesUtil.SERVER)
+                    Log.i(TAG, "返回: $decrypt")
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-        });
+
+
+
+        })
+    }
+
+    companion object {
+        fun newInstance(): TestFragment {
+            return TestFragment()
+        }
     }
 }

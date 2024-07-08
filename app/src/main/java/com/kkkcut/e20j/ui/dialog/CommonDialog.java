@@ -50,10 +50,10 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     private void init() {
         setContentView(R.layout.dialog_common);
-        this.mTitleView = (TextView) findViewById(R.id.dialog_title);
-        this.mInfoView = (TextView) findViewById(R.id.dialog_info);
-        this.mConfirmBtn = (Button) findViewById(R.id.dialog_confirm);
-        this.mCancelBtn = (Button) findViewById(R.id.dialog_cancel);
+        this.mTitleView = findViewById(R.id.dialog_title);
+        this.mInfoView = findViewById(R.id.dialog_info);
+        this.mConfirmBtn = findViewById(R.id.dialog_confirm);
+        this.mCancelBtn = findViewById(R.id.dialog_cancel);
         this.mConfirmBtn.setOnClickListener(this);
         this.mCancelBtn.setOnClickListener(this);
         String str = this.mInfoText;

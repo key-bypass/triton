@@ -1,184 +1,188 @@
-package com.kkkcut.e20j.ui.fragment.customkey;
+package com.kkkcut.e20j.ui.fragment.customkey
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
-import com.cutting.machine.MachineInfo;
-import com.kkkcut.e20j.DbBean.userDB.CustomKey;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
+import android.os.Bundle
+import android.os.Parcelable
+import android.view.View
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.DbBean.userDB.CustomKey
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
+import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
-public class KeyTypeSelectFragment extends BaseBackFragment {
-    private static final String CUSTOMKEY = "CUSTOMKEY";
-    private CustomKey customKey;
+class KeyTypeSelectFragment() : BaseBackFragment() {
+    private var customKey: CustomKey? = null
 
-    RadioButton rbDimpleKey;
+    var rbDimpleKey: RadioButton? = null
 
-    RadioButton rbDoubleInsideKey;
+    var rbDoubleInsideKey: RadioButton? = null
 
-    RadioButton rbDoubleKey;
+    var rbDoubleKey: RadioButton? = null
 
-    RadioButton rbDoubleOutsideKey;
+    var rbDoubleOutsideKey: RadioButton? = null
 
-    RadioButton rbSingleInsideKey;
+    var rbSingleInsideKey: RadioButton? = null
 
-    RadioButton rbSingleKey;
+    var rbSingleKey: RadioButton? = null
 
-    RadioButton rbSingleOutsideKey;
+    var rbSingleOutsideKey: RadioButton? = null
 
-    RadioButton rbTubularKey;
+    var rbTubularKey: RadioButton? = null
 
-    RadioGroup rg1;
+    var rg1: RadioGroup? = null
 
-    RadioGroup rg2;
+    var rg2: RadioGroup? = null
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_key_type_select;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_key_type_select
     }
 
-    public static KeyTypeSelectFragment newInstance(CustomKey customKey) {
-        KeyTypeSelectFragment keyTypeSelectFragment = new KeyTypeSelectFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(CUSTOMKEY, customKey);
-        keyTypeSelectFragment.setArguments(bundle);
-        return keyTypeSelectFragment;
-    }
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        rg1!!.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyTypeSelectFragment.1
+            // android.widget.RadioGroup.OnCheckedChangeListener
+            override fun onCheckedChanged(radioGroup: RadioGroup, i: Int) {
+                when (i) {
+                    R.id.rb_dimple_key -> {
+                        if (rbDimpleKey!!.isChecked()) {
+                            rg2!!.clearCheck()
+                            customKey!!.setType(6)
+                            return
+                        }
+                        return
+                    }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.rg1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyTypeSelectFragment.1
-            @Override // android.widget.RadioGroup.OnCheckedChangeListener
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_dimple_key /* 2131362607 */:
-                        if (KeyTypeSelectFragment.this.rbDimpleKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg2.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(6);
-                            return;
+                    R.id.rb_double_inside_key -> {
+                        if (rbDoubleInsideKey!!.isChecked()) {
+                            rg2!!.clearCheck()
+                            customKey!!.setType(2)
+                            return
                         }
-                        return;
-                    case R.id.rb_double_inside_key /* 2131362613 */:
-                        if (KeyTypeSelectFragment.this.rbDoubleInsideKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg2.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(2);
-                            return;
+                        return
+                    }
+
+                    R.id.rb_double_key -> {
+                        if (rbDoubleKey!!.isChecked()) {
+                            rg2!!.clearCheck()
+                            customKey!!.setType(0)
+                            return
                         }
-                        return;
-                    case R.id.rb_double_key /* 2131362614 */:
-                        if (KeyTypeSelectFragment.this.rbDoubleKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg2.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(0);
-                            return;
+                        return
+                    }
+
+                    R.id.rb_inside_key -> {
+                        if (rbSingleInsideKey!!.isChecked()) {
+                            rg2!!.clearCheck()
+                            customKey!!.setType(5)
+                            return
                         }
-                        return;
-                    case R.id.rb_inside_key /* 2131362624 */:
-                        if (KeyTypeSelectFragment.this.rbSingleInsideKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg2.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(5);
-                            return;
-                        }
-                        return;
-                    default:
-                        return;
+                        return
+                    }
+
+                    else -> return
                 }
             }
-        });
-        this.rg2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyTypeSelectFragment.2
-            @Override // android.widget.RadioGroup.OnCheckedChangeListener
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_double_outside_key /* 2131362615 */:
-                        if (KeyTypeSelectFragment.this.rbDoubleOutsideKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg1.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(4);
-                            return;
+        })
+        rg2!!.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            // from class: com.kkkcut.e20j.ui.fragment.customkey.KeyTypeSelectFragment.2
+            // android.widget.RadioGroup.OnCheckedChangeListener
+            override fun onCheckedChanged(radioGroup: RadioGroup, i: Int) {
+                when (i) {
+                    R.id.rb_double_outside_key -> {
+                        if (rbDoubleOutsideKey!!.isChecked()) {
+                            rg1!!.clearCheck()
+                            customKey!!.setType(4)
+                            return
                         }
-                        return;
-                    case R.id.rb_single_key /* 2131362651 */:
-                        if (KeyTypeSelectFragment.this.rbSingleKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg1.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(1);
-                            return;
+                        return
+                    }
+
+                    R.id.rb_single_key -> {
+                        if (rbSingleKey!!.isChecked()) {
+                            rg1!!.clearCheck()
+                            customKey!!.setType(1)
+                            return
                         }
-                        return;
-                    case R.id.rb_single_outside_key /* 2131362652 */:
-                        if (KeyTypeSelectFragment.this.rbSingleOutsideKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg1.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(3);
-                            return;
+                        return
+                    }
+
+                    R.id.rb_single_outside_key -> {
+                        if (rbSingleOutsideKey!!.isChecked()) {
+                            rg1!!.clearCheck()
+                            customKey!!.setType(3)
+                            return
                         }
-                        return;
-                    case R.id.rb_tubular_key /* 2131362664 */:
-                        if (KeyTypeSelectFragment.this.rbTubularKey.isChecked()) {
-                            KeyTypeSelectFragment.this.rg1.clearCheck();
-                            KeyTypeSelectFragment.this.customKey.setType(8);
-                            return;
+                        return
+                    }
+
+                    R.id.rb_tubular_key -> {
+                        if (rbTubularKey!!.isChecked()) {
+                            rg1!!.clearCheck()
+                            customKey!!.setType(8)
+                            return
                         }
-                        return;
-                    default:
-                        return;
+                        return
+                    }
+
+                    else -> return
                 }
             }
-        });
-        CustomKey customKey = (CustomKey) getArguments().getParcelable(CUSTOMKEY);
-        this.customKey = customKey;
+        })
+        val customKey: CustomKey? =
+            getArguments()!!.getParcelable<Parcelable>(CUSTOMKEY) as CustomKey?
+        this.customKey = customKey
         if (customKey != null) {
-            switch (customKey.getType()) {
-                case 0:
-                    this.rbDoubleKey.setChecked(true);
-                    break;
-                case 1:
-                    this.rbSingleKey.setChecked(true);
-                    break;
-                case 2:
-                    this.rbDoubleInsideKey.setChecked(true);
-                    break;
-                case 3:
-                    this.rbSingleOutsideKey.setChecked(true);
-                    break;
-                case 4:
-                    this.rbDoubleOutsideKey.setChecked(true);
-                    break;
-                case 5:
-                    this.rbSingleInsideKey.setChecked(true);
-                    break;
-                case 6:
-                    this.rbDimpleKey.setChecked(true);
-                    break;
-                case 8:
-                    this.rbTubularKey.setChecked(true);
-                    break;
+            when (customKey.getType()) {
+                0 -> rbDoubleKey!!.setChecked(true)
+                1 -> rbSingleKey!!.setChecked(true)
+                2 -> rbDoubleInsideKey!!.setChecked(true)
+                3 -> rbSingleOutsideKey!!.setChecked(true)
+                4 -> rbDoubleOutsideKey!!.setChecked(true)
+                5 -> rbSingleInsideKey!!.setChecked(true)
+                6 -> rbDimpleKey!!.setChecked(true)
+                8 -> rbTubularKey!!.setChecked(true)
             }
         }
         if (MachineInfo.isChineseMachine()) {
-            this.rbDimpleKey.setVisibility(8);
-            this.rbSingleKey.setVisibility(8);
-            this.rbTubularKey.setVisibility(8);
+            rbDimpleKey!!.setVisibility(8)
+            rbSingleKey!!.setVisibility(8)
+            rbTubularKey!!.setVisibility(8)
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.select_key_type);
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.select_key_type)
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.getId()
         if (id == R.id.bt_last) {
-            onBack();
+            onBack()
         } else {
             if (id != R.id.bt_next) {
-                return;
+                return
             }
-            if (this.customKey.getType() == 8) {
-                start(KeySpaceSetFragment.newInstance(this.customKey));
+            if (customKey!!.getType() == 8) {
+                start(KeySpaceSetFragment.Companion.newInstance(this.customKey))
             } else {
-                start(KeyAlignSelectFragment.newInstance(this.customKey));
+                start(KeyAlignSelectFragment.Companion.newInstance(this.customKey))
             }
+        }
+    }
+
+    companion object {
+        private val CUSTOMKEY: String = "CUSTOMKEY"
+        fun newInstance(customKey: CustomKey?): KeyTypeSelectFragment {
+            val keyTypeSelectFragment: KeyTypeSelectFragment = KeyTypeSelectFragment()
+            val bundle: Bundle = Bundle()
+            bundle.putParcelable(CUSTOMKEY, customKey)
+            keyTypeSelectFragment.setArguments(bundle)
+            return keyTypeSelectFragment
         }
     }
 }

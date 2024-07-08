@@ -61,7 +61,7 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
 
     private void s8Clamp(List<BlankCutBean> list) {
         BlankCutBean blankCutBean = new BlankCutBean(BlankCutType.KEY_HEAD, getString(R.string.cut_blank_head), R.drawable.blank_cut_head_big);
-        blankCutBean.setChecked(true);
+        blankCutBean.isChecked = true;
         list.add(blankCutBean);
         list.add(new BlankCutBean(BlankCutType.THICKNESS, getString(R.string.create_thickness), R.drawable.blank_cut_thickness_big));
         list.add(new BlankCutBean(BlankCutType.WIDTH, getString(R.string.create_width), R.drawable.blank_cut_width_big));
@@ -75,7 +75,7 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
 
     private void s1Clamp(List<BlankCutBean> list) {
         BlankCutBean blankCutBean = new BlankCutBean(BlankCutType.THICKNESS, getString(R.string.thickness), R.drawable.blank_cut_thickness_big);
-        blankCutBean.setChecked(true);
+        blankCutBean.isChecked = true;
         list.add(blankCutBean);
         list.add(new BlankCutBean(BlankCutType.WIDTH, getString(R.string.width), R.drawable.blank_cut_width_big));
         list.add(new BlankCutBean(BlankCutType.LEFT_GROOVE, getString(R.string.left_groove), R.drawable.blank_cut_left_groove));
@@ -101,7 +101,7 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
         BlankCutAdapter blankCutAdapter = this.blankCutAdapter;
         if (blankCutAdapter != null) {
             for (BlankCutBean blankCutBean : blankCutAdapter.getData()) {
-                if (blankCutBean.isChecked()) {
+                if (blankCutBean.isChecked) {
                     switch (C14711.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[blankCutBean.getBlankCutType().ordinal()]) {
                         case 1:
                             start(BlankCutHeadFragment.newInstance(blankCutBean));
@@ -205,11 +205,11 @@ public class KeyBlankCutTypeSelectFragment extends BaseBackFragment implements B
         List data = baseQuickAdapter.getData();
         Iterator it = data.iterator();
         while (it.hasNext()) {
-            ((BlankCutBean) it.next()).setChecked(false);
+            ((BlankCutBean) it.next()).isChecked = false;
         }
         BlankCutBean blankCutBean = (BlankCutBean) data.get(i);
-        blankCutBean.setChecked(true);
+        blankCutBean.isChecked = true;
         baseQuickAdapter.setNewData(data);
-        this.ivShow.setImageResource(blankCutBean.getDrawRes());
+        this.ivShow.setImageResource(blankCutBean.drawRes);
     }
 }

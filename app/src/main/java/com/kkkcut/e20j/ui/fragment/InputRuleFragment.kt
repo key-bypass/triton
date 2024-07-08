@@ -1,275 +1,345 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Build;
-import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import com.kkkcut.e20j.androidquick.tool.ToastUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.FragmentInputRuleBinding;
-import com.kkkcut.e20j.utils.ThemeUtils;
-import java.lang.reflect.Method;
-import org.greenrobot.eventbus.EventBus;
+import android.os.Build
+import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
+import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import com.kkkcut.e20j.androidquick.tool.ToastUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentInputRuleBinding
+import com.kkkcut.e20j.utils.ThemeUtils
+import org.greenrobot.eventbus.EventBus
+import java.lang.reflect.Method
 
 /* loaded from: classes.dex */
-public class InputRuleFragment extends BaseBackFragment {
+class InputRuleFragment() : BaseBackFragment() {
+    private val textColorDefault: Int = -1
+    private val myOnfocusChanged = this.MyOnfocusChanged()
 
-    private int textColorDefault = -1;
-    private MyOnfocusChanged myOnfocusChanged = new MyOnfocusChanged();
+    var binding: FragmentInputRuleBinding? = null
 
-    FragmentInputRuleBinding binding;
+    private var currentEdit: EditText? = null
 
-    private EditText currentEdit;
-
-    @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        super.onCreateView(layoutInflater, viewGroup, bundle);
-        this.binding = FragmentInputRuleBinding.inflate(layoutInflater, viewGroup, false);
-        return this.binding.getRoot();
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentInputRuleBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_input_rule;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_input_rule
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static InputRuleFragment newInstance(int i, String str, String str2) {
-        Bundle bundle = new Bundle();
-        InputRuleFragment inputRuleFragment = new InputRuleFragment();
-        bundle.putInt("isrule", i);
-        bundle.putString("ReadBittingRule", str);
-        bundle.putString("toothcode", str2);
-        inputRuleFragment.setArguments(bundle);
-        return inputRuleFragment;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        initView()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        initView();
-    }
-
-    private void initView() {
-        int i = getArguments().getInt("isrule", 0);
-        "3".equals(getArguments().getString("ReadBittingRule"));
-        String replace = getArguments().getString("toothcode").replace(",", "").replace(";", "");
+    private fun initView() {
+        val i: Int = arguments!!.getInt("isrule", 0)
+        ("3" == arguments!!.getString("ReadBittingRule"))
+        val replace: String = arguments!!.getString("toothcode")!!
+            .replace(",", "").replace(";", "")
         if (i == 1) {
-            String str = String.valueOf(replace.charAt(0)) + replace.charAt(2) + replace.charAt(5) + replace.charAt(7);
-            String str2 = getStringAt(replace, 6, 1) + getStringAt(replace, 6, 3) + getStringAt(replace, 6, 4) + getStringAt(replace, 6, 6);
-            for (int i2 = 0; i2 < 4; i2++) {
-                EditText editText = getEditText(String.valueOf(str.charAt(i2)));
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(50, 50);
-                layoutParams.setMargins(10, 0, 0, 0);
-                this.binding.llA.addView(editText, layoutParams);
+            val str: String =
+                replace.get(0).toString() + replace.get(2) + replace.get(5) + replace.get(7)
+            val str2: String =
+                getStringAt(replace, 6, 1) + getStringAt(replace, 6, 3) + getStringAt(
+                    replace,
+                    6,
+                    4
+                ) + getStringAt(replace, 6, 6)
+            for (i2 in 0..3) {
+                val editText: EditText = getEditText(str.get(i2).toString())
+                val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams.setMargins(10, 0, 0, 0)
+                binding!!.llA.addView(editText, layoutParams)
             }
-            for (int i3 = 0; i3 < 4; i3++) {
-                EditText editText2 = getEditText(String.valueOf(str2.charAt(i3)));
-                LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams2.setMargins(10, 0, 0, 0);
-                this.binding.llB.addView(editText2, layoutParams2);
+            for (i3 in 0..3) {
+                val editText2: EditText = getEditText(str2.get(i3).toString())
+                val layoutParams2: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams2.setMargins(10, 0, 0, 0)
+                binding!!.llB.addView(editText2, layoutParams2)
             }
         } else if (i == 3) {
-            String str3 = String.valueOf(replace.charAt(4)) + replace.charAt(5) + replace.charAt(7);
-            String str4 = getStringAt(replace, 6, 3) + getStringAt(replace, 6, 6) + getStringAt(replace, 6, 8);
-            for (int i4 = 0; i4 < 3; i4++) {
-                EditText editText3 = getEditText(String.valueOf(str3.charAt(i4)));
-                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams3.setMargins(10, 0, 0, 0);
-                this.binding.llA.addView(editText3, layoutParams3);
+            val str3: String = replace.get(4).toString() + replace.get(5) + replace.get(7)
+            val str4: String =
+                getStringAt(replace, 6, 3) + getStringAt(replace, 6, 6) + getStringAt(replace, 6, 8)
+            for (i4 in 0..2) {
+                val editText3: EditText = getEditText(str3.get(i4).toString())
+                val layoutParams3: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams3.setMargins(10, 0, 0, 0)
+                binding!!.llA.addView(editText3, layoutParams3)
             }
-            for (int i5 = 0; i5 < 3; i5++) {
-                EditText editText4 = getEditText(String.valueOf(str4.charAt(i5)));
-                LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams4.setMargins(10, 0, 0, 0);
-                this.binding.llB.addView(editText4, layoutParams4);
+            for (i5 in 0..2) {
+                val editText4: EditText = getEditText(str4.get(i5).toString())
+                val layoutParams4: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams4.setMargins(10, 0, 0, 0)
+                binding!!.llB.addView(editText4, layoutParams4)
             }
         } else if (i == 4) {
-            String str5 = getStringAt(replace, 5, 1) + getStringAt(replace, 5, 2);
-            String valueOf = String.valueOf(replace.charAt(0));
-            for (int i6 = 0; i6 < 2; i6++) {
-                EditText editText5 = getEditText(String.valueOf(str5.charAt(i6)));
-                LinearLayout.LayoutParams layoutParams5 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams5.setMargins(10, 0, 0, 0);
-                this.binding.llA.addView(editText5, layoutParams5);
+            val str5: String = getStringAt(replace, 5, 1) + getStringAt(replace, 5, 2)
+            val valueOf: String = replace.get(0).toString()
+            for (i6 in 0..1) {
+                val editText5: EditText = getEditText(str5.get(i6).toString())
+                val layoutParams5: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams5.setMargins(10, 0, 0, 0)
+                binding!!.llA.addView(editText5, layoutParams5)
             }
-            for (int i7 = 0; i7 < 1; i7++) {
-                EditText editText6 = getEditText(String.valueOf(valueOf.charAt(i7)));
-                LinearLayout.LayoutParams layoutParams6 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams6.setMargins(10, 0, 0, 0);
-                this.binding.llB.addView(editText6, layoutParams6);
+            for (i7 in 0..0) {
+                val editText6: EditText = getEditText(valueOf.get(i7).toString())
+                val layoutParams6: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams6.setMargins(10, 0, 0, 0)
+                binding!!.llB.addView(editText6, layoutParams6)
             }
         } else if (i == 5) {
-            String str6 = getStringAt(replace, 6, 4) + getStringAt(replace, 6, 6) + getStringAt(replace, 6, 9);
-            String str7 = replace.charAt(5) + String.valueOf(replace.charAt(7)) + replace.charAt(8);
-            for (int i8 = 0; i8 < 3; i8++) {
-                EditText editText7 = getEditText(String.valueOf(str6.charAt(i8)));
-                LinearLayout.LayoutParams layoutParams7 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams7.setMargins(10, 0, 0, 0);
-                this.binding.llA.addView(editText7, layoutParams7);
+            val str6: String =
+                getStringAt(replace, 6, 4) + getStringAt(replace, 6, 6) + getStringAt(replace, 6, 9)
+            val str7: String =
+                replace.get(5).toString() + replace.get(7).toString() + replace.get(8)
+            for (i8 in 0..2) {
+                val editText7: EditText = getEditText(str6.get(i8).toString())
+                val layoutParams7: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams7.setMargins(10, 0, 0, 0)
+                binding!!.llA.addView(editText7, layoutParams7)
             }
-            for (int i9 = 0; i9 < 3; i9++) {
-                EditText editText8 = getEditText(String.valueOf(str7.charAt(i9)));
-                LinearLayout.LayoutParams layoutParams8 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams8.setMargins(10, 0, 0, 0);
-                this.binding.llB.addView(editText8, layoutParams8);
+            for (i9 in 0..2) {
+                val editText8: EditText = getEditText(str7.get(i9).toString())
+                val layoutParams8: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams8.setMargins(10, 0, 0, 0)
+                binding!!.llB.addView(editText8, layoutParams8)
             }
         } else if (i == 6) {
-            String str8 = replace.charAt(2) + String.valueOf(replace.charAt(3));
-            String str9 = getStringAt(replace, 5, 0) + getStringAt(replace, 5, 1);
-            for (int i10 = 0; i10 < 2; i10++) {
-                EditText editText9 = getEditText(String.valueOf(str8.charAt(i10)));
-                LinearLayout.LayoutParams layoutParams9 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams9.setMargins(10, 0, 0, 0);
-                this.binding.llA.addView(editText9, layoutParams9);
+            val str8: String = replace.get(2).toString() + replace.get(3).toString()
+            val str9: String = getStringAt(replace, 5, 0) + getStringAt(replace, 5, 1)
+            for (i10 in 0..1) {
+                val editText9: EditText = getEditText(str8.get(i10).toString())
+                val layoutParams9: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams9.setMargins(10, 0, 0, 0)
+                binding!!.llA.addView(editText9, layoutParams9)
             }
-            for (int i11 = 0; i11 < 2; i11++) {
-                EditText editText10 = getEditText(String.valueOf(str9.charAt(i11)));
-                LinearLayout.LayoutParams layoutParams10 = new LinearLayout.LayoutParams(50, 50);
-                layoutParams10.setMargins(10, 0, 0, 0);
-                this.binding.llB.addView(editText10, layoutParams10);
+            for (i11 in 0..1) {
+                val editText10: EditText = getEditText(str9.get(i11).toString())
+                val layoutParams10: LinearLayout.LayoutParams = LinearLayout.LayoutParams(50, 50)
+                layoutParams10.setMargins(10, 0, 0, 0)
+                binding!!.llB.addView(editText10, layoutParams10)
             }
         }
-        this.binding.llA.setTag("A");
-        this.binding.llB.setTag("B");
-        this.binding.llA.getChildAt(0).requestFocus();
+        binding!!.llA.setTag("A")
+        binding!!.llB.setTag("B")
+        binding!!.llA.getChildAt(0).requestFocus()
     }
 
-    private EditText getEditText(String str) {
-        EditText editText = new EditText(getContext());
-        editText.setGravity(17);
-        editText.setPadding(0, 0, 0, 0);
-        editText.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.bg_customkey_input));
-        editText.setTextColor(-1);
-        editText.setInputType(2);
-        editText.setCursorVisible(false);
-        editText.setTextSize(18.0f);
-        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1) { // from class: com.kkkcut.e20j.ui.fragment.InputRuleFragment.1
-        }});
+    private fun getEditText(str: String): EditText {
+        val editText: EditText = EditText(getContext())
+        editText.setGravity(17)
+        editText.setPadding(0, 0, 0, 0)
+        editText.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.bg_customkey_input))
+        editText.setTextColor(-1)
+        editText.setInputType(2)
+        editText.setCursorVisible(false)
+        editText.setTextSize(18.0f)
+        editText.setFilters(arrayOf<InputFilter>(object : LengthFilter(1) {
+            // from class: com.kkkcut.e20j.ui.fragment.InputRuleFragment.1
+        }))
         if (Build.VERSION.SDK_INT >= 21) {
-            editText.setShowSoftInputOnFocus(false);
+            editText.setShowSoftInputOnFocus(false)
         } else {
-            getActivity().getWindow().setSoftInputMode(3);
+            getActivity()!!.getWindow().setSoftInputMode(3)
             try {
-                Method method = EditText.class.getMethod("setShowSoftInputOnFocus", Boolean.TYPE);
-                method.setAccessible(true);
-                method.invoke(editText, false);
-            } catch (Exception e) {
-                e.printStackTrace();
+                val method: Method = EditText::class.java.getMethod(
+                    "setShowSoftInputOnFocus",
+                    java.lang.Boolean.TYPE
+                )
+                method.setAccessible(true)
+                method.invoke(editText, false)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
-        editText.setOnFocusChangeListener(this.myOnfocusChanged);
-        editText.setText(String.valueOf(str));
-        return editText;
+        editText.setOnFocusChangeListener(this.myOnfocusChanged)
+        editText.setText(str.toString())
+        return editText
     }
 
-    private String getStringAt(String str, int i, int i2) {
-        return str.charAt(i2) == '?' ? "?" : String.valueOf(i - Integer.parseInt(String.valueOf(str.charAt(i2))));
+    private fun getStringAt(str: String, i: Int, i2: Int): String {
+        return if (str.get(i2) == '?') "?" else (i - str.get(i2).toString().toInt()).toString()
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public class MyOnfocusChanged implements View.OnFocusChangeListener {
-        private MyOnfocusChanged() {
-        }
-
-        @Override // android.view.View.OnFocusChangeListener
-        public void onFocusChange(View view, boolean z) {
+    /* JADX INFO: Access modifiers changed from: private */ /* loaded from: classes.dex */
+    inner class MyOnfocusChanged constructor() : OnFocusChangeListener {
+        // android.view.View.OnFocusChangeListener
+        override fun onFocusChange(view: View, z: Boolean) {
             if (z) {
-                InputRuleFragment.this.currentEdit = (EditText) view;
-                Log.i(InputRuleFragment.TAG, "onFocusChange: " + InputRuleFragment.this.currentEdit);
+                this@InputRuleFragment.currentEdit = view as EditText?
+                Log.i(TAG, "onFocusChange: " + this@InputRuleFragment.currentEdit)
             }
         }
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.getId()
         if (id == R.id.btn_cancel) {
-            onBack();
-            return;
+            onBack()
+            return
         }
         if (id != R.id.btn_ok) {
             if (id != R.id.tvX) {
-                switch (id) {
-                    case R.id.tv1 /* 2131362868 */:
-                    case R.id.tv2 /* 2131362869 */:
-                    case R.id.tv3 /* 2131362870 */:
-                    case R.id.tv4 /* 2131362871 */:
-                    case R.id.tv5 /* 2131362872 */:
-                        break;
-                    default:
-                        return;
+                when (id) {
+                    R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5 -> {}
+                    else -> return
                 }
             }
-            inputNumb(((Button) view).getText().toString());
-            return;
+            inputNumb((view as Button).getText().toString())
+            return
         }
-        String str = "";
-        for (int i = 0; i < this.binding.llA.getChildCount(); i++) {
-            String trim = ((EditText) this.binding.llA.getChildAt(i)).getText().toString().trim();
-            if (TextUtils.isEmpty(trim) || trim.equals("?")) {
-                ToastUtil.showToast(R.string.please_complete_the_data);
-                return;
+        var str: String? = ""
+        for (i in 0 until binding!!.llA.getChildCount()) {
+            val trim: String =
+                (binding!!.llA.getChildAt(i) as EditText).getText().toString().trim({ it <= ' ' })
+            if (TextUtils.isEmpty(trim) || (trim == "?")) {
+                ToastUtil.showToast(R.string.please_complete_the_data)
+                return
             }
         }
-        for (int i2 = 0; i2 < this.binding.llB.getChildCount(); i2++) {
-            String trim2 = ((EditText) this.binding.llB.getChildAt(i2)).getText().toString().trim();
-            if (TextUtils.isEmpty(trim2) || trim2.equals("?")) {
-                ToastUtil.showToast(R.string.please_complete_the_data);
-                return;
+        for (i2 in 0 until binding!!.llB.getChildCount()) {
+            val trim2: String =
+                (binding!!.llB.getChildAt(i2) as EditText).getText().toString().trim({ it <= ' ' })
+            if (TextUtils.isEmpty(trim2) || (trim2 == "?")) {
+                ToastUtil.showToast(R.string.please_complete_the_data)
+                return
             }
         }
-        int i3 = getArguments().getInt("isrule", 0);
+        val i3: Int = getArguments()!!.getInt("isrule", 0)
         if (i3 == 1) {
-            str = ((("" + getToothFromContainer(this.binding.llA, 0) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 0)))) + "," + getToothFromContainer(this.binding.llA, 1) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 1)))) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 2))) + "," + getToothFromContainer(this.binding.llA, 2)) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 3))) + "," + getToothFromContainer(this.binding.llA, 3) + ";";
+            str = ((("" + getToothFromContainer(
+                binding!!.llA, 0
+            ) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 0
+            ).toInt())) + "," + getToothFromContainer(
+                binding!!.llA,
+                1
+            ) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 1
+            ).toInt())) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 2
+            ).toInt()) + "," + getToothFromContainer(
+                binding!!.llA,
+                2
+            )) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 3
+            ).toInt()) + "," + getToothFromContainer(binding!!.llA, 3) + ";"
         } else if (i3 == 3) {
-            str = (("2,2,2," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 0))) + "," + getToothFromContainer(this.binding.llA, 0)) + "," + getToothFromContainer(this.binding.llA, 1) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 1)))) + "," + getToothFromContainer(this.binding.llA, 2) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llB, 2))) + ";";
+            str = (("2,2,2," + (6 - getToothFromContainer(
+                binding!!.llB, 0
+            ).toInt()) + "," + getToothFromContainer(
+                binding!!.llA,
+                0
+            )) + "," + getToothFromContainer(
+                binding!!.llA, 1
+            ) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 1
+            ).toInt())) + "," + getToothFromContainer(
+                binding!!.llA,
+                2
+            ) + "," + (6 - getToothFromContainer(
+                binding!!.llB, 2
+            ).toInt()) + ";"
         } else if (i3 == 4) {
-            str = ("" + getToothFromContainer(this.binding.llB, 0) + "," + (5 - Integer.parseInt(getToothFromContainer(this.binding.llA, 0)))) + "," + (5 - Integer.parseInt(getToothFromContainer(this.binding.llA, 1))) + ",1,1,1,1,1,1;";
+            str = ("" + getToothFromContainer(binding!!.llB, 0) + "," + (5 - getToothFromContainer(
+                binding!!.llA, 0
+            ).toInt())) + "," + (5 - getToothFromContainer(
+                binding!!.llA, 1
+            ).toInt()) + ",1,1,1,1,1,1;"
         } else if (i3 == 5) {
-            str = (("2,2,2,2," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llA, 0))) + "," + getToothFromContainer(this.binding.llB, 0)) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llA, 1))) + "," + getToothFromContainer(this.binding.llB, 1)) + "," + getToothFromContainer(this.binding.llB, 2) + "," + (6 - Integer.parseInt(getToothFromContainer(this.binding.llA, 2))) + ";";
+            str = (("2,2,2,2," + (6 - getToothFromContainer(
+                binding!!.llA, 0
+            ).toInt()) + "," + getToothFromContainer(
+                binding!!.llB,
+                0
+            )) + "," + (6 - getToothFromContainer(
+                binding!!.llA, 1
+            ).toInt()) + "," + getToothFromContainer(
+                binding!!.llB,
+                1
+            )) + "," + getToothFromContainer(
+                binding!!.llB, 2
+            ) + "," + (6 - getToothFromContainer(
+                binding!!.llA, 2
+            ).toInt()) + ";"
         } else if (i3 == 6) {
-            str = ("" + (5 - Integer.parseInt(getToothFromContainer(this.binding.llB, 0))) + "," + (5 - Integer.parseInt(getToothFromContainer(this.binding.llB, 1)))) + "," + getToothFromContainer(this.binding.llA, 0) + "," + getToothFromContainer(this.binding.llA, 1) + ",1,1,1,1,1,1;";
+            str = ("" + (5 - getToothFromContainer(
+                binding!!.llB,
+                0
+            ).toInt()) + "," + (5 - getToothFromContainer(
+                binding!!.llB, 1
+            ).toInt())) + "," + getToothFromContainer(
+                binding!!.llA,
+                0
+            ) + "," + getToothFromContainer(
+                binding!!.llA, 1
+            ) + ",1,1,1,1,1,1;"
         }
-        EventBus.getDefault().post(new EventCenter(15, str));
-        onBack();
+        EventBus.getDefault().post(EventCenter<Any?>(15, str))
+        onBack()
     }
 
-    private String getToothFromContainer(LinearLayout linearLayout, int i) {
-        return ((EditText) linearLayout.getChildAt(i)).getText().toString().trim();
+    private fun getToothFromContainer(linearLayout: LinearLayout, i: Int): String {
+        return (linearLayout.getChildAt(i) as EditText).getText().toString().trim({ it <= ' ' })
     }
 
-    private void inputNumb(String str) {
-        EditText editText = this.currentEdit;
+    private fun inputNumb(str: String) {
+        val editText: EditText? = this.currentEdit
         if (editText != null) {
-            editText.setText(str);
-            LinearLayout linearLayout = (LinearLayout) this.currentEdit.getParent();
-            int indexOfChild = linearLayout.indexOfChild(this.currentEdit);
+            editText.setText(str)
+            val linearLayout: LinearLayout = currentEdit!!.getParent() as LinearLayout
+            val indexOfChild: Int = linearLayout.indexOfChild(this.currentEdit)
             if (indexOfChild < linearLayout.getChildCount() - 1) {
-                this.currentEdit = (EditText) linearLayout.getChildAt(indexOfChild + 1);
+                this.currentEdit = linearLayout.getChildAt(indexOfChild + 1) as EditText?
             } else {
-                String str2 = (String) linearLayout.getTag();
+                val str2: String = linearLayout.getTag() as String
                 if (!TextUtils.isEmpty(str2)) {
-                    if (str2.equals("A")) {
-                        this.currentEdit = (EditText) this.binding.llB.getChildAt(0);
+                    if ((str2 == "A")) {
+                        this.currentEdit = binding!!.llB.getChildAt(0) as EditText?
                     }
-                    if (str2.equals("B")) {
-                        this.currentEdit = (EditText) this.binding.llA.getChildAt(0);
+                    if ((str2 == "B")) {
+                        this.currentEdit = binding!!.llA.getChildAt(0) as EditText?
                     }
                 }
             }
-            this.currentEdit.requestFocus();
+            currentEdit!!.requestFocus()
+        }
+    }
+
+    companion object {
+        fun newInstance(i: Int, str: String?, str2: String?): InputRuleFragment {
+            val bundle: Bundle = Bundle()
+            val inputRuleFragment: InputRuleFragment = InputRuleFragment()
+            bundle.putInt("isrule", i)
+            bundle.putString("ReadBittingRule", str)
+            bundle.putString("toothcode", str2)
+            inputRuleFragment.setArguments(bundle)
+            return inputRuleFragment
         }
     }
 }

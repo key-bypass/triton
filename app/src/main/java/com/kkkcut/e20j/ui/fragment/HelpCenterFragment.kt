@@ -1,110 +1,119 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import com.cutting.machine.MachineInfo;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.FragmentHelpCenterBinding;
-
-import spa.lyh.cn.lib_largeimageview.LargeImageView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentHelpCenterBinding
+import spa.lyh.cn.lib_largeimageview.LargeImageView
 
 /* loaded from: classes.dex */
-public class HelpCenterFragment extends BaseBackFragment {
-    private int lastIndex;
+class HelpCenterFragment() : BaseBackFragment() {
+    private var lastIndex: Int = 0
 
-    FragmentHelpCenterBinding binding;
+    var binding: FragmentHelpCenterBinding? = null
 
-    private int[] pics_en = {R.drawable.help1_en, R.drawable.help2_en};
-    private int[] pics_ch = {R.drawable.help1_ch, R.drawable.help2_ch};
-    private int[] pics_easy = {R.drawable.help1_easy, R.drawable.help2_easy};
-    private int[] pics_us = {R.drawable.help1_us, R.drawable.help2_us};
+    private val pics_en: IntArray = intArrayOf(R.drawable.help1_en, R.drawable.help2_en)
+    private val pics_ch: IntArray = intArrayOf(R.drawable.help1_ch, R.drawable.help2_ch)
+    private val pics_easy: IntArray = intArrayOf(R.drawable.help1_easy, R.drawable.help2_easy)
+    private val pics_us: IntArray = intArrayOf(R.drawable.help1_us, R.drawable.help2_us)
 
-    @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        super.onCreateView(layoutInflater, viewGroup, bundle);
-        this.binding = FragmentHelpCenterBinding.inflate(layoutInflater, viewGroup, false);
-        return this.binding.getRoot();
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View? {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentHelpCenterBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_help_center;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_help_center
     }
 
-    public static HelpCenterFragment newInstance() {
-        Bundle bundle = new Bundle();
-        HelpCenterFragment helpCenterFragment = new HelpCenterFragment();
-        helpCenterFragment.setArguments(bundle);
-        return helpCenterFragment;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.help_center)
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.help_center);
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.binding.viewpager.setAdapter(new PagerAdapter() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.1
-            @Override // androidx.viewpager.widget.PagerAdapter
-            public boolean isViewFromObject(View view, Object obj) {
-                return view == obj;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        binding!!.viewpager.setAdapter(object : PagerAdapter() {
+            // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.1
+            // androidx.viewpager.widget.PagerAdapter
+            override fun isViewFromObject(view: View, obj: Any): Boolean {
+                return view === obj
             }
 
-            @Override // androidx.viewpager.widget.PagerAdapter
-            public int getCount() {
-                return HelpCenterFragment.this.getPics().length;
+            // androidx.viewpager.widget.PagerAdapter
+            override fun getCount(): Int {
+                return pics.size
             }
 
-            @Override // androidx.viewpager.widget.PagerAdapter
-            public Object instantiateItem(ViewGroup viewGroup, int i) {
-                LargeImageView largeImageView = new LargeImageView(HelpCenterFragment.this.getContext());
-                largeImageView.setImage(HelpCenterFragment.this.getPics()[i]);
-                viewGroup.addView(largeImageView);
-                return largeImageView;
+            // androidx.viewpager.widget.PagerAdapter
+            override fun instantiateItem(viewGroup: ViewGroup, i: Int): Any {
+                val largeImageView: LargeImageView =
+                    LargeImageView(this@HelpCenterFragment.getContext())
+                largeImageView.setImage(pics.get(i))
+                viewGroup.addView(largeImageView)
+                return largeImageView
             }
 
-            @Override // androidx.viewpager.widget.PagerAdapter
-            public void destroyItem(ViewGroup viewGroup, int i, Object obj) {
-                viewGroup.removeView((View) obj);
+            // androidx.viewpager.widget.PagerAdapter
+            override fun destroyItem(viewGroup: ViewGroup, i: Int, obj: Any) {
+                viewGroup.removeView(obj as View?)
             }
-        });
-        this.binding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() { // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.2
-            @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
-            public void onPageScrollStateChanged(int i) {
-            }
-
-            @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
-            public void onPageScrolled(int i, float f, int i2) {
+        })
+        binding!!.viewpager.addOnPageChangeListener(object : OnPageChangeListener {
+            // from class: com.kkkcut.e20j.ui.fragment.HelpCenterFragment.2
+            // androidx.viewpager.widget.ViewPager.OnPageChangeListener
+            override fun onPageScrollStateChanged(i: Int) {
             }
 
-            @Override // androidx.viewpager.widget.ViewPager.OnPageChangeListener
-            public void onPageSelected(int i) {
-                if (HelpCenterFragment.this.lastIndex != i) {
-                    View childAt = HelpCenterFragment.this.binding.viewpager.getChildAt(HelpCenterFragment.this.lastIndex);
-                    LargeImageView largeImageView = childAt instanceof LargeImageView ? (LargeImageView) childAt : null;
+            // androidx.viewpager.widget.ViewPager.OnPageChangeListener
+            override fun onPageScrolled(i: Int, f: Float, i2: Int) {
+            }
+
+            // androidx.viewpager.widget.ViewPager.OnPageChangeListener
+            override fun onPageSelected(i: Int) {
+                if (this@HelpCenterFragment.lastIndex != i) {
+                    val childAt: View =
+                        binding!!.viewpager.getChildAt(this@HelpCenterFragment.lastIndex)
+                    val largeImageView: LargeImageView? =
+                        if (childAt is LargeImageView) childAt else null
                     if (largeImageView != null) {
-                        largeImageView.setScale(1.0f);
+                        largeImageView.setScale(1.0f)
                     }
-                    HelpCenterFragment.this.lastIndex = i;
+                    this@HelpCenterFragment.lastIndex = i
                 }
             }
-        });
+        })
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    public int[] getPics() {
-        if (MachineInfo.isE20Us(getContext())) {
-            return this.pics_us;
+    val pics: IntArray
+        /* JADX INFO: Access modifiers changed from: private */
+        get() {
+            if (MachineInfo.isE20Us(getContext())) {
+                return this.pics_us
+            }
+            if (MachineInfo.isChineseMachine()) {
+                return this.pics_ch
+            }
+            return this.pics_en
         }
-        if (MachineInfo.isChineseMachine()) {
-            return this.pics_ch;
+
+    companion object {
+        fun newInstance(): HelpCenterFragment {
+            val bundle: Bundle = Bundle()
+            val helpCenterFragment: HelpCenterFragment = HelpCenterFragment()
+            helpCenterFragment.setArguments(bundle)
+            return helpCenterFragment
         }
-        return this.pics_en;
     }
 }

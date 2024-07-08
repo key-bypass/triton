@@ -1,161 +1,168 @@
-package com.kkkcut.e20j.ui.fragment.technical;
+package com.kkkcut.e20j.ui.fragment.technical
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.cutting.machine.MachineInfo;
-import com.kkkcut.e20j.DbBean.technical.DataModel;
-import com.kkkcut.e20j.adapter.TechnicalInfoModelAdapter;
-import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
-import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.widget.EditText
+import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.DbBean.technical.DataModel
+import com.kkkcut.e20j.adapter.TechnicalInfoModelAdapter
+import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar
+import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.p005ui.fragment.technical.TechnicalInfoSeriesSelectFragment
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.Locale
 
 /* loaded from: classes.dex */
-public class TechnicalInfoModelSelectFragment extends BaseBackFragment {
-    public static final String TAG = "TechnicalInfoBrandSelectFragment";
+class TechnicalInfoModelSelectFragment() : BaseBackFragment() {
+    var etSearch: EditText? = null
 
-    EditText etSearch;
+    var indexBar: IndexBar? = null
+    private var mAdapter: TechnicalInfoModelAdapter? = null
+    private var mDatas1: List<DataModel>? = null
+    private var mDecoration: SuspensionDecoration? = null
 
-    IndexBar indexBar;
-    private TechnicalInfoModelAdapter mAdapter;
-    private List<DataModel> mDatas1;
-    private SuspensionDecoration mDecoration;
+    var rvCategoryList: RecyclerView? = null
+    private var tempData = ArrayList<DataModel>()
 
-    RecyclerView rvCategoryList;
-    private List<DataModel> tempData = new ArrayList();
+    var tvSideBarHint: TextView? = null
 
-    TextView tvSideBarHint;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_keyselect_child;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_keyselect_child
     }
 
-    public static TechnicalInfoModelSelectFragment newInstance(int i, String str) {
-        TechnicalInfoModelSelectFragment technicalInfoModelSelectFragment = new TechnicalInfoModelSelectFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("brandID", i);
-        bundle.putString("title", str);
-        technicalInfoModelSelectFragment.setArguments(bundle);
-        return technicalInfoModelSelectFragment;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        initView()
+        getModels(getArguments()!!.getInt("brandID"))
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        initView();
-        getModels(getArguments().getInt("brandID"));
-    }
-
-    private void initView() {
-        this.etSearch.setHint(getString(R.string.model));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        this.rvCategoryList.setLayoutManager(linearLayoutManager);
-        TechnicalInfoModelAdapter technicalInfoModelAdapter = new TechnicalInfoModelAdapter(getContext());
-        this.mAdapter = technicalInfoModelAdapter;
-        this.rvCategoryList.setAdapter(technicalInfoModelAdapter);
-        SuspensionDecoration suspensionDecoration = new SuspensionDecoration(getContext());
-        this.mDecoration = suspensionDecoration;
-        this.rvCategoryList.addItemDecoration(suspensionDecoration);
-        this.rvCategoryList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        this.indexBar.setmPressedShowTextView(this.tvSideBarHint).setNeedRealIndex(true).setmLayoutManager(linearLayoutManager);
-        this.mAdapter.setOnKeySelectItemClickListener(new TechnicalInfoModelAdapter.OnKeySelectItemClickListener() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoModelSelectFragment.1
-            @Override // com.kkkcut.e20j.adapter.TechnicalInfoModelAdapter.OnKeySelectItemClickListener
-            public void onItemClick(int i) {
-                String string = TechnicalInfoModelSelectFragment.this.getArguments().getString("title");
-                DataModel dataModel = (DataModel) TechnicalInfoModelSelectFragment.this.tempData.get(i);
-                String modelName = dataModel.getModelName();
+    private fun initView() {
+        etSearch!!.setHint(getString(R.string.model))
+        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(getContext())
+        rvCategoryList!!.setLayoutManager(linearLayoutManager)
+        val technicalInfoModelAdapter: TechnicalInfoModelAdapter =
+            TechnicalInfoModelAdapter(getContext())
+        this.mAdapter = technicalInfoModelAdapter
+        rvCategoryList!!.setAdapter(technicalInfoModelAdapter)
+        val suspensionDecoration: SuspensionDecoration = SuspensionDecoration(getContext())
+        this.mDecoration = suspensionDecoration
+        rvCategoryList!!.addItemDecoration(suspensionDecoration)
+        rvCategoryList!!.addItemDecoration(DividerItemDecoration(getContext(), 1))
+        indexBar!!.setmPressedShowTextView(this.tvSideBarHint).setNeedRealIndex(true)
+            .setmLayoutManager(linearLayoutManager)
+        mAdapter!!.setOnKeySelectItemClickListener(object :
+            TechnicalInfoModelAdapter.OnKeySelectItemClickListener {
+            // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoModelSelectFragment.1
+            // com.kkkcut.e20j.adapter.TechnicalInfoModelAdapter.OnKeySelectItemClickListener
+            override fun onItemClick(i: Int) {
+                val string: String? =
+                    getArguments()!!.getString("title")
+                val dataModel: DataModel? = tempData.get(i)
+                var modelName: String = dataModel!!.getModelName()
                 if (MachineInfo.isChineseMachine() && !TextUtils.isEmpty(dataModel.getModelName_CN())) {
-                    modelName = dataModel.getModelName_CN();
+                    modelName = dataModel.getModelName_CN()
                 }
-                TechnicalInfoModelSelectFragment technicalInfoModelSelectFragment = TechnicalInfoModelSelectFragment.this;
-                technicalInfoModelSelectFragment.goSeries(((DataModel) technicalInfoModelSelectFragment.tempData.get(i)).getModelID(), string + ">" + modelName);
+                val technicalInfoModelSelectFragment: TechnicalInfoModelSelectFragment =
+                    this@TechnicalInfoModelSelectFragment
+                technicalInfoModelSelectFragment.goSeries(
+                    technicalInfoModelSelectFragment.tempData.get(
+                        i
+                    )!!.getModelID(), string + ">" + modelName
+                )
             }
-        });
+        })
     }
 
-    public void goSeries(int i, String str) {
-        start(com.kkkcut.e20j.p005ui.fragment.technical.TechnicalInfoSeriesSelectFragment.newInstance(i, str));
-        hideSoftInput();
+    fun goSeries(i: Int, str: String?) {
+        start(TechnicalInfoSeriesSelectFragment.Companion.newInstance(i, str))
+        hideSoftInput()
     }
 
-    private void getModels(final int i) {
-        addDisposable(Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoModelSelectFragment$$ExternalSyntheticLambda1
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
-                List technicalInfoModels;
-                technicalInfoModels = KeyInfoDaoManager.getInstance().getTechnicalInfoModels(i);
-                return technicalInfoModels;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.technical.TechnicalInfoModelSelectFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) throws Exception {
-                TechnicalInfoModelSelectFragment.this.m72x167b80ce((List) obj);
-            }
-        }));
+    private fun getModels(i: Int) {
+        addDisposable(
+            Observable.fromCallable {
+                val technicalInfoModels = KeyInfoDaoManager.getInstance().getTechnicalInfoModels(i)
+                technicalInfoModels
+
+    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                { list ->
+                    if (list != null) {
+                        this.tempData = list as ArrayList<DataModel>
+                        this.mDatas1 = list
+                        setData(list)
+                    }
+                }, {this.dismissLoadingDialog()})
+        )
+    }
+
+
+
+    fun setData(list: List<DataModel?>?) {
+        mAdapter!!.setDatas(list)
+        indexBar!!.setmSourceDatas(list).invalidate()
+        mDecoration!!.setmDatas(list)
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getModels$1$com-kkkcut-e20j-ui-fragment-technical-TechnicalInfoModelSelectFragment, reason: not valid java name */
-    public /* synthetic */ void m72x167b80ce(List list) throws Exception {
-        if (list != null) {
-            this.tempData = list;
-            this.mDatas1 = list;
-            setData(list);
-        }
-    }
-
-    public void setData(List<DataModel> list) {
-        this.mAdapter.setDatas(list);
-        this.indexBar.setmSourceDatas(list).invalidate();
-        this.mDecoration.setmDatas(list);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void afterTextChanged(Editable editable) {
-        String modelName;
-        this.tempData = new ArrayList();
+    fun afterTextChanged(editable: Editable) {
+        var modelName: String
+        this.tempData = ArrayList<DataModel>()
         if (this.mDatas1 != null) {
-            for (int i = 0; i < this.mDatas1.size(); i++) {
-                DataModel dataModel = this.mDatas1.get(i);
+            for (i in mDatas1!!.indices) {
+                val dataModel: DataModel = mDatas1!!.get(i)
                 if (MachineInfo.isChineseMachine()) {
-                    modelName = dataModel.getModelName_CN();
+                    modelName = dataModel.getModelName_CN()
                 } else {
-                    modelName = dataModel.getModelName();
+                    modelName = dataModel.getModelName()
                 }
-                if (!TextUtils.isEmpty(modelName) && modelName.toLowerCase().startsWith(editable.toString().toLowerCase())) {
-                    this.tempData.add(dataModel);
+                if (!TextUtils.isEmpty(modelName) && modelName.lowercase(Locale.getDefault())
+                        .startsWith(
+                            editable.toString().lowercase(
+                                Locale.getDefault()
+                            )
+                        )
+                ) {
+                    tempData.add(dataModel)
                 }
             }
-            setData(this.tempData);
+            setData(this.tempData)
         }
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
-    public void onDestroyView() {
-        super.onDestroyView();
-        hideSoftInput();
+    // com.kkkcut.e20j.base.BaseFFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideSoftInput()
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getArguments().getString("title");
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getArguments()!!.getString("title")
+    }
+
+    companion object {
+        val TAG: String = "TechnicalInfoBrandSelectFragment"
+
+        fun newInstance(i: Int, str: String?): TechnicalInfoModelSelectFragment {
+            val technicalInfoModelSelectFragment: TechnicalInfoModelSelectFragment =
+                TechnicalInfoModelSelectFragment()
+            val bundle: Bundle = Bundle()
+            bundle.putInt("brandID", i)
+            bundle.putString("title", str)
+            technicalInfoModelSelectFragment.setArguments(bundle)
+            return technicalInfoModelSelectFragment
+        }
     }
 }

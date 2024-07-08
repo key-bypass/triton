@@ -1,70 +1,55 @@
-package com.kkkcut.e20j.ui.activity;
+package com.kkkcut.e20j.ui.activity
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.widget.ImageView;
-import com.kkkcut.e20j.androidquick.ui.base.QuickActivity;
-import com.kkkcut.e20j.base.HideStatusActivity;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.ActivityLookPicBinding;
-import com.kkkcut.e20j.utils.ResUpdateUtils;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.os.PersistableBundle
+import com.kkkcut.e20j.base.HideStatusActivity
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.ActivityLookPicBinding
+import com.kkkcut.e20j.utils.ResUpdateUtils
 
 /* loaded from: classes.dex */
-public class LookPicActivity extends HideStatusActivity {
-    private static final String IMG_TRANSITION = "img_transition";
-    public static final String RES_ID = "ResId";
-    public static final String isKeyImg = "isKeyImg";
+class LookPicActivity : HideStatusActivity() {
+    var binding: ActivityLookPicBinding? = null
 
-    ActivityLookPicBinding binding;
-
-    @Override
-    public void onCreate(Bundle bundle, PersistableBundle persistableBundle) {
-        super.onCreate(bundle, persistableBundle);
-        this.binding = ActivityLookPicBinding.inflate(getLayoutInflater());
-        setContentView(this.binding.getRoot());
+    override fun onCreate(bundle: Bundle?, persistableBundle: PersistableBundle?) {
+        super.onCreate(bundle, persistableBundle)
+        this.binding = ActivityLookPicBinding.inflate(layoutInflater)
+        setContentView(binding!!.getRoot())
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected int getContentViewLayoutID() {
-        return R.layout.activity_look_pic;
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.activity_look_pic
     }
 
-    public static void start(Context context, int i, boolean z) {
-        Intent intent = new Intent(context, (Class<?>) LookPicActivity.class);
-        intent.putExtra(RES_ID, i);
-        intent.putExtra(isKeyImg, z);
-        context.startActivity(intent);
-    }
-
-    public static void start(Context context, int i) {
-        start(context, i, false);
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.base.HideStatusActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void initViewsAndEvents() {
-        if (getIntent().getBooleanExtra(isKeyImg, false)) {
-            ResUpdateUtils.showKeyImage(this, getIntent().getIntExtra(RES_ID, 0), this.binding.ivShow);
+    override fun initViewsAndEvents() {
+        if (intent.getBooleanExtra(isKeyImg, false)) {
+            ResUpdateUtils.showKeyImage(
+                this, intent.getIntExtra(RES_ID, 0),
+                binding!!.ivShow
+            )
         } else {
-            this.binding.ivShow.setImageResource(getIntent().getIntExtra(RES_ID, 0));
+            binding!!.ivShow.setImageResource(intent.getIntExtra(RES_ID, 0))
         }
     }
 
-    @Override // com.kkkcut.e20j.base.BaseActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected QuickActivity.TransitionMode getOverridePendingTransitionMode() {
-        return QuickActivity.TransitionMode.FADE;
+    override fun getOverridePendingTransitionMode(): TransitionMode {
+        return TransitionMode.FADE
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
-    public void onDestroy() {
-        super.onDestroy();
+    companion object {
+        private val IMG_TRANSITION: String = "img_transition"
+        val RES_ID: String = "ResId"
+        val isKeyImg: String = "isKeyImg"
+
+        @JvmStatic
+        @JvmOverloads
+        fun start(context: Context, i: Int, z: Boolean = false) {
+            val intent = Intent(context, LookPicActivity::class.java as Class<*>?)
+            intent.putExtra(RES_ID, i)
+            intent.putExtra(isKeyImg, z)
+            context.startActivity(intent)
+        }
     }
 }

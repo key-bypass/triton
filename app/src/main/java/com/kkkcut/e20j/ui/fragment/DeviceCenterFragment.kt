@@ -1,34 +1,34 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.view.View;
-
-import com.kkkcut.e20j.us.R;
-
-import me.yokeyword.fragmentation.ISupportFragment;
+import android.view.View
+import com.kkkcut.e20j.us.R
+import me.yokeyword.fragmentation.ISupportFragment
 
 /* loaded from: classes.dex */
-public class DeviceCenterFragment extends BaseBackFragment {
-    public static final String TAG = "DeviceCenterFragment";
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_device_center;
+class DeviceCenterFragment() : BaseBackFragment() {
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_device_center
     }
 
-    @Override // com.kkkcut.e20j.android quick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
+    // com.kkkcut.e20j.android quick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static ISupportFragment newInstance() {
-        return new DeviceCenterFragment();
+    fun onViewClicked(view: View) {
+        view.getId()
     }
 
-    public void onViewClicked(View view) {
-        view.getId();
+    companion object {
+        val TAG: String = "DeviceCenterFragment"
+
+        fun newInstance(): ISupportFragment {
+            return DeviceCenterFragment()
+        }
     }
 }

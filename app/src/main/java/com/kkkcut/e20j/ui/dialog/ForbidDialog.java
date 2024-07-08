@@ -25,8 +25,8 @@ public class ForbidDialog extends Dialog {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.dialog_forbid);
-        this.ivRemind = (ImageView) findViewById(R.id.iv_remind);
-        this.tvRemind = (TextView) findViewById(R.id.tv_remind);
+        this.ivRemind = findViewById(R.id.iv_remind);
+        this.tvRemind = findViewById(R.id.tv_remind);
         if (!StringUtil.isEmpty(this.mTip)) {
             this.tvRemind.setVisibility(0);
             this.tvRemind.setText(this.mTip);

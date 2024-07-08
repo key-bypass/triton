@@ -1,186 +1,177 @@
-package com.kkkcut.e20j.ui.fragment.search;
+package com.kkkcut.e20j.ui.fragment.search
 
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.TextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.GoOperatBean;
-import com.kkkcut.e20j.DbBean.search.MenuSummary;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity;
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment;
-import com.kkkcut.e20j.us.R;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
+import android.content.Context
+import android.content.Intent
+import android.os.Parcelable
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.kkkcut.e20j.DbBean.GoOperatBean
+import com.kkkcut.e20j.DbBean.search.MenuSummary
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity
+import com.kkkcut.e20j.ui.fragment.KeyOperateFragment
+import com.kkkcut.e20j.us.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Function
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /* loaded from: classes.dex */
-public class SearchResultActivity extends BaseCustomKeyBoardActivity implements BaseQuickAdapter.OnItemClickListener {
-    private static final String CONDITION = "condition";
-    AdvSearchAdapter1 advSearchAdapter1;
+class SearchResultActivity : BaseCustomKeyBoardActivity(), BaseQuickAdapter.OnItemClickListener {
+    var advSearchAdapter1: AdvSearchAdapter1? = null
 
-    RecyclerView rvSearchResult1;
+    var rvSearchResult1: RecyclerView? = null
 
-    TextView tvTile;
+    var tvTile: TextView? = null
 
-    private Context getContext() {
-        return this;
+    private val context: Context
+        get() = this
+
+    // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_advance_search_result
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_advance_search_result;
-    }
-
-    public static void start(Context context, SearchCondition searchCondition) {
-        Intent intent = new Intent(context, (Class<?>) SearchResultActivity.class);
-        intent.putExtra(CONDITION, searchCondition);
-        context.startActivity(intent);
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void initViewsAndEvents() {
-        if (getIntent().getParcelableExtra(CONDITION) == null) {
-            return;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
+    override fun initViewsAndEvents() {
+        if (intent.getParcelableExtra<Parcelable?>(CONDITION) == null) {
+            return
         }
-        this.tvTile.setText(getConditionStr((SearchCondition) getIntent().getParcelableExtra(CONDITION)));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
-        this.rvSearchResult1.setLayoutManager(linearLayoutManager);
-        AdvSearchAdapter1 advSearchAdapter1 = new AdvSearchAdapter1();
-        this.advSearchAdapter1 = advSearchAdapter1;
-        advSearchAdapter1.setOnItemClickListener(this);
-        this.rvSearchResult1.setAdapter(this.advSearchAdapter1);
-        getSearchResult((SearchCondition) getIntent().getParcelableExtra(CONDITION));
+        tvTile!!.text =
+            getConditionStr(intent.getParcelableExtra<Parcelable>(CONDITION) as SearchCondition?)
+        val linearLayoutManager = LinearLayoutManager(
+            context
+        )
+        linearLayoutManager.orientation = 1
+        rvSearchResult1!!.layoutManager = linearLayoutManager
+        val advSearchAdapter1 = AdvSearchAdapter1()
+        this.advSearchAdapter1 = advSearchAdapter1
+        advSearchAdapter1.onItemClickListener = this
+        rvSearchResult1!!.adapter = this.advSearchAdapter1
+        getSearchResult(intent.getParcelableExtra<Parcelable>(CONDITION) as SearchCondition?)
     }
 
-    private void getSearchResult(final SearchCondition searchCondition) {
-        addDisposable(Observable.fromCallable(new Callable<List<MenuSummary>>() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.5
-            @Override // java.util.concurrent.Callable
-            public List<MenuSummary> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().advSearch(searchCondition);
-            }
-        }).map(new Function<List<MenuSummary>, List<AdvSearchResult>>() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.4
-            @Override // io.reactivex.functions.Function
-            public List<AdvSearchResult> apply(List<MenuSummary> list) throws Exception {
-                var linkedHashMap = new LinkedHashMap<Integer, List<MenuSummary>>();
-                for (MenuSummary menuSummary : list) {
-                    if (linkedHashMap.containsKey(Integer.valueOf(menuSummary.getFK_KeyID()))) {
-                        ((List) linkedHashMap.get(Integer.valueOf(menuSummary.getFK_KeyID()))).add(menuSummary);
+    private fun getSearchResult(searchCondition: SearchCondition?) {
+        addDisposable(
+            Observable.fromCallable
+            {
+                KeyInfoDaoManager.getInstance().advSearch(searchCondition)
+            }.map { list ->
+                val linkedHashMap = LinkedHashMap<Int, MutableList<MenuSummary>>()
+                for (menuSummary in list) {
+                    if (linkedHashMap.containsKey(menuSummary.fK_KeyID)) {
+                        linkedHashMap[menuSummary.fK_KeyID]!!.add(menuSummary)
                     } else {
-                        var arrayList = new ArrayList<MenuSummary>();
-                        arrayList.add(menuSummary);
-                        linkedHashMap.put(Integer.valueOf(menuSummary.getFK_KeyID()), arrayList);
+                        val arrayList = ArrayList<MenuSummary>()
+                        arrayList.add(menuSummary)
+                        linkedHashMap[menuSummary.fK_KeyID] = arrayList
                     }
                 }
-                ArrayList arrayList2 = new ArrayList();
-                for (var num : linkedHashMap.keySet()) {
-                    List<MenuSummary> list2 = (List) linkedHashMap.get(num);
-                    AdvSearchResult advSearchResult = new AdvSearchResult();
-                    advSearchResult.setChildList(list2);
-                    advSearchResult.setFK_KeyID(num.intValue());
-                    if (list2 != null && list2.size() > 0) {
-                        advSearchResult.setCuts(list2.get(0).getNofcuts());
+                val arrayList2 = ArrayList<AdvSearchResult>()
+                for (num in linkedHashMap.keys) {
+                    val list2: List<MenuSummary>? = linkedHashMap[num]
+                    val advSearchResult = AdvSearchResult()
+                    advSearchResult.childList = list2
+                    advSearchResult.fK_KeyID = num
+                    if (!list2.isNullOrEmpty()) {
+                        advSearchResult.cuts = list2[0].nofcuts
                     }
-                    arrayList2.add(advSearchResult);
+                    arrayList2.add(advSearchResult)
                 }
-                return arrayList2;
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnSubscribe(new Consumer<Disposable>() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.3
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Disposable disposable) throws Exception {
-                SearchResultActivity searchResultActivity = SearchResultActivity.this;
-                searchResultActivity.showLoadingDialog(searchResultActivity.getString(R.string.waitting));
-            }
-        }).doFinally(new Action() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.2
-            @Override // io.reactivex.functions.Action
-            public void run() throws Exception {
-                SearchResultActivity.this.dissmissLoadingDialog();
-            }
-        }).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<AdvSearchResult>>() { // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<AdvSearchResult> list) throws Exception {
-                Log.i(SearchResultActivity.TAG, "accept: " + list);
-                SearchResultActivity.this.advSearchAdapter1.setNewData(list);
-            }
-        }));
+                arrayList2
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe
+                // io.reactivex.functions.Consumer
+                {
+                    val searchResultActivity = this@SearchResultActivity
+                    searchResultActivity.showLoadingDialog(searchResultActivity.getString(R.string.waitting))
+                }.doFinally
+            // io.reactivex.functions.Action
+            { this@SearchResultActivity.dismissLoadingDialog() }
+                .subscribeOn(AndroidSchedulers.mainThread()).subscribe
+            // io.reactivex.functions.Consumer
+            { list ->
+
+                // from class: com.kkkcut.e20j.ui.fragment.search.SearchResultActivity.1
+                Log.i(TAG, "accept: $list")
+                advSearchAdapter1!!.setNewData(list)
+            })
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        int fK_KeyID = ((AdvSearchResult) baseQuickAdapter.getData().get(i)).getFK_KeyID();
-        start(KeyOperateFragment.newInstance(new GoOperatBean(fK_KeyID, "ID:" + fK_KeyID)));
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val fK_KeyID = (baseQuickAdapter.data[i] as AdvSearchResult).fK_KeyID
+        start(KeyOperateFragment.newInstance(GoOperatBean(fK_KeyID, "ID:$fK_KeyID")))
     }
 
-    private String getConditionStr(SearchCondition searchCondition) {
+    private fun getConditionStr(searchCondition: SearchCondition?): String {
         if (searchCondition == null) {
-            return "";
+            return ""
         }
-        StringBuilder sb = new StringBuilder();
-        if (!TextUtils.isEmpty(searchCondition.getKid())) {
-            sb.append(getString(R.string.kid));
-            sb.append(":");
-            sb.append(searchCondition.getKid());
-            sb.append(", ");
+        val sb = StringBuilder()
+        if (!TextUtils.isEmpty(searchCondition.kid)) {
+            sb.append(getString(R.string.kid))
+            sb.append(":")
+            sb.append(searchCondition.kid)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getSilcaCard())) {
-            sb.append(getString(R.string.silca_card));
-            sb.append(":");
-            sb.append(searchCondition.getSilcaCard());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.silcaCard)) {
+            sb.append(getString(R.string.silca_card))
+            sb.append(":")
+            sb.append(searchCondition.silcaCard)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getSilcaSN())) {
-            sb.append(getString(R.string.silca_sn));
-            sb.append(":");
-            sb.append(searchCondition.getSilcaSN());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.silcaSN)) {
+            sb.append(getString(R.string.silca_sn))
+            sb.append(":")
+            sb.append(searchCondition.silcaSN)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getKeyBlank())) {
-            sb.append(getString(R.string.key_blank));
-            sb.append(":");
-            sb.append(searchCondition.getKeyBlank());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.keyBlank)) {
+            sb.append(getString(R.string.key_blank))
+            sb.append(":")
+            sb.append(searchCondition.keyBlank)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getKeyBlankManu())) {
-            sb.append(getString(R.string.key_manufacturer));
-            sb.append(":");
-            sb.append(searchCondition.getKeyBlankManu());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.keyBlankManu)) {
+            sb.append(getString(R.string.key_manufacturer))
+            sb.append(":")
+            sb.append(searchCondition.keyBlankManu)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getLockManu())) {
-            sb.append(getString(R.string.lock_manufacturer));
-            sb.append(":");
-            sb.append(searchCondition.getLockManu());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.lockManu)) {
+            sb.append(getString(R.string.lock_manufacturer))
+            sb.append(":")
+            sb.append(searchCondition.lockManu)
+            sb.append(", ")
         }
-        if (!TextUtils.isEmpty(searchCondition.getLockSys())) {
-            sb.append(getString(R.string.lock_system));
-            sb.append(":");
-            sb.append(searchCondition.getLockSys());
-            sb.append(", ");
+        if (!TextUtils.isEmpty(searchCondition.lockSys)) {
+            sb.append(getString(R.string.lock_system))
+            sb.append(":")
+            sb.append(searchCondition.lockSys)
+            sb.append(", ")
         }
-        return sb.toString();
+        return sb.toString()
     }
 
-    public void onClick(View view) {
-        if (view.getId() != R.id.tv_back) {
-            return;
+    fun onClick(view: View) {
+        if (view.id != R.id.tv_back) {
+            return
         }
-        finish();
+        finish()
+    }
+
+    companion object {
+        private const val CONDITION = "condition"
+        fun start(context: Context, searchCondition: SearchCondition?) {
+            val intent = Intent(context, SearchResultActivity::class.java as Class<*>)
+            intent.putExtra(CONDITION, searchCondition)
+            context.startActivity(intent)
+        }
     }
 }

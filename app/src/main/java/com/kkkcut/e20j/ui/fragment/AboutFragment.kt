@@ -1,131 +1,132 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.TextView;
-
-import com.cutting.machine.Command;
-import com.cutting.machine.MachineInfo;
-import com.cutting.machine.OperateType;
-import com.cutting.machine.communication.OperationManager;
-import com.kkkcut.e20j.androidquick.tool.AppUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.us.R;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import java.util.concurrent.Callable;
+import android.os.Bundle
+import android.text.TextUtils
+import android.webkit.WebView
+import android.widget.TextView
+import com.cutting.machine.Command
+import com.cutting.machine.MachineInfo
+import com.cutting.machine.OperateType
+import com.cutting.machine.communication.OperationManager
+import com.kkkcut.e20j.androidquick.tool.AppUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.us.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observable.fromCallable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /* loaded from: classes.dex */
-public class AboutFragment extends BaseBackFragment {
+class AboutFragment() : BaseBackFragment() {
+    var tvCompany: TextView? = null
 
-    TextView tvCompany;
+    var tvDbVersion: TextView? = null
 
-    TextView tvDbVersion;
+    var tvFirmware: TextView? = null
 
-    TextView tvFirmware;
+    var tvModelName: TextView? = null
 
-    TextView tvModelName;
+    var tvSerial: TextView? = null
 
-    TextView tvSerial;
+    var tvSoftVersion: TextView? = null
 
-    TextView tvSoftVersion;
+    var tvUpdateLog: TextView? = null
 
-    TextView tvUpdateLog;
+    var webView: WebView? = null
 
-    WebView webView;
-
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_about_us;
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_about_us
     }
 
-    public static AboutFragment newInstance(String str, String str2, String str3) {
-        Bundle bundle = new Bundle();
-        bundle.putString("machineName", str);
-        bundle.putString("series", str2);
-        bundle.putString("companyStr", str3);
-        AboutFragment aboutFragment = new AboutFragment();
-        aboutFragment.setArguments(bundle);
-        return aboutFragment;
+    // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.machine_info)
     }
 
-    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.machine_info);
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        String string = getArguments().getString("companyStr");
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        var string = arguments!!.getString("companyStr")
         if (TextUtils.isEmpty(string)) {
-            string = "Copyright(c) 2020 Hunan Kukai Electromechanical co.,ltd.  All rights reserved";
+            string = "Copyright(c) 2020 Hunan Kukai Electromechanical co.,ltd.  All rights reserved"
         }
-        if (MachineInfo.isE20Neutral(getContext())) {
-            string = "";
+        if (MachineInfo.isE20Neutral(context)) {
+            string = ""
         }
-        this.tvCompany.setText(string);
-        this.tvSoftVersion.setText(AppUtil.getVersionName(getContext()));
-        getDbVersion();
-        String string2 = getArguments().getString("machineName");
+        tvCompany!!.text = string
+        tvSoftVersion!!.text = AppUtil.getVersionName(context)
+        dbVersion
+        val string2 = arguments!!.getString("machineName")
         if (!TextUtils.isEmpty(string2)) {
-            this.tvModelName.setText(string2);
+            tvModelName!!.text = string2
         }
-        String string3 = getArguments().getString("series");
+        val string3 = arguments!!.getString("series")
         if (!TextUtils.isEmpty(string3)) {
-            this.tvSerial.setText(string3);
+            tvSerial!!.text = string3
         }
-        initUpdateLog();
-        OperationManager.getInstance().sendOrder(Command.QueryFirmwareVersion(), OperateType.READ_FIRMWARE);
+        initUpdateLog()
+        OperationManager.getInstance()
+            .sendOrder(Command.QueryFirmwareVersion(), OperateType.READ_FIRMWARE)
     }
 
-    private void initUpdateLog() {
-        addDisposable((Disposable) Observable.fromCallable(new Callable<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.2
-            @Override // java.util.concurrent.Callable
-            public String call() {
-                return KeyInfoDaoManager.getInstance().getUpdateInfo();
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() { // from class: com.kkkcut.e20j.ui.fragment.AboutFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(String str) {
-                if (TextUtils.isEmpty(str)) {
-                    str = "";
-                }
-                if (!MachineInfo.isE9Standard(AboutFragment.this.getContext())) {
-                    str = "<body style=\"margin:0;padding:0;background-color:#4b4d62;color:white;\">\n" + str + "</body>";
-                }
-                WebSettings settings = AboutFragment.this.webView.getSettings();
-                settings.setJavaScriptEnabled(true);
-                settings.setDefaultTextEncodingName("UTF-8");
-                AboutFragment.this.webView.loadData(str, "text/html; charset=UTF-8", null);
-            }
-        }));
-    }
+    private fun initUpdateLog() {
+        val observable = fromCallable{
+            KeyInfoDaoManager.getInstance().updateInfo
+        }.subscribeOn(Schedulers.io()).observeOn(
+            AndroidSchedulers.mainThread()
+        );
 
-    private void getDbVersion() {
-        addDisposable((Disposable) Observable.fromCallable(() -> {
-                String dbVersion = KeyInfoDaoManager.getInstance().getDbVersion();
-                return TextUtils.isEmpty(dbVersion) ? "16.44" : dbVersion;
-
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe( str -> {
-                AboutFragment.this.tvDbVersion.setText(str);
-
-        }));
-    }
-
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected void onEventComing(EventCenter<?> eventCenter) {
-        if (isVisible() && eventCenter.getEventCode() == 35) {
-            String str = (String) eventCenter.getData();
+        val subscription = observable.subscribe({
+            var str = it
             if (TextUtils.isEmpty(str)) {
-                return;
+                str = ""
             }
-            this.tvFirmware.setText(str);
+            if (!MachineInfo.isE9Standard(this.context)) {
+                str =
+                    "<body style=\"margin:0;padding:0;background-color:#4b4d62;color:white;\">\n$str</body>"
+            }
+            val settings = webView!!.settings
+            settings.javaScriptEnabled = true
+            settings.defaultTextEncodingName = "UTF-8"
+            webView!!.loadData(str, "text/html; charset=UTF-8", null)
+        }, { dismissLoadingDialog() })
+
+        addDisposable(subscription)
+    }
+
+    private val dbVersion: Unit
+        get() {
+            addDisposable(
+                fromCallable({
+                    val dbVersion: String = KeyInfoDaoManager.getInstance().getDbVersion()
+                    if (TextUtils.isEmpty(dbVersion)) "16.44" else dbVersion
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                    tvDbVersion!!.text = it
+                }, { th -> dismissLoadingDialog() }))
+        }
+
+    // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun onEventComing(eventCenter: EventCenter<*>) {
+        if (isVisible && eventCenter.eventCode == 35) {
+            val str = eventCenter.data as String
+            if (TextUtils.isEmpty(str)) {
+                return
+            }
+            tvFirmware!!.text = str
+        }
+    }
+
+    companion object {
+        fun newInstance(str: String?, str2: String?, str3: String?): AboutFragment {
+            val bundle = Bundle()
+            bundle.putString("machineName", str)
+            bundle.putString("series", str2)
+            bundle.putString("companyStr", str3)
+            val aboutFragment = AboutFragment()
+            aboutFragment.arguments = bundle
+            return aboutFragment
         }
     }
 }

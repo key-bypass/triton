@@ -1,103 +1,49 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.GoOperatBean;
-import com.kkkcut.e20j.DbBean.search.BarCodeSearch;
-import com.kkkcut.e20j.DbBean.search.CardsSystem;
-import com.kkkcut.e20j.DbBean.search.ChinaNumSearch;
-import com.kkkcut.e20j.DbBean.search.KeyBlankItemSearch;
-import com.kkkcut.e20j.DbBean.search.UsaSearchExtItemBasicData;
-import com.kkkcut.e20j.adapter.KeySearchAdapter;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity;
-import com.kkkcut.e20j.ui.activity.FrameActivity;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.utils.ThemeUtils;
-import com.cutting.machine.MachineInfo;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
+import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.DbBean.GoOperatBean
+import com.kkkcut.e20j.DbBean.search.BarCodeSearch
+import com.kkkcut.e20j.DbBean.search.CardsSystem
+import com.kkkcut.e20j.DbBean.search.ChinaNumSearch
+import com.kkkcut.e20j.DbBean.search.KeyBlankItemSearch
+import com.kkkcut.e20j.DbBean.search.SearchResult
+import com.kkkcut.e20j.DbBean.search.UsaSearchExtItemBasicData
+import com.kkkcut.e20j.adapter.KeySearchAdapter
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity
+import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity.Companion.start
+import com.kkkcut.e20j.ui.activity.FrameActivity
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentSearchBinding
+import com.kkkcut.e20j.utils.ThemeUtils
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
-public class SearchFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
-    private static final String TYPE = "TYPE";
-    FrameActivity activity;
-
-    EditText etSearch;
-
-    View flagBarCode;
-
-    View flagBlitzCard;
-
-    View flagChinaKey;
-
-    View flagDsd;
-
-    View flagKeyBlank;
-
-    View flagKeyId;
-
-    View flagLkp;
-
-    View flagSilca;
-    private KeySearchAdapter keySearchAdapter;
-
-    RelativeLayout rlBarCode;
-
-    RelativeLayout rlBlitzCard;
-
-    RelativeLayout rlChinaKeyNum;
-
-    RelativeLayout rlDsd;
-
-    RelativeLayout rlKeyBlank;
-
-    RelativeLayout rlKeyId;
-
-    RelativeLayout rlLkp;
-
-    RelativeLayout rlSilca;
-
-    RecyclerView rvResult;
-    private SearchType searchType = SearchType.KEY_BLANK;
-
-    TextView tvBarCode;
-
-    TextView tvBlitzCard;
-
-    TextView tvChinaKeyNum;
-
-    TextView tvDsd;
-
-    TextView tvKeyBlank;
-
-    TextView tvKeyId;
-
-    TextView tvLkp;
-
-    TextView tvSilca;
+class SearchFragment : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener {
+    private var searchType: SearchType? = null
+    var binding: FragmentSearchBinding? = null
+    var keySearchAdapter: KeySearchAdapter<SearchResult>? = null
+    var activity: FrameActivity? = null
 
     /* loaded from: classes.dex */
-    public enum SearchType {
+    enum class SearchType {
         KEY_BLANK,
         KEY_ID,
         CHINA_KEY_NUM,
@@ -108,542 +54,533 @@ public class SearchFragment extends BaseBackFragment implements BaseQuickAdapter
         BAR_CODE
     }
 
-    private boolean isShowRemind(int i) {
-        return i == 872 || i == 1510 || i == 909 || i == 1309 || i == 1097 || i == 1373 || i == 1370 || i == 1407 || i == 998;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentSearchBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_search;
+    private fun isShowRemind(i: Int): Boolean {
+        return (i == 872) || (i == 1510) || (i == 909) || (i == 1309) || (i == 1097) || (i == 1373) || (i == 1370) || (i == 1407) || (i == 998)
     }
 
-    public static SearchFragment newInstance() {
-        return new SearchFragment();
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_search
     }
 
-    public static SearchFragment newInstance(SearchType searchType) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("TYPE", searchType);
-        SearchFragment searchFragment = new SearchFragment();
-        searchFragment.setArguments(bundle);
-        return searchFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        KeySearchAdapter keySearchAdapter = new KeySearchAdapter();
-        this.keySearchAdapter = keySearchAdapter;
-        keySearchAdapter.setOnItemClickListener(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
-        this.rvResult.setAdapter(this.keySearchAdapter);
-        this.rvResult.setLayoutManager(linearLayoutManager);
-        FrameActivity frameActivity = (FrameActivity) getActivity();
-        this.activity = frameActivity;
-        frameActivity.bindToEditor(this.etSearch, 0);
-        new Handler().postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.1
-            @Override // java.lang.Runnable
-            public void run() {
-                SearchFragment.this.etSearch.requestFocus();
-            }
-        }, 500L);
-        if (MachineInfo.isE20Us(getContext())) {
-            this.rlBlitzCard.setVisibility(0);
-            this.rlLkp.setVisibility(0);
-            this.rlBarCode.setVisibility(SPUtils.getBoolean("bar_code", true) ? 0 : 8);
-            this.tvKeyId.setText("Card");
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        this.keySearchAdapter = KeySearchAdapter<SearchResult>()
+        keySearchAdapter!!.setOnItemClickListener(this)
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.setOrientation(1)
+        binding!!.rvResult.setAdapter(this.keySearchAdapter)
+        binding!!.rvResult.setLayoutManager(linearLayoutManager)
+        val frameActivity: FrameActivity? = getActivity() as FrameActivity?
+        this.activity = frameActivity
+        frameActivity!!.bindToEditor(binding!!.etSearch, 0)
+        Handler().postDelayed({ binding!!.etSearch.requestFocus() }, 500L)
+        if (MachineInfo.isE20Us(context)) {
+            binding!!.rlBlitzCard.visibility = 0
+            binding!!.rlLkp.visibility = 0
+            binding!!.rlBarCode.visibility = if (SPUtils.getBoolean("bar_code", true)) 0 else 8
+            binding!!.tvKeyId.text = "Card"
         } else if (MachineInfo.isChineseMachine()) {
-            this.rlChinaKeyNum.setVisibility(0);
-            this.rlSilca.setVisibility(8);
+            binding!!.rlChinaKeyNum.visibility = 0
+            binding!!.rlSilca.visibility = 8
         } else {
-            this.rlSilca.setVisibility(0);
+            binding!!.rlSilca.visibility = 0
         }
-        if (getArguments() == null || ((SearchType) getArguments().getSerializable("TYPE")) != SearchType.BAR_CODE) {
-            return;
+        if (arguments == null || (arguments!!.getSerializable("TYPE") as SearchType?) != SearchType.BAR_CODE) {
+            return
         }
-        this.rlBarCode.performClick();
+        binding!!.rlBarCode.performClick()
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.search);
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.search)
     }
 
-    public void onViewClicked(View view) {
-        int color = ThemeUtils.getColor(getContext(), R.attr.color_red_blueDark);
-        int color2 = ThemeUtils.getColor(getContext(), R.attr.textColor_ffffff_333333);
-        switch (view.getId()) {
-            case R.id.rl_bar_code /* 2131362688 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.BAR_CODE;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color);
-                this.flagBarCode.setBackgroundColor(color);
-                this.activity.bindToEditor(this.etSearch, 0);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_blitz_card /* 2131362689 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.BLITZ_CARD;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color);
-                this.flagBlitzCard.setBackgroundColor(color);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 0);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_china_key_num /* 2131362690 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.CHINA_KEY_NUM;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color);
-                this.flagChinaKey.setBackgroundColor(color);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 1);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_container /* 2131362691 */:
-            case R.id.rl_data /* 2131362692 */:
-            case R.id.rl_move /* 2131362697 */:
-            case R.id.rl_parent /* 2131362698 */:
-            default:
-                return;
-            case R.id.rl_dsd /* 2131362693 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.DSD;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color);
-                this.flagDsd.setBackgroundColor(color);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 1);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_key_blank /* 2131362694 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.KEY_BLANK;
-                this.tvKeyBlank.setTextColor(color);
-                this.flagKeyBlank.setBackgroundColor(color);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 0);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_key_id /* 2131362695 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.KEY_ID;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color);
-                this.flagKeyId.setBackgroundColor(color);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 1);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_lkp /* 2131362696 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.LKP_DSD;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color);
-                this.flagLkp.setBackgroundColor(color);
-                this.tvSilca.setTextColor(color2);
-                this.flagSilca.setBackgroundColor(color2);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 1);
-                this.etSearch.requestFocus();
-                return;
-            case R.id.rl_silca /* 2131362699 */:
-                this.etSearch.setText("");
-                this.searchType = SearchType.SILCA_CARD;
-                this.tvKeyBlank.setTextColor(color2);
-                this.flagKeyBlank.setBackgroundColor(color2);
-                this.tvKeyId.setTextColor(color2);
-                this.flagKeyId.setBackgroundColor(color2);
-                this.tvChinaKeyNum.setTextColor(color2);
-                this.flagChinaKey.setBackgroundColor(color2);
-                this.tvBlitzCard.setTextColor(color2);
-                this.flagBlitzCard.setBackgroundColor(color2);
-                this.tvDsd.setTextColor(color2);
-                this.flagDsd.setBackgroundColor(color2);
-                this.tvLkp.setTextColor(color2);
-                this.flagLkp.setBackgroundColor(color2);
-                this.tvSilca.setTextColor(color);
-                this.flagSilca.setBackgroundColor(color);
-                this.tvBarCode.setTextColor(color2);
-                this.flagBarCode.setBackgroundColor(color2);
-                this.activity.bindToEditor(this.etSearch, 1);
-                this.etSearch.requestFocus();
-                return;
-        }
-    }
+    fun onViewClicked(view: View) {
+        val color: Int = ThemeUtils.getColor(context, R.attr.color_red_blueDark)
+        val color2: Int = ThemeUtils.getColor(context, R.attr.textColor_ffffff_333333)
+        when (view.id) {
+            R.id.rl_bar_code -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.BAR_CODE
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color)
+                binding!!.flagBarCode.setBackgroundColor(color)
+                activity!!.bindToEditor(binding!!.etSearch, 0)
+                binding!!.etSearch.requestFocus()
+                return
+            }
 
-    /* renamed from: com.kkkcut.e20j.ui.fragment.SearchFragment$12, reason: invalid class name */
-    /* loaded from: classes.dex */
-    static /* synthetic */ class AnonymousClass12 {
-        static final /* synthetic */ int[] $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType;
+            R.id.rl_blitz_card -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.BLITZ_CARD
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color)
+                binding!!.flagBlitzCard.setBackgroundColor(color)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 0)
+                binding!!.etSearch.requestFocus()
+                return
+            }
 
-        static {
-            int[] iArr = new int[SearchType.values().length];
-            $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType = iArr;
-            try {
-                iArr[SearchType.KEY_BLANK.ordinal()] = 1;
-            } catch (NoSuchFieldError unused) {
+            R.id.rl_china_key_num -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.CHINA_KEY_NUM
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color)
+                binding!!.flagChinaKey.setBackgroundColor(color)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 1)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.KEY_ID.ordinal()] = 2;
-            } catch (NoSuchFieldError unused2) {
+
+            R.id.rl_container, R.id.rl_data, R.id.rl_move, R.id.rl_parent -> return
+            R.id.rl_dsd -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.DSD
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color)
+                binding!!.flagDsd.setBackgroundColor(color)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 1)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.CHINA_KEY_NUM.ordinal()] = 3;
-            } catch (NoSuchFieldError unused3) {
+
+            R.id.rl_key_blank -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.KEY_BLANK
+                binding!!.tvKeyBlank.setTextColor(color)
+                binding!!.flagKeyBlank.setBackgroundColor(color)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 0)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.BLITZ_CARD.ordinal()] = 4;
-            } catch (NoSuchFieldError unused4) {
+
+            R.id.rl_key_id -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.KEY_ID
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color)
+                binding!!.flagKeyId.setBackgroundColor(color)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 1)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.DSD.ordinal()] = 5;
-            } catch (NoSuchFieldError unused5) {
+
+            R.id.rl_lkp -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.LKP_DSD
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color)
+                binding!!.flagLkp.setBackgroundColor(color)
+                binding!!.tvSilca.setTextColor(color2)
+                binding!!.flagSilca.setBackgroundColor(color2)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 1)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.LKP_DSD.ordinal()] = 6;
-            } catch (NoSuchFieldError unused6) {
+
+            R.id.rl_silca -> {
+                binding!!.etSearch.setText("")
+                this.searchType = SearchType.SILCA_CARD
+                binding!!.tvKeyBlank.setTextColor(color2)
+                binding!!.flagKeyBlank.setBackgroundColor(color2)
+                binding!!.tvKeyId.setTextColor(color2)
+                binding!!.flagKeyId.setBackgroundColor(color2)
+                binding!!.tvChinaKeyNum.setTextColor(color2)
+                binding!!.flagChinaKey.setBackgroundColor(color2)
+                binding!!.tvBlitzCard.setTextColor(color2)
+                binding!!.flagBlitzCard.setBackgroundColor(color2)
+                binding!!.tvDsd.setTextColor(color2)
+                binding!!.flagDsd.setBackgroundColor(color2)
+                binding!!.tvLkp.setTextColor(color2)
+                binding!!.flagLkp.setBackgroundColor(color2)
+                binding!!.tvSilca.setTextColor(color)
+                binding!!.flagSilca.setBackgroundColor(color)
+                binding!!.tvBarCode.setTextColor(color2)
+                binding!!.flagBarCode.setBackgroundColor(color2)
+                activity!!.bindToEditor(binding!!.etSearch, 1)
+                binding!!.etSearch.requestFocus()
+                return
             }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.SILCA_CARD.ordinal()] = 7;
-            } catch (NoSuchFieldError unused7) {
-            }
-            try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[SearchType.BAR_CODE.ordinal()] = 8;
-            } catch (NoSuchFieldError unused8) {
-            }
+
+            else -> return
         }
     }
 
-    public void afterTextChanged(Editable editable) {
-        switch (AnonymousClass12.$SwitchMap$com$kkkcut$e20j$ui$fragment$SearchFragment$SearchType[this.searchType.ordinal()]) {
-            case 1:
-                String obj = editable.toString();
+    internal object AnonymousClass12 {
+        val searchType: IntArray = IntArray(SearchType.entries.size)
+
+        init {
+            searchType[SearchType.KEY_BLANK.ordinal] = 1
+            searchType[SearchType.KEY_ID.ordinal] = 2
+            searchType[SearchType.CHINA_KEY_NUM.ordinal] = 3
+            searchType[SearchType.BLITZ_CARD.ordinal] = 4
+            searchType[SearchType.DSD.ordinal] = 5
+            searchType[SearchType.LKP_DSD.ordinal] = 6
+            searchType[SearchType.SILCA_CARD.ordinal] = 7
+            searchType[SearchType.BAR_CODE.ordinal] = 8
+        }
+    }
+
+    fun afterTextChanged(editable: Editable) {
+        when (searchType) {
+            SearchType.KEY_BLANK -> {
+                val obj: String = editable.toString()
                 if (!TextUtils.isEmpty(obj)) {
-                    searchKeyBlank(obj);
-                    return;
+                    searchKeyBlank(obj)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 2:
-                String obj2 = editable.toString();
+            }
+
+            SearchType.KEY_ID -> {
+                val obj2: String = editable.toString()
                 if (!TextUtils.isEmpty(obj2)) {
-                    searchID(obj2);
-                    return;
+                    searchID(obj2)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 3:
-                String obj3 = editable.toString();
+            }
+
+            SearchType.CHINA_KEY_NUM -> {
+                val obj3: String = editable.toString()
                 if (!TextUtils.isEmpty(obj3)) {
-                    searchChinaKeyNum(obj3);
-                    return;
+                    searchChinaKeyNum(obj3)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 4:
-                String obj4 = editable.toString();
+            }
+
+            SearchType.BLITZ_CARD -> {
+                val obj4: String = editable.toString()
                 if (!TextUtils.isEmpty(obj4)) {
-                    searchBlitzCardOrDsd(1, obj4);
-                    return;
+                    searchBlitzCardOrDsd(1, obj4)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 5:
-                String obj5 = editable.toString();
+            }
+
+            SearchType.DSD -> {
+                val obj5: String = editable.toString()
                 if (!TextUtils.isEmpty(obj5)) {
-                    searchBlitzCardOrDsd(2, obj5);
-                    return;
+                    searchBlitzCardOrDsd(2, obj5)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 6:
-                String obj6 = editable.toString();
+            }
+
+            SearchType.LKP_DSD -> {
+                val obj6: String = editable.toString()
                 if (!TextUtils.isEmpty(obj6)) {
-                    searchBlitzCardOrDsd(3, obj6);
-                    return;
+                    searchBlitzCardOrDsd(3, obj6)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 7:
-                String obj7 = editable.toString();
+            }
+
+            SearchType.SILCA_CARD -> {
+                val obj7: String = editable.toString()
                 if (!TextUtils.isEmpty(obj7)) {
-                    searchBlitzCardOrDsd(4, obj7);
-                    return;
+                    searchBlitzCardOrDsd(4, obj7)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            case 8:
-                String obj8 = editable.toString();
+            }
+
+            SearchType.BAR_CODE -> {
+                val obj8: String = editable.toString()
                 if (!TextUtils.isEmpty(obj8)) {
-                    searchBarCode(obj8);
-                    return;
+                    searchBarCode(obj8)
                 } else {
-                    this.keySearchAdapter.setNewData(new ArrayList());
-                    return;
+                    keySearchAdapter!!.setNewData(ArrayList<SearchResult>())
                 }
-            default:
-                return;
+            }
+
+            else -> return
         }
     }
 
-    private void searchBarCode(final String str) {
-        Disposable subscribe = Observable.fromCallable(new Callable<List<BarCodeSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.3
-            @Override // java.util.concurrent.Callable
-            public List<BarCodeSearch> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().searchBarCode(str);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<BarCodeSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.2
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<BarCodeSearch> list) throws Exception {
-                SearchFragment.this.keySearchAdapter.setNewData(list);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    private fun searchBarCode(str: String) {
+        val subscribe = Observable.fromCallable {
+            KeyInfoDaoManager.getInstance().searchBarCode(str)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ list ->
+                keySearchAdapter!!.setNewData(list as List<SearchResult>)
+            },  { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    private void searchBlitzCardOrDsd(final int i, final String str) {
-        Disposable subscribe = Observable.fromCallable(new Callable<List<UsaSearchExtItemBasicData>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.5
-            @Override // java.util.concurrent.Callable
-            public List<UsaSearchExtItemBasicData> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().searchBlitzOrDsd(i, str);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<UsaSearchExtItemBasicData>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<UsaSearchExtItemBasicData> list) throws Exception {
-                SearchFragment.this.keySearchAdapter.setNewData(list);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    private fun searchBlitzCardOrDsd(i: Int, str: String) {
+        val subscribe: Disposable =
+            Observable.fromCallable {
+                KeyInfoDaoManager.getInstance().searchBlitzOrDsd(i, str)
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                    keySearchAdapter!!.setNewData(list as List<SearchResult>)
+                }, { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    private void searchKeyBlank(final String str) {
-        Disposable subscribe = Observable.fromCallable(new Callable<List<KeyBlankItemSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.7
-            @Override // java.util.concurrent.Callable
-            public List<KeyBlankItemSearch> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().searchKey(str + "%");
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<KeyBlankItemSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.6
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<KeyBlankItemSearch> list) throws Exception {
-                SearchFragment.this.keySearchAdapter.setNewData(list);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    private fun searchKeyBlank(str: String) {
+        val subscribe: Disposable =
+            Observable.fromCallable {
+                KeyInfoDaoManager.getInstance().searchKey("$str%")
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list -> keySearchAdapter!!.setNewData(list as List<SearchResult>)
+            },  { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    private void searchID(final String str) {
-        Disposable subscribe = Observable.fromCallable(new Callable<List<CardsSystem>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.9
-            @Override // java.util.concurrent.Callable
-            public List<CardsSystem> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().searchID(str);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<CardsSystem>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.8
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<CardsSystem> list) throws Exception {
-                SearchFragment.this.keySearchAdapter.setNewData(list);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    private fun searchID(str: String) {
+        val subscribe: Disposable = Observable.fromCallable {
+            KeyInfoDaoManager.getInstance().searchID(str)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe    (  { list ->
+                keySearchAdapter!!.setNewData(list as List<SearchResult>)
+            },  { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    private void searchChinaKeyNum(final String str) {
-        Disposable subscribe = Observable.fromCallable(new Callable<List<ChinaNumSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.11
-            @Override // java.util.concurrent.Callable
-            public List<ChinaNumSearch> call() throws Exception {
-                return KeyInfoDaoManager.getInstance().searchChinaKeyNumber(str);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<ChinaNumSearch>>() { // from class: com.kkkcut.e20j.ui.fragment.SearchFragment.10
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<ChinaNumSearch> list) throws Exception {
-                Log.i(SearchFragment.TAG, "accept: " + list.size());
-                SearchFragment.this.keySearchAdapter.setNewData(list);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    private fun searchChinaKeyNum(str: String) {
+        val subscribe: Disposable =
+            Observable.fromCallable {
+                KeyInfoDaoManager.getInstance().searchChinaKeyNumber(str)
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                    Log.i(TAG, "accept: " + list.size)
+                    keySearchAdapter!!.setNewData(list as List<SearchResult>)
+                }, { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        Object obj = baseQuickAdapter.getData().get(i);
-        if (obj instanceof ChinaNumSearch) {
-            ChinaNumSearch chinaNumSearch = (ChinaNumSearch) obj;
-            String name_CN = chinaNumSearch.getName_CN();
-            if (!MachineInfo.isChineseMachine() || TextUtils.isEmpty(name_CN)) {
-                name_CN = chinaNumSearch.getName();
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val obj: Any = baseQuickAdapter.data[i]
+        if (obj is ChinaNumSearch) {
+            val chinaNumSearch: ChinaNumSearch = obj
+            var nameCn: String = chinaNumSearch.name_CN
+            if (!MachineInfo.isChineseMachine() || TextUtils.isEmpty(nameCn)) {
+                nameCn = chinaNumSearch.name
             }
-            String modelName_CN = chinaNumSearch.getModelName_CN();
-            if (!MachineInfo.isChineseMachine() || TextUtils.isEmpty(modelName_CN)) {
-                modelName_CN = chinaNumSearch.getModelName();
+            var modelNameCn: String = chinaNumSearch.modelName_CN
+            if (!MachineInfo.isChineseMachine() || TextUtils.isEmpty(modelNameCn)) {
+                modelNameCn = chinaNumSearch.modelName
             }
-            String fromYear = chinaNumSearch.getFromYear();
+            var fromYear: String = chinaNumSearch.fromYear
             if (TextUtils.isEmpty(fromYear)) {
-                fromYear = "0";
+                fromYear = "0"
             }
-            String toYear = chinaNumSearch.getToYear();
-            start(KeyOperateFragment.newInstance(new GoOperatBean(chinaNumSearch, name_CN + ">" + modelName_CN + ">" + fromYear + "~" + (TextUtils.isEmpty(toYear) ? "0" : toYear) + "--ID:" + chinaNumSearch.getfK_KeyID())));
-            return;
+            val toYear: String = chinaNumSearch.toYear
+            start(
+                KeyOperateFragment.newInstance(
+                    GoOperatBean(
+                        chinaNumSearch,
+                        "$nameCn>$modelNameCn>$fromYear~" + (if (TextUtils.isEmpty(
+                                toYear
+                            )
+                        ) "0" else toYear) + "--ID:" + chinaNumSearch.getfK_KeyID()
+                    )
+                )
+            )
+            return
         }
-        String str = "";
-        int i2 = 0;
-        if (obj instanceof KeyBlankItemSearch) {
-            KeyBlankItemSearch keyBlankItemSearch = (KeyBlankItemSearch) obj;
-            int fK_KeyID = keyBlankItemSearch.getFK_KeyID();
-            if (MachineInfo.isE20Us(getContext())) {
-                str = keyBlankItemSearch.getKeyblankItemName() + "(Card:" + fK_KeyID + ")";
+        var str: String = ""
+        var i2: Int = 0
+        if (obj is KeyBlankItemSearch) {
+            val keyBlankItemSearch: KeyBlankItemSearch = obj
+            val keyID: Int = keyBlankItemSearch.fK_KeyID
+            str = if (MachineInfo.isE20Us(context)) {
+                keyBlankItemSearch.keyblankItemName + "(Card:" + keyID + ")"
             } else {
-                str = "" + getString(R.string.key_blanks) + keyBlankItemSearch.getKeyblankItemName() + "--ID:" + fK_KeyID;
+                "" + getString(R.string.key_blanks) + keyBlankItemSearch.keyblankItemName + "--ID:" + keyID
             }
-            i2 = fK_KeyID;
+            i2 = keyID
         }
-        if (obj instanceof CardsSystem) {
-            i2 = ((CardsSystem) obj).getKeyID();
-            if (MachineInfo.isE20Us(getContext())) {
-                str = "Card:" + i2;
+        if (obj is CardsSystem) {
+            i2 = obj.keyID
+            str = if (MachineInfo.isE20Us(context)) {
+                "Card:$i2"
             } else {
-                str = "ID:" + i2;
+                "ID:$i2"
             }
         }
-        if (obj instanceof UsaSearchExtItemBasicData) {
-            UsaSearchExtItemBasicData usaSearchExtItemBasicData = (UsaSearchExtItemBasicData) obj;
-            i2 = usaSearchExtItemBasicData.getFkKeyID();
-            if (usaSearchExtItemBasicData.getFK_SearchExtID() == 1) {
-                str = getString(R.string.blitz_card) + ":" + usaSearchExtItemBasicData.getName();
-            } else if (usaSearchExtItemBasicData.getFK_SearchExtID() == 2) {
-                str = "DSD:" + usaSearchExtItemBasicData.getName();
-            } else if (usaSearchExtItemBasicData.getFK_SearchExtID() == 3) {
-                str = "LKP DSD:" + usaSearchExtItemBasicData.getName();
-            } else if (usaSearchExtItemBasicData.getFK_SearchExtID() == 4) {
-                str = getString(R.string.silca_card) + ":" + usaSearchExtItemBasicData.getName();
+        if (obj is UsaSearchExtItemBasicData) {
+            val usaSearchExtItemBasicData: UsaSearchExtItemBasicData = obj
+            i2 = usaSearchExtItemBasicData.fkKeyID
+            when (usaSearchExtItemBasicData.fK_SearchExtID) {
+                1 -> {
+                    str = getString(R.string.blitz_card) + ":" + usaSearchExtItemBasicData.name
+                }
+                2 -> {
+                    str = "DSD:" + usaSearchExtItemBasicData.name
+                }
+                3 -> {
+                    str = "LKP DSD:" + usaSearchExtItemBasicData.name
+                }
+                4 -> {
+                    str = getString(R.string.silca_card) + ":" + usaSearchExtItemBasicData.name
+                }
             }
-            str = str + "(Card:" + i2 + ")";
+            str = "$str(Card:$i2)"
         }
-        if (obj instanceof BarCodeSearch) {
-            BarCodeSearch barCodeSearch = (BarCodeSearch) obj;
-            i2 = barCodeSearch.getFK_KeyID();
-            str = getBarCodeTitle(i2, barCodeSearch.getBarCode());
+        if (obj is BarCodeSearch) {
+            val barCodeSearch: BarCodeSearch = obj
+            i2 = barCodeSearch.fK_KeyID
+            str = getBarCodeTitle(i2, barCodeSearch.barCode)
             if (isShowRemind(i2)) {
-                BarCodeRemindActivity.start(getActivity(), i2, barCodeSearch.getBarCode());
-                return;
+                start((getActivity())!!, i2, barCodeSearch.barCode)
+                return
             }
         }
-        start(KeyOperateFragment.newInstance(new GoOperatBean(i2, str)));
+        start(KeyOperateFragment.newInstance(GoOperatBean(i2, str)))
     }
 
-    private String getBarCodeTitle(int i, String str) {
-        return ("Bar Code Scanning:" + str) + "(Card:" + i + ")";
+    private fun getBarCodeTitle(i: Int, str: String?): String {
+        return "Bar Code Scanning:$str(Card:$i)"
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
-    public void onDestroy() {
-        this.activity.hideSoftKeyboard();
-        super.onDestroy();
+    // com.kkkcut.e20j.base.BaseFFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
+    override fun onDestroy() {
+        activity!!.hideSoftKeyboard()
+        super.onDestroy()
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
-        Bundle bundle;
-        int i;
-        if (eventCenter.getEventCode() == 55 && (i = (bundle = (Bundle) eventCenter.getData()).getInt(BarCodeRemindActivity.ID)) != 0) {
-            start(KeyOperateFragment.newInstance(new GoOperatBean(i, getBarCodeTitle(i, bundle.getString("bar_code")))));
+    // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun onEventComing(eventCenter: EventCenter<*>) {
+        var bundle: Bundle? = null
+        var i = 0
+        if (eventCenter.eventCode == 55 && (((eventCenter.data as Bundle).also {
+                bundle = it
+            }).getInt(BarCodeRemindActivity.ID).also { i = it }) != 0) {
+            start(
+                KeyOperateFragment.newInstance(
+                    GoOperatBean(
+                        i,
+                        getBarCodeTitle(i, bundle!!.getString("bar_code"))
+                    )
+                )
+            )
+        }
+    }
+
+    companion object {
+        private const val TYPE: String = "TYPE"
+        fun newInstance(): SearchFragment {
+            return SearchFragment()
+        }
+
+        fun newInstance(searchType: SearchType?): SearchFragment {
+            val bundle = Bundle()
+            bundle.putSerializable("TYPE", searchType)
+            val searchFragment = SearchFragment()
+            searchFragment.setArguments(bundle)
+            return searchFragment
         }
     }
 }

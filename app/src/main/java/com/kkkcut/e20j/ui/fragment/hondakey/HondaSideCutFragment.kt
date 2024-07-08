@@ -1,173 +1,188 @@
-package com.kkkcut.e20j.ui.fragment.hondakey;
+package com.kkkcut.e20j.ui.fragment.hondakey
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import com.jakewharton.rxbinding3.view.RxView;
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.cutting.machine.CuttingMachine;
-import com.cutting.machine.OperateType;
-import com.cutting.machine.ToolSizeManager;
-import com.cutting.machine.bean.KeyInfo;
-import com.cutting.machine.error.ErrorBean;
-import com.cutting.machine.operation.cut.DataParam;
-import com.kkkcut.e20j.us.R;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import java.util.concurrent.TimeUnit;
+import android.os.Bundle
+import android.view.View
+import android.widget.CompoundButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
+import com.cutting.machine.CuttingMachine
+import com.cutting.machine.OperateType
+import com.cutting.machine.ToolSizeManager
+import com.cutting.machine.error.ErrorBean
+import com.cutting.machine.operation.cut.DataParam
+import com.jakewharton.rxbinding4.view.clicks
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 /* loaded from: classes.dex */
-public class HondaSideCutFragment extends BaseBackFragment {
-    public static final int SIDE_A = 0;
-    public static final int SIDE_B = 1;
-
-    TextView btCut;
-    private int cutter_size = 200;
-    private DataParam dataParam = new DataParam();
+class HondaSideCutFragment : BaseBackFragment() {
+    var btCut: TextView? = null
+    private var cutter_size = 200
+    private val dataParam = DataParam()
 
 
-    RadioButton rbHonda2020;
+    var rbHonda2020: RadioButton? = null
 
-    RadioButton rbHonda2021;
+    var rbHonda2021: RadioButton? = null
 
-    RadioGroup rgYear;
-    private int side;
+    var rgYear: RadioGroup? = null
+    private var side = 0
 
-    TextView tvCutterSize;
+    var tvCutterSize: TextView? = null
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_honda_cut;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_honda_cut
     }
 
-    public static HondaSideCutFragment newInstance() {
-        Bundle bundle = new Bundle();
-        HondaSideCutFragment hondaSideCutFragment = new HondaSideCutFragment();
-        hondaSideCutFragment.setArguments(bundle);
-        return hondaSideCutFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-        this.btCut.setVisibility(0);
-        addDisposable((Disposable) RxView.clicks(this.btCut).throttleFirst(1L, TimeUnit.SECONDS).subscribe(obj -> {
-            HondaSideCutFragment.this.startCut();
-        }));
-        if (getArguments() == null) {
-            return;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+        btCut!!.visibility = 0
+        addDisposable(btCut!!.clicks().throttleFirst(1L, TimeUnit.SECONDS).subscribe({ obj: Unit ->
+            this@HondaSideCutFragment.startCut()
+        }, {this.dismissLoadingDialog()}))
+        if (arguments == null) {
+            return
         }
-        this.rbHonda2020.setText(getString(R.string.honda) + " 2020");
-        this.rbHonda2021.setText(getString(R.string.honda) + " 2021");
+        rbHonda2020!!.text = getString(R.string.honda) + " 2020"
+        rbHonda2021!!.text = getString(R.string.honda) + " 2021"
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void startCut() {
-        KeyInfo createHondaSideKey = HondaKeyFactory.createHondaSideKey(this.rgYear.getCheckedRadioButtonId() == R.id.rb_honda_2020 ? 2020 : 2021, this.side);
-        ToolSizeManager.setCutterSize(this.cutter_size);
-        this.dataParam.setKeyInfo(createHondaSideKey);
-        this.dataParam.setCutSpeed(SPUtils.getInt(SpKeys.SPEED + createHondaSideKey.getType(), 15));
-        this.dataParam.setDecoderSize(100);
-        this.dataParam.setCutterSize(this.cutter_size);
-        this.dataParam.setQuickCut(true);
-        CuttingMachine.getInstance().cut(this.dataParam);
-        showLoadingDialog(getString(R.string.waitting), true);
+    fun startCut() {
+        val createHondaSideKey = HondaKeyFactory.createHondaSideKey(
+            if (rgYear!!.checkedRadioButtonId == R.id.rb_honda_2020) 2020 else 2021,
+            this.side
+        )
+        ToolSizeManager.setCutterSize(this.cutter_size)
+        dataParam.keyInfo = createHondaSideKey
+        dataParam.cutSpeed = SPUtils.getInt(SpKeys.SPEED + createHondaSideKey!!.type, 15)
+        dataParam.decoderSize = 100
+        dataParam.cutterSize = this.cutter_size
+        dataParam.isQuickCut = true
+        CuttingMachine.getInstance().cut(this.dataParam)
+        showLoadingDialog(getString(R.string.waitting), true)
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void onEventComing(EventCenter eventCenter) {
-        if (isVisible()) {
-            int eventCode = eventCenter.getEventCode();
+    // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun onEventComing(eventCenter: EventCenter<*>) {
+        if (isVisible) {
+            val eventCode = eventCenter.eventCode
             if (eventCode != 47) {
-                switch (eventCode) {
-                    case 32:
-                        handleOperationFinish(eventCenter);
-                        return;
-                    case 33:
-                        showError(eventCenter);
-                        return;
-                    case 34:
-                        showLoadingDialog(getString(R.string.waitting));
-                        return;
-                    default:
-                        return;
+                when (eventCode) {
+                    32 -> {
+                        handleOperationFinish(eventCenter)
+                        return
+                    }
+
+                    33 -> {
+                        showError(eventCenter)
+                        return
+                    }
+
+                    34 -> {
+                        showLoadingDialog(getString(R.string.waitting))
+                        return
+                    }
+
+                    else -> return
                 }
             }
-            showLoadingDialog(((Integer) eventCenter.getData()).intValue() + "%", true);
+            showLoadingDialog((eventCenter.data as Int).toString() + "%", true)
         }
     }
 
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_size_add /* 2131362335 */:
-                int i = this.cutter_size;
+    fun onViewClicked(view: View) {
+        when (view.id) {
+            R.id.iv_size_add -> {
+                val i = this.cutter_size
                 if (i < 250) {
-                    this.cutter_size = i + 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i + 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.iv_size_reduce /* 2131362336 */:
-                int i2 = this.cutter_size;
+                return
+            }
+
+            R.id.iv_size_reduce -> {
+                val i2 = this.cutter_size
                 if (i2 > 100) {
-                    this.cutter_size = i2 - 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i2 - 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            default:
-                return;
+                return
+            }
+
+            else -> return
         }
     }
 
-    public void onCheckChanged(CompoundButton compoundButton, boolean z) {
-        switch (compoundButton.getId()) {
-            case R.id.rb_honda_a /* 2131362619 */:
+    fun onCheckChanged(compoundButton: CompoundButton, z: Boolean) {
+        when (compoundButton.id) {
+            R.id.rb_honda_a -> {
                 if (z) {
-                    this.side = 0;
-                    return;
+                    this.side = 0
+                    return
                 }
-                return;
-            case R.id.rb_honda_b /* 2131362620 */:
+                return
+            }
+
+            R.id.rb_honda_b -> {
                 if (z) {
-                    this.side = 1;
-                    return;
+                    this.side = 1
+                    return
                 }
-                return;
-            default:
-                return;
+                return
+            }
+
+            else -> return
         }
     }
 
-    private void handleOperationFinish(EventCenter eventCenter) {
-        if (((OperateType) eventCenter.getData()) == OperateType.KEY_BLANK_CUT_EXECUTE) {
-            addDisposable(Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() { // from class: com.kkkcut.e20j.ui.fragment.hondakey.HondaSideCutFragment.2
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Long l) throws Exception {
-                    HondaSideCutFragment.this.dismissLoadingDialog();
-                }
-            }));
-            showLoadingDialog("100%", true);
+    private fun handleOperationFinish(eventCenter: EventCenter<*>) {
+        if ((eventCenter.data as OperateType) == OperateType.KEY_BLANK_CUT_EXECUTE) {
+            addDisposable(
+                Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread())
+                    .observeOn(
+                        AndroidSchedulers.mainThread()
+                    ).subscribe(
+                { this@HondaSideCutFragment.dismissLoadingDialog() },
+                { this.dismissLoadingDialog() })
+            )
+            showLoadingDialog("100%", true)
         }
     }
 
-    private void showError(EventCenter eventCenter) {
-        dismissLoadingDialog();
-        showErrorDialog(getContext(), (ErrorBean) eventCenter.getData());
+    private fun showError(eventCenter: EventCenter<*>) {
+        dismissLoadingDialog()
+        showErrorDialog(context, eventCenter.data as ErrorBean)
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.honda);
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.honda)
+    }
+
+    companion object {
+        const val SIDE_A: Int = 0
+        const val SIDE_B: Int = 1
+
+        fun newInstance(): HondaSideCutFragment {
+            val bundle = Bundle()
+            val hondaSideCutFragment = HondaSideCutFragment()
+            hondaSideCutFragment.arguments = bundle
+            return hondaSideCutFragment
+        }
     }
 }

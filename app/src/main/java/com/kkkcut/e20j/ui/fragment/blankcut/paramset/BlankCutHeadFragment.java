@@ -410,12 +410,9 @@ public class BlankCutHeadFragment extends BaseBackFragment {
             OperationManager.getInstance().startExecution(arrayList, OperateType.MODIFY_KEY_BLANK_EXECUTE);
             return;
         }
-        addDisposable(Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.3
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Long l) throws Exception {
-                BlankCutHeadFragment.this.dismissLoadingDialog();
-            }
-        }));
+        // from class: com.kkkcut.e20j.ui.fragment.blankcut.paramset.BlankCutHeadFragment.3
+// io.reactivex.functions.Consumer
+        addDisposable(Observable.timer(500L, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe( l -> BlankCutHeadFragment.this.dismissLoadingDialog(), th -> this.dismissLoadingDialog()));
         showLoadingDialog("100%", true);
         if (!this.isSecondSide && this.blankCutType != BlankCutType.KEY_HEAD) {
             RemindDialog remindDialog = new RemindDialog(getContext());

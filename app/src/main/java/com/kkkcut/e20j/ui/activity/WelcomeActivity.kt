@@ -1,82 +1,78 @@
-package com.kkkcut.e20j.ui.activity;
+package com.kkkcut.e20j.ui.activity
 
-import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
-import android.text.TextUtils;
-import android.widget.ImageView;
-import com.kkkcut.e20j.androidquick.tool.AppUtil;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.base.HideStatusActivity;
-import com.kkkcut.e20j.presenter.SplashPresenter;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.ActivityLanuchBinding;
-import com.kkkcut.e20j.view.SplashView;
+import android.content.Intent
+import android.content.res.Resources
+import android.os.Bundle
+import android.os.Handler
+import android.os.PersistableBundle
+import android.text.TextUtils
+import android.widget.ImageView
+import com.kkkcut.e20j.androidquick.tool.AppUtil
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.base.HideStatusActivity
+import com.kkkcut.e20j.presenter.SplashPresenter
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.ActivityLanuchBinding
+import com.kkkcut.e20j.view.SplashView
 
 /* loaded from: classes.dex */
-public class WelcomeActivity extends HideStatusActivity implements SplashView {
-    private SplashPresenter splashPresenter;
+class WelcomeActivity() : HideStatusActivity(), SplashView {
+    private var splashPresenter: SplashPresenter? = null
 
-    ActivityLanuchBinding binding;
+    var binding: ActivityLanuchBinding? = null
 
-    @Override
-    public void onCreate(Bundle bundle, PersistableBundle persistableBundle) {
-        super.onCreate(bundle, persistableBundle);
-        this.binding = ActivityLanuchBinding.inflate(getLayoutInflater());
-        setContentView(this.binding.getRoot());
+    override fun onCreate(bundle: Bundle?, persistableBundle: PersistableBundle?) {
+        super.onCreate(bundle, persistableBundle)
+        this.binding = ActivityLanuchBinding.inflate(layoutInflater)
+        setContentView(binding!!.getRoot())
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected int getContentViewLayoutID() {
-        return R.layout.activity_lanuch;
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.activity_lanuch
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity
-    protected void initViewsAndEvents() {
-        Resources resources;
-        int identifier;
-        this.splashPresenter = new SplashPresenter(this, this);
-        String packageName = AppUtil.getPackageName(this);
-        ImageView imageView = findViewById(R.id.iv_splash);
+    override fun initViewsAndEvents() {
+        var resources: Resources
+        var identifier: Int = 0
+        this.splashPresenter = SplashPresenter(this, this)
+        val packageName: String = AppUtil.getPackageName(this)
+        val imageView: ImageView = findViewById(R.id.iv_splash)
         if (packageName.endsWith(".us")) {
-            imageView.setImageResource(R.drawable.welcome_spl);
-            return;
+            imageView.setImageResource(R.drawable.welcome_spl)
+            return
         }
         if (packageName.endsWith(".neutral")) {
-            imageView.setImageResource(R.drawable.welcome);
-            return;
+            imageView.setImageResource(R.drawable.welcome)
+            return
         }
-        String string = SPUtils.getString("welcome");
-        if (TextUtils.isEmpty(string) || (resources = getResources()) == null || (identifier = resources.getIdentifier(string, "drawable", getPackageName())) == 0) {
-            return;
+        val string: String = SPUtils.getString("welcome")
+
+        if (TextUtils.isEmpty(string) || ((getResources().also { it ->
+                resources = it
+            }) == null) || ((getResources().getIdentifier(string, "drawable", getPackageName())
+                .also { identifier = it }) == 0)
+        ) {
+            return
         }
-        imageView.setImageResource(identifier);
+        imageView.setImageResource(identifier)
     }
 
-    @Override // com.kkkcut.e20j.view.SplashView
-    /* renamed from: goMain, reason: merged with bridge method [inline-methods] */
-    public void goMain() {
-        startActivity(new Intent(this, (Class<?>) FrameActivity.class));
-        finish();
+    // com.kkkcut.e20j.view.SplashView
+    /* renamed from: goMain, reason: merged with bridge method [inline-methods] */ override fun goMain() {
+        startActivity(Intent(this, FrameActivity::class.java as Class<*>?))
+        finish()
     }
 
-    @Override // com.kkkcut.e20j.view.SplashView
-    public void goMainDelay(long j) {
-        new Handler().postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.activity.WelcomeActivity$$ExternalSyntheticLambda0
-            @Override // java.lang.Runnable
-            public final void run() {
-                WelcomeActivity.this.goMain();
-            }
-        }, j);
+    // com.kkkcut.e20j.view.SplashView
+    override fun goMainDelay(j: Long) {
+        Handler().postDelayed({ this@WelcomeActivity.goMain() }, j)
     }
 
     /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
-    public void onDestroy() {
-        super.onDestroy();
-        this.splashPresenter.onDetach();
-        this.splashPresenter = null;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+    override fun onDestroy() {
+        super.onDestroy()
+        splashPresenter!!.onDetach()
+        this.splashPresenter = null
     }
 }

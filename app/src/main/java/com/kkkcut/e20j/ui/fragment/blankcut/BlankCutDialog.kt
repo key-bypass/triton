@@ -1,373 +1,418 @@
-package com.kkkcut.e20j.ui.fragment.blankcut;
+package com.kkkcut.e20j.ui.fragment.blankcut
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import com.kkkcut.e20j.androidquick.tool.ToastUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.dialog.WarningDialog;
-import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
-import com.cutting.machine.MachineInfo;
-import com.cutting.machine.ToolSizeManager;
-import com.kkkcut.e20j.us.R;
-
-import org.greenrobot.eventbus.EventBus;
+import android.app.Activity
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RadioGroup
+import android.widget.TextView
+import com.cutting.machine.MachineInfo
+import com.cutting.machine.ToolSizeManager
+import com.kkkcut.e20j.androidquick.tool.ToastUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.ui.dialog.WarningDialog
+import com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+import com.kkkcut.e20j.us.R
+import org.greenrobot.eventbus.EventBus
 
 /* loaded from: classes.dex */
-public class BlankCutDialog extends BottomInDialog {
-    private static final String TAG = "CutDialog";
-    private BlankCutType blankCutType;
-    Button bt15mm;
+class BlankCutDialog(activity: Activity?, private val blankCutType: BlankCutType) :
+    BottomInDialog(activity) {
+    var bt15mm: Button? = null
 
-    Button bt20mm;
+    var bt20mm: Button? = null
 
-    Button bt25mm;
+    var bt25mm: Button? = null
 
-    TextView btCut;
-    private int cutSpeed;
-    private boolean cutterSizeChangeable;
-    private int cutter_size;
+    var btCut: TextView? = null
+    private var cutSpeed = 0
+    private var cutterSizeChangeable = false
+    private var cutter_size = 0
 
-    ImageView ivClamp;
+    var ivClamp: ImageView? = null
 
-    ImageView ivCutter;
+    var ivCutter: ImageView? = null
 
-    LinearLayout llCutSpeed;
+    var llCutSpeed: LinearLayout? = null
 
-    LinearLayout llCutterSize;
-    private boolean onceCut;
+    var llCutterSize: LinearLayout? = null
+    private var onceCut = false
 
-    RadioGroup rgCutTimes;
+    var rgCutTimes: RadioGroup? = null
 
-    TextView tvCutSpeed;
+    var tvCutSpeed: TextView? = null
 
-    TextView tvCutterSize;
+    var tvCutterSize: TextView? = null
 
-    TextView tvCutterSizeRemind;
+    var tvCutterSizeRemind: TextView? = null
 
-    TextView tvSpeedValue;
+    var tvSpeedValue: TextView? = null
 
-    @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
-    public int getContentLayoutID() {
-        return R.layout.fragment_modify_key_blank_cut;
+    // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+    override fun getContentLayoutID(): Int {
+        return R.layout.fragment_modify_key_blank_cut
     }
 
-    public BlankCutDialog(Activity activity, BlankCutType blankCutType) {
-        super(activity);
-        this.blankCutType = blankCutType;
-    }
+    /* JADX INFO: Access modifiers changed from: package-private */ /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog$1, reason: invalid class name */ /* loaded from: classes.dex */
+    object AnonymousClass1 {
+        /* synthetic */val `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`: IntArray
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog$1, reason: invalid class name */
-    /* loaded from: classes.dex */
-    public static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType;
-
-        static {
-            int[] iArr = new int[BlankCutType.values().length];
-            $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType = iArr;
+        init {
+            val iArr = IntArray(BlankCutType.entries.size)
+            `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType` = iArr
             try {
-                iArr[BlankCutType.KEY_HEAD.ordinal()] = 1;
-            } catch (NoSuchFieldError unused) {
+                iArr[BlankCutType.KEY_HEAD.ordinal] = 1
+            } catch (unused: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.THICKNESS.ordinal()] = 2;
-            } catch (NoSuchFieldError unused2) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.THICKNESS.ordinal] =
+                    2
+            } catch (unused2: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.WIDTH.ordinal()] = 3;
-            } catch (NoSuchFieldError unused3) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.WIDTH.ordinal] =
+                    3
+            } catch (unused3: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.k9ToLxp90.ordinal()] = 4;
-            } catch (NoSuchFieldError unused4) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.k9ToLxp90.ordinal] =
+                    4
+            } catch (unused4: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.Toyota80K.ordinal()] = 5;
-            } catch (NoSuchFieldError unused5) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.Toyota80K.ordinal] =
+                    5
+            } catch (unused5: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.DRILLING.ordinal()] = 6;
-            } catch (NoSuchFieldError unused6) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.DRILLING.ordinal] =
+                    6
+            } catch (unused6: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.LEFT_GROOVE.ordinal()] = 7;
-            } catch (NoSuchFieldError unused7) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.LEFT_GROOVE.ordinal] =
+                    7
+            } catch (unused7: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.RIGHT_GROOVE.ordinal()] = 8;
-            } catch (NoSuchFieldError unused8) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.RIGHT_GROOVE.ordinal] =
+                    8
+            } catch (unused8: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.KEY_TIP.ordinal()] = 9;
-            } catch (NoSuchFieldError unused9) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.KEY_TIP.ordinal] =
+                    9
+            } catch (unused9: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.CREATE_GROOVE.ordinal()] = 10;
-            } catch (NoSuchFieldError unused10) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.CREATE_GROOVE.ordinal] =
+                    10
+            } catch (unused10: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.K4080K.ordinal()] = 11;
-            } catch (NoSuchFieldError unused11) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.K4080K.ordinal] =
+                    11
+            } catch (unused11: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.HY18.ordinal()] = 12;
-            } catch (NoSuchFieldError unused12) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.HY18.ordinal] =
+                    12
+            } catch (unused12: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.HY18R.ordinal()] = 13;
-            } catch (NoSuchFieldError unused13) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.HY18R.ordinal] =
+                    13
+            } catch (unused13: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.SIDE_GROOVE.ordinal()] = 14;
-            } catch (NoSuchFieldError unused14) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.SIDE_GROOVE.ordinal] =
+                    14
+            } catch (unused14: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.KW16ToKW15.ordinal()] = 15;
-            } catch (NoSuchFieldError unused15) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.KW16ToKW15.ordinal] =
+                    15
+            } catch (unused15: NoSuchFieldError) {
             }
             try {
-                $SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[BlankCutType.KW14ToKW15.ordinal()] = 16;
-            } catch (NoSuchFieldError unused16) {
+                `$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[BlankCutType.KW14ToKW15.ordinal] =
+                    16
+            } catch (unused16: NoSuchFieldError) {
             }
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
-    public void initView() {
-        switch (AnonymousClass1.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()]) {
-            case 1:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_head);
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 2:
+    // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+    override fun initView() {
+        when (AnonymousClass1.`$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[blankCutType.ordinal]) {
+            1 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_head)
+                rgCutTimes!!.visibility = 8
+            }
+
+            2 -> {
                 if (MachineInfo.isChineseMachine()) {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_thickness_s1);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_thickness_s1)
                 } else {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_thickness);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_thickness)
                 }
-                this.rgCutTimes.setVisibility(0);
-                break;
-            case 3:
-            case 4:
-            case 5:
+                rgCutTimes!!.visibility = 0
+            }
+
+            3, 4, 5 -> {
                 if (MachineInfo.isChineseMachine()) {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_width_s1);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_width_s1)
                 } else {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_width);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_width)
                 }
-                this.rgCutTimes.setVisibility(0);
-                break;
-            case 6:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_drilling);
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 7:
+                rgCutTimes!!.visibility = 0
+            }
+
+            6 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_drilling)
+                rgCutTimes!!.visibility = 8
+            }
+
+            7 -> {
                 if (MachineInfo.isChineseMachine()) {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_left_groove_s1);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_left_groove_s1)
                 } else {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_left_groove_s8);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_left_groove_s8)
                 }
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 8:
+                rgCutTimes!!.visibility = 8
+            }
+
+            8 -> {
                 if (MachineInfo.isChineseMachine()) {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_right_groove_s1);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_right_groove_s1)
                 } else {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_right_groove_s8);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_right_groove_s8)
                 }
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 9:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_key_tip);
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 10:
-            case 11:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_40k80k);
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 12:
-            case 13:
+                rgCutTimes!!.visibility = 8
+            }
+
+            9 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_key_tip)
+                rgCutTimes!!.visibility = 8
+            }
+
+            10, 11 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_40k80k)
+                rgCutTimes!!.visibility = 8
+            }
+
+            12, 13 -> {
                 if (MachineInfo.isChineseMachine()) {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_hy18r_s1);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_hy18r_s1)
                 } else {
-                    this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_hy18_s8);
+                    ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_hy18_s8)
                 }
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 14:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_cut_side_groove_s8);
-                this.rgCutTimes.setVisibility(8);
-                break;
-            case 15:
-            case 16:
-                this.ivClamp.setImageResource(R.drawable.clamp_remind_blank_kw16_kw15_groove_s8);
-                this.rgCutTimes.setVisibility(8);
-                break;
+                rgCutTimes!!.visibility = 8
+            }
+
+            14 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_cut_side_groove_s8)
+                rgCutTimes!!.visibility = 8
+            }
+
+            15, 16 -> {
+                ivClamp!!.setImageResource(R.drawable.clamp_remind_blank_kw16_kw15_groove_s8)
+                rgCutTimes!!.visibility = 8
+            }
         }
-        initCutter();
-        initCutSpeed();
+        initCutter()
+        initCutSpeed()
     }
 
-    private void initCutSpeed() {
-        int speed = BlankCutSpeedUtils.getSpeed(this.blankCutType);
-        this.cutSpeed = speed;
-        this.tvSpeedValue.setText(String.valueOf(speed));
+    private fun initCutSpeed() {
+        val speed = BlankCutSpeedUtils.getSpeed(this.blankCutType)
+        this.cutSpeed = speed
+        tvSpeedValue!!.text = speed.toString()
     }
 
-    private void initCutter() {
-        int i = AnonymousClass1.$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType[this.blankCutType.ordinal()];
+    private fun initCutter() {
+        val i =
+            AnonymousClass1.`$SwitchMap$com$kkkcut$e20j$ui$fragment$blankcut$BlankCutType`[blankCutType.ordinal]
         if (i == 6) {
-            this.cutter_size = 250;
-            this.cutterSizeChangeable = false;
+            this.cutter_size = 250
+            this.cutterSizeChangeable = false
         } else if (i == 14) {
-            this.cutter_size = 100;
-            this.cutterSizeChangeable = false;
+            this.cutter_size = 100
+            this.cutterSizeChangeable = false
         } else {
-            this.cutter_size = ToolSizeManager.getCutterSize();
-            this.cutterSizeChangeable = true;
+            this.cutter_size = ToolSizeManager.getCutterSize()
+            this.cutterSizeChangeable = true
         }
-        this.tvCutterSize.setText(String.format("%.1fmm", Float.valueOf(this.cutter_size / 100.0f)));
+        tvCutterSize!!.text = String.format("%.1fmm", this.cutter_size / 100.0f)
         if (this.cutterSizeChangeable) {
-            return;
+            return
         }
-        this.bt15mm.setVisibility(8);
-        this.bt20mm.setVisibility(8);
-        this.bt25mm.setVisibility(8);
+        bt15mm!!.visibility = 8
+        bt20mm!!.visibility = 8
+        bt25mm!!.visibility = 8
     }
 
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bt_1_5mm /* 2131361901 */:
+    fun onViewClicked(view: View) {
+        when (view.id) {
+            R.id.bt_1_5mm -> {
                 if (checkCutterSize()) {
-                    return;
+                    return
                 }
-                this.cutter_size = 150;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_2_0mm /* 2131361902 */:
+                this.cutter_size = 150
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_2_0mm -> {
                 if (checkCutterSize()) {
-                    return;
+                    return
                 }
-                this.cutter_size = 200;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_2_5mm /* 2131361903 */:
+                this.cutter_size = 200
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_2_5mm -> {
                 if (checkCutterSize()) {
-                    return;
+                    return
                 }
-                this.cutter_size = 250;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_cancle /* 2131361909 */:
-                dismiss();
-                return;
-            case R.id.iv_close /* 2131362287 */:
-                dismiss();
-                return;
-            case R.id.iv_size_add /* 2131362335 */:
+                this.cutter_size = 250
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_cancle -> {
+                dismiss()
+                return
+            }
+
+            R.id.iv_close -> {
+                dismiss()
+                return
+            }
+
+            R.id.iv_size_add -> {
                 if (checkCutterSize()) {
-                    return;
+                    return
                 }
-                int i = this.cutter_size;
+                val i = this.cutter_size
                 if (i < 250) {
-                    this.cutter_size = i + 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i + 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
                 if (i < 500) {
-                    this.cutter_size = i + 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i + 50
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.iv_size_reduce /* 2131362336 */:
+                return
+            }
+
+            R.id.iv_size_reduce -> {
                 if (checkCutterSize()) {
-                    return;
+                    return
                 }
-                int i2 = this.cutter_size;
+                val i2 = this.cutter_size
                 if (i2 > 250) {
-                    this.cutter_size = i2 - 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i2 - 50
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
                 if (i2 > 100) {
-                    this.cutter_size = i2 - 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i2 - 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.iv_speed_add /* 2131362345 */:
-                int i3 = this.cutSpeed;
+                return
+            }
+
+            R.id.iv_speed_add -> {
+                val i3 = this.cutSpeed
                 if (i3 < 25) {
-                    int i4 = i3 + 1;
-                    this.cutSpeed = i4;
-                    this.tvSpeedValue.setText(String.valueOf(i4));
-                    BlankCutSpeedUtils.saveSpeed(this.blankCutType, this.cutSpeed);
-                    return;
+                    val i4 = i3 + 1
+                    this.cutSpeed = i4
+                    tvSpeedValue!!.text = i4.toString()
+                    BlankCutSpeedUtils.saveSpeed(this.blankCutType, this.cutSpeed)
+                    return
                 }
-                return;
-            case R.id.iv_speed_reduce /* 2131362346 */:
-                int i5 = this.cutSpeed;
+                return
+            }
+
+            R.id.iv_speed_reduce -> {
+                val i5 = this.cutSpeed
                 if (i5 > 1) {
-                    int i6 = i5 - 1;
-                    this.cutSpeed = i6;
-                    this.tvSpeedValue.setText(String.valueOf(i6));
-                    BlankCutSpeedUtils.saveSpeed(this.blankCutType, this.cutSpeed);
-                    return;
+                    val i6 = i5 - 1
+                    this.cutSpeed = i6
+                    tvSpeedValue!!.text = i6.toString()
+                    BlankCutSpeedUtils.saveSpeed(this.blankCutType, this.cutSpeed)
+                    return
                 }
-                return;
-            case R.id.tv_cut /* 2131362904 */:
-                WarningDialog warningDialog = new WarningDialog(getContext());
-                warningDialog.show();
-                warningDialog.setRemind(getContext().getString(R.string.please_use_specify_cutter, new Object[]{(this.cutter_size / 100.0f) + "mm"}));
-                warningDialog.setDialogBtnCallback(new WarningDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog$$ExternalSyntheticLambda0
-                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
-                    public final void onDialogButClick(boolean z) {
-                        BlankCutDialog.this.m49x9deff7e3(z);
-                    }
-                });
-                return;
-            default:
-                return;
+                return
+            }
+
+            R.id.tv_cut -> {
+                val warningDialog = WarningDialog(context)
+                warningDialog.show()
+                warningDialog.setRemind(
+                    context.getString(
+                        R.string.please_use_specify_cutter, *arrayOf<Any>(
+                            (this.cutter_size / 100.0f).toString() + "mm"
+                        )
+                    )
+                )
+                warningDialog.setDialogBtnCallback { z ->
+                    // from class: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutDialog$$ExternalSyntheticLambda0
+                    // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    this@BlankCutDialog.m49x9deff7e3(z)
+                }
+                return
+            }
+
+            else -> return
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$onViewClicked$0$com-kkkcut-e20j-ui-fragment-blankcut-BlankCutDialog, reason: not valid java name */
-    public /* synthetic */ void m49x9deff7e3(boolean z) {
+    /* JADX INFO: Access modifiers changed from: package-private */ /* renamed from: lambda$onViewClicked$0$com-kkkcut-e20j-ui-fragment-blankcut-BlankCutDialog, reason: not valid java name */
+    /* synthetic */ fun m49x9deff7e3(z: Boolean) {
         if (z) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("cutterSize", this.cutter_size);
-            bundle.putBoolean("isSecondSide", this.onceCut);
-            EventBus.getDefault().post(new EventCenter(1, bundle));
-            dismiss();
+            val bundle = Bundle()
+            bundle.putInt("cutterSize", this.cutter_size)
+            bundle.putBoolean("isSecondSide", this.onceCut)
+            EventBus.getDefault().post(EventCenter<Any?>(1, bundle))
+            dismiss()
         }
     }
 
-    private boolean checkCutterSize() {
+    private fun checkCutterSize(): Boolean {
         if (this.cutterSizeChangeable) {
-            return false;
+            return false
         }
-        ToastUtil.showToast(getContext().getString(R.string.please_use_specify_cutter, new Object[]{(this.cutter_size / 100.0f) + "mm"}));
-        return true;
+        ToastUtil.showToast(
+            context.getString(
+                R.string.please_use_specify_cutter, *arrayOf<Any>(
+                    (this.cutter_size / 100.0f).toString() + "mm"
+                )
+            )
+        )
+        return true
     }
 
-    public void onCheckedChange(CompoundButton compoundButton, boolean z) {
-        int id = compoundButton.getId();
+    fun onCheckedChange(compoundButton: CompoundButton, z: Boolean) {
+        val id = compoundButton.id
         if (id == R.id.rb_double_cut) {
             if (z) {
-                this.onceCut = false;
+                this.onceCut = false
             }
         } else if (id == R.id.rb_once_cut && z) {
-            this.onceCut = true;
+            this.onceCut = true
         }
+    }
+
+    companion object {
+        private const val TAG = "CutDialog"
     }
 }

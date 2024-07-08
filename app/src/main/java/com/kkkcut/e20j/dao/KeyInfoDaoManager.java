@@ -368,26 +368,26 @@ public class KeyInfoDaoManager {
     public List<MenuSummary> advSearch(SearchCondition searchCondition) {
         Database database;
         String str;
-        String kid = searchCondition.getKid();
+        String kid = searchCondition.kid;
         TextUtils.isEmpty(kid);
-        String silcaCard = searchCondition.getSilcaCard();
+        String silcaCard = searchCondition.silcaCard;
         TextUtils.isEmpty(silcaCard);
-        String silcaSN = searchCondition.getSilcaSN();
+        String silcaSN = searchCondition.silcaSN;
         TextUtils.isEmpty(silcaSN);
-        String keyBlank = searchCondition.getKeyBlank();
+        String keyBlank = searchCondition.keyBlank;
         if (TextUtils.isEmpty(keyBlank)) {
             keyBlank = "";
         }
-        String keyBlankManu = searchCondition.getKeyBlankManu();
+        String keyBlankManu = searchCondition.keyBlankManu;
         if (TextUtils.isEmpty(keyBlankManu)) {
             keyBlankManu = "";
         }
-        String lockSys = searchCondition.getLockSys();
+        String lockSys = searchCondition.lockSys;
         if (TextUtils.isEmpty(lockSys)) {
             lockSys = "";
         }
         String replace = lockSys.replace(" ", "");
-        String lockManu = searchCondition.getLockManu();
+        String lockManu = searchCondition.lockManu;
         String str2 = TextUtils.isEmpty(lockManu) ? "" : lockManu;
         Database database2 = getDaoSession().getDatabase();
         if (TextUtils.isEmpty(silcaCard) && TextUtils.isEmpty(silcaSN) && TextUtils.isEmpty(kid)) {

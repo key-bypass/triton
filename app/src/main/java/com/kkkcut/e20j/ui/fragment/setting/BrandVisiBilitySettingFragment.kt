@@ -1,220 +1,205 @@
-package com.kkkcut.e20j.ui.fragment.setting;
+package com.kkkcut.e20j.ui.fragment.setting
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.Manufacturer;
-import com.kkkcut.e20j.DbBean.userDB.ManufacturerHidden;
-import com.kkkcut.e20j.adapter.BrandVisibilityAdapter;
-import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar;
-import com.kkkcut.e20j.dao.KeyInfoDaoManager;
-import com.kkkcut.e20j.dao.UserDataDaoManager;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.CheckBox
+import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.kkkcut.e20j.DbBean.Manufacturer
+import com.kkkcut.e20j.DbBean.userDB.ManufacturerHidden
+import com.kkkcut.e20j.adapter.BrandVisibilityAdapter
+import com.kkkcut.e20j.customView.indexlib.IndexBar.widget.IndexBar
+import com.kkkcut.e20j.dao.KeyInfoDaoManager
+import com.kkkcut.e20j.dao.UserDataDaoManager
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Action
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.functions.Function
+import io.reactivex.rxjava3.functions.Predicate
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
-public class BrandVisiBilitySettingFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
-    BrandVisibilityAdapter hideBrandAdapter;
+class BrandVisiBilitySettingFragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener {
+    var hideBrandAdapter: BrandVisibilityAdapter? = null
 
-    IndexBar indexBarBrandHide;
+    var indexBarBrandHide: IndexBar? = null
 
-    IndexBar indexBarBrandShow;
+    var indexBarBrandShow: IndexBar? = null
 
-    RecyclerView rvBrandHidden;
+    var rvBrandHidden: RecyclerView? = null
 
-    RecyclerView rvBrandShow;
-    BrandVisibilityAdapter showBrandAdapter;
+    var rvBrandShow: RecyclerView? = null
+    var showBrandAdapter: BrandVisibilityAdapter? = null
 
-    TextView tvSideBarHintBradHide;
+    var tvSideBarHintBradHide: TextView? = null
 
-    TextView tvSideBarHintBradShow;
+    var tvSideBarHintBradShow: TextView? = null
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_brand_visibility_settting;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_brand_visibility_settting
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static BrandVisiBilitySettingFragment newInstance() {
-        Bundle bundle = new Bundle();
-        BrandVisiBilitySettingFragment brandVisiBilitySettingFragment = new BrandVisiBilitySettingFragment();
-        brandVisiBilitySettingFragment.setArguments(bundle);
-        return brandVisiBilitySettingFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.showBrandAdapter = new BrandVisibilityAdapter();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
-        this.rvBrandShow.setLayoutManager(linearLayoutManager);
-        this.rvBrandShow.setAdapter(this.showBrandAdapter);
-        this.showBrandAdapter.setOnItemClickListener(this);
-        this.rvBrandShow.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        this.indexBarBrandShow.setmPressedShowTextView(this.tvSideBarHintBradShow).setNeedRealIndex(true).setmLayoutManager(linearLayoutManager);
-        this.hideBrandAdapter = new BrandVisibilityAdapter();
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
-        linearLayoutManager2.setOrientation(1);
-        this.rvBrandHidden.setLayoutManager(linearLayoutManager2);
-        this.rvBrandHidden.setAdapter(this.hideBrandAdapter);
-        this.hideBrandAdapter.setOnItemClickListener(this);
-        this.rvBrandHidden.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        this.indexBarBrandHide.setmPressedShowTextView(this.tvSideBarHintBradHide).setNeedRealIndex(true).setmLayoutManager(linearLayoutManager2);
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        this.showBrandAdapter = BrandVisibilityAdapter()
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.orientation = 1
+        rvBrandShow!!.layoutManager = linearLayoutManager
+        rvBrandShow!!.adapter = this.showBrandAdapter
+        showBrandAdapter!!.onItemClickListener = this
+        rvBrandShow!!.addItemDecoration(
+            DividerItemDecoration(
+                context, 1
+            )
+        )
+        indexBarBrandShow!!.setmPressedShowTextView(this.tvSideBarHintBradShow)
+            .setNeedRealIndex(true).setmLayoutManager(linearLayoutManager)
+        this.hideBrandAdapter = BrandVisibilityAdapter()
+        val linearLayoutManager2 = LinearLayoutManager(context)
+        linearLayoutManager2.orientation = 1
+        rvBrandHidden!!.layoutManager = linearLayoutManager2
+        rvBrandHidden!!.adapter = this.hideBrandAdapter
+        hideBrandAdapter!!.onItemClickListener = this
+        rvBrandHidden!!.addItemDecoration(
+            DividerItemDecoration(
+                context, 1
+            )
+        )
+        indexBarBrandHide!!.setmPressedShowTextView(this.tvSideBarHintBradHide)
+            .setNeedRealIndex(true).setmLayoutManager(linearLayoutManager2)
     }
 
     /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    public void onUserVisible() {
-        getManufacturer();
+    // com.kkkcut.e20j.base.BaseFragment, com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun onUserVisible() {
+        manufacturer
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    public void getManufacturer() {
-        addDisposable(Observable.fromCallable(new Callable<List<Manufacturer>>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.5
-            @Override // java.util.concurrent.Callable
-            public List<Manufacturer> call() throws Exception {
-                return UserDataDaoManager.getInstance(BrandVisiBilitySettingFragment.this.getContext()).getManufacturerHidden();
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<List<Manufacturer>>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.4
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<Manufacturer> list) throws Exception {
-                if (BrandVisiBilitySettingFragment.this.hideBrandAdapter != null) {
-                    BrandVisiBilitySettingFragment.this.hideBrandAdapter.setNewData(list);
-                    BrandVisiBilitySettingFragment.this.indexBarBrandHide.setmSourceDatas(list).invalidate();
-                }
-            }
-        }).observeOn(Schedulers.io()).map(new Function<List<Manufacturer>, List<Integer>>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.3
-            @Override // io.reactivex.functions.Function
-            public List<Integer> apply(List<Manufacturer> list) throws Exception {
-                ArrayList arrayList = new ArrayList();
-                Iterator<Manufacturer> it = list.iterator();
-                while (it.hasNext()) {
-                    arrayList.add(Integer.valueOf(it.next().getManufacturerId()));
-                }
-                return arrayList;
-            }
-        }).map(new Function<List<Integer>, List<Manufacturer>>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.2
-            @Override // io.reactivex.functions.Function
-            public List<Manufacturer> apply(List<Integer> list) throws Exception {
-                Log.i(BrandVisiBilitySettingFragment.TAG, "Thread3: " + Thread.currentThread().getName());
-                return KeyInfoDaoManager.getInstance().getManufacturersExceptKeys(list);
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Manufacturer>>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<Manufacturer> list) throws Exception {
-                if (BrandVisiBilitySettingFragment.this.showBrandAdapter != null) {
-                    BrandVisiBilitySettingFragment.this.showBrandAdapter.setNewData(list);
-                    BrandVisiBilitySettingFragment.this.indexBarBrandShow.setmSourceDatas(list).invalidate();
-                }
-            }
-        }));
-    }
+    val manufacturer: Unit
+        /* JADX INFO: Access modifiers changed from: private */
+        get() {
+            addDisposable(Observable.fromCallable(
+                // java.util.concurrent.Callable
+                Callable {
+                    // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.5
+                    UserDataDaoManager.getInstance(this@BrandVisiBilitySettingFragment.context).manufacturerHidden
+                }).subscribeOn(
+                Schedulers.io()
+            ).observeOn(AndroidSchedulers.mainThread())
+                .doOnNext
+                { list ->
+                    if (this@BrandVisiBilitySettingFragment.hideBrandAdapter != null) {
+                        hideBrandAdapter!!.setNewData(list)
+                        indexBarBrandHide!!.setmSourceDatas(list).invalidate()
+                    }
+                }.observeOn(Schedulers.io()).map
+                { list ->
+                    val arrayList = ArrayList<Int>()
+                    val it = list.iterator()
+                    while (it.hasNext()) {
+                        arrayList.add(it.next().manufacturerId)
+                    }
+                    arrayList
+                }.map
+                { list ->
+                    // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.2
+                    Log.i(TAG, "Thread3: " + Thread.currentThread().name)
+                    KeyInfoDaoManager.getInstance().getManufacturersExceptKeys(list)
+                }.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                        if (this@BrandVisiBilitySettingFragment.showBrandAdapter != null) {
+                            showBrandAdapter!!.setNewData(list)
+                            indexBarBrandShow!!.setmSourceDatas(list).invalidate()
+                    }
+                }, { th -> this.dismissLoadingDialog() })
+            )
+        }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id = view.id
         if (id == R.id.iv_hide) {
-            hide();
+            hide()
         } else {
             if (id != R.id.iv_show) {
-                return;
+                return
             }
-            show();
+            show()
         }
     }
 
-    private void show() {
-        List<Manufacturer> data = this.hideBrandAdapter.getData();
-        ArrayList arrayList = new ArrayList();
-        for (Manufacturer manufacturer : data) {
+    private fun show() {
+        val data = hideBrandAdapter!!.data
+        val arrayList = ArrayList<ManufacturerHidden>()
+        for (manufacturer: Manufacturer in data) {
             if (manufacturer.isChecked()) {
-                arrayList.add(new ManufacturerHidden(manufacturer));
+                arrayList.add(ManufacturerHidden(manufacturer))
             }
         }
-        Observable.fromIterable(data).subscribeOn(Schedulers.io()).filter(new Predicate<Manufacturer>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.9
-            @Override // io.reactivex.functions.Predicate
-            public boolean test(Manufacturer manufacturer2) throws Exception {
-                return manufacturer2.isChecked();
-            }
-        }).map(new Function<Manufacturer, ManufacturerHidden>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.8
-            @Override // io.reactivex.functions.Function
-            public ManufacturerHidden apply(Manufacturer manufacturer2) throws Exception {
-                return new ManufacturerHidden(manufacturer2);
-            }
-        }).doOnNext(new Consumer<ManufacturerHidden>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.7
-            @Override // io.reactivex.functions.Consumer
-            public void accept(ManufacturerHidden manufacturerHidden) throws Exception {
-                UserDataDaoManager.getInstance(BrandVisiBilitySettingFragment.this.getContext()).showManufacturer(manufacturerHidden);
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).doOnComplete(new Action() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.6
-            @Override // io.reactivex.functions.Action
-            public void run() throws Exception {
-                BrandVisiBilitySettingFragment.this.getManufacturer();
-            }
-        }).subscribe();
+        Observable.fromIterable(data).subscribeOn(Schedulers.io())
+            .filter { manufacturer2 ->
+                manufacturer2.isChecked()
+            }.map { manufacturer2 ->
+                ManufacturerHidden(manufacturer2)
+            }.doOnNext { manufacturerHidden ->
+                UserDataDaoManager.getInstance(this@BrandVisiBilitySettingFragment.context)
+                    .showManufacturer(manufacturerHidden)
+            }.observeOn(AndroidSchedulers.mainThread()).doOnComplete { this@BrandVisiBilitySettingFragment.manufacturer }
+            .subscribe()
     }
 
-    private void hide() {
-        List<Manufacturer> data = this.showBrandAdapter.getData();
-        ArrayList arrayList = new ArrayList();
-        for (Manufacturer manufacturer : data) {
-            Log.i(TAG, "name: " + manufacturer.getManufacturerName() + "--ischecked:" + manufacturer.isChecked());
+    private fun hide() {
+        val data = showBrandAdapter!!.data
+        val arrayList = ArrayList<ManufacturerHidden>()
+        for (manufacturer: Manufacturer in data) {
+            Log.i(
+                TAG,
+                "name: " + manufacturer.manufacturerName + "--ischecked:" + manufacturer.isChecked()
+            )
             if (manufacturer.isChecked()) {
-                arrayList.add(new ManufacturerHidden(manufacturer));
+                arrayList.add(ManufacturerHidden(manufacturer))
             }
         }
-        Observable.fromIterable(data).subscribeOn(Schedulers.io()).filter(new Predicate<Manufacturer>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.13
-            @Override // io.reactivex.functions.Predicate
-            public boolean test(Manufacturer manufacturer2) throws Exception {
-                return manufacturer2.isChecked();
-            }
-        }).map(new Function<Manufacturer, ManufacturerHidden>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.12
-            @Override // io.reactivex.functions.Function
-            public ManufacturerHidden apply(Manufacturer manufacturer2) throws Exception {
-                return new ManufacturerHidden(manufacturer2);
-            }
-        }).doOnNext(new Consumer<ManufacturerHidden>() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.11
-            @Override // io.reactivex.functions.Consumer
-            public void accept(ManufacturerHidden manufacturerHidden) throws Exception {
-                UserDataDaoManager.getInstance(BrandVisiBilitySettingFragment.this.getContext()).hideManufacturer(manufacturerHidden);
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).doOnComplete(new Action() { // from class: com.kkkcut.e20j.ui.fragment.setting.BrandVisiBilitySettingFragment.10
-            @Override // io.reactivex.functions.Action
-            public void run() throws Exception {
-                BrandVisiBilitySettingFragment.this.getManufacturer();
-            }
-        }).subscribe();
+        Observable.fromIterable(data).subscribeOn(Schedulers.io())
+            .filter { manufacturer2 ->
+                manufacturer2.isChecked()
+            }.map { manufacturer2 ->
+                ManufacturerHidden(manufacturer2)
+            }.doOnNext { manufacturerHidden ->
+                UserDataDaoManager.getInstance(this@BrandVisiBilitySettingFragment.context)
+                    .hideManufacturer(manufacturerHidden)
+
+            }.observeOn(AndroidSchedulers.mainThread()).doOnComplete { this@BrandVisiBilitySettingFragment.manufacturer }
+            .subscribe()
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        Manufacturer manufacturer = (Manufacturer) baseQuickAdapter.getData().get(i);
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox_brand_visibility);
-        manufacturer.setChecked(!checkBox.isChecked());
-        checkBox.performClick();
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val manufacturer = baseQuickAdapter.data[i] as Manufacturer
+        val checkBox = view.findViewById<View>(R.id.checkbox_brand_visibility) as CheckBox
+        manufacturer.setChecked(!checkBox.isChecked)
+        checkBox.performClick()
+    }
+
+    companion object {
+        fun newInstance(): BrandVisiBilitySettingFragment {
+            val bundle = Bundle()
+            val brandVisiBilitySettingFragment = BrandVisiBilitySettingFragment()
+            brandVisiBilitySettingFragment.arguments = bundle
+            return brandVisiBilitySettingFragment
+        }
     }
 }

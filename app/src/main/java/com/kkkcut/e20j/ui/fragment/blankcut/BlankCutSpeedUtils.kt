@@ -1,15 +1,16 @@
-package com.kkkcut.e20j.ui.fragment.blankcut;
+package com.kkkcut.e20j.ui.fragment.blankcut
 
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.androidquick.tool.SPUtils
 
 /* loaded from: classes.dex */
-public class BlankCutSpeedUtils {
-    public static void saveSpeed(BlankCutType blankCutType, int i) {
-        SPUtils.put(SpKeys.BLANK_CUT_SPEED + blankCutType.getFlag(), i);
+object BlankCutSpeedUtils {
+    fun saveSpeed(blankCutType: BlankCutType, i: Int) {
+        SPUtils.put(SpKeys.BLANK_CUT_SPEED + blankCutType.flag, i)
     }
 
-    public static int getSpeed(BlankCutType blankCutType) {
-        return SPUtils.getInt(SpKeys.BLANK_CUT_SPEED + blankCutType.getFlag(), 10);
+    @JvmStatic
+    fun getSpeed(blankCutType: BlankCutType): Int {
+        return SPUtils.getInt(SpKeys.BLANK_CUT_SPEED + blankCutType.flag, 10)
     }
 }

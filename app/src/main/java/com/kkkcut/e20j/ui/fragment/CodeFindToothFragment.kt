@@ -1,204 +1,202 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.BittingCode;
-import com.kkkcut.e20j.adapter.CodeFindToothAdapter;
-import com.kkkcut.e20j.androidquick.network.RetrofitManager;
-import com.kkkcut.e20j.androidquick.tool.NetUtil;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.tool.ToastUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.bean.eventbus.InputFinishBean;
-import com.kkkcut.e20j.bean.gsonBean.CodeFindToothRes;
-import com.kkkcut.e20j.dao.ToothCodeDaoManager;
-import com.kkkcut.e20j.net.Apis;
-import com.kkkcut.e20j.net.TUitls;
-import com.kkkcut.e20j.ui.activity.FrameActivity;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.FragmentCodeFindToothBinding;
-import com.kkkcut.e20j.utils.GetUUID;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import org.greenrobot.eventbus.EventBus;
+import android.os.Bundle
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.kkkcut.e20j.DbBean.BittingCode
+import com.kkkcut.e20j.adapter.CodeFindToothAdapter
+import com.kkkcut.e20j.androidquick.network.RetrofitManager
+import com.kkkcut.e20j.androidquick.tool.NetUtil
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.tool.ToastUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.bean.eventbus.InputFinishBean
+import com.kkkcut.e20j.bean.gsonBean.CodeFindToothRes
+import com.kkkcut.e20j.dao.ToothCodeDaoManager
+import com.kkkcut.e20j.net.Apis
+import com.kkkcut.e20j.net.TUitls
+import com.kkkcut.e20j.ui.activity.FrameActivity
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentCodeFindToothBinding
+import com.kkkcut.e20j.utils.GetUUID
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
 
 /* loaded from: classes.dex */
-public class CodeFindToothFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener {
-    public static final String ISN = "isn";
-    public static final String KEY_ID = "keyID";
-    public static final String SERIES = "series";
-    private CodeFindToothAdapter adapter;
+class CodeFindToothFragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener {
+    private var adapter: CodeFindToothAdapter? = null
 
-    private ToothCodeDaoManager toothCodeDaoManager;
+    private var toothCodeDaoManager: ToothCodeDaoManager? = null
 
-    FragmentCodeFindToothBinding binding;
+    var binding: FragmentCodeFindToothBinding? = null
 
-    @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        super.onCreateView(layoutInflater, viewGroup, bundle);
-        this.binding = FragmentCodeFindToothBinding.inflate(layoutInflater, viewGroup, false);
-        return this.binding.getRoot();
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View? {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentCodeFindToothBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_code_find_tooth;
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_code_find_tooth
     }
 
-    public static CodeFindToothFragment newInstance(int i, String str, String str2) {
-        CodeFindToothFragment codeFindToothFragment = new CodeFindToothFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("keyID", i);
-        bundle.putString("series", str);
-        bundle.putString(ISN, str2);
-        codeFindToothFragment.setArguments(bundle);
-        return codeFindToothFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        String string = getArguments().getString("series");
+    // com.kkkcut.e20j.androidquick.p004ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val string: String? = getArguments()!!.getString("series")
         if (!TextUtils.isEmpty(string)) {
-            this.binding.tvSeries.setText(string);
+            binding!!.tvSeries.setText(string)
         }
-        this.toothCodeDaoManager = new ToothCodeDaoManager(getArguments().getInt("keyID"));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        this.binding.rvToothList.setLayoutManager(linearLayoutManager);
-        CodeFindToothAdapter codeFindToothAdapter = new CodeFindToothAdapter();
-        this.adapter = codeFindToothAdapter;
-        codeFindToothAdapter.setOnItemClickListener(this);
-        this.binding.rvToothList.setAdapter(this.adapter);
-        this.binding.rvToothList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        ((FrameActivity) getActivity()).bindToEditor(this.binding.etSearch, 0);
+        this.toothCodeDaoManager = ToothCodeDaoManager(getArguments()!!.getInt("keyID"))
+        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(getContext())
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL)
+        binding!!.rvToothList.setLayoutManager(linearLayoutManager)
+        val codeFindToothAdapter: CodeFindToothAdapter = CodeFindToothAdapter()
+        this.adapter = codeFindToothAdapter
+        codeFindToothAdapter.setOnItemClickListener(this)
+        binding!!.rvToothList.setAdapter(this.adapter)
+        binding!!.rvToothList.addItemDecoration(DividerItemDecoration(requireContext(), 1))
+        (activity as FrameActivity?)!!.bindToEditor(binding!!.etSearch, 0)
     }
 
-    private void doSearch(final String str, final String str2) {
-        addDisposable(Observable.fromCallable(new Callable<List<BittingCode>>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.3
-            @Override // java.util.concurrent.Callable
-            public List<BittingCode> call() throws Exception {
-                return CodeFindToothFragment.this.toothCodeDaoManager.codeFindTooth(str, str2);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<BittingCode>>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.1
-            @Override // io.reactivex.functions.Consumer
-            public void accept(List<BittingCode> list) throws Exception {
-                if (list == null || list.size() == 0) {
-                    CodeFindToothFragment.this.adapter.setNewData(new ArrayList());
-                    ToastUtil.showToast(R.string.no_data_was_found);
-                } else {
-                    CodeFindToothFragment.this.adapter.setNewData(list);
-                }
-            }
-        }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.CodeFindToothFragment.2
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Throwable th) throws Exception {
-                ToastUtil.showToast(R.string.no_data_was_found);
-            }
-        }));
-    }
-
-    public void onViewClicked(View view) {
-        String trim = this.binding.etSearch.getText().toString().trim();
-        if (TextUtils.isEmpty(trim)) {
-            ToastUtil.showToast(R.string.not_null);
-            return;
-        }
-        String string = getArguments().getString(ISN);
-        if (TextUtils.isEmpty(string)) {
-            string = "0";
-        }
-        switch (view.getId()) {
-            case R.id.bt_search_offline /* 2131361973 */:
-                doSearch(trim, string);
-                hideSoftInput();
-                this.binding.etSearch.clearFocus();
-                return;
-            case R.id.bt_search_online /* 2131361974 */:
-                doSearchOnline(trim, string);
-                hideSoftInput();
-                this.binding.etSearch.clearFocus();
-                return;
-            default:
-                return;
-        }
-    }
-
-    private void doSearchOnline(String str, String str2) {
-        if (!NetUtil.isNetworkConnected(getContext())) {
-            ToastUtil.showToast(R.string.network_unavailable);
-            return;
-        }
-        showLoadingDialog(getString(R.string.waitting));
-        if (TextUtils.isEmpty(str2)) {
-            str2 = "0";
-        }
-        addDisposable(RetrofitManager.getInstance().createApi(Apis.class).getToothByCode(TUitls.codeFindToothParam(str, getArguments().getInt("keyID"), GetUUID.getUUID(), SPUtils.getString("series"), str2)).map( codeFindToothRes -> {
-                if (TextUtils.equals(codeFindToothRes.getCode(), "0")) {
-                    ArrayList arrayList = new ArrayList();
-                    List<CodeFindToothRes.DataBean> data = codeFindToothRes.getData();
-                    if (data != null) {
-                        for (CodeFindToothRes.DataBean dataBean : data) {
-                            BittingCode bittingCode = new BittingCode();
-                            bittingCode.setBitting(dataBean.getBitting());
-                            bittingCode.setIsn(dataBean.getIsn());
-                            arrayList.add(bittingCode);
+    private fun doSearch(str: String, str2: String?) {
+        addDisposable(
+            Observable.fromCallable<List<BittingCode>> {
+                toothCodeDaoManager!!.codeFindTooth(str, str2) as List<BittingCode>
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                        if (list.isEmpty()) {
+                            adapter!!.setNewData(ArrayList<BittingCode>())
+                            ToastUtil.showToast(R.string.no_data_was_found)
+                        } else {
+                            adapter!!.setNewData(list)
                         }
-                        return arrayList;
-                    }
-                    throw new Exception(CodeFindToothFragment.this.getString(R.string.no_data_was_found));
-                }
-                throw new Exception(codeFindToothRes.getMsg());
 
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doFinally(() -> {
-                CodeFindToothFragment.this.dismissLoadingDialog();
-
-        }).subscribe(list -> {
-                if (list.size() == 0) {
-                    ToastUtil.showToast(R.string.no_data_was_found);
-                }
-                CodeFindToothFragment.this.adapter.setNewData(list);
-
-        }, th -> ToastUtil.showToast(th.getMessage())));
+                }, {
+                    ToastUtil.showToast(R.string.no_data_was_found)
+                }, { dismissLoadingDialog() }))
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        BittingCode bittingCode = (BittingCode) baseQuickAdapter.getData().get(i);
-        if (bittingCode == null) {
-            return;
+    fun onViewClicked(view: View) {
+        val trim: String = binding!!.etSearch.getText().toString().trim { it <= ' ' }
+        if (TextUtils.isEmpty(trim)) {
+            ToastUtil.showToast(R.string.not_null)
+            return
         }
-        char[] charArray = bittingCode.getBitting().toCharArray();
-        String str = "";
-        for (int i2 = 0; i2 < charArray.length; i2++) {
-            if (i2 == charArray.length - 1) {
-                str = str + charArray[i2] + ";";
-            } else if ("-".contains(String.valueOf(charArray[i2]))) {
-                str = str.substring(0, str.lastIndexOf(",")) + ";";
+        var string: String? = arguments!!.getString(ISN)
+        if (TextUtils.isEmpty(string)) {
+            string = "0"
+        }
+        when (view.getId()) {
+            R.id.bt_search_offline -> {
+                doSearch(trim, string)
+                hideSoftInput()
+                binding!!.etSearch.clearFocus()
+                return
+            }
+
+            R.id.bt_search_online -> {
+                doSearchOnline(trim, string)
+                hideSoftInput()
+                binding!!.etSearch.clearFocus()
+                return
+            }
+
+            else -> return
+        }
+    }
+
+    private fun doSearchOnline(str: String, str2: String?) {
+        var str2: String? = str2
+        if (!NetUtil.isNetworkConnected(getContext())) {
+            ToastUtil.showToast(R.string.network_unavailable)
+            return
+        }
+        showLoadingDialog(getString(R.string.waitting))
+        if (TextUtils.isEmpty(str2)) {
+            str2 = "0"
+        }
+        addDisposable(
+            RetrofitManager.getInstance().createApi<Apis>(Apis::class.java)
+                .getToothByCode(
+                    TUitls.codeFindToothParam(
+                        str,
+                        getArguments()!!.getInt("keyID"),
+                        GetUUID.getUUID(),
+                        SPUtils.getString("series"),
+                        str2
+                    )
+                ).map { codeFindToothRes: CodeFindToothRes ->
+                    if (TextUtils.equals(codeFindToothRes.code, "0")) {
+                        val arrayList = ArrayList<BittingCode>()
+                        val data: List<CodeFindToothRes.DataBean> = codeFindToothRes.data
+                        for (dataBean: CodeFindToothRes.DataBean in data) {
+                            val bittingCode = BittingCode()
+                            bittingCode.bitting = dataBean.bitting
+                            bittingCode.isn = dataBean.isn
+                            arrayList.add(bittingCode)
+                        }
+                        return@map arrayList
+                        throw Exception(this.getString(R.string.no_data_was_found))
+                    }
+                    throw Exception(codeFindToothRes.msg)
+                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doFinally {
+                    this.dismissLoadingDialog()
+                }.subscribe({ list ->
+                    if (list.size == 0) {
+                        ToastUtil.showToast(R.string.no_data_was_found)
+                    }
+                    adapter!!.setNewData(list)
+                }, { th -> ToastUtil.showToast(th.message) }, { dismissLoadingDialog() }))
+    }
+
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val bittingCode: BittingCode = baseQuickAdapter.data[i] as BittingCode? ?: return
+        val charArray: CharArray = bittingCode.bitting.toCharArray()
+        var str = ""
+        for (i2 in charArray.indices) {
+            if (i2 == charArray.size - 1) {
+                str = str + charArray[i2] + ";"
+            } else if ("-".contains(charArray[i2].toString())) {
+                str = str.substring(0, str.lastIndexOf(",")) + ";"
             } else {
-                str = str + charArray[i2] + ",";
+                str = str + charArray[i2] + ","
             }
         }
-        EventBus.getDefault().post(new EventCenter(2, new InputFinishBean(false, str)));
-        onBack();
+        EventBus.getDefault().post(EventCenter<Any?>(2, InputFinishBean(false, str)))
+        onBack()
     }
 
-    @Override // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return getString(R.string.code);
+    // com.kkkcut.e20j.p005ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return getString(R.string.code)
+    }
+
+    companion object {
+        val ISN: String = "isn"
+        val KEY_ID: String = "keyID"
+        val SERIES: String = "series"
+        fun newInstance(i: Int, str: String?, str2: String?): CodeFindToothFragment {
+            val codeFindToothFragment: CodeFindToothFragment = CodeFindToothFragment()
+            val bundle: Bundle = Bundle()
+            bundle.putInt("keyID", i)
+            bundle.putString("series", str)
+            bundle.putString(ISN, str2)
+            codeFindToothFragment.setArguments(bundle)
+            return codeFindToothFragment
+        }
     }
 }

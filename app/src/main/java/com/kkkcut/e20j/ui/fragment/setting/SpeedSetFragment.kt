@@ -1,106 +1,107 @@
-package com.kkkcut.e20j.ui.fragment.setting;
+package com.kkkcut.e20j.ui.fragment.setting
 
-import android.os.Bundle;
-import android.widget.LinearLayout;
-
-import com.cutting.machine.MachineInfo;
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.base.BaseFFragment;
-import com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar;
-import com.kkkcut.e20j.us.R;
+import android.os.Bundle
+import android.widget.LinearLayout
+import com.cutting.machine.MachineInfo
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.base.BaseFFragment
+import com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar
+import com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
+import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
-public class SpeedSetFragment extends BaseFFragment {
-    public static final String TAG = "SpeedSetFragment";
+class SpeedSetFragment() : BaseFFragment() {
+    var llDimple: LinearLayout? = null
 
-    LinearLayout llDimple;
+    var llSingleStandard: LinearLayout? = null
 
-    LinearLayout llSingleStandard;
+    var llTibbe: LinearLayout? = null
 
-    LinearLayout llTibbe;
+    var llTubular: LinearLayout? = null
 
-    LinearLayout llTubular;
+    var seekbarAngleKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarAngleKey;
+    var seekbarDimpleKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarDimpleKey;
+    var seekbarDoubleInsideKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarDoubleInsideKey;
+    var seekbarDoubleKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarDoubleKey;
+    var seekbarDoubleOutsideKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarDoubleOutsideKey;
+    var seekbarSingleInsideKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarSingleInsideKey;
+    var seekbarSingleKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarSingleKey;
+    var seekbarSingleOutsideKey: BubbleSeekBar? = null
 
-    BubbleSeekBar seekbarSingleOutsideKey;
+    var seekbarTubularKey: BubbleSeekBar? = null
+    private val defaultSpeed: Int = 15
+    private val defaultDimpleSpeed: Int = 3
 
-    BubbleSeekBar seekbarTubularKey;
-    private int defaultSpeed = 15;
-    private int defaultDimpleSpeed = 3;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_speed_set;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_speed_set
     }
 
-    public static SpeedSetFragment newInstance() {
-        Bundle bundle = new Bundle();
-        SpeedSetFragment speedSetFragment = new SpeedSetFragment();
-        speedSetFragment.setArguments(bundle);
-        return speedSetFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        this.seekbarSingleKey.setProgress(SPUtils.getInt("speed1", this.defaultSpeed));
-        this.seekbarSingleKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(1));
-        this.seekbarDoubleKey.setProgress(SPUtils.getInt("speed0", this.defaultSpeed));
-        this.seekbarDoubleKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(0));
-        int i = SPUtils.getInt("speed5", this.defaultSpeed);
-        this.seekbarSingleInsideKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(5));
-        this.seekbarSingleInsideKey.setProgress(i);
-        this.seekbarSingleOutsideKey.setProgress(SPUtils.getInt("speed3", this.defaultSpeed));
-        this.seekbarSingleOutsideKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(3));
-        this.seekbarDoubleInsideKey.setProgress(SPUtils.getInt("speed2", this.defaultSpeed));
-        this.seekbarDoubleInsideKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(2));
-        this.seekbarDoubleOutsideKey.setProgress(SPUtils.getInt("speed4", this.defaultSpeed));
-        this.seekbarDoubleOutsideKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(4));
-        this.seekbarAngleKey.setProgress(SPUtils.getInt("speed7", this.defaultSpeed));
-        this.seekbarAngleKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(7));
-        this.seekbarDimpleKey.setProgress(SPUtils.getInt("speed6", this.defaultDimpleSpeed));
-        this.seekbarDimpleKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(6));
-        this.seekbarTubularKey.setProgress(SPUtils.getInt("speed8", this.defaultSpeed));
-        this.seekbarTubularKey.setOnProgressChangedListener(new MyOnSeekBarChangeListener(8));
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        seekbarSingleKey!!.setProgress(SPUtils.getInt("speed1", this.defaultSpeed).toFloat())
+        seekbarSingleKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(1))
+        seekbarDoubleKey!!.setProgress(SPUtils.getInt("speed0", this.defaultSpeed).toFloat())
+        seekbarDoubleKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(0))
+        val i: Int = SPUtils.getInt("speed5", this.defaultSpeed)
+        seekbarSingleInsideKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(5))
+        seekbarSingleInsideKey!!.setProgress(i.toFloat())
+        seekbarSingleOutsideKey!!.setProgress(SPUtils.getInt("speed3", this.defaultSpeed).toFloat())
+        seekbarSingleOutsideKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(3))
+        seekbarDoubleInsideKey!!.setProgress(SPUtils.getInt("speed2", this.defaultSpeed).toFloat())
+        seekbarDoubleInsideKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(2))
+        seekbarDoubleOutsideKey!!.setProgress(SPUtils.getInt("speed4", this.defaultSpeed).toFloat())
+        seekbarDoubleOutsideKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(4))
+        seekbarAngleKey!!.setProgress(SPUtils.getInt("speed7", this.defaultSpeed).toFloat())
+        seekbarAngleKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(7))
+        seekbarDimpleKey!!.setProgress(SPUtils.getInt("speed6", this.defaultDimpleSpeed).toFloat())
+        seekbarDimpleKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(6))
+        seekbarTubularKey!!.setProgress(SPUtils.getInt("speed8", this.defaultSpeed).toFloat())
+        seekbarTubularKey!!.setOnProgressChangedListener(MyOnSeekBarChangeListener(8))
         if (MachineInfo.isChineseMachine()) {
-            this.llSingleStandard.setVisibility(8);
-            this.llDimple.setVisibility(8);
-            this.llTubular.setVisibility(8);
+            llSingleStandard!!.setVisibility(8)
+            llDimple!!.setVisibility(8)
+            llTubular!!.setVisibility(8)
         }
     }
 
     /* loaded from: classes.dex */
-    private static class MyOnSeekBarChangeListener implements BubbleSeekBar.OnProgressChangedListener {
-        private int keyType;
-
-        @Override // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
-        public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int i, float f, boolean z) {
+    private class MyOnSeekBarChangeListener(private val keyType: Int) : OnProgressChangedListener {
+        // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
+        override fun getProgressOnFinally(
+            bubbleSeekBar: BubbleSeekBar,
+            i: Int,
+            f: Float,
+            z: Boolean
+        ) {
         }
 
-        @Override // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
-        public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int i, float f, boolean z) {
+        // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
+        override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar, i: Int, f: Float, z: Boolean) {
         }
 
-        public MyOnSeekBarChangeListener(int i) {
-            this.keyType = i;
+        // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
+        override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar, i: Int, f: Float) {
+            SPUtils.put(SpKeys.SPEED + this.keyType, i)
         }
+    }
 
-        @Override // com.kkkcut.e20j.customView.bubbleseekbar.BubbleSeekBar.OnProgressChangedListener
-        public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int i, float f) {
-            SPUtils.put(SpKeys.SPEED + this.keyType, i);
+    companion object {
+        val TAG: String = "SpeedSetFragment"
+
+        fun newInstance(): SpeedSetFragment {
+            val bundle: Bundle = Bundle()
+            val speedSetFragment: SpeedSetFragment = SpeedSetFragment()
+            speedSetFragment.setArguments(bundle)
+            return speedSetFragment
         }
     }
 }

@@ -1,513 +1,575 @@
-package com.kkkcut.e20j.ui.fragment.duplicatekey.dimple;
+package com.kkkcut.e20j.ui.fragment.duplicatekey.dimple
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.dialog.RemindDialog;
-import com.kkkcut.e20j.ui.dialog.WarningDialog;
-import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.utils.SpecificParamUtils;
-import com.cutting.machine.ToolSizeManager;
-import com.cutting.machine.bean.ClampBean;
-import com.cutting.machine.bean.KeyInfo;
-import com.cutting.machine.error.ErrorCode;
-import org.greenrobot.eventbus.EventBus;
+import android.app.Activity
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
+import com.cutting.machine.ToolSizeManager
+import com.cutting.machine.bean.KeyInfo
+import com.cutting.machine.error.ErrorCode
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.ui.dialog.RemindDialog
+import com.kkkcut.e20j.ui.dialog.WarningDialog
+import com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.utils.SpecificParamUtils
+import org.greenrobot.eventbus.EventBus
 
 /* loaded from: classes.dex */
-public class DimpleDuplicateCutDialog extends BottomInDialog {
-    private static final String TAG = "CutDialog";
+class DimpleDuplicateCutDialog(activity: Activity?, private val ki: KeyInfo) :
+    BottomInDialog(activity) {
+    var bt15mm: Button? = null
 
-    Button bt15mm;
+    var bt20mm: Button? = null
 
-    Button bt20mm;
+    var bt25mm: Button? = null
 
-    Button bt25mm;
+    var cbFast: CheckBox? = null
 
-    CheckBox cbFast;
+    var cbPlasticKey: CheckBox? = null
+    private var cutDepth = 0
+    private var cutSpeed = 0
+    private var cutter_size = 0
 
-    CheckBox cbPlasticKey;
-    private int cutDepth;
-    private int cutSpeed;
-    private int cutter_size;
+    var ivClamp: ImageView? = null
 
-    ImageView ivClamp;
+    var ivCutter: ImageView? = null
 
-    ImageView ivCutter;
+    var ivDepth: ImageView? = null
 
-    ImageView ivDepth;
-    private KeyInfo ki;
+    var llCutDepth: LinearLayout? = null
 
-    LinearLayout llCutDepth;
+    var llCutSpeed: LinearLayout? = null
 
-    LinearLayout llCutSpeed;
+    var llCutterSize: LinearLayout? = null
 
-    LinearLayout llCutterSize;
+    var llPlasticKey: LinearLayout? = null
 
-    LinearLayout llPlasticKey;
+    var rbLayer1: RadioButton? = null
 
-    RadioButton rbLayer1;
+    var rbLayer2: RadioButton? = null
 
-    RadioButton rbLayer2;
+    var rbLayer3: RadioButton? = null
 
-    RadioButton rbLayer3;
+    var rbShapeGentle: RadioButton? = null
 
-    RadioButton rbShapeGentle;
+    var rbShapeJagged: RadioButton? = null
 
-    RadioButton rbShapeJagged;
+    var rgCutShape: RadioGroup? = null
 
-    RadioGroup rgCutShape;
+    var rgLayerCut: RadioGroup? = null
 
-    RadioGroup rgLayerCut;
+    var tvCutDepth: TextView? = null
 
-    TextView tvCutDepth;
+    var tvCutShape: TextView? = null
 
-    TextView tvCutShape;
+    var tvCutSpeed: TextView? = null
 
-    TextView tvCutSpeed;
+    var tvCutterSize: TextView? = null
 
-    TextView tvCutterSize;
+    var tvCutterSizeRemind: TextView? = null
 
-    TextView tvCutterSizeRemind;
+    var tvDepthValue: TextView? = null
 
-    TextView tvDepthValue;
+    var tvLayerCut: TextView? = null
 
-    TextView tvLayerCut;
+    var tvSpeedValue: TextView? = null
 
-    TextView tvSpeedValue;
-
-    @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
-    public int getContentLayoutID() {
-        return R.layout.dialog_cut;
+    // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+    override fun getContentLayoutID(): Int {
+        return R.layout.dialog_cut
     }
 
-    public DimpleDuplicateCutDialog(Activity activity, KeyInfo keyInfo) {
-        super(activity);
-        this.ki = keyInfo;
+    // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
+    override fun initView() {
+        initClamp()
+        initCutter()
+        initCutDepth()
+        initLayerCut()
+        initCutShape()
+        initCutSpeed()
+        initPlasticKey()
+        initFastMode()
     }
 
-    @Override // com.kkkcut.e20j.ui.dialog.base.BottomInDialog
-    public void initView() {
-        initClamp();
-        initCutter();
-        initCutDepth();
-        initLayerCut();
-        initCutShape();
-        initCutSpeed();
-        initPlasticKey();
-        initFastMode();
-    }
-
-    private void initFastMode() {
-        if (this.ki.isQuickCut()) {
-            this.cbFast.setChecked(true);
+    private fun initFastMode() {
+        if (ki.isQuickCut) {
+            cbFast!!.isChecked = true
         }
     }
 
-    private void initCutSpeed() {
-        int i = SPUtils.getInt(SpKeys.SPEED + this.ki.getType(), this.ki.getType() == 6 ? 3 : 15);
-        this.cutSpeed = i;
-        this.tvSpeedValue.setText(String.valueOf(i));
+    private fun initCutSpeed() {
+        val i = SPUtils.getInt(SpKeys.SPEED + ki.type, if (ki.type == 6) 3 else 15)
+        this.cutSpeed = i
+        tvSpeedValue!!.text = i.toString()
     }
 
-    private void initPlasticKey() {
-        if (this.ki.getAlign() == 0 && this.ki.getLength() == 0) {
-            this.llPlasticKey.setVisibility(8);
-            return;
+    private fun initPlasticKey() {
+        if (ki.align == 0 && ki.length == 0) {
+            llPlasticKey!!.visibility = 8
+            return
         }
-        if (this.ki.getType() == 5 || this.ki.getType() == 3 || this.ki.getType() == 2 || this.ki.getType() == 4) {
-            this.llPlasticKey.setVisibility(0);
-            if (this.ki.isPlasticKey()) {
-                this.cbPlasticKey.performClick();
-                return;
+        if ((ki.type == 5) || (ki.type == 3) || (ki.type == 2) || (ki.type == 4)) {
+            llPlasticKey!!.visibility = 0
+            if (ki.isPlasticKey) {
+                cbPlasticKey!!.performClick()
+                return
             }
-            return;
+            return
         }
-        this.llPlasticKey.setVisibility(8);
+        llPlasticKey!!.visibility = 8
     }
 
-    private void initLayerCut() {
-        if (this.ki.getType() == 5 || this.ki.getType() == 2) {
-            this.tvLayerCut.setVisibility(0);
-            this.rgLayerCut.setVisibility(0);
-            int i = SPUtils.getInt(SpKeys.LAYERCUT, 3);
+    private fun initLayerCut() {
+        if (ki.type == 5 || ki.type == 2) {
+            tvLayerCut!!.visibility = 0
+            rgLayerCut!!.visibility = 0
+            val i = SPUtils.getInt(SpKeys.LAYERCUT, 3)
             if (i == 1) {
-                this.rbLayer1.setChecked(true);
-                return;
+                rbLayer1!!.isChecked = true
+                return
             } else if (i == 2) {
-                this.rbLayer2.setChecked(true);
-                return;
+                rbLayer2!!.isChecked = true
+                return
             } else {
                 if (i != 3) {
-                    return;
+                    return
                 }
-                this.rbLayer3.setChecked(true);
-                return;
+                rbLayer3!!.isChecked = true
+                return
             }
         }
-        this.tvLayerCut.setVisibility(8);
-        this.rgLayerCut.setVisibility(8);
+        tvLayerCut!!.visibility = 8
+        rgLayerCut!!.visibility = 8
     }
 
-    private void initCutDepth() {
-        this.cutDepth = this.ki.getCutDepth();
-        if (this.ki.getType() == 5 || this.ki.getType() == 3 || this.ki.getType() == 4 || this.ki.getType() == 2) {
-            this.llCutDepth.setVisibility(0);
-            this.tvCutDepth.setVisibility(0);
-            if (this.ki.getCutDepth() == 0) {
-                this.cutDepth = 110;
+    private fun initCutDepth() {
+        this.cutDepth = ki.cutDepth
+        if ((ki.type == 5) || (ki.type == 3) || (ki.type == 4) || (ki.type == 2)) {
+            llCutDepth!!.visibility = 0
+            tvCutDepth!!.visibility = 0
+            if (ki.cutDepth == 0) {
+                this.cutDepth = 110
             } else {
-                this.cutDepth = this.ki.getCutDepth();
+                this.cutDepth = ki.cutDepth
             }
-            this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
-            return;
+            tvDepthValue!!.text = (this.cutDepth / 100.0f).toString() + "mm"
+            return
         }
-        this.llCutDepth.setVisibility(8);
-        this.tvCutDepth.setVisibility(8);
+        llCutDepth!!.visibility = 8
+        tvCutDepth!!.visibility = 8
     }
 
-    private void initCutShape() {
-        if (this.ki.getType() == 1 && this.ki.getCutDepth() == 0) {
-            this.tvCutShape.setVisibility(0);
-            this.rgCutShape.setVisibility(0);
-            int i = SPUtils.getInt(SpKeys.SINGLEKEY_CUT_SHAPE, 1);
+    private fun initCutShape() {
+        if (ki.type == 1 && ki.cutDepth == 0) {
+            tvCutShape!!.visibility = 0
+            rgCutShape!!.visibility = 0
+            val i = SPUtils.getInt(SpKeys.SINGLEKEY_CUT_SHAPE, 1)
             if (i == 1) {
-                this.rbShapeGentle.setChecked(true);
-                return;
+                rbShapeGentle!!.isChecked = true
+                return
             } else {
                 if (i != 2) {
-                    return;
+                    return
                 }
-                this.rbShapeJagged.setChecked(true);
-                return;
+                rbShapeJagged!!.isChecked = true
+                return
             }
         }
-        this.tvCutShape.setVisibility(8);
-        this.rgCutShape.setVisibility(8);
+        tvCutShape!!.visibility = 8
+        rgCutShape!!.visibility = 8
     }
 
-    private void initCutter() {
-        if (this.ki.getType() == 6) {
-            if (this.ki.getSpaceWidthStr().contains("-")) {
-                this.ivCutter.setImageResource(R.drawable.cutter_dimple_2);
+    private fun initCutter() {
+        if (ki.type == 6) {
+            if (ki.spaceWidthStr.contains("-")) {
+                ivCutter!!.setImageResource(R.drawable.cutter_dimple_2)
             } else {
-                this.ivCutter.setImageResource(R.drawable.cutter_dimple_1);
+                ivCutter!!.setImageResource(R.drawable.cutter_dimple_1)
             }
-            this.llCutterSize.setVisibility(8);
-            this.bt15mm.setVisibility(8);
-            this.bt20mm.setVisibility(8);
-            this.bt25mm.setVisibility(8);
-            ToolSizeManager.setCutterSize(ToolSizeManager.DimpleCutterSize);
+            llCutterSize!!.visibility = 8
+            bt15mm!!.visibility = 8
+            bt20mm!!.visibility = 8
+            bt25mm!!.visibility = 8
+            ToolSizeManager.setCutterSize(ToolSizeManager.DimpleCutterSize)
         } else {
-            this.ivCutter.setImageResource(R.drawable.cutter_normal);
+            ivCutter!!.setImageResource(R.drawable.cutter_normal)
         }
-        int cutterSize = ToolSizeManager.getCutterSize();
-        Log.i(TAG, "initCutter: " + cutterSize);
-        String param = SpecificParamUtils.getParam(this.ki.getType_specific_info(), "cutter");
+        val cutterSize = ToolSizeManager.getCutterSize()
+        Log.i(TAG, "initCutter: $cutterSize")
+        var param = SpecificParamUtils.getParam(ki.type_specific_info, "cutter")
         if (!TextUtils.isEmpty(param)) {
             if (param.contains(",")) {
-                String[] split = param.split(",");
-                if (split.length > 0) {
-                    param = split[1];
+                val split = param.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                if (split.size > 0) {
+                    param = split[1]
                 }
             }
-            this.tvCutterSizeRemind.setVisibility(0);
-            this.tvCutterSizeRemind.setText(String.format(getActivity().getResources().getString(R.string.please_use_smm_milling_cutter), param));
+            tvCutterSizeRemind!!.visibility = 0
+            tvCutterSizeRemind!!.text = String.format(
+                activity.resources.getString(R.string.please_use_smm_milling_cutter),
+                param
+            )
         }
         if (cutterSize > 0) {
-            this.cutter_size = cutterSize;
-        } else if (this.ki.getType() == 5 || this.ki.getType() == 2) {
-            if (this.ki.getGroove() != 0 && this.ki.getGroove() < 200) {
-                this.cutter_size = (this.ki.getGroove() / 10) * 10;
+            this.cutter_size = cutterSize
+        } else if (ki.type == 5 || ki.type == 2) {
+            if (ki.groove != 0 && ki.groove < 200) {
+                this.cutter_size = (ki.groove / 10) * 10
             } else {
-                this.cutter_size = 200;
+                this.cutter_size = 200
             }
-        } else if (this.ki.getType() == 6) {
-            this.cutter_size = 100;
-        } else if (this.ki.getType() == 0) {
-            this.cutter_size = SPUtils.getInt(SpKeys.DOUBLE_KEY_CUTTER, 200);
+        } else if (ki.type == 6) {
+            this.cutter_size = 100
+        } else if (ki.type == 0) {
+            this.cutter_size = SPUtils.getInt(SpKeys.DOUBLE_KEY_CUTTER, 200)
         } else {
-            this.cutter_size = 200;
+            this.cutter_size = 200
         }
-        this.tvCutterSize.setText(String.format("%.1fmm", Float.valueOf(this.cutter_size / 100.0f)));
+        tvCutterSize!!.text =
+            String.format("%.1fmm", this.cutter_size / 100.0f)
     }
 
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bt_1_5mm /* 2131361901 */:
-                this.cutter_size = 150;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_2_0mm /* 2131361902 */:
-                this.cutter_size = 200;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_2_5mm /* 2131361903 */:
-                this.cutter_size = 250;
-                this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                return;
-            case R.id.bt_cancle /* 2131361909 */:
-                dismiss();
-                return;
-            case R.id.bt_cut /* 2131361921 */:
-                if (this.ki.getType() == 6) {
-                    if (this.ki.getSpaceWidthStr().contains("-")) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("cutDepth", this.cutDepth);
-                        bundle.putInt("cutterSize", this.cutter_size);
-                        bundle.putBoolean("plastic_key", this.cbPlasticKey.isChecked());
-                        bundle.putBoolean("quick_cut", this.cbFast.isChecked());
-                        EventBus.getDefault().post(new EventCenter(1, bundle));
-                        return;
+    fun onViewClicked(view: View) {
+        when (view.id) {
+            R.id.bt_1_5mm -> {
+                this.cutter_size = 150
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_2_0mm -> {
+                this.cutter_size = 200
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_2_5mm -> {
+                this.cutter_size = 250
+                tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.bt_cancle -> {
+                dismiss()
+                return
+            }
+
+            R.id.bt_cut -> {
+                if (ki.type == 6) {
+                    if (ki.spaceWidthStr.contains("-")) {
+                        val bundle = Bundle()
+                        bundle.putInt("cutDepth", this.cutDepth)
+                        bundle.putInt("cutterSize", this.cutter_size)
+                        bundle.putBoolean("plastic_key", cbPlasticKey!!.isChecked)
+                        bundle.putBoolean("quick_cut", cbFast!!.isChecked)
+                        EventBus.getDefault().post(EventCenter<Any?>(1, bundle))
+                        return
                     }
-                    RemindDialog remindDialog = new RemindDialog(getContext());
-                    remindDialog.setRemindImg(R.drawable.remind_cutter_dimple_1);
-                    remindDialog.setCancleBtnVisibility(false);
-                    remindDialog.setRemindMsg(getContext().getString(R.string.please_install_specified_milling_cutter));
-                    remindDialog.setDialogBtnCallback(new RemindDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.1
-                        @Override // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
-                        public void onDialogButClick(boolean z) {
-                            if (z) {
-                                Bundle bundle2 = new Bundle();
-                                bundle2.putInt("cutDepth", DimpleDuplicateCutDialog.this.cutDepth);
-                                bundle2.putInt("cutterSize", DimpleDuplicateCutDialog.this.cutter_size);
-                                bundle2.putBoolean("plastic_key", DimpleDuplicateCutDialog.this.cbPlasticKey.isChecked());
-                                bundle2.putBoolean("quick_cut", DimpleDuplicateCutDialog.this.cbFast.isChecked());
-                                EventBus.getDefault().post(new EventCenter(1, bundle2));
-                            }
-                        }
-                    });
-                    remindDialog.show();
-                    return;
-                }
-                WarningDialog warningDialog = new WarningDialog(getContext());
-                warningDialog.show();
-                warningDialog.setRemind(getContext().getString(R.string.please_use_specify_cutter, new Object[]{(this.cutter_size / 100.0f) + "mm"}));
-                warningDialog.setDialogBtnCallback(new WarningDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.2
-                    @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
-                    public void onDialogButClick(boolean z) {
+                    val remindDialog = RemindDialog(context)
+                    remindDialog.setRemindImg(R.drawable.remind_cutter_dimple_1)
+                    remindDialog.setCancleBtnVisibility(false)
+                    remindDialog.setRemindMsg(context.getString(R.string.please_install_specified_milling_cutter))
+                    remindDialog.setDialogBtnCallback(RemindDialog.DialogBtnCallBack { z ->
+
+                        // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.1
+                        // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
                         if (z) {
-                            Bundle bundle2 = new Bundle();
-                            bundle2.putInt("cutDepth", DimpleDuplicateCutDialog.this.cutDepth);
-                            bundle2.putInt("cutterSize", DimpleDuplicateCutDialog.this.cutter_size);
-                            bundle2.putBoolean("plastic_key", DimpleDuplicateCutDialog.this.cbPlasticKey.isChecked());
-                            bundle2.putBoolean("quick_cut", DimpleDuplicateCutDialog.this.cbFast.isChecked());
-                            EventBus.getDefault().post(new EventCenter(1, bundle2));
-                            DimpleDuplicateCutDialog.this.dismiss();
+                            val bundle2 = Bundle()
+                            bundle2.putInt("cutDepth", this@DimpleDuplicateCutDialog.cutDepth)
+                            bundle2.putInt("cutterSize", this@DimpleDuplicateCutDialog.cutter_size)
+                            bundle2.putBoolean(
+                                "plastic_key",
+                                cbPlasticKey!!.isChecked
+                            )
+                            bundle2.putBoolean(
+                                "quick_cut",
+                                cbFast!!.isChecked
+                            )
+                            EventBus.getDefault().post(EventCenter<Any?>(1, bundle2))
+                        }
+                    })
+                    remindDialog.show()
+                    return
+                }
+                val warningDialog = WarningDialog(context)
+                warningDialog.show()
+                warningDialog.setRemind(
+                    context.getString(
+                        R.string.please_use_specify_cutter, *arrayOf<Any>(
+                            (this.cutter_size / 100.0f).toString() + "mm"
+                        )
+                    )
+                )
+                warningDialog.setDialogBtnCallback(object : WarningDialog.DialogBtnCallBack {
+                    // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.2
+                    // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                    override fun onDialogButClick(z: Boolean) {
+                        if (z) {
+                            val bundle2 = Bundle()
+                            bundle2.putInt("cutDepth", this@DimpleDuplicateCutDialog.cutDepth)
+                            bundle2.putInt("cutterSize", this@DimpleDuplicateCutDialog.cutter_size)
+                            bundle2.putBoolean(
+                                "plastic_key",
+                                cbPlasticKey!!.isChecked
+                            )
+                            bundle2.putBoolean(
+                                "quick_cut",
+                                cbFast!!.isChecked
+                            )
+                            EventBus.getDefault().post(EventCenter<Any?>(1, bundle2))
+                            this@DimpleDuplicateCutDialog.dismiss()
                         }
                     }
-                });
-                return;
-            case R.id.cb_fast /* 2131362024 */:
-                if (this.cbFast.isChecked()) {
-                    WarningDialog warningDialog2 = new WarningDialog(getContext());
-                    warningDialog2.setRemind(getContext().getString(R.string.quick_cut_remind));
-                    warningDialog2.setCancelText(getContext().getString(R.string.cancel));
-                    warningDialog2.setConfirmText(getContext().getString(R.string.continue1));
-                    warningDialog2.setDialogBtnCallback(new WarningDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.3
-                        @Override // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
-                        public void onDialogButClick(boolean z) {
+                })
+                return
+            }
+
+            R.id.cb_fast -> {
+                if (cbFast!!.isChecked) {
+                    val warningDialog2 = WarningDialog(context)
+                    warningDialog2.setRemind(context.getString(R.string.quick_cut_remind))
+                    warningDialog2.setCancelText(context.getString(R.string.cancel))
+                    warningDialog2.setConfirmText(context.getString(R.string.continue1))
+                    warningDialog2.setDialogBtnCallback(object : WarningDialog.DialogBtnCallBack {
+                        // from class: com.kkkcut.e20j.ui.fragment.duplicatekey.dimple.DimpleDuplicateCutDialog.3
+                        // com.kkkcut.e20j.ui.dialog.WarningDialog.DialogBtnCallBack
+                        override fun onDialogButClick(z: Boolean) {
                             if (z) {
-                                return;
+                                return
                             }
-                            DimpleDuplicateCutDialog.this.cbFast.setChecked(false);
+                            cbFast!!.isChecked = false
                         }
-                    });
-                    warningDialog2.show();
-                    return;
+                    })
+                    warningDialog2.show()
+                    return
                 }
-                return;
-            case R.id.iv_close /* 2131362287 */:
-                dismiss();
-                return;
-            case R.id.iv_depth_add /* 2131362293 */:
-                this.cutDepth += 5;
-                this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
-                return;
-            case R.id.iv_depth_reduce /* 2131362295 */:
-                int i = this.cutDepth;
+                return
+            }
+
+            R.id.iv_close -> {
+                dismiss()
+                return
+            }
+
+            R.id.iv_depth_add -> {
+                this.cutDepth += 5
+                tvDepthValue!!.text = (this.cutDepth / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.iv_depth_reduce -> {
+                val i = this.cutDepth
                 if (i > 5) {
-                    this.cutDepth = i - 5;
+                    this.cutDepth = i - 5
                 }
-                this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
-                return;
-            case R.id.iv_size_add /* 2131362335 */:
-                int i2 = this.cutter_size;
+                tvDepthValue!!.text = (this.cutDepth / 100.0f).toString() + "mm"
+                return
+            }
+
+            R.id.iv_size_add -> {
+                val i2 = this.cutter_size
                 if (i2 < 250) {
-                    this.cutter_size = i2 + 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i2 + 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
                 if (i2 < 500) {
-                    this.cutter_size = i2 + 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i2 + 50
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.iv_size_reduce /* 2131362336 */:
-                int i3 = this.cutter_size;
+                return
+            }
+
+            R.id.iv_size_reduce -> {
+                val i3 = this.cutter_size
                 if (i3 > 250) {
-                    this.cutter_size = i3 - 50;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i3 - 50
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
                 if (i3 > 100) {
-                    this.cutter_size = i3 - 10;
-                    this.tvCutterSize.setText((this.cutter_size / 100.0f) + "mm");
-                    return;
+                    this.cutter_size = i3 - 10
+                    tvCutterSize!!.text = (this.cutter_size / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.iv_speed_add /* 2131362345 */:
-                if (this.cutSpeed < (this.ki.getType() != 6 ? 25 : 5)) {
-                    int i4 = this.cutSpeed + 1;
-                    this.cutSpeed = i4;
-                    this.tvSpeedValue.setText(String.valueOf(i4));
-                    SPUtils.put(SpKeys.SPEED + this.ki.getType(), this.cutSpeed);
-                    return;
+                return
+            }
+
+            R.id.iv_speed_add -> {
+                if (this.cutSpeed < (if (ki.type != 6) 25 else 5)) {
+                    val i4 = this.cutSpeed + 1
+                    this.cutSpeed = i4
+                    tvSpeedValue!!.text = i4.toString()
+                    SPUtils.put(SpKeys.SPEED + ki.type, this.cutSpeed)
+                    return
                 }
-                return;
-            case R.id.iv_speed_reduce /* 2131362346 */:
-                int i5 = this.cutSpeed;
+                return
+            }
+
+            R.id.iv_speed_reduce -> {
+                val i5 = this.cutSpeed
                 if (i5 > 1) {
-                    int i6 = i5 - 1;
-                    this.cutSpeed = i6;
-                    this.tvSpeedValue.setText(String.valueOf(i6));
-                    SPUtils.put(SpKeys.SPEED + this.ki.getType(), this.cutSpeed);
-                    return;
+                    val i6 = i5 - 1
+                    this.cutSpeed = i6
+                    tvSpeedValue!!.text = i6.toString()
+                    SPUtils.put(SpKeys.SPEED + ki.type, this.cutSpeed)
+                    return
                 }
-                return;
-            default:
-                return;
+                return
+            }
+
+            else -> return
         }
     }
 
-    private void initClamp() {
-        int clampImg = getClampImg(this.ki);
+    private fun initClamp() {
+        val clampImg = getClampImg(this.ki)
         if (clampImg != 0) {
-            this.ivClamp.setImageResource(clampImg);
+            ivClamp!!.setImageResource(clampImg)
         }
     }
 
-    private int getClampImg(KeyInfo keyInfo) {
-        if (keyInfo.getIcCard() == 20131 || keyInfo.getIcCard() == 1915) {
-            return R.drawable.car_clamp_remind_d_tip_20131;
+    private fun getClampImg(keyInfo: KeyInfo): Int {
+        if (keyInfo.icCard == 20131 || keyInfo.icCard == 1915) {
+            return R.drawable.car_clamp_remind_d_tip_20131
         }
-        if (keyInfo.getShoulderBlock() == 1) {
-            return R.drawable.car_clamp_remind_d_shoulder_6620131;
+        if (keyInfo.shoulderBlock == 1) {
+            return R.drawable.car_clamp_remind_d_shoulder_6620131
         }
-        ClampBean clampBean = keyInfo.getClampBean();
-        if ("S1".equals(clampBean.getClampNum())) {
-            if ("A".equals(clampBean.getClampSide())) {
-                if ("0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_a_shoulder : R.drawable.car_clamp_remind_a_tip;
+        val clampBean = keyInfo.clampBean
+        if (("S1" == clampBean.clampNum)) {
+            if (("A" == clampBean.clampSide)) {
+                if (("0" == clampBean.clampSlot)) {
+                    return if (keyInfo.align == 0) R.drawable.car_clamp_remind_a_shoulder else R.drawable.car_clamp_remind_a_tip
                 }
             } else {
-                if ("B".equals(clampBean.getClampSide())) {
-                    return "0".equals(clampBean.getClampSlot()) ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_b_shoulder : R.drawable.car_clamp_remind_b_tip : keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_b_shoulder_side : R.drawable.car_clamp_remind_b_tip_side;
+                if (("B" == clampBean.clampSide)) {
+                    return if (("0" == clampBean.clampSlot)) if (keyInfo.align == 0) R.drawable.car_clamp_remind_b_shoulder else R.drawable.car_clamp_remind_b_tip else if (keyInfo.align == 0) R.drawable.car_clamp_remind_b_shoulder_side else R.drawable.car_clamp_remind_b_tip_side
                 }
-                if ("C".equals(clampBean.getClampSide())) {
-                    if ("0".equals(clampBean.getClampSlot())) {
-                        return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_c_shoulder : Integer.parseInt(keyInfo.getSpaceStr().split(";")[0].split(",")[0]) + ErrorCode.keyCuttingError > 3000 ? R.drawable.car_clamp_remind_c_long_tip : R.drawable.car_clamp_remind_c_tip;
+                if (("C" == clampBean.clampSide)) {
+                    if (("0" == clampBean.clampSlot)) {
+                        return if (keyInfo.align == 0) R.drawable.car_clamp_remind_c_shoulder else if (keyInfo.spaceStr.split(
+                                ";".toRegex()
+                            ).dropLastWhile { it.isEmpty() }
+                                .toTypedArray()[0].split(",".toRegex())
+                                .dropLastWhile { it.isEmpty() }
+                                .toTypedArray()[0].toInt() + ErrorCode.keyCuttingError > 3000
+                        ) R.drawable.car_clamp_remind_c_long_tip else R.drawable.car_clamp_remind_c_tip
                     }
-                } else if ("D".equals(clampBean.getClampSide()) && "0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_d_shoulder : keyInfo.isNewHonda() ? R.drawable.car_clamp_remind_d_tip_honda : R.drawable.car_clamp_remind_d_tip;
+                } else if (("D" == clampBean.clampSide) && ("0" == clampBean.clampSlot)) {
+                    return if (keyInfo.align == 0) R.drawable.car_clamp_remind_d_shoulder else if (keyInfo.isNewHonda) R.drawable.car_clamp_remind_d_tip_honda else R.drawable.car_clamp_remind_d_tip
                 }
             }
         } else {
-            if ("S2".equals(clampBean.getClampNum())) {
-                return "A".equals(clampBean.getClampSide()) ? keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_remind_a_shoulder : R.drawable.singlekey_clamp_remind_a_tip : keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_remind_b_shoulder : keyInfo.isNewHonda() ? R.drawable.singlekey_clamp_remind_b_tip_honda : R.drawable.singlekey_clamp_remind_b_tip;
+            if (("S2" == clampBean.clampNum)) {
+                return if (("A" == clampBean.clampSide)) if (keyInfo.align == 0) R.drawable.singlekey_clamp_remind_a_shoulder else R.drawable.singlekey_clamp_remind_a_tip else if (keyInfo.align == 0) R.drawable.singlekey_clamp_remind_b_shoulder else if (keyInfo.isNewHonda) R.drawable.singlekey_clamp_remind_b_tip_honda else R.drawable.singlekey_clamp_remind_b_tip
             }
-            if ("S3".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return R.drawable.tubular_clamp_remind_s3_s7;
+            if (("S3" == clampBean.clampNum)) {
+                if (("A" == clampBean.clampSide)) {
+                    return R.drawable.tubular_clamp_remind_s3_s7
                 }
-            } else if ("S4".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return R.drawable.angel_key_clamp_remind;
+            } else if (("S4" == clampBean.clampNum)) {
+                if (("A" == clampBean.clampSide)) {
+                    return R.drawable.angel_key_clamp_remind
                 }
-            } else if ("S6".equals(clampBean.getClampNum())) {
-                return "A".equals(clampBean.getClampSide()) ? R.drawable.sx9_clamp_remind_a : R.drawable.sx9_clamp_remind_b;
+            } else if (("S6" == clampBean.clampNum)) {
+                return if (("A" == clampBean.clampSide)) R.drawable.sx9_clamp_remind_a else R.drawable.sx9_clamp_remind_b
             }
         }
-        return 0;
+        return 0
     }
 
-    public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
-        switch (compoundButton.getId()) {
-            case R.id.cb_plastic_key /* 2131362029 */:
-                if (z && !this.ki.isPlasticKey()) {
-                    WarningDialog warningDialog = new WarningDialog(getContext());
-                    warningDialog.show();
-                    warningDialog.setRemind(getContext().getString(R.string.risk_sticking_breaking_milling_cutter));
+    fun onCheckedChanged(compoundButton: CompoundButton, z: Boolean) {
+        when (compoundButton.id) {
+            R.id.cb_plastic_key -> {
+                if (z && !ki.isPlasticKey) {
+                    val warningDialog = WarningDialog(context)
+                    warningDialog.show()
+                    warningDialog.setRemind(context.getString(R.string.risk_sticking_breaking_milling_cutter))
                 }
-                if (this.ki.getAlign() == 1) {
+                if (ki.align == 1) {
                     if (z) {
-                        if ("B".equals(this.ki.getClampBean().getClampSide())) {
-                            this.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip_plastic);
-                            return;
+                        if (("B" == ki.clampBean.clampSide)) {
+                            ivClamp!!.setImageResource(R.drawable.car_clamp_remind_b_tip_plastic)
+                            return
                         } else {
-                            this.ivClamp.setImageResource(R.drawable.car_clamp_remind_a_tip_plastic);
-                            return;
+                            ivClamp!!.setImageResource(R.drawable.car_clamp_remind_a_tip_plastic)
+                            return
                         }
                     }
-                    this.ivClamp.setImageResource(R.drawable.car_clamp_remind_b_tip);
-                    return;
+                    ivClamp!!.setImageResource(R.drawable.car_clamp_remind_b_tip)
+                    return
                 }
-                if (this.ki.getIcCard() == 909) {
+                if (ki.icCard == 909) {
                     if (z) {
-                        this.cutDepth = 100;
+                        this.cutDepth = 100
                     } else {
-                        this.cutDepth = 115;
+                        this.cutDepth = 115
                     }
-                    this.tvDepthValue.setText((this.cutDepth / 100.0f) + "mm");
-                    return;
+                    tvDepthValue!!.text = (this.cutDepth / 100.0f).toString() + "mm"
+                    return
                 }
-                return;
-            case R.id.rb_layer_1 /* 2131362625 */:
+                return
+            }
+
+            R.id.rb_layer_1 -> {
                 if (z) {
-                    SPUtils.put(SpKeys.LAYERCUT, 1);
-                    return;
+                    SPUtils.put(SpKeys.LAYERCUT, 1)
+                    return
                 }
-                return;
-            case R.id.rb_layer_2 /* 2131362626 */:
+                return
+            }
+
+            R.id.rb_layer_2 -> {
                 if (z) {
-                    SPUtils.put(SpKeys.LAYERCUT, 2);
-                    return;
+                    SPUtils.put(SpKeys.LAYERCUT, 2)
+                    return
                 }
-                return;
-            case R.id.rb_layer_3 /* 2131362627 */:
+                return
+            }
+
+            R.id.rb_layer_3 -> {
                 if (z) {
-                    SPUtils.put(SpKeys.LAYERCUT, 3);
-                    return;
+                    SPUtils.put(SpKeys.LAYERCUT, 3)
+                    return
                 }
-                return;
-            case R.id.rb_shape_gentle /* 2131362641 */:
+                return
+            }
+
+            R.id.rb_shape_gentle -> {
                 if (z) {
-                    SPUtils.put(SpKeys.SINGLEKEY_CUT_SHAPE, 1);
-                    return;
+                    SPUtils.put(SpKeys.SINGLEKEY_CUT_SHAPE, 1)
+                    return
                 }
-                return;
-            case R.id.rb_shape_jagged /* 2131362642 */:
+                return
+            }
+
+            R.id.rb_shape_jagged -> {
                 if (z) {
-                    SPUtils.put(SpKeys.SINGLEKEY_CUT_SHAPE, 2);
-                    return;
+                    SPUtils.put(SpKeys.SINGLEKEY_CUT_SHAPE, 2)
+                    return
                 }
-                return;
-            default:
-                return;
+                return
+            }
+
+            else -> return
         }
+    }
+
+    companion object {
+        private val TAG = "CutDialog"
     }
 }

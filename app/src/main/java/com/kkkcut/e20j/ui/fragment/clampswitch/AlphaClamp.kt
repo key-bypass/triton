@@ -1,348 +1,362 @@
-package com.kkkcut.e20j.ui.fragment.clampswitch;
+package com.kkkcut.e20j.ui.fragment.clampswitch
 
-import android.text.TextUtils;
-
-import com.cutting.machine.MachineInfo;
-import com.cutting.machine.bean.ClampBean;
-import com.cutting.machine.bean.KeyInfo;
-import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.us.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.text.TextUtils
+import com.cutting.machine.MachineInfo
+import com.cutting.machine.bean.ClampBean
+import com.cutting.machine.bean.KeyInfo
+import com.kkkcut.e20j.MyApplication
+import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
-public class AlphaClamp {
-    public static List<ClampDisplayBean> getClampBeanListAlphaBeta(KeyInfo keyInfo, ClampBean clampBean) {
-        ArrayList arrayList = new ArrayList();
-        arrayList.add(getClampDisplayBean(keyInfo.getClampBean(), keyInfo));
-        String extJaw = keyInfo.getExtJaw();
-        if (!TextUtils.isEmpty(extJaw) && keyInfo.getType() != 0) {
-            for (String str : extJaw.split(",")) {
-                arrayList.add(getClampDisplayBean(getSecondClampBean(str), keyInfo));
+object AlphaClamp {
+    fun getClampBeanListAlphaBeta(keyInfo: KeyInfo, clampBean: ClampBean?): List<ClampDisplayBean> {
+        val arrayList = ArrayList<ClampDisplayBean>()
+        arrayList.add(getClampDisplayBean(keyInfo.clampBean, keyInfo))
+        val extJaw = keyInfo.extJaw
+        if (!TextUtils.isEmpty(extJaw) && keyInfo.type != 0) {
+            for (str in extJaw.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
+                arrayList.add(getClampDisplayBean(getSecondClampBean(str), keyInfo))
             }
         } else {
-            ClampBean secondClampBean = getSecondClampBean(keyInfo);
-            if (secondClampBean != null && !TextUtils.isEmpty(secondClampBean.getClampNum())) {
-                arrayList.add(getClampDisplayBean(secondClampBean, keyInfo));
+            val secondClampBean = getSecondClampBean(keyInfo)
+            if (secondClampBean != null && !TextUtils.isEmpty(secondClampBean.clampNum)) {
+                arrayList.add(getClampDisplayBean(secondClampBean, keyInfo))
             }
         }
-        if (keyInfo.getType() == 0 && keyInfo.getIcCard() != 1047 && keyInfo.getIcCard() != 852) {
-            ClampBean thirdClampBean = getThirdClampBean(keyInfo);
+        if (keyInfo.type == 0 && keyInfo.icCard != 1047 && keyInfo.icCard != 852) {
+            val thirdClampBean = getThirdClampBean(keyInfo)
             if (thirdClampBean != null) {
-                arrayList.add(getClampDisplayBean(thirdClampBean, keyInfo));
+                arrayList.add(getClampDisplayBean(thirdClampBean, keyInfo))
             }
-            ClampBean fourthClampBean = getFourthClampBean(keyInfo);
+            val fourthClampBean = getFourthClampBean(keyInfo)
             if (fourthClampBean != null) {
-                arrayList.add(getClampDisplayBean(fourthClampBean, keyInfo));
+                arrayList.add(getClampDisplayBean(fourthClampBean, keyInfo))
             }
         }
         if (clampBean != null) {
-            for (int i = 1; i < arrayList.size(); i++) {
-                ClampDisplayBean clampDisplayBean = (ClampDisplayBean) arrayList.get(i);
-                ClampBean clampBean2 = clampDisplayBean.getClampBean();
-                if (clampBean2.getClampNum().equals(clampBean.getClampNum()) && clampBean2.getClampSide().equals(clampBean.getClampSide()) && clampBean2.getClampSlot().equals(clampBean.getClampSlot())) {
-                    arrayList.set(i, (ClampDisplayBean) arrayList.get(0));
-                    arrayList.set(0, clampDisplayBean);
-                    keyInfo.setClampKeyBasicData(clampBean2);
+            for (i in 1 until arrayList.size) {
+                val clampDisplayBean = arrayList[i] as ClampDisplayBean
+                val clampBean2 = clampDisplayBean.clampBean
+                if (clampBean2!!.clampNum == clampBean.clampNum && clampBean2.clampSide == clampBean.clampSide && clampBean2.clampSlot == clampBean.clampSlot) {
+                    arrayList[i] = arrayList[0] as ClampDisplayBean
+                    arrayList[0] = clampDisplayBean
+                    keyInfo.setClampKeyBasicData(clampBean2)
                 }
             }
         }
-        return arrayList;
+        return arrayList
     }
 
-    private static ClampDisplayBean getClampDisplayBean(ClampBean clampBean, KeyInfo keyInfo) {
-        return new ClampDisplayBean(clampBean, getDrawableRes(clampBean, keyInfo));
+    private fun getClampDisplayBean(clampBean: ClampBean, keyInfo: KeyInfo): ClampDisplayBean {
+        return ClampDisplayBean(clampBean, getDrawableRes(clampBean, keyInfo))
     }
 
-    private static int getDrawableRes(ClampBean clampBean, KeyInfo keyInfo) {
-        return getDrawableResAlpha(clampBean, keyInfo);
+    private fun getDrawableRes(clampBean: ClampBean, keyInfo: KeyInfo): Int {
+        return getDrawableResAlpha(clampBean, keyInfo)
     }
 
-    public static int getDrawableRes(KeyInfo keyInfo) {
-        return getDrawableResAlpha(keyInfo.getClampBean(), keyInfo);
+    fun getDrawableRes(keyInfo: KeyInfo): Int {
+        return getDrawableResAlpha(keyInfo.clampBean, keyInfo)
     }
 
-    private static ClampBean getSecondClampBean(KeyInfo keyInfo) {
-        if (keyInfo.getIcCard() == 20131 || keyInfo.getIcCard() == 1915 || keyInfo.getShoulderBlock() == 1) {
-            return null;
+    private fun getSecondClampBean(keyInfo: KeyInfo): ClampBean? {
+        if (keyInfo.icCard == 20131 || keyInfo.icCard == 1915 || keyInfo.shoulderBlock == 1) {
+            return null
         }
-        ClampBean clampBean = keyInfo.getClampBean();
-        ClampBean clampBean2 = new ClampBean();
-        clampBean2.setClampSlot("0");
-        if (keyInfo.getType() == 3 && keyInfo.getSide() == 1 && !TextUtils.equals("1", clampBean.getClampSlot())) {
-            clampBean2.setClampNum("S1");
-            clampBean2.setClampSide("C");
-            clampBean2.setClampSlot("1");
-            return clampBean2;
+        val clampBean = keyInfo.clampBean
+        val clampBean2 = ClampBean()
+        clampBean2.clampSlot = "0"
+        if (keyInfo.type == 3 && keyInfo.side == 1 && !TextUtils.equals("1", clampBean.clampSlot)) {
+            clampBean2.clampNum = "S1"
+            clampBean2.clampSide = "C"
+            clampBean2.clampSlot = "1"
+            return clampBean2
         }
-        if ("S1".equals(clampBean.getClampNum())) {
-            clampBean2.setClampNum("S1");
-            if ("A".equals(clampBean.getClampSide())) {
-                clampBean2.setClampSide("B");
-            } else if ("B".equals(clampBean.getClampSide())) {
-                if (!"0".equals(clampBean.getClampSlot())) {
-                    return null;
+        if ("S1" == clampBean.clampNum) {
+            clampBean2.clampNum = "S1"
+            if ("A" == clampBean.clampSide) {
+                clampBean2.clampSide = "B"
+            } else if ("B" == clampBean.clampSide) {
+                if ("0" != clampBean.clampSlot) {
+                    return null
                 }
-                clampBean2.setClampSide("A");
-            } else if ("C".equals(clampBean.getClampSide())) {
-                clampBean2.setClampSide("D");
-            } else if ("D".equals(clampBean.getClampSide())) {
-                if (keyInfo.getIcCard() == 852) {
-                    clampBean2.setClampNum("S6");
-                    clampBean2.setClampSide("A");
-                } else if (keyInfo.getIcCard() == 1047) {
-                    clampBean2.setClampNum("S6");
-                    clampBean2.setClampSide("B");
+                clampBean2.clampSide = "A"
+            } else if ("C" == clampBean.clampSide) {
+                clampBean2.clampSide = "D"
+            } else if ("D" == clampBean.clampSide) {
+                if (keyInfo.icCard == 852) {
+                    clampBean2.clampNum = "S6"
+                    clampBean2.clampSide = "A"
+                } else if (keyInfo.icCard == 1047) {
+                    clampBean2.clampNum = "S6"
+                    clampBean2.clampSide = "B"
                 } else {
-                    clampBean2.setClampSide("C");
+                    clampBean2.clampSide = "C"
                 }
             }
-        } else if ("S2".equals(clampBean.getClampNum())) {
-            clampBean2.setClampNum("S2");
-            if ("A".equals(clampBean.getClampSide())) {
-                clampBean2.setClampSide("B");
+        } else if ("S2" == clampBean.clampNum) {
+            clampBean2.clampNum = "S2"
+            if ("A" == clampBean.clampSide) {
+                clampBean2.clampSide = "B"
             } else {
-                clampBean2.setClampSide("A");
+                clampBean2.clampSide = "A"
             }
         } else {
-            if ("S3".equals(clampBean.getClampNum()) || "S4".equals(clampBean.getClampNum())) {
-                return null;
+            if ("S3" == clampBean.clampNum || "S4" == clampBean.clampNum) {
+                return null
             }
-            if ("S6".equals(clampBean.getClampNum())) {
-                clampBean2.setClampNum("S1");
-                clampBean2.setClampSide("D");
-            } else if ("S10".equals(clampBean.getClampNum())) {
-                return null;
+            if ("S6" == clampBean.clampNum) {
+                clampBean2.clampNum = "S1"
+                clampBean2.clampSide = "D"
+            } else if ("S10" == clampBean.clampNum) {
+                return null
             }
         }
-        return clampBean2;
+        return clampBean2
     }
 
-    private static ClampBean getSecondClampBean(String str) {
-        ClampBean clampBean = new ClampBean();
-        clampBean.setClampSide("A");
-        clampBean.setClampSlot("0");
+    private fun getSecondClampBean(str: String): ClampBean {
+        val clampBean = ClampBean()
+        clampBean.clampSide = "A"
+        clampBean.clampSlot = "0"
         if (str.contains("S1")) {
-            clampBean.setClampNum("S1");
+            clampBean.clampNum = "S1"
             if (str.contains("A")) {
-                clampBean.setClampSide("A");
+                clampBean.clampSide = "A"
             } else if (str.contains("B")) {
-                clampBean.setClampSide("B");
+                clampBean.clampSide = "B"
                 if (str.contains("-1")) {
-                    clampBean.setClampSlot("1");
+                    clampBean.clampSlot = "1"
                 }
             } else if (str.contains("C")) {
-                clampBean.setClampSide("C");
+                clampBean.clampSide = "C"
             } else if (str.contains("D")) {
-                clampBean.setClampSide("D");
+                clampBean.clampSide = "D"
             }
         } else if (str.contains("S2")) {
-            clampBean.setClampNum("S2");
+            clampBean.clampNum = "S2"
             if (str.contains("A")) {
-                clampBean.setClampSide("A");
+                clampBean.clampSide = "A"
             } else {
-                clampBean.setClampSide("B");
+                clampBean.clampSide = "B"
             }
         } else if (str.contains("S3")) {
-            clampBean.setClampNum("S3");
+            clampBean.clampNum = "S3"
         } else if (str.contains("S4")) {
-            clampBean.setClampNum("S4");
+            clampBean.clampNum = "S4"
         } else if (str.contains("S6")) {
-            clampBean.setClampNum("S6");
+            clampBean.clampNum = "S6"
             if (str.contains("A")) {
-                clampBean.setClampSide("A");
+                clampBean.clampSide = "A"
             } else {
-                clampBean.setClampSide("B");
+                clampBean.clampSide = "B"
             }
         }
-        return clampBean;
+        return clampBean
     }
 
-    private static ClampBean getThirdClampBean(KeyInfo keyInfo) {
-        ClampBean clampBean = keyInfo.getClampBean();
-        ClampBean clampBean2 = new ClampBean();
-        clampBean2.setClampSlot("0");
-        if (!"S1".equals(clampBean.getClampNum())) {
-            return null;
+    private fun getThirdClampBean(keyInfo: KeyInfo): ClampBean? {
+        val clampBean = keyInfo.clampBean
+        val clampBean2 = ClampBean()
+        clampBean2.clampSlot = "0"
+        if ("S1" != clampBean.clampNum) {
+            return null
         }
-        if (!"D".equals(clampBean.getClampSide()) && !"C".equals(clampBean.getClampSide())) {
-            return null;
+        if ("D" != clampBean.clampSide && "C" != clampBean.clampSide) {
+            return null
         }
-        clampBean2.setClampNum("S2");
-        clampBean2.setClampSide("B");
-        return clampBean2;
+        clampBean2.clampNum = "S2"
+        clampBean2.clampSide = "B"
+        return clampBean2
     }
 
-    private static ClampBean getFourthClampBean(KeyInfo keyInfo) {
-        ClampBean clampBean = keyInfo.getClampBean();
-        ClampBean clampBean2 = new ClampBean();
-        clampBean2.setClampSlot("0");
-        if (!"S1".equals(clampBean.getClampNum())) {
-            return null;
+    private fun getFourthClampBean(keyInfo: KeyInfo): ClampBean? {
+        val clampBean = keyInfo.clampBean
+        val clampBean2 = ClampBean()
+        clampBean2.clampSlot = "0"
+        if ("S1" != clampBean.clampNum) {
+            return null
         }
-        if (!"D".equals(clampBean.getClampSide()) && !"C".equals(clampBean.getClampSide())) {
-            return null;
+        if ("D" != clampBean.clampSide && "C" != clampBean.clampSide) {
+            return null
         }
-        clampBean2.setClampNum("S2");
-        clampBean2.setClampSide("A");
-        return clampBean2;
+        clampBean2.clampNum = "S2"
+        clampBean2.clampSide = "A"
+        return clampBean2
     }
 
     /* JADX INFO: Access modifiers changed from: protected */
-    public static int getDrawableResAlpha(ClampBean clampBean, KeyInfo keyInfo) {
-        if (keyInfo.getIcCard() == 5590) {
-            return R.drawable.sag_clamp;
+    fun getDrawableResAlpha(clampBean: ClampBean, keyInfo: KeyInfo): Int {
+        if (keyInfo.icCard == 5590) {
+            return R.drawable.sag_clamp
         }
-        if (clampBean.getClampNum().equals("S1")) {
-            if (clampBean.getClampSide().equals("A")) {
-                return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_a_shoulder : R.drawable.car_clamp_a_tip;
+        if (clampBean.clampNum == "S1") {
+            if (clampBean.clampSide == "A") {
+                return if (keyInfo.align == 0) R.drawable.car_clamp_a_shoulder else R.drawable.car_clamp_a_tip
             }
-            if (clampBean.getClampSide().equals("B")) {
-                return clampBean.getClampSlot().equals("1") ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_b_shoulder_side : R.drawable.car_clamp_b_tip_side : keyInfo.getAlign() == 0 ? R.drawable.car_clamp_b_shoulder : (keyInfo.getIcCard() == 1019 || keyInfo.getIcCard() == 1369 || keyInfo.getIcCard() == 1443) ? R.drawable.car_clamp_b_tip_hu64 : R.drawable.car_clamp_b_tip;
+            if (clampBean.clampSide == "B") {
+                return if (clampBean.clampSlot == "1") if (keyInfo.align == 0) R.drawable.car_clamp_b_shoulder_side else R.drawable.car_clamp_b_tip_side else if (keyInfo.align == 0) R.drawable.car_clamp_b_shoulder else if ((keyInfo.icCard == 1019 || keyInfo.icCard == 1369 || keyInfo.icCard == 1443)) R.drawable.car_clamp_b_tip_hu64 else R.drawable.car_clamp_b_tip
             }
-            if (clampBean.getClampSide().equals("C")) {
-                return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_c_shoulder : TextUtils.equals(clampBean.getClampSlot(), "1") ? R.drawable.car_clamp_c_down_tip : Integer.parseInt(keyInfo.getSpaceStr().split(";")[0].split(",")[0]) + 300 > 2650 ? R.drawable.car_clamp_c_long_tip : R.drawable.car_clamp_c_tip;
+            if (clampBean.clampSide == "C") {
+                return if (keyInfo.align == 0) R.drawable.car_clamp_c_shoulder else if (TextUtils.equals(
+                        clampBean.clampSlot,
+                        "1"
+                    )
+                ) R.drawable.car_clamp_c_down_tip else if (keyInfo.spaceStr.split(";".toRegex())
+                        .dropLastWhile { it.isEmpty() }
+                        .toTypedArray()[0].split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                        .toTypedArray()[0].toInt() + 300 > 2650
+                ) R.drawable.car_clamp_c_long_tip else R.drawable.car_clamp_c_tip
             }
-            if (clampBean.getClampSide().equals("D")) {
-                return keyInfo.getAlign() == 0 ? keyInfo.getShoulderBlock() == 1 ? R.drawable.car_clamp_d_shoulder_6620131 : R.drawable.car_clamp_d_shoulder : (keyInfo.getIcCard() == 20131 || keyInfo.getIcCard() == 1915) ? R.drawable.car_clamp_d_tip_20131 : keyInfo.isNewHonda() ? R.drawable.car_clamp_d_tip_honda : R.drawable.car_clamp_d_tip;
+            if (clampBean.clampSide == "D") {
+                return if (keyInfo.align == 0) if (keyInfo.shoulderBlock == 1) R.drawable.car_clamp_d_shoulder_6620131 else R.drawable.car_clamp_d_shoulder else if ((keyInfo.icCard == 20131 || keyInfo.icCard == 1915)) R.drawable.car_clamp_d_tip_20131 else if (keyInfo.isNewHonda) R.drawable.car_clamp_d_tip_honda else R.drawable.car_clamp_d_tip
             }
         } else {
-            if (clampBean.getClampNum().equals("S2")) {
-                return clampBean.getClampSide().equals("A") ? keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_a_shoulder : keyInfo.getType() == 0 ? R.drawable.singlekey_clamp_a_tip2 : R.drawable.singlekey_clamp_a_tip : keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_b_shoulder : keyInfo.isNewHonda() ? R.drawable.singlekey_clamp_b_tip_honda : keyInfo.getType() == 0 ? R.drawable.singlekey_clamp_b_tip2 : R.drawable.singlekey_clamp_b_tip;
+            if (clampBean.clampNum == "S2") {
+                return if (clampBean.clampSide == "A") if (keyInfo.align == 0) R.drawable.singlekey_clamp_a_shoulder else if (keyInfo.type == 0) R.drawable.singlekey_clamp_a_tip2 else R.drawable.singlekey_clamp_a_tip else if (keyInfo.align == 0) R.drawable.singlekey_clamp_b_shoulder else if (keyInfo.isNewHonda) R.drawable.singlekey_clamp_b_tip_honda else if (keyInfo.type == 0) R.drawable.singlekey_clamp_b_tip2 else R.drawable.singlekey_clamp_b_tip
             }
-            if (clampBean.getClampNum().equals("S3")) {
-                return MachineInfo.isE20Us(MyApplication.getInstance()) ? R.drawable.tubular_clamp : R.drawable.tubular_clamp_s3_s7;
+            if (clampBean.clampNum == "S3") {
+                return if (MachineInfo.isE20Us(MyApplication.getInstance())) R.drawable.tubular_clamp else R.drawable.tubular_clamp_s3_s7
             }
-            if (clampBean.getClampNum().equals("S4")) {
-                return R.drawable.anglekey_clamp;
+            if (clampBean.clampNum == "S4") {
+                return R.drawable.anglekey_clamp
             }
-            if (clampBean.getClampNum().equals("S6")) {
-                return clampBean.getClampSide().equals("A") ? R.drawable.sx9_clamp_side_a : R.drawable.sx9_clamp_side_b;
+            if (clampBean.clampNum == "S6") {
+                return if (clampBean.clampSide == "A") R.drawable.sx9_clamp_side_a else R.drawable.sx9_clamp_side_b
             }
-            if (clampBean.getClampNum().equals("S9")) {
-                return clampBean.getClampSide().equals("A") ? R.drawable.s9_a : R.drawable.s9_b;
+            if (clampBean.clampNum == "S9") {
+                return if (clampBean.clampSide == "A") R.drawable.s9_a else R.drawable.s9_b
             }
-            if (clampBean.getClampNum().equals("S10")) {
-                return R.drawable.s10;
+            if (clampBean.clampNum == "S10") {
+                return R.drawable.s10
             }
         }
-        return 0;
+        return 0
     }
 
     /* JADX INFO: Access modifiers changed from: protected */
-    public static int getClampBigImgAlphaBeta(KeyInfo keyInfo) {
-        if (keyInfo.getIcCard() == 5590) {
-            return R.drawable.sag_clamp_remind;
+    fun getClampBigImgAlphaBeta(keyInfo: KeyInfo): Int {
+        if (keyInfo.icCard == 5590) {
+            return R.drawable.sag_clamp_remind
         }
-        ClampBean clampBean = keyInfo.getClampBean();
-        if ("S1".equals(clampBean.getClampNum())) {
-            if ("A".equals(clampBean.getClampSide())) {
-                if ("0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_a_shoulder : R.drawable.car_clamp_remind_a_tip;
+        val clampBean = keyInfo.clampBean
+        if ("S1" == clampBean.clampNum) {
+            if ("A" == clampBean.clampSide) {
+                if ("0" == clampBean.clampSlot) {
+                    return if (keyInfo.align == 0) R.drawable.car_clamp_remind_a_shoulder else R.drawable.car_clamp_remind_a_tip
                 }
             } else {
-                if ("B".equals(clampBean.getClampSide())) {
-                    return "0".equals(clampBean.getClampSlot()) ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_b_shoulder : (keyInfo.getIcCard() == 1019 || keyInfo.getIcCard() == 1369 || keyInfo.getIcCard() == 1443) ? R.drawable.car_clamp_remind_b_tip_hu64 : R.drawable.car_clamp_remind_b_tip : keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_b_shoulder_side : R.drawable.car_clamp_remind_b_tip_side;
+                if ("B" == clampBean.clampSide) {
+                    return if ("0" == clampBean.clampSlot) if (keyInfo.align == 0) R.drawable.car_clamp_remind_b_shoulder else if ((keyInfo.icCard == 1019 || keyInfo.icCard == 1369 || keyInfo.icCard == 1443)) R.drawable.car_clamp_remind_b_tip_hu64 else R.drawable.car_clamp_remind_b_tip else if (keyInfo.align == 0) R.drawable.car_clamp_remind_b_shoulder_side else R.drawable.car_clamp_remind_b_tip_side
                 }
-                if ("C".equals(clampBean.getClampSide())) {
-                    return "0".equals(clampBean.getClampSlot()) ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_remind_c_shoulder : Integer.parseInt(keyInfo.getSpaceStr().split(";")[0].split(",")[0]) + 300 > 2650 ? R.drawable.car_clamp_remind_c_long_tip : R.drawable.car_clamp_remind_c_tip : R.drawable.car_clamp_remind_c_down_tip;
+                if ("C" == clampBean.clampSide) {
+                    return if ("0" == clampBean.clampSlot) if (keyInfo.align == 0) R.drawable.car_clamp_remind_c_shoulder else if (keyInfo.spaceStr.split(
+                            ";".toRegex()
+                        ).dropLastWhile { it.isEmpty() }
+                            .toTypedArray()[0].split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                            .toTypedArray()[0].toInt() + 300 > 2650
+                    ) R.drawable.car_clamp_remind_c_long_tip else R.drawable.car_clamp_remind_c_tip else R.drawable.car_clamp_remind_c_down_tip
                 }
-                if ("D".equals(clampBean.getClampSide()) && "0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? keyInfo.getShoulderBlock() == 1 ? R.drawable.car_clamp_remind_d_shoulder_6620131 : R.drawable.car_clamp_remind_d_shoulder : keyInfo.isNewHonda() ? R.drawable.car_clamp_remind_d_tip_honda : (keyInfo.getIcCard() == 20131 || keyInfo.getIcCard() == 1915) ? R.drawable.car_clamp_remind_d_tip_20131 : R.drawable.car_clamp_remind_d_tip;
+                if ("D" == clampBean.clampSide && "0" == clampBean.clampSlot) {
+                    return if (keyInfo.align == 0) if (keyInfo.shoulderBlock == 1) R.drawable.car_clamp_remind_d_shoulder_6620131 else R.drawable.car_clamp_remind_d_shoulder else if (keyInfo.isNewHonda) R.drawable.car_clamp_remind_d_tip_honda else if ((keyInfo.icCard == 20131 || keyInfo.icCard == 1915)) R.drawable.car_clamp_remind_d_tip_20131 else R.drawable.car_clamp_remind_d_tip
                 }
             }
         } else {
-            if ("S2".equals(clampBean.getClampNum())) {
-                return "A".equals(clampBean.getClampSide()) ? keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_remind_a_shoulder : keyInfo.getType() == 0 ? R.drawable.singlekey_clamp_remind_a_tip2 : R.drawable.singlekey_clamp_remind_a_tip : keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_remind_b_shoulder : keyInfo.isNewHonda() ? R.drawable.singlekey_clamp_remind_b_tip_honda : keyInfo.getType() == 0 ? R.drawable.singlekey_clamp_remind_b_tip2 : R.drawable.singlekey_clamp_remind_b_tip;
+            if ("S2" == clampBean.clampNum) {
+                return if ("A" == clampBean.clampSide) if (keyInfo.align == 0) R.drawable.singlekey_clamp_remind_a_shoulder else if (keyInfo.type == 0) R.drawable.singlekey_clamp_remind_a_tip2 else R.drawable.singlekey_clamp_remind_a_tip else if (keyInfo.align == 0) R.drawable.singlekey_clamp_remind_b_shoulder else if (keyInfo.isNewHonda) R.drawable.singlekey_clamp_remind_b_tip_honda else if (keyInfo.type == 0) R.drawable.singlekey_clamp_remind_b_tip2 else R.drawable.singlekey_clamp_remind_b_tip
             }
-            if ("S3".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return MachineInfo.isE20Us(MyApplication.getInstance()) ? R.drawable.tubular_clamp_remind : R.drawable.tubular_clamp_remind_s3_s7;
+            if ("S3" == clampBean.clampNum) {
+                if ("A" == clampBean.clampSide) {
+                    return if (MachineInfo.isE20Us(MyApplication.getInstance())) R.drawable.tubular_clamp_remind else R.drawable.tubular_clamp_remind_s3_s7
                 }
-            } else if ("S4".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return R.drawable.angel_key_clamp_remind;
+            } else if ("S4" == clampBean.clampNum) {
+                if ("A" == clampBean.clampSide) {
+                    return R.drawable.angel_key_clamp_remind
                 }
             } else {
-                if ("S6".equals(clampBean.getClampNum())) {
-                    return "A".equals(clampBean.getClampSide()) ? R.drawable.sx9_clamp_remind_a : R.drawable.sx9_clamp_remind_b;
+                if ("S6" == clampBean.clampNum) {
+                    return if ("A" == clampBean.clampSide) R.drawable.sx9_clamp_remind_a else R.drawable.sx9_clamp_remind_b
                 }
-                if ("S9".equals(clampBean.getClampNum())) {
-                    return "A".equals(clampBean.getClampSide()) ? R.drawable.s9_a_remind : R.drawable.s9_b_remind;
+                if ("S9" == clampBean.clampNum) {
+                    return if ("A" == clampBean.clampSide) R.drawable.s9_a_remind else R.drawable.s9_b_remind
                 }
-                if (TextUtils.equals(clampBean.getClampNum(), "S10")) {
-                    return R.drawable.s10_remind;
+                if (TextUtils.equals(clampBean.clampNum, "S10")) {
+                    return R.drawable.s10_remind
                 }
             }
         }
-        return 0;
+        return 0
     }
 
-    public static int getClampZoomImgAlpha(KeyInfo keyInfo) {
-        if (keyInfo.getIcCard() == 5590) {
-            return R.drawable.sag_clamp_large;
+    fun getClampZoomImgAlpha(keyInfo: KeyInfo): Int {
+        if (keyInfo.icCard == 5590) {
+            return R.drawable.sag_clamp_large
         }
-        ClampBean clampBean = keyInfo.getClampBean();
-        if ("S1".equals(clampBean.getClampNum())) {
-            if ("A".equals(clampBean.getClampSide())) {
-                if ("0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? R.drawable.car_clamp_a_shoulder_large : R.drawable.car_clamp_a_tip_large;
+        val clampBean = keyInfo.clampBean
+        if ("S1" == clampBean.clampNum) {
+            if ("A" == clampBean.clampSide) {
+                if ("0" == clampBean.clampSlot) {
+                    return if (keyInfo.align == 0) R.drawable.car_clamp_a_shoulder_large else R.drawable.car_clamp_a_tip_large
                 }
             } else {
-                if ("B".equals(clampBean.getClampSide())) {
-                    return "0".equals(clampBean.getClampSlot()) ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_b_shoulder_large : (keyInfo.getIcCard() == 1019 || keyInfo.getIcCard() == 1369 || keyInfo.getIcCard() == 1443) ? R.drawable.car_clamp_remind_b_tip_hu64 : R.drawable.car_clamp_b_tip_large : keyInfo.getAlign() == 0 ? R.drawable.car_clamp_b_shoulder_side_large : R.drawable.car_clamp_b_tip_side_large;
+                if ("B" == clampBean.clampSide) {
+                    return if ("0" == clampBean.clampSlot) if (keyInfo.align == 0) R.drawable.car_clamp_b_shoulder_large else if ((keyInfo.icCard == 1019 || keyInfo.icCard == 1369 || keyInfo.icCard == 1443)) R.drawable.car_clamp_remind_b_tip_hu64 else R.drawable.car_clamp_b_tip_large else if (keyInfo.align == 0) R.drawable.car_clamp_b_shoulder_side_large else R.drawable.car_clamp_b_tip_side_large
                 }
-                if ("C".equals(clampBean.getClampSide())) {
-                    return "0".equals(clampBean.getClampSlot()) ? keyInfo.getAlign() == 0 ? R.drawable.car_clamp_c_shoulder_large : Integer.parseInt(keyInfo.getSpaceStr().split(";")[0].split(",")[0]) + 300 > 2650 ? R.drawable.car_clamp_c_long_tip_large : R.drawable.car_clamp_c_tip_large : R.drawable.car_clamp_c_down_tip_large;
+                if ("C" == clampBean.clampSide) {
+                    return if ("0" == clampBean.clampSlot) if (keyInfo.align == 0) R.drawable.car_clamp_c_shoulder_large else if (keyInfo.spaceStr.split(
+                            ";".toRegex()
+                        ).dropLastWhile { it.isEmpty() }
+                            .toTypedArray()[0].split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                            .toTypedArray()[0].toInt() + 300 > 2650
+                    ) R.drawable.car_clamp_c_long_tip_large else R.drawable.car_clamp_c_tip_large else R.drawable.car_clamp_c_down_tip_large
                 }
-                if ("D".equals(clampBean.getClampSide()) && "0".equals(clampBean.getClampSlot())) {
-                    return keyInfo.getAlign() == 0 ? keyInfo.getShoulderBlock() == 1 ? R.drawable.car_clamp_d_shoulder_6620131 : R.drawable.car_clamp_d_shoulder_large : keyInfo.isNewHonda() ? R.drawable.car_clamp_d_tip_honda_large : (keyInfo.getIcCard() == 20131 || keyInfo.getIcCard() == 1915) ? R.drawable.car_clamp_d_tip_20131_large : R.drawable.car_clamp_d_tip_large;
+                if ("D" == clampBean.clampSide && "0" == clampBean.clampSlot) {
+                    return if (keyInfo.align == 0) if (keyInfo.shoulderBlock == 1) R.drawable.car_clamp_d_shoulder_6620131 else R.drawable.car_clamp_d_shoulder_large else if (keyInfo.isNewHonda) R.drawable.car_clamp_d_tip_honda_large else if ((keyInfo.icCard == 20131 || keyInfo.icCard == 1915)) R.drawable.car_clamp_d_tip_20131_large else R.drawable.car_clamp_d_tip_large
                 }
             }
         } else {
-            if ("S2".equals(clampBean.getClampNum())) {
-                return "A".equals(clampBean.getClampSide()) ? keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_a_shoulder_large : R.drawable.singlekey_clamp_a_tip_large : keyInfo.getAlign() == 0 ? R.drawable.singlekey_clamp_b_shoulder_large : keyInfo.isNewHonda() ? R.drawable.singlekey_clamp_remind_b_tip_honda : R.drawable.singlekey_clamp_b_tip_large;
+            if ("S2" == clampBean.clampNum) {
+                return if ("A" == clampBean.clampSide) if (keyInfo.align == 0) R.drawable.singlekey_clamp_a_shoulder_large else R.drawable.singlekey_clamp_a_tip_large else if (keyInfo.align == 0) R.drawable.singlekey_clamp_b_shoulder_large else if (keyInfo.isNewHonda) R.drawable.singlekey_clamp_remind_b_tip_honda else R.drawable.singlekey_clamp_b_tip_large
             }
-            if ("S3".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return MachineInfo.isE20Us(MyApplication.getInstance()) ? R.drawable.tubular_clamp_large : R.drawable.tubular_clamp_large_s3_s7;
+            if ("S3" == clampBean.clampNum) {
+                if ("A" == clampBean.clampSide) {
+                    return if (MachineInfo.isE20Us(MyApplication.getInstance())) R.drawable.tubular_clamp_large else R.drawable.tubular_clamp_large_s3_s7
                 }
-            } else if ("S4".equals(clampBean.getClampNum())) {
-                if ("A".equals(clampBean.getClampSide())) {
-                    return R.drawable.anglekey_clamp_large;
+            } else if ("S4" == clampBean.clampNum) {
+                if ("A" == clampBean.clampSide) {
+                    return R.drawable.anglekey_clamp_large
                 }
             } else {
-                if ("S6".equals(clampBean.getClampNum())) {
-                    return "A".equals(clampBean.getClampSide()) ? R.drawable.sx9_clamp_side_a_large : R.drawable.sx9_clamp_side_b_large;
+                if ("S6" == clampBean.clampNum) {
+                    return if ("A" == clampBean.clampSide) R.drawable.sx9_clamp_side_a_large else R.drawable.sx9_clamp_side_b_large
                 }
-                if ("S9".equals(clampBean.getClampNum())) {
-                    return "A".equals(clampBean.getClampSide()) ? R.drawable.s9_a_large : R.drawable.s9_b_large;
+                if ("S9" == clampBean.clampNum) {
+                    return if ("A" == clampBean.clampSide) R.drawable.s9_a_large else R.drawable.s9_b_large
                 }
-                if (TextUtils.equals(clampBean.getClampNum(), "S10")) {
-                    return R.drawable.s10_large;
+                if (TextUtils.equals(clampBean.clampNum, "S10")) {
+                    return R.drawable.s10_large
                 }
             }
         }
-        return 0;
+        return 0
     }
 
-    public static int getAlphaClearClampImg(KeyInfo keyInfo) {
-        if (keyInfo.getClampBean().getClampNum().equals("S1")) {
-            return keyInfo.getClampBean().getClampSide().equals("A") ? R.drawable.clear_clamp_s1_a : keyInfo.getClampBean().getClampSide().equals("B") ? R.drawable.clear_clamp_s1_b : keyInfo.getClampBean().getClampSide().equals("C") ? R.drawable.clear_clamp_s1_c : R.drawable.clear_clamp_s1_d;
+    fun getAlphaClearClampImg(keyInfo: KeyInfo): Int {
+        if (keyInfo.clampBean.clampNum == "S1") {
+            return if (keyInfo.clampBean.clampSide == "A") R.drawable.clear_clamp_s1_a else if (keyInfo.clampBean.clampSide == "B") R.drawable.clear_clamp_s1_b else if (keyInfo.clampBean.clampSide == "C") R.drawable.clear_clamp_s1_c else R.drawable.clear_clamp_s1_d
         }
-        if (keyInfo.getClampBean().getClampNum().equals("S2")) {
-            return keyInfo.getClampBean().getClampSide().equals("A") ? R.drawable.clear_clamp_s2_a : R.drawable.clear_clamp_s2_b;
+        if (keyInfo.clampBean.clampNum == "S2") {
+            return if (keyInfo.clampBean.clampSide == "A") R.drawable.clear_clamp_s2_a else R.drawable.clear_clamp_s2_b
         }
-        if (keyInfo.getClampBean().getClampNum().equals("S3")) {
-            return R.drawable.clear_clamp_s3;
+        if (keyInfo.clampBean.clampNum == "S3") {
+            return R.drawable.clear_clamp_s3
         }
-        if (keyInfo.getClampBean().getClampNum().equals("S4")) {
-            return R.drawable.clear_clamp_s4;
+        if (keyInfo.clampBean.clampNum == "S4") {
+            return R.drawable.clear_clamp_s4
         }
-        if (keyInfo.getClampBean().getClampNum().equals("S6")) {
-            return R.drawable.clear_clamp_s6;
+        if (keyInfo.clampBean.clampNum == "S6") {
+            return R.drawable.clear_clamp_s6
         }
-        return 0;
+        return 0
     }
 }

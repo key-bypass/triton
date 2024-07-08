@@ -1,98 +1,78 @@
-package com.kkkcut.e20j.ui.fragment.blankcut;
+package com.kkkcut.e20j.ui.fragment.blankcut
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.os.Parcel
+import android.os.Parcelable
 
 /* loaded from: classes.dex */
-public class BlankCutBean implements Parcelable {
-    public static final Parcelable.Creator<BlankCutBean> CREATOR = new Parcelable.Creator<BlankCutBean>() { // from class: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean.1
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public BlankCutBean createFromParcel(Parcel parcel) {
-            return new BlankCutBean(parcel);
+class BlankCutBean : Parcelable {
+    var blankCutType: BlankCutType?
+        private set
+    @JvmField
+    var drawRes: Int = 0
+    @JvmField
+    var isChecked: Boolean = false
+    @JvmField
+    var name: String?
+
+    // android.os.Parcelable
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    constructor(blankCutType: BlankCutType?, str: String?) {
+        this.blankCutType = blankCutType
+        this.name = str
+    }
+
+    constructor(blankCutType: BlankCutType?, str: String?, i: Int) {
+        this.blankCutType = blankCutType
+        this.name = str
+        this.drawRes = i
+    }
+
+    fun setModifyType(blankCutType: BlankCutType?) {
+        this.blankCutType = blankCutType
+    }
+
+    // android.os.Parcelable
+    override fun writeToParcel(parcel: Parcel, i: Int) {
+        val blankCutType = this.blankCutType
+        parcel.writeInt(blankCutType?.ordinal ?: -1)
+        parcel.writeString(this.name)
+        parcel.writeByte(if (this.isChecked) 1.toByte() else 0.toByte())
+        parcel.writeInt(this.drawRes)
+    }
+
+    fun readFromParcel(parcel: Parcel) {
+        val readInt = parcel.readInt()
+        this.blankCutType = if (readInt == -1) null else BlankCutType.entries[readInt]
+        this.name = parcel.readString()
+        this.isChecked = parcel.readByte().toInt() != 0
+        this.drawRes = parcel.readInt()
+    }
+
+    protected constructor(parcel: Parcel) {
+        val readInt = parcel.readInt()
+        this.blankCutType = if (readInt == -1) null else BlankCutType.entries[readInt]
+        this.name = parcel.readString()
+        this.isChecked = parcel.readByte().toInt() != 0
+        this.drawRes = parcel.readInt()
+    }
+
+    companion object {
+        val CREATOR: Parcelable.Creator<BlankCutBean?> = object : Parcelable.Creator<BlankCutBean?> {
+            // from class: com.kkkcut.e20j.ui.fragment.blankcut.BlankCutBean.1
+            /* JADX WARN: Can't rename method to resolve collision */
+            // android.os.Parcelable.Creator
+            override fun createFromParcel(parcel: Parcel): BlankCutBean? {
+                return BlankCutBean(parcel)
+            }
+
+            /* JADX WARN: Can't rename method to resolve collision */
+            // android.os.Parcelable.Creator
+            override fun newArray(i: Int): Array<BlankCutBean?> {
+                return arrayOfNulls(i)
+            }
         }
-
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public BlankCutBean[] newArray(int i) {
-            return new BlankCutBean[i];
-        }
-    };
-    private BlankCutType blankCutType;
-    private int drawRes;
-    private boolean isChecked;
-    private String name;
-
-    @Override // android.os.Parcelable
-    public int describeContents() {
-        return 0;
-    }
-
-    public BlankCutBean(BlankCutType blankCutType, String str) {
-        this.blankCutType = blankCutType;
-        this.name = str;
-    }
-
-    public BlankCutBean(BlankCutType blankCutType, String str, int i) {
-        this.blankCutType = blankCutType;
-        this.name = str;
-        this.drawRes = i;
-    }
-
-    public BlankCutType getBlankCutType() {
-        return this.blankCutType;
-    }
-
-    public void setModifyType(BlankCutType blankCutType) {
-        this.blankCutType = blankCutType;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String str) {
-        this.name = str;
-    }
-
-    public boolean isChecked() {
-        return this.isChecked;
-    }
-
-    public void setChecked(boolean z) {
-        this.isChecked = z;
-    }
-
-    public int getDrawRes() {
-        return this.drawRes;
-    }
-
-    public void setDrawRes(int i) {
-        this.drawRes = i;
-    }
-
-    @Override // android.os.Parcelable
-    public void writeToParcel(Parcel parcel, int i) {
-        BlankCutType blankCutType = this.blankCutType;
-        parcel.writeInt(blankCutType == null ? -1 : blankCutType.ordinal());
-        parcel.writeString(this.name);
-        parcel.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
-        parcel.writeInt(this.drawRes);
-    }
-
-    public void readFromParcel(Parcel parcel) {
-        int readInt = parcel.readInt();
-        this.blankCutType = readInt == -1 ? null : BlankCutType.values()[readInt];
-        this.name = parcel.readString();
-        this.isChecked = parcel.readByte() != 0;
-        this.drawRes = parcel.readInt();
-    }
-
-    protected BlankCutBean(Parcel parcel) {
-        int readInt = parcel.readInt();
-        this.blankCutType = readInt == -1 ? null : BlankCutType.values()[readInt];
-        this.name = parcel.readString();
-        this.isChecked = parcel.readByte() != 0;
-        this.drawRes = parcel.readInt();
     }
 }

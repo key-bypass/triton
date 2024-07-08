@@ -13,16 +13,15 @@ import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
 import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */
+
+
+/* loaded from: classes.dex */
 class ModelChinaSelectAdapter(protected var mContext: Context) :
     RecyclerView.Adapter<com.kkkcut.e20j.adapter.ModelChinaSelectAdapter.ViewHolder>() {
     private var listener: OnKeySelectItemClickListener? = null
     protected var mDatas: List<ModelChina>? = null
     protected var mInflater: LayoutInflater = LayoutInflater.from(mContext)
 
-    /* loaded from: classes.dex */
-    interface OnKeySelectItemClickListener {
-        fun onItemClick(i: Int)
-    }
 
     var datas: List<ModelChina>?
         get() = this.mDatas
@@ -75,9 +74,12 @@ class ModelChinaSelectAdapter(protected var mContext: Context) :
         }
     }
 
-    fun setOnKeySelectItemClickListener(onKeySelectItemClickListener: OnKeySelectItemClickListener?) {
-        this.listener = onKeySelectItemClickListener
-    }
+    var onKeySelectItemClickListener: OnKeySelectItemClickListener?
+        get() = this.listener
+        set(onKeySelectItemClickListener) {
+            this.listener = onKeySelectItemClickListener
+        }
+
 
     companion object {
         private const val TAG = "ModelSelectAdapter"

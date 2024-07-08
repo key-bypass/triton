@@ -1,422 +1,482 @@
-package com.kkkcut.e20j.ui;
+package com.kkkcut.e20j.ui
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import com.kkkcut.e20j.SpKeys;
-import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.tool.ToastUtil;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.fragment.BaseBackFragment;
-import com.kkkcut.e20j.us.R;
-import com.kkkcut.e20j.us.databinding.FragmentSizeAdjustBinding;
-import com.kkkcut.e20j.utils.ThemeUtils;
-import com.kkkcut.e20j.utils.UnitUtils;
-import com.cutting.machine.bean.KeyInfo;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.greenrobot.eventbus.EventBus;
+import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import com.cutting.machine.bean.KeyInfo
+import com.kkkcut.e20j.SpKeys
+import com.kkkcut.e20j.androidquick.autolayout.utils.AutoUtils
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.androidquick.tool.ToastUtil
+import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
+import com.kkkcut.e20j.ui.fragment.BaseBackFragment
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentSizeAdjustBinding
+import com.kkkcut.e20j.utils.ThemeUtils
+import com.kkkcut.e20j.utils.UnitUtils
+import org.greenrobot.eventbus.EventBus
+import kotlin.math.max
 
 /* loaded from: classes.dex */
-public class SizeAdjustFragment extends BaseBackFragment {
-    private static final String KEYINFO = "SizeAdjustFragment";
+class SizeAdjustFragment : BaseBackFragment() {
+    var keyInfo: KeyInfo? = null
 
-    KeyInfo keyInfo;
+    private var lastText: TextView? = null
 
-    private TextView lastText;
+    var binding: FragmentSizeAdjustBinding? = null
 
-    FragmentSizeAdjustBinding binding;
-
-    @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        super.onCreateView(layoutInflater, viewGroup, bundle);
-        this.binding = FragmentSizeAdjustBinding.inflate(getLayoutInflater());
-        var view = this.binding.getRoot();
-        return view;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentSizeAdjustBinding.inflate(getLayoutInflater())
+        val view: ScrollView = binding!!.getRoot()
+        return view
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_size_adjust;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_size_adjust
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        return null;
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        return null
     }
 
-    public static SizeAdjustFragment newInstance(KeyInfo keyInfo) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(KEYINFO, keyInfo);
-        SizeAdjustFragment sizeAdjustFragment = new SizeAdjustFragment();
-        sizeAdjustFragment.setArguments(bundle);
-        return sizeAdjustFragment;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val keyInfo: KeyInfo? = arguments!!.getParcelable<Parcelable>(KEYINFO) as KeyInfo?
+        this.keyInfo = keyInfo
+        val spaceList: List<List<Int>> = keyInfo!!.getSpaceList()
+        val spaceWidthList: List<List<Int>> =
+            this.keyInfo!!.getSpaceWidthList()
+        initSpaceIndex(spaceList)
+        initSpaceAndSpaceWidth(spaceList, spaceWidthList)
+        (binding!!.sizeContainer.getChildAt(1) as LinearLayout).getChildAt(1).performClick()
     }
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        KeyInfo keyInfo = (KeyInfo) getArguments().getParcelable(KEYINFO);
-        this.keyInfo = keyInfo;
-        List<List<Integer>> spaceList = keyInfo.getSpaceList();
-        List<List<Integer>> spaceWidthList = this.keyInfo.getSpaceWidthList();
-        initSpaceIndex(spaceList);
-        initSpaceAndSpaceWidth(spaceList, spaceWidthList);
-        ((LinearLayout) this.binding.sizeContainer.getChildAt(1)).getChildAt(1).performClick();
-    }
-
-    private void initSpaceAndSpaceWidth(List<List<Integer>> list, List<List<Integer>> list2) {
-        for (int i = 0; i < list.size(); i++) {
-            List<Integer> list3 = list.get(i);
-            List<Integer> list4 = list2.get(i);
-            LinearLayout linearLayout = new LinearLayout(getContext());
-            linearLayout.setOrientation(1);
-            LinearLayout linearLayout2 = new LinearLayout(getContext());
-            linearLayout2.setOrientation(1);
-            TextView textView = new TextView(getContext());
-            textView.setText(getString(R.string.spaces));
-            textView.setTextColor(ThemeUtils.getColor(getContext(), R.attr.textColor_ffffff_333333));
-            textView.setTextSize(16.0f);
-            linearLayout.addView(textView);
-            TextView textView2 = new TextView(getContext());
-            textView2.setText(getString(R.string.width));
-            textView2.setTextColor(ThemeUtils.getColor(getContext(), R.attr.textColor_ffffff_333333));
-            textView2.setTextSize(16.0f);
-            linearLayout2.addView(textView2);
-            for (int i2 = 0; i2 < list3.size(); i2++) {
-                linearLayout.addView(getSpaceText(String.valueOf(list3.get(i2)), 0), getLayoutParams());
-                linearLayout2.addView(getSpaceText(String.valueOf(list4.get(i2)), 1), getLayoutParams());
+    private fun initSpaceAndSpaceWidth(list: List<List<Int>>, list2: List<List<Int>>) {
+        for (i in list.indices) {
+            val list3: List<Int> = list[i]
+            val list4: List<Int> = list2[i]
+            val linearLayout = LinearLayout(requireContext())
+            linearLayout.orientation = 1
+            val linearLayout2 = LinearLayout(requireContext())
+            linearLayout2.orientation = 1
+            val textView = TextView(requireContext())
+            textView.text = getString(R.string.spaces)
+            textView.setTextColor(ThemeUtils.getColor(requireContext(), R.attr.textColor_ffffff_333333))
+            textView.textSize = 16.0f
+            linearLayout.addView(textView)
+            val textView2 = TextView(requireContext())
+            textView2.text = getString(R.string.width)
+            textView2.setTextColor(
+                ThemeUtils.getColor(
+                    requireContext(),
+                    R.attr.textColor_ffffff_333333
+                )
+            )
+            textView2.textSize = 16.0f
+            linearLayout2.addView(textView2)
+            for (i2 in list3.indices) {
+                linearLayout.addView(getSpaceText(list3[i2].toString(), 0), layoutParams)
+                linearLayout2.addView(getSpaceText(list4[i2].toString(), 1), layoutParams)
             }
             if (i == 0) {
-                this.binding.sizeContainer.addView(linearLayout);
+                binding!!.sizeContainer.addView(linearLayout)
             } else {
-                this.binding.sizeContainer.addView(linearLayout, getContainerLayoutParam());
+                binding!!.sizeContainer.addView(linearLayout, containerLayoutParam)
             }
-            this.binding.sizeContainer.addView(linearLayout2, getContainerLayoutParam());
+            binding!!.sizeContainer.addView(linearLayout2, containerLayoutParam)
         }
     }
 
-    private LinearLayout.LayoutParams getContainerLayoutParam() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, -2);
-        layoutParams.setMargins(AutoUtils.getPercentWidthSize(2), 0, 0, 0);
-        return layoutParams;
-    }
+    private val containerLayoutParam: LinearLayout.LayoutParams
+        get() {
+            val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(-2, -2)
+            layoutParams.setMargins(AutoUtils.getPercentWidthSize(2), 0, 0, 0)
+            return layoutParams
+        }
 
-    private LinearLayout.LayoutParams getLayoutParams() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(AutoUtils.getPercentWidthSize(60), AutoUtils.getPercentHeightSize(30));
-        layoutParams.setMargins(0, AutoUtils.getPercentHeightSize(2), 0, 0);
-        return layoutParams;
-    }
+    private val layoutParams: LinearLayout.LayoutParams
+        get() {
+            val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                AutoUtils.getPercentWidthSize(60),
+                AutoUtils.getPercentHeightSize(30)
+            )
+            layoutParams.setMargins(0, AutoUtils.getPercentHeightSize(2), 0, 0)
+            return layoutParams
+        }
 
-    private void initSpaceIndex(List<List<Integer>> list) {
-        int maxSpaceCount = getMaxSpaceCount(list);
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setOrientation(1);
-        for (int i = 0; i < maxSpaceCount + 1; i++) {
-            TextView textView = new TextView(getContext());
-            textView.setTextSize(16.0f);
-            textView.setTextColor(ThemeUtils.getColor(getContext(), R.attr.textColor_ffffff_333333));
+    private fun initSpaceIndex(list: List<List<Int>>) {
+        val maxSpaceCount: Int = getMaxSpaceCount(list)
+        val linearLayout = LinearLayout(requireContext())
+        linearLayout.orientation = 1
+        for (i in 0 until (maxSpaceCount + 1)) {
+            val textView = TextView(requireContext())
+            textView.textSize = 16.0f
+            textView.setTextColor(ThemeUtils.getColor(requireContext(), R.attr.textColor_ffffff_333333))
             if (i == 0) {
-                textView.setText("");
-                linearLayout.addView(textView);
+                textView.text = ""
+                linearLayout.addView(textView)
             } else {
-                textView.setText(String.valueOf(i));
-                textView.setGravity(17);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(AutoUtils.getPercentWidthSize(60), AutoUtils.getPercentHeightSize(30));
-                layoutParams.setMargins(0, AutoUtils.getPercentHeightSize(2), 0, 0);
-                linearLayout.addView(textView, layoutParams);
+                textView.text = i.toString()
+                textView.setGravity(17)
+                val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                    AutoUtils.getPercentWidthSize(60),
+                    AutoUtils.getPercentHeightSize(30)
+                )
+                layoutParams.setMargins(0, AutoUtils.getPercentHeightSize(2), 0, 0)
+                linearLayout.addView(textView, layoutParams)
             }
         }
-        this.binding.sizeContainer.addView(linearLayout);
+        binding!!.sizeContainer.addView(linearLayout)
     }
 
-    private TextView getSpaceText(String str, int i) {
-        TextView textView = new TextView(getContext());
-        textView.setGravity(17);
-        textView.setBackgroundResource(ThemeUtils.getResId(getContext(), R.attr.color_blackLight_blueDark));
-        textView.setTextColor(-1);
-        textView.setTextSize(20.0f);
-        textView.setOnClickListener(new MyClickListener());
-        textView.setTag(Integer.valueOf(i));
+    private fun getSpaceText(str: String, i: Int): TextView {
+        val textView = TextView(requireContext())
+        textView.setGravity(17)
+        textView.setBackgroundResource(
+            ThemeUtils.getResId(
+                requireContext(),
+                R.attr.color_blackLight_blueDark
+            )
+        )
+        textView.setTextColor(-1)
+        textView.textSize = 20.0f
+        textView.setOnClickListener(MyClickListener())
+        textView.tag = i
         if (SPUtils.getBoolean(SpKeys.UNIT_INCH)) {
-            textView.setText(String.valueOf(UnitUtils.mm2Inch(Integer.parseInt(str))));
+            textView.text = UnitUtils.mm2Inch(str.toInt()).toString()
         } else {
-            textView.setText(String.valueOf(str));
+            textView.text = str
         }
-        return textView;
+        return textView
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public class MyClickListener implements View.OnClickListener {
-        private MyClickListener() {
-        }
-
-        @Override // android.view.View.OnClickListener
-        public void onClick(View view) {
-            if (SizeAdjustFragment.this.lastText == view) {
-                return;
+    /* JADX INFO: Access modifiers changed from: private */ /* loaded from: classes.dex */
+    inner class MyClickListener : View.OnClickListener {
+        // android.view.View.OnClickListener
+        override fun onClick(view: View) {
+            if (this@SizeAdjustFragment.lastText === view) {
+                return
             }
-            TextView textView = (TextView) view;
-            textView.getText();
-            textView.setTextColor(-1);
-            textView.setBackgroundResource(R.drawable.bg_ff205f);
-            if (SizeAdjustFragment.this.lastText != null) {
-                SizeAdjustFragment.this.lastText.setTextColor(-1);
-                SizeAdjustFragment.this.lastText.setBackgroundResource(ThemeUtils.getResId(SizeAdjustFragment.this.getContext(), R.attr.color_blackLight_blueDark));
+            val textView: TextView = view as TextView
+            textView.getText()
+            textView.setTextColor(-1)
+            textView.setBackgroundResource(R.drawable.bg_ff205f)
+            if (this@SizeAdjustFragment.lastText != null) {
+                lastText!!.setTextColor(-1)
+                lastText!!.setBackgroundResource(
+                    ThemeUtils.getResId(
+                        this@SizeAdjustFragment.requireContext(),
+                        R.attr.color_blackLight_blueDark
+                    )
+                )
             }
-            SizeAdjustFragment.this.lastText = textView;
-            if (((Integer) textView.getTag()).intValue() == 0) {
-                SizeAdjustFragment.this.binding.tvSpaceValue.setText(textView.getText().toString().trim());
+            this@SizeAdjustFragment.lastText = textView
+            if ((textView.tag as Int) == 0) {
+                binding!!.tvSpaceValue.text = textView.getText().toString().trim { it <= ' ' }
             } else {
-                SizeAdjustFragment.this.binding.tvSpaceWidthValue.setText(textView.getText().toString().trim());
+                binding!!.tvSpaceWidthValue.text = textView.getText().toString().trim { it <= ' ' }
             }
         }
     }
 
     /* loaded from: classes.dex */
-    private static class Tag {
-        private int type;
-
-        private Tag() {
-        }
+    private class Tag private constructor() {
+        private val type: Int = 0
     }
 
-    private int getMaxSpaceCount(List<List<Integer>> list) {
-        Iterator<List<Integer>> it = list.iterator();
-        int i = 0;
+    private fun getMaxSpaceCount(list: List<List<Int>>): Int {
+        val it: Iterator<List<Int>> = list.iterator()
+        var i: Int = 0
         while (it.hasNext()) {
-            i = Math.max(i, it.next().size());
+            i = max(i.toDouble(), it.next().size.toDouble()).toInt()
         }
-        return i;
+        return i
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.bt_save /* 2131361969 */:
-                ArrayList arrayList = new ArrayList();
-                ArrayList arrayList2 = new ArrayList();
-                int childCount = this.binding.sizeContainer.getChildCount();
-                StringBuilder sb = new StringBuilder();
-                StringBuilder sb2 = new StringBuilder();
-                int i = 1;
-                int i2 = 1;
+    fun onClick(view: View) {
+        when (view.id) {
+            R.id.bt_save -> {
+                val arrayList = ArrayList<Any>()
+                val arrayList2 = ArrayList<Any>()
+                val childCount: Int = binding!!.sizeContainer.childCount
+                val sb: StringBuilder = StringBuilder()
+                val sb2: StringBuilder = StringBuilder()
+                var i: Int = 1
+                var i2: Int = 1
                 while (i2 < childCount - 1) {
-                    ArrayList arrayList3 = new ArrayList();
-                    LinearLayout linearLayout = (LinearLayout) this.binding.sizeContainer.getChildAt(i2);
-                    for (int i3 = 1; i3 < linearLayout.getChildCount(); i3++) {
-                        String trim = ((TextView) linearLayout.getChildAt(i3)).getText().toString().trim();
+                    val arrayList3 = ArrayList<Any>()
+                    val linearLayout: LinearLayout =
+                        binding!!.sizeContainer.getChildAt(i2) as LinearLayout
+                    var i3: Int = 1
+                    while (i3 < linearLayout.childCount) {
+                        val trim: String =
+                            (linearLayout.getChildAt(i3) as TextView).getText().toString()
+                                .trim { it <= ' ' }
                         if (SPUtils.getBoolean(SpKeys.UNIT_INCH)) {
-                            sb.append(UnitUtils.inch2Mm(Integer.parseInt(trim)));
+                            sb.append(UnitUtils.inch2Mm(trim.toInt()))
                         } else {
-                            sb.append(trim);
+                            sb.append(trim)
                         }
-                        if (i3 == linearLayout.getChildCount() - i) {
-                            sb.append(";");
+                        if (i3 == linearLayout.childCount - i) {
+                            sb.append(";")
                         } else {
-                            sb.append(",");
+                            sb.append(",")
                         }
-                        arrayList3.add(Integer.valueOf(Integer.parseInt(trim)));
+                        arrayList3.add(trim.toInt() as Nothing)
+                        i3++
                     }
-                    LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(i2 + 1);
-                    ArrayList arrayList4 = new ArrayList();
-                    for (int i4 = 1; i4 < linearLayout2.getChildCount(); i4++) {
-                        String trim2 = ((TextView) linearLayout2.getChildAt(i4)).getText().toString().trim();
+                    val linearLayout2: LinearLayout =
+                        binding!!.sizeContainer.getChildAt(i2 + 1) as LinearLayout
+                    val arrayList4 = ArrayList<Any>()
+                    var i4: Int = 1
+                    while (i4 < linearLayout2.childCount) {
+                        val trim2: String =
+                            (linearLayout2.getChildAt(i4) as TextView).getText().toString()
+                                .trim { it <= ' ' }
                         if (SPUtils.getBoolean(SpKeys.UNIT_INCH)) {
-                            sb2.append(UnitUtils.inch2Mm(Integer.parseInt(trim2)));
+                            sb2.append(UnitUtils.inch2Mm(trim2.toInt()))
                         } else {
-                            sb2.append(trim2);
+                            sb2.append(trim2)
                         }
-                        if (i4 == linearLayout2.getChildCount() - 1) {
-                            sb2.append(";");
+                        if (i4 == linearLayout2.childCount - 1) {
+                            sb2.append(";")
                         } else {
-                            sb2.append(",");
+                            sb2.append(",")
                         }
-                        arrayList4.add(Integer.valueOf(Integer.parseInt(trim2)));
+                        arrayList4.add(trim2.toInt())
+                        i4++
                     }
-                    arrayList.add(arrayList3);
-                    arrayList2.add(arrayList4);
-                    i2 += 2;
-                    i = 1;
+                    arrayList.add(arrayList3)
+                    arrayList2.add(arrayList4)
+                    i2 += 2
+                    i = 1
                 }
-                for (int i5 = 0; i5 < arrayList.size(); i5++) {
-                    List list = (List) arrayList.get(i5);
-                    List list2 = (List) arrayList2.get(i5);
-                    int i6 = 0;
-                    while (i6 < list.size() - 1) {
-                        int intValue = ((Integer) list.get(i6)).intValue();
-                        int i7 = i6 + 1;
-                        int intValue2 = ((Integer) list.get(i7)).intValue();
-                        int intValue3 = ((Integer) list2.get(i6)).intValue();
-                        int intValue4 = ((Integer) list2.get(i7)).intValue();
-                        if (this.keyInfo.getAlign() == 0) {
+                var i5: Int = 0
+                while (i5 < arrayList.size) {
+                    val list: List<*> = arrayList.get(i5) as List<*>
+                    val list2: List<*> = arrayList2.get(i5) as List<*>
+                    var i6: Int = 0
+                    while (i6 < list.size - 1) {
+                        val intValue: Int = (list.get(i6) as Int)
+                        val i7: Int = i6 + 1
+                        val intValue2: Int = (list.get(i7) as Int)
+                        val intValue3: Int = (list2.get(i6) as Int)
+                        val intValue4: Int = (list2.get(i7) as Int)
+                        if (keyInfo!!.align == 0) {
                             if (intValue2 - intValue <= (intValue3 + intValue4) / 2) {
-                                ToastUtil.showToast(getString(R.string.key_data_error));
-                                return;
+                                ToastUtil.showToast(getString(R.string.key_data_error))
+                                return
                             }
                         } else if (intValue - intValue2 <= (intValue3 + intValue4) / 2) {
-                            ToastUtil.showToast(getString(R.string.key_data_error));
-                            return;
+                            ToastUtil.showToast(getString(R.string.key_data_error))
+                            return
                         }
-                        i6 = i7;
+                        i6 = i7
                     }
+                    i5++
                 }
-                this.keyInfo.setSpaceStr(sb.toString());
-                this.keyInfo.setSpaceWidthStr(sb2.toString());
-                EventBus.getDefault().post(new EventCenter(57));
-                onBack();
-                return;
-            case R.id.iv_down /* 2131362297 */:
-                moveToDown();
-                return;
-            case R.id.iv_left /* 2131362312 */:
-                moveToLeft();
-                return;
-            case R.id.iv_right /* 2131362329 */:
-                moveToRight();
-                return;
-            case R.id.iv_spaceWidth_add /* 2131362340 */:
-                modifySpaceWidth(10);
-                return;
-            case R.id.iv_spaceWidth_reduce /* 2131362341 */:
-                modifySpaceWidth(-10);
-                return;
-            case R.id.iv_space_add /* 2131362342 */:
-                modifySpace(10);
-                return;
-            case R.id.iv_space_reduce /* 2131362343 */:
-                modifySpace(-10);
-                return;
-            case R.id.iv_up /* 2131362357 */:
-                moveToUp();
-                return;
-            default:
-                return;
+                keyInfo!!.spaceStr = sb.toString()
+                keyInfo!!.spaceWidthStr = sb2.toString()
+                EventBus.getDefault().post(EventCenter<Any?>(57))
+                onBack()
+                return
+            }
+
+            R.id.iv_down -> {
+                moveToDown()
+                return
+            }
+
+            R.id.iv_left -> {
+                moveToLeft()
+                return
+            }
+
+            R.id.iv_right -> {
+                moveToRight()
+                return
+            }
+
+            R.id.iv_spaceWidth_add -> {
+                modifySpaceWidth(10)
+                return
+            }
+
+            R.id.iv_spaceWidth_reduce -> {
+                modifySpaceWidth(-10)
+                return
+            }
+
+            R.id.iv_space_add -> {
+                modifySpace(10)
+                return
+            }
+
+            R.id.iv_space_reduce -> {
+                modifySpace(-10)
+                return
+            }
+
+            R.id.iv_up -> {
+                moveToUp()
+                return
+            }
+
+            else -> return
         }
     }
 
-    private void moveToLeft() {
-        TextView textView = this.lastText;
+    private fun moveToLeft() {
+        val textView: TextView? = this.lastText
         if (textView == null) {
-            moveToDefault();
-            return;
+            moveToDefault()
+            return
         }
-        LinearLayout linearLayout = (LinearLayout) textView.getParent();
-        int indexOfChild = linearLayout.indexOfChild(this.lastText);
-        int indexOfChild2 = this.binding.sizeContainer.indexOfChild(linearLayout);
+        val linearLayout: LinearLayout = textView.parent as LinearLayout
+        val indexOfChild: Int = linearLayout.indexOfChild(this.lastText)
+        val indexOfChild2: Int = binding!!.sizeContainer.indexOfChild(linearLayout)
         if (indexOfChild2 > 1) {
-            LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(indexOfChild2 - 1);
-            if (linearLayout2.getChildCount() > indexOfChild) {
-                linearLayout2.getChildAt(indexOfChild).performClick();
+            val linearLayout2: LinearLayout =
+                binding!!.sizeContainer.getChildAt(indexOfChild2 - 1) as LinearLayout
+            if (linearLayout2.childCount > indexOfChild) {
+                linearLayout2.getChildAt(indexOfChild).performClick()
             } else {
-                linearLayout2.getChildAt(linearLayout2.getChildCount() - 1).performClick();
+                linearLayout2.getChildAt(linearLayout2.childCount - 1).performClick()
             }
         }
     }
 
-    private void moveToRight() {
-        TextView textView = this.lastText;
+    private fun moveToRight() {
+        val textView: TextView? = this.lastText
         if (textView == null) {
-            moveToDefault();
-            return;
+            moveToDefault()
+            return
         }
-        LinearLayout linearLayout = (LinearLayout) textView.getParent();
-        int indexOfChild = linearLayout.indexOfChild(this.lastText);
-        int indexOfChild2 = this.binding.sizeContainer.indexOfChild(linearLayout);
-        if (indexOfChild2 < this.binding.sizeContainer.getChildCount() - 1) {
-            LinearLayout linearLayout2 = (LinearLayout) this.binding.sizeContainer.getChildAt(indexOfChild2 + 1);
-            if (linearLayout2.getChildCount() > indexOfChild) {
-                linearLayout2.getChildAt(indexOfChild).performClick();
+        val linearLayout: LinearLayout = textView.parent as LinearLayout
+        val indexOfChild: Int = linearLayout.indexOfChild(this.lastText)
+        val indexOfChild2: Int = binding!!.sizeContainer.indexOfChild(linearLayout)
+        if (indexOfChild2 < binding!!.sizeContainer.childCount - 1) {
+            val linearLayout2: LinearLayout =
+                binding!!.sizeContainer.getChildAt(indexOfChild2 + 1) as LinearLayout
+            if (linearLayout2.childCount > indexOfChild) {
+                linearLayout2.getChildAt(indexOfChild).performClick()
             } else {
-                linearLayout2.getChildAt(linearLayout2.getChildCount() - 1).performClick();
+                linearLayout2.getChildAt(linearLayout2.childCount - 1).performClick()
             }
         }
     }
 
-    private void moveToUp() {
-        TextView textView = this.lastText;
+    private fun moveToUp() {
+        val textView: TextView? = this.lastText
         if (textView == null) {
-            moveToDefault();
-            return;
+            moveToDefault()
+            return
         }
-        LinearLayout linearLayout = (LinearLayout) textView.getParent();
-        int indexOfChild = linearLayout.indexOfChild(this.lastText);
+        val linearLayout: LinearLayout = textView.parent as LinearLayout
+        val indexOfChild: Int = linearLayout.indexOfChild(this.lastText)
         if (indexOfChild > 1) {
-            linearLayout.getChildAt(indexOfChild - 1).performClick();
+            linearLayout.getChildAt(indexOfChild - 1).performClick()
         }
     }
 
-    private void moveToDown() {
-        TextView textView = this.lastText;
+    private fun moveToDown() {
+        val textView: TextView? = this.lastText
         if (textView == null) {
-            moveToDefault();
-            return;
+            moveToDefault()
+            return
         }
-        LinearLayout linearLayout = (LinearLayout) textView.getParent();
-        int indexOfChild = linearLayout.indexOfChild(this.lastText);
-        if (indexOfChild < linearLayout.getChildCount() - 1) {
-            linearLayout.getChildAt(indexOfChild + 1).performClick();
+        val linearLayout: LinearLayout = textView.parent as LinearLayout
+        val indexOfChild: Int = linearLayout.indexOfChild(this.lastText)
+        if (indexOfChild < linearLayout.childCount - 1) {
+            linearLayout.getChildAt(indexOfChild + 1).performClick()
         }
     }
 
-    private void moveToDefault() {
-        ((LinearLayout) this.binding.sizeContainer.getChildAt(1)).getChildAt(1).performClick();
+    private fun moveToDefault() {
+        (binding!!.sizeContainer.getChildAt(1) as LinearLayout).getChildAt(1).performClick()
     }
 
-    private void modifySpace(int i) {
-        selectSpaceDefault();
-        modifySingleValue(this.binding.tvSpaceValue, i);
-        if (this.binding.cbAllSpace.isChecked()) {
-            modifyAll(this.lastText, i);
+    private fun modifySpace(i: Int) {
+        selectSpaceDefault()
+        modifySingleValue(binding!!.tvSpaceValue, i)
+        if (binding!!.cbAllSpace.isChecked) {
+            modifyAll(this.lastText, i)
         } else {
-            modifySingleValue(this.lastText, i);
+            modifySingleValue(this.lastText, i)
         }
     }
 
-    private void modifySpaceWidth(int i) {
-        selectSpaceWidthDefault();
-        modifySingleValue(this.binding.tvSpaceWidthValue, i);
-        if (this.binding.cbAllSpaceWidth.isChecked()) {
-            modifyAll(this.lastText, i);
+    private fun modifySpaceWidth(i: Int) {
+        selectSpaceWidthDefault()
+        modifySingleValue(binding!!.tvSpaceWidthValue, i)
+        if (binding!!.cbAllSpaceWidth.isChecked) {
+            modifyAll(this.lastText, i)
         } else {
-            modifySingleValue(this.lastText, i);
+            modifySingleValue(this.lastText, i)
         }
     }
 
-    private void modifyAll(TextView textView, int i) {
-        LinearLayout linearLayout = (LinearLayout) textView.getParent();
-        for (int i2 = 1; i2 < linearLayout.getChildCount(); i2++) {
-            modifySingleValue((TextView) linearLayout.getChildAt(i2), i);
+    private fun modifyAll(textView: TextView?, i: Int) {
+        val linearLayout: LinearLayout = textView!!.parent as LinearLayout
+        for (i2 in 1 until linearLayout.childCount) {
+            modifySingleValue(linearLayout.getChildAt(i2) as TextView?, i)
         }
     }
 
-    private void modifySingleValue(TextView textView, int i) {
-        String trim = textView.getText().toString().trim();
+    private fun modifySingleValue(textView: TextView?, i: Int) {
+        val trim: String = textView!!.getText().toString().trim { it <= ' ' }
         if (TextUtils.isEmpty(trim)) {
-            return;
+            return
         }
-        textView.setText(String.valueOf(Integer.parseInt(trim) + i));
+        textView.text = (trim.toInt() + i).toString()
     }
 
-    private void selectSpaceDefault() {
-        TextView textView = this.lastText;
-        if (textView == null || ((Integer) textView.getTag()).intValue() == 1) {
-            TextView textView2 = this.lastText;
-            ((TextView) ((LinearLayout) this.binding.sizeContainer.getChildAt(textView2 != null ? this.binding.sizeContainer.indexOfChild((View) textView2.getParent()) - 1 : 1)).getChildAt(1)).performClick();
+    private fun selectSpaceDefault() {
+        val textView: TextView? = this.lastText
+        if (textView == null || (textView.tag as Int) == 1) {
+            val textView2: TextView? = this.lastText
+            ((binding!!.sizeContainer.getChildAt(
+                if (textView2 != null) binding!!.sizeContainer.indexOfChild(
+                    textView2.parent as View?
+                ) - 1 else 1
+            ) as LinearLayout).getChildAt(1) as TextView).performClick()
         }
     }
 
-    private void selectSpaceWidthDefault() {
-        TextView textView = this.lastText;
-        if (textView == null || ((Integer) textView.getTag()).intValue() == 0) {
-            TextView textView2 = this.lastText;
-            ((TextView) ((LinearLayout) this.binding.sizeContainer.getChildAt(textView2 != null ? this.binding.sizeContainer.indexOfChild((View) textView2.getParent()) + 1 : 2)).getChildAt(1)).performClick();
+    private fun selectSpaceWidthDefault() {
+        val textView: TextView? = this.lastText
+        if (textView == null || (textView.tag as Int) == 0) {
+            val textView2: TextView? = this.lastText
+            ((binding!!.sizeContainer.getChildAt(
+                if (textView2 != null) binding!!.sizeContainer.indexOfChild(
+                    textView2.parent as View?
+                ) + 1 else 2
+            ) as LinearLayout).getChildAt(1) as TextView).performClick()
+        }
+    }
+
+    companion object {
+        private val KEYINFO: String = "SizeAdjustFragment"
+
+        fun newInstance(keyInfo: KeyInfo?): SizeAdjustFragment {
+            val bundle = Bundle()
+            bundle.putParcelable(KEYINFO, keyInfo)
+            val sizeAdjustFragment = SizeAdjustFragment()
+            sizeAdjustFragment.setArguments(bundle)
+            return sizeAdjustFragment
         }
     }
 }

@@ -1,57 +1,43 @@
-package com.kkkcut.e20j.ui.fragment.duplicatekey.dimple;
+package com.kkkcut.e20j.ui.fragment.duplicatekey.dimple
 
-import android.app.Activity;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.cutting.machine.bean.KeyInfo;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
-import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator;
-
-import org.greenrobot.eventbus.EventBus;
+import android.app.Activity
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
+import com.cutting.machine.bean.KeyInfo
+import com.kkkcut.e20j.ui.dialog.base.BottomInDialog
 
 /* loaded from: classes.dex */
-public class DimpleDuplicateDecodeDialog extends BottomInDialog {
-    public static final String PARAM = "param";
-    private static final String TAG = "DecodeDialog";
+class DimpleDuplicateDecodeDialog(activity: Activity?) : BottomInDialog(activity) {
+    var btCancle: TextView? = null
 
-    TextView btCancle;
+    var btDecode: TextView? = null
+    var isRound: Boolean = false
 
-    TextView btDecode;
-    boolean isRound;
+    var ivClamp: ImageView? = null
 
-    ImageView ivClamp;
+    var ivDecoder: ImageView? = null
+    private val keyInfo: KeyInfo? = null
+    var roundBtVisible: Boolean = false
 
-    ImageView ivDecoder;
-    private KeyInfo keyInfo;
-    boolean roundBtVisible;
+    var sbRound: CheckBox? = null
+    private val timeValue: Int = 0
 
-    CheckBox sbRound;
-    private int timeValue;
+    var tvDecoderSize: TextView? = null
 
-    TextView tvDecoderSize;
+    var tvRound: TextView? = null
 
-    TextView tvRound;
+    var tvTimeValue: TextView? = null
 
-    TextView tvTimeValue;
-
-    public DimpleDuplicateDecodeDialog(Activity activity) {
-        super(activity);
+    override fun getContentLayoutID(): Int {
+        return 0
     }
 
-    @Override
-    public int getContentLayoutID() {
-        return 0;
+    override fun initView() {
     }
 
-    @Override
-    public void initView() {
-
+    companion object {
+        val PARAM: String = "param"
+        private val TAG: String = "DecodeDialog"
     }
 }

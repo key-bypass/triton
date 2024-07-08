@@ -1,60 +1,60 @@
-package com.kkkcut.e20j.ui.fragment.hondakey;
+package com.kkkcut.e20j.ui.fragment.hondakey
 
-import com.cutting.machine.bean.ClampBean;
-import com.cutting.machine.bean.KeyInfo;
+import com.cutting.machine.bean.ClampBean
+import com.cutting.machine.bean.KeyInfo
 
 /* loaded from: classes.dex */
-public class HondaKeyFactory {
-    public static KeyInfo createHondaSideKey(int i, int i2) {
+object HondaKeyFactory {
+    fun createHondaSideKey(i: Int, i2: Int): KeyInfo {
         if (i == 2020) {
-            return createHondaSideKey2020(i2);
+            return createHondaSideKey2020(i2)
         }
-        return createHondaSideKey2021(i2);
+        return createHondaSideKey2021(i2)
     }
 
-    private static KeyInfo createHondaSideKey2021(int i) {
-        KeyInfo keyInfo = new KeyInfo();
-        keyInfo.setType(3);
-        keyInfo.setAlign(1);
-        keyInfo.setSpaceStr("2500,300");
-        keyInfo.setSpaceWidthStr("100,100");
-        keyInfo.setWidth(150);
-        keyInfo.setCutDepth(i == 0 ? 130 : 20);
-        keyInfo.setGuide(40);
-        keyInfo.setDepthStr("40");
-        keyInfo.setDepthName("1");
-        keyInfo.setThick(700);
-        keyInfo.setSide(0);
-        ClampBean clampBean = new ClampBean();
-        clampBean.setClampNum("S1");
-        clampBean.setClampSide("B");
-        clampBean.setClampSlot("1");
-        keyInfo.setClampKeyBasicData(clampBean);
-        return keyInfo;
+    private fun createHondaSideKey2021(i: Int): KeyInfo {
+        val keyInfo = KeyInfo()
+        keyInfo.type = 3
+        keyInfo.align = 1
+        keyInfo.spaceStr = "2500,300"
+        keyInfo.spaceWidthStr = "100,100"
+        keyInfo.width = 150
+        keyInfo.cutDepth = if (i == 0) 130 else 20
+        keyInfo.guide = 40
+        keyInfo.depthStr = "40"
+        keyInfo.depthName = "1"
+        keyInfo.thick = 700
+        keyInfo.side = 0
+        val clampBean = ClampBean()
+        clampBean.clampNum = "S1"
+        clampBean.clampSide = "B"
+        clampBean.clampSlot = "1"
+        keyInfo.setClampKeyBasicData(clampBean)
+        return keyInfo
     }
 
-    public static KeyInfo createHondaSideKey2020(int i) {
-        KeyInfo keyInfo = new KeyInfo();
-        keyInfo.setType(3);
-        keyInfo.setAlign(1);
+    fun createHondaSideKey2020(i: Int): KeyInfo {
+        val keyInfo = KeyInfo()
+        keyInfo.type = 3
+        keyInfo.align = 1
         if (i == 0) {
-            keyInfo.setSpaceStr("2800,300");
+            keyInfo.spaceStr = "2800,300"
         } else {
-            keyInfo.setSpaceStr("2500,300");
+            keyInfo.spaceStr = "2500,300"
         }
-        keyInfo.setSpaceWidthStr("100,100");
-        keyInfo.setWidth(150);
-        keyInfo.setCutDepth(i == 0 ? 165 : 55);
-        keyInfo.setGuide(50);
-        keyInfo.setDepthStr("50");
-        keyInfo.setDepthName("1");
-        keyInfo.setThick(900);
-        keyInfo.setSide(0);
-        ClampBean clampBean = new ClampBean();
-        clampBean.setClampNum("S1");
-        clampBean.setClampSide("B");
-        clampBean.setClampSlot("1");
-        keyInfo.setClampKeyBasicData(clampBean);
-        return keyInfo;
+        keyInfo.spaceWidthStr = "100,100"
+        keyInfo.width = 150
+        keyInfo.cutDepth = if (i == 0) 165 else 55
+        keyInfo.guide = 50
+        keyInfo.depthStr = "50"
+        keyInfo.depthName = "1"
+        keyInfo.thick = 900
+        keyInfo.side = 0
+        val clampBean = ClampBean()
+        clampBean.clampNum = "S1"
+        clampBean.clampSide = "B"
+        clampBean.clampSlot = "1"
+        keyInfo.setClampKeyBasicData(clampBean)
+        return keyInfo
     }
 }

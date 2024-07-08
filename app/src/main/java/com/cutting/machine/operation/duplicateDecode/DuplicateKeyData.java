@@ -1,6 +1,8 @@
 package com.cutting.machine.operation.duplicateDecode;
 
 
+import androidx.annotation.NonNull;
+
 import com.cutting.machine.bean.KeyAlign;
 import com.cutting.machine.bean.KeyType;
 import com.cutting.machine.clamp.Clamp;
@@ -46,7 +48,7 @@ public class DuplicateKeyData implements KeyInfoBase {
         return false;
     }
 
-    @Override // com.liying.core.communication.KeyInfoBase
+    @Override
     public KeyType getKeyType() {
         return this.type;
     }

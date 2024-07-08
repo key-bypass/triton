@@ -31,6 +31,7 @@ public class DimpleSpaceSelectDialog extends Dialog {
         super(context);
         this.spaceCount = i;
         this.index = i2;
+
     }
 
     @Override // android.app.Dialog
@@ -38,20 +39,18 @@ public class DimpleSpaceSelectDialog extends Dialog {
         super.onCreate(bundle);
         setContentView(R.layout.dialog_dimple_space_select);
         initRadioGroup();
-        ((Button) findViewById(R.id.ll_confirm)).setOnClickListener(new View.OnClickListener() { // from class: com.kkkcut.e20j.ui.dialog.DimpleSpaceSelectDialog.1
-            @Override // android.view.View.OnClickListener
-            public void onClick(View view) {
-                if (DimpleSpaceSelectDialog.this.onConfirmListener != null) {
-                    DimpleSpaceSelectDialog.this.onConfirmListener.onConfirm(DimpleSpaceSelectDialog.this.lastRb != null ? DimpleSpaceSelectDialog.this.cbList.indexOf(DimpleSpaceSelectDialog.this.lastRb) : 0);
-                }
-                DimpleSpaceSelectDialog.this.dismiss();
+
+        findViewById(R.id.ll_confirm).setOnClickListener(view -> {
+            if (DimpleSpaceSelectDialog.this.onConfirmListener != null) {
+                DimpleSpaceSelectDialog.this.onConfirmListener.onConfirm(DimpleSpaceSelectDialog.this.lastRb != null ? DimpleSpaceSelectDialog.this.cbList.indexOf(DimpleSpaceSelectDialog.this.lastRb) : 0);
             }
+            DimpleSpaceSelectDialog.this.dismiss();
         });
         setCancelable(false);
     }
 
     private void initRadioGroup() {
-        this.glContainer = (GridLayout) findViewById(R.id.rl_container);
+        this.glContainer = findViewById(R.id.rl_container);
         int i = 0;
         for (int i2 = 0; i2 < this.spaceCount; i2++) {
             View.inflate(getContext(), R.layout.mrg_child, this.glContainer);
@@ -66,30 +65,23 @@ public class DimpleSpaceSelectDialog extends Dialog {
             }
             i++;
             checkBox.setText(String.valueOf(i));
-            checkBox.setOnClickListener(new CustomOnClickListener());
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (DimpleSpaceSelectDialog.this.lastRb != null) {
+                        DimpleSpaceSelectDialog.this.lastRb.setChecked(false);
+                    }
+                    if (view instanceof CheckBox) {
+                        CheckBox checkBox = (CheckBox) view;
+                        checkBox.setChecked(true);
+                        DimpleSpaceSelectDialog.this.lastRb = checkBox;
+                    }
+                }
+            });
         }
     }
 
     public void setOnConfirm(OnConfirmListener onConfirmListener) {
         this.onConfirmListener = onConfirmListener;
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public class CustomOnClickListener implements View.OnClickListener {
-        private CustomOnClickListener() {
-        }
-
-        @Override // android.view.View.OnClickListener
-        public void onClick(View view) {
-            if (DimpleSpaceSelectDialog.this.lastRb != null) {
-                DimpleSpaceSelectDialog.this.lastRb.setChecked(false);
-            }
-            if (view instanceof CheckBox) {
-                CheckBox checkBox = (CheckBox) view;
-                checkBox.setChecked(true);
-                DimpleSpaceSelectDialog.this.lastRb = checkBox;
-            }
-        }
     }
 }

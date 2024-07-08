@@ -1,43 +1,41 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.view.View;
-
-import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter;
-import com.kkkcut.e20j.base.BaseFFragment;
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.FragmentActivity
+import com.kkkcut.e20j.base.BaseFFragment
 
 /* loaded from: classes.dex */
-public abstract class BaseBackFragment extends BaseFFragment {
-    public abstract String setTitleStr();
+abstract class BaseBackFragment() : BaseFFragment() {
+    abstract fun setTitleStr(): String?
 
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
-    public void onViewCreated(View view, Bundle bundle) {
-        super.onViewCreated(view, bundle);
-        setTittle();
-        fullScreen();
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment, androidx.fragment.app.Fragment
+    override fun onViewCreated(view: View, bundle: Bundle?) {
+        super.onViewCreated(view, bundle)
+        setTittle()
+        fullScreen()
     }
 
-    public void onBack() {
-        this._mActivity.onBackPressed();
+    fun onBack() {
+        _mActivity.onBackPressed()
     }
 
-    public void setTittle() {
-        var frameActivity = this._mActivity;
+    fun setTittle() {
+        val frameActivity: FragmentActivity? = this._mActivity
         if (frameActivity != null) {
-            String titleStr = setTitleStr();
+            var titleStr: String? = setTitleStr()
             if (titleStr == null) {
-                titleStr = "";
+                titleStr = ""
             }
-            frameActivity.setTitle(titleStr);
+            frameActivity.setTitle(titleStr)
         }
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFFragment, androidx.fragment.app.Fragment
-    public void onHiddenChanged(boolean z) {
+    // com.kkkcut.e20j.base.BaseFFragment, androidx.fragment.app.Fragment
+    override fun onHiddenChanged(z: Boolean) {
         if (z || !isAdded()) {
-            return;
+            return
         }
-        setTittle();
+        setTittle()
     }
-
 }

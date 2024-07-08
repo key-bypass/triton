@@ -10,19 +10,12 @@ import java.util.Locale
 
 /* loaded from: classes.dex */
 class UserDataAdapter<T> : BaseQuickAdapter<T, BaseAutolayoutHolder>(R.layout.item_user_data) {
-    /* JADX WARN: Multi-variable type inference failed */
-    // com.chad.library.adapter.base.BaseQuickAdapter
-    protected /* bridge */ /* synthetic */ override fun convert(
+    override fun convert(
         baseAutolayoutHolder: BaseAutolayoutHolder,
         obj: T
     ) {
-        convert2(baseAutolayoutHolder, obj)
-    }
-
-    /* JADX WARN: Multi-variable type inference failed */ /* renamed from: convert, reason: avoid collision after fix types in other method */
-    protected fun convert2(baseAutolayoutHolder: BaseAutolayoutHolder, t: T) {
-        if (t is CutHistoryData) {
-            val cutHistoryData = t as CutHistoryData
+        if (obj is CutHistoryData) {
+            val cutHistoryData = obj as CutHistoryData
             var title = cutHistoryData.title
             if (title.contains("--")) {
                 val split = title.split("--".toRegex()).dropLastWhile { it.isEmpty() }
@@ -36,9 +29,9 @@ class UserDataAdapter<T> : BaseQuickAdapter<T, BaseAutolayoutHolder>(R.layout.it
                 .addOnClickListener(
                     R.id.iv_edit
                 )
-            val DateToString: CharSequence = DateToString(cutHistoryData.time)
-            if (!TextUtils.isEmpty(DateToString)) {
-                baseAutolayoutHolder.setText(R.id.tv_time, DateToString)
+            val date: CharSequence = dateToString(cutHistoryData.time)
+            if (!TextUtils.isEmpty(date)) {
+                baseAutolayoutHolder.setText(R.id.tv_time, date)
             } else {
                 baseAutolayoutHolder.setText(R.id.tv_time, "")
             }
@@ -51,7 +44,7 @@ class UserDataAdapter<T> : BaseQuickAdapter<T, BaseAutolayoutHolder>(R.layout.it
                 return
             }
         }
-        val collectionData = t as CollectionData
+        val collectionData = obj as CollectionData
         var title2 = collectionData.title
         if (title2.contains("--")) {
             val split2 = title2.split("--".toRegex()).dropLastWhile { it.isEmpty() }
@@ -65,15 +58,15 @@ class UserDataAdapter<T> : BaseQuickAdapter<T, BaseAutolayoutHolder>(R.layout.it
             .setText(R.id.tv_remark, collectionData.remark).addOnClickListener(
                 R.id.iv_delete
             ).addOnClickListener(R.id.iv_edit)
-        val DateToString2: CharSequence = DateToString(collectionData.time)
-        if (!TextUtils.isEmpty(DateToString2)) {
-            baseAutolayoutHolder.setText(R.id.tv_time, DateToString2)
+        val dateToStringValue = dateToString(collectionData.time)
+        if (!TextUtils.isEmpty(dateToStringValue)) {
+            baseAutolayoutHolder.setText(R.id.tv_time, dateToStringValue)
         } else {
             baseAutolayoutHolder.setText(R.id.tv_time, "")
         }
     }
 
-    private fun DateToString(j: Long): String {
+    private fun dateToString(j: Long): String {
         return if (j == 0L) "" else SimpleDateFormat("yyyy/MM/dd hh:mm", Locale.US).format(j)
     }
 }

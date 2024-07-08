@@ -1,99 +1,89 @@
-package com.kkkcut.e20j.ui.activity;
+package com.kkkcut.e20j.ui.activity
 
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import com.gyf.barlibrary.ImmersionBar;
-import com.kkkcut.e20j.androidquick.tool.StringUtil;
-import com.kkkcut.e20j.base.BaseFActivity;
-import com.kkkcut.e20j.ui.dialog.LoadingDialog;
-import com.kkkcut.e20j.view.customkeyboard.KeyboardManager;
+import android.graphics.Rect
+import android.os.Bundle
+import android.os.Handler
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import com.gyf.barlibrary.ImmersionBar.Companion.with
+import com.kkkcut.e20j.androidquick.tool.StringUtil
+import com.kkkcut.e20j.base.BaseFActivity
+import com.kkkcut.e20j.ui.dialog.LoadingDialog
+import com.kkkcut.e20j.view.customkeyboard.KeyboardManager
 
 /* loaded from: classes.dex */
-public abstract class BaseCustomKeyBoardActivity extends BaseFActivity {
-    private KeyboardManager keyboardManager;
-    private LoadingDialog loadingDialog;
+abstract class BaseCustomKeyBoardActivity : BaseFActivity() {
+    private var keyboardManager: KeyboardManager? = null
+    private var loadingDialog: LoadingDialog? = null
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.kkkcut.e20j.base.BaseFActivity, com.kkkcut.e20j.base.HideStatusActivity, com.kkkcut.e20j.androidquick.ui.base.QuickActivity, androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        ImmersionBar.with(this).fitsSystemWindows(true);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        with(this).fitsSystemWindows(true)
     }
 
-    public void bindToEditor(EditText editText, int i) {
+    fun bindToEditor(editText: EditText?, i: Int) {
         if (this.keyboardManager == null) {
-            this.keyboardManager = new KeyboardManager(this);
+            this.keyboardManager = KeyboardManager(this)
         }
-        this.keyboardManager.bindToEditor(editText, i);
+        keyboardManager!!.bindToEditor(editText, i)
     }
 
-    public void hideSoftKeyboard() {
-        this.keyboardManager.hideSoftKeyboard();
+    fun hideSoftKeyboard() {
+        keyboardManager!!.hideSoftKeyboard()
     }
 
-    @Override // com.kkkcut.e20j.base.BaseFActivity, com.kkkcut.e20j.base.HideStatusActivity, android.app.Activity, android.view.Window.Callback, me.yokeyword.fragmentation.ISupportActivity
-    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
-        if (isSoftShowing()) {
-            hideInput();
-            return true;
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (isSoftShowing) {
+            hideInput()
+            return true
         }
         if (this.keyboardManager != null) {
-            if (motionEvent.getY() > this.keyboardManager.getTop()) {
-                return super.dispatchTouchEvent(motionEvent);
+            if (ev!!.y > keyboardManager!!.top) {
+                return super.dispatchTouchEvent(ev)
             }
-            if (motionEvent.getAction() == 0) {
-                hideSoftKeyboard();
+            if (ev.action == 0) {
+                hideSoftKeyboard()
             }
         }
-        return super.dispatchTouchEvent(motionEvent);
+        return super.dispatchTouchEvent(ev)
     }
 
-    private boolean isSoftShowing() {
-        int height = getWindow().getDecorView().getHeight();
-        Rect rect = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        return (height * 2) / 3 > rect.bottom;
-    }
+    private val isSoftShowing: Boolean
+        get() {
+            val height = window.decorView.height
+            val rect = Rect()
+            window.decorView.getWindowVisibleDisplayFrame(rect)
+            return (height * 2) / 3 > rect.bottom
+        }
 
-    protected void hideInput() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService("input_method");
-        View peekDecorView = getWindow().peekDecorView();
+    private fun hideInput() {
+        val inputMethodManager = getSystemService("input_method") as InputMethodManager
+        val peekDecorView = window.peekDecorView()
         if (peekDecorView != null) {
-            inputMethodManager.hideSoftInputFromWindow(peekDecorView.getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(peekDecorView.windowToken, 0)
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public void showLoadingDialog(String str) {
+    open fun showLoadingDialog(str: String?) {
         if (this.loadingDialog == null) {
-            this.loadingDialog = new LoadingDialog(this);
+            this.loadingDialog = LoadingDialog(this)
         }
         if (!StringUtil.isEmpty(str)) {
-            this.loadingDialog.setTip(str);
+            loadingDialog!!.setTip(str)
         }
-        this.loadingDialog.setCancelable(false);
-        if (!this.loadingDialog.isShowing()) {
-            this.loadingDialog.show();
+        loadingDialog!!.setCancelable(false)
+        if (!loadingDialog!!.isShowing) {
+            loadingDialog!!.show()
         }
-        new Handler().postDelayed(new Runnable() { // from class: com.kkkcut.e20j.ui.activity.BaseCustomKeyBoardActivity.1
-            @Override // java.lang.Runnable
-            public void run() {
-                BaseCustomKeyBoardActivity.this.dissmissLoadingDialog();
-            }
-        }, 15000L);
+        Handler().postDelayed(this::dismissLoadingDialog, 15000L)
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public void dissmissLoadingDialog() {
-        LoadingDialog loadingDialog = this.loadingDialog;
-        if (loadingDialog == null || !loadingDialog.isShowing()) {
-            return;
+    open fun dismissLoadingDialog() {
+        val loadingDialog = this.loadingDialog
+        if (loadingDialog == null || !loadingDialog.isShowing) {
+            return
         }
-        this.loadingDialog.dismiss();
+        this.loadingDialog!!.dismiss()
     }
 }

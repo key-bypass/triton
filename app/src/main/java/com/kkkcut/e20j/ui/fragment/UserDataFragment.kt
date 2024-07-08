@@ -1,314 +1,311 @@
-package com.kkkcut.e20j.ui.fragment;
+package com.kkkcut.e20j.ui.fragment
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.kkkcut.e20j.DbBean.GoOperatBean;
-import com.kkkcut.e20j.DbBean.userDB.CollectionData;
-import com.kkkcut.e20j.DbBean.userDB.CutHistoryData;
-import com.kkkcut.e20j.MyApplication;
-import com.kkkcut.e20j.adapter.UserDataAdapter;
-import com.kkkcut.e20j.androidquick.network.RetrofitManager;
-import com.kkkcut.e20j.androidquick.tool.SPUtils;
-import com.kkkcut.e20j.bean.gsonBean.GetTestData;
-import com.kkkcut.e20j.dao.UserDataDaoManager;
-import com.kkkcut.e20j.net.Apis;
-import com.kkkcut.e20j.net.TUitls;
-import com.kkkcut.e20j.ui.dialog.EditDialog;
-import com.kkkcut.e20j.ui.dialog.RemindDialog;
-import com.kkkcut.e20j.us.R;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.kkkcut.e20j.DbBean.GoOperatBean
+import com.kkkcut.e20j.DbBean.userDB.CollectionData
+import com.kkkcut.e20j.DbBean.userDB.CutHistoryData
+import com.kkkcut.e20j.MyApplication
+import com.kkkcut.e20j.adapter.UserDataAdapter
+import com.kkkcut.e20j.androidquick.network.RetrofitManager
+import com.kkkcut.e20j.androidquick.tool.SPUtils
+import com.kkkcut.e20j.bean.gsonBean.GetTestData
+import com.kkkcut.e20j.dao.UserDataDaoManager
+import com.kkkcut.e20j.net.Apis
+import com.kkkcut.e20j.net.TUitls
+import com.kkkcut.e20j.ui.dialog.EditDialog
+import com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
+import com.kkkcut.e20j.ui.dialog.RemindDialog
+import com.kkkcut.e20j.us.R
+import com.kkkcut.e20j.us.databinding.FragmentUserDataBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.Random
+import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
-public class UserDataFragment extends BaseBackFragment implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
-    public static final int COLLECTION = 1;
-    public static final int CUT_HISTORY = 0;
-    private static final int PAGE_SIZE = 50;
-    private static final String TYPE = "type";
-    BaseQuickAdapter adapter;
+class UserDataFragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener,
+    BaseQuickAdapter.OnItemChildClickListener {
+    var binding: FragmentUserDataBinding? = null
+    var adapter: BaseQuickAdapter<CollectionData, *>? = null
 
-    Button btGetTestData;
+    private var pageIndex: Int = 0
 
-    EditText etSearch;
-    private int pageIndex;
-
-    RecyclerView rvUserData;
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected int getContentViewLayoutID() {
-        return R.layout.fragment_user_data;
+    override fun onCreateView(
+        layoutInflater: LayoutInflater,
+        viewGroup: ViewGroup?,
+        bundle: Bundle?
+    ): View {
+        super.onCreateView(layoutInflater, viewGroup, bundle)
+        this.binding = FragmentUserDataBinding.inflate(layoutInflater, viewGroup, false)
+        return binding!!.getRoot()
     }
 
-    static /* synthetic */ int access$008(UserDataFragment userDataFragment) {
-        int i = userDataFragment.pageIndex;
-        userDataFragment.pageIndex = i + 1;
-        return i;
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun getContentViewLayoutID(): Int {
+        return R.layout.fragment_user_data
     }
 
-    public static UserDataFragment newInstance(int i) {
-        Bundle bundle = new Bundle();
-        UserDataFragment userDataFragment = new UserDataFragment();
-        bundle.putInt(TYPE, i);
-        userDataFragment.setArguments(bundle);
-        return userDataFragment;
-    }
-
-    @Override // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
-    protected void initViewsAndEvents() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(1);
-        this.rvUserData.setLayoutManager(linearLayoutManager);
-        this.rvUserData.addItemDecoration(new DividerItemDecoration(getContext(), 1));
-        if (getArguments().getInt(TYPE) == 0) {
-            UserDataAdapter userDataAdapter = new UserDataAdapter();
-            this.adapter = userDataAdapter;
-            this.rvUserData.setAdapter(userDataAdapter);
-            getDataList(0, 50, false);
+    // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
+    override fun initViewsAndEvents() {
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.setOrientation(1)
+        binding!!.rvUserData.setLayoutManager(linearLayoutManager)
+        binding!!.rvUserData.addItemDecoration(DividerItemDecoration(context, 1))
+        if (arguments!!.getInt(TYPE) == 0) {
+            this.adapter = UserDataAdapter<CollectionData>()
+            binding!!.rvUserData.setAdapter(adapter)
+            getDataList(0, 50, false)
         } else {
-            UserDataAdapter userDataAdapter2 = new UserDataAdapter();
-            this.adapter = userDataAdapter2;
-            this.rvUserData.setAdapter(userDataAdapter2);
-            getDataList(0, 50, false);
-            if (MyApplication.getInstance().isShowRealDepth()) {
-                this.btGetTestData.setVisibility(0);
+            this.adapter = UserDataAdapter<CollectionData>()
+            binding!!.rvUserData.setAdapter(adapter)
+            getDataList(0, 50, false)
+            if (MyApplication.getInstance().isShowRealDepth) {
+                binding!!.btGetTestData.visibility = 0
             }
         }
-        this.adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.1
-            @Override // com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener
-            public void onLoadMoreRequested() {
-                UserDataFragment.access$008(UserDataFragment.this);
-                Log.d(UserDataFragment.TAG, "onLoadMoreRequested() called" + UserDataFragment.this.pageIndex);
-                UserDataFragment userDataFragment = UserDataFragment.this;
-                userDataFragment.getDataList(userDataFragment.pageIndex, 50, false);
-            }
-        }, this.rvUserData);
-        this.adapter.setOnItemChildClickListener(this);
-        this.adapter.setOnItemClickListener(this);
+
+        adapter!!.setOnLoadMoreListener({
+            nextPage(this@UserDataFragment)
+            Log.d(TAG, "onLoadMoreRequested() called" + this@UserDataFragment.pageIndex)
+            val userDataFragment: UserDataFragment = this@UserDataFragment
+            userDataFragment.getDataList(userDataFragment.pageIndex, 50, false)
+        }, binding!!.rvUserData)
+        adapter!!.setOnItemChildClickListener(this)
+        adapter!!.setOnItemClickListener(this)
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void getDataList(final int i, final int i2, final boolean z) {
-        final String trim = this.etSearch.getText().toString().trim();
-        Disposable subscribe = Observable.fromCallable(new Callable() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment$$ExternalSyntheticLambda1
-            @Override // java.util.concurrent.Callable
-            public final Object call() {
-                return UserDataFragment.this.m47x96f9317c(i, i2, trim);
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment$$ExternalSyntheticLambda0
-            @Override // io.reactivex.functions.Consumer
-            public final void accept(Object obj) throws Exception {
-                UserDataFragment.this.m48x5070bf1b(z, (List) obj);
-            }
-        });
-        clearDisposable();
-        addDisposable(subscribe);
+    fun getDataList(i: Int, i2: Int, newSearch: Boolean) {
+        val trim: String = binding!!.etSearch.getText().toString().trim { it <= ' ' }
+
+        val subscribe: Disposable = Observable.fromCallable{ this@UserDataFragment.getData(i, i2, trim) }
+        .subscribeOn(
+            Schedulers.io()
+        ).observeOn(AndroidSchedulers.mainThread()).subscribe({ list ->
+                if (newSearch) {
+                    adapter!!.setNewData(list as List<CollectionData>)
+                } else {
+                    adapter!!.addData(list as List<CollectionData>)
+                }
+                if (list!!.size < 50) {
+                    adapter!!.loadMoreEnd(false)
+                } else {
+                    adapter!!.loadMoreComplete()
+                }
+            }, { dismissLoadingDialog() })
+        clearDisposable()
+        addDisposable(subscribe)
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* renamed from: lambda$getDataList$1$com-kkkcut-e20j-ui-fragment-UserDataFragment, reason: not valid java name */
-    public /* synthetic */ void m48x5070bf1b(boolean z, List list) throws Exception {
-        if (z) {
-            this.adapter.setNewData(list);
-        } else {
-            this.adapter.addData((Collection) list);
+    fun getData(i: Int, i2: Int, str: String): List<*> {
+        if (arguments!!.getInt(TYPE) == 0) {
+            return UserDataDaoManager.getInstance(context).getCutHistory(i, i2, str)
         }
-        if (list.size() < 50) {
-            this.adapter.loadMoreEnd(false);
-        } else {
-            this.adapter.loadMoreComplete();
-        }
+        return UserDataDaoManager.getInstance(context).getCollection(i, i2, str)
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: getData, reason: merged with bridge method [inline-methods] */
-    public List m47x96f9317c(int i, int i2, String str) {
-        if (getArguments().getInt(TYPE) == 0) {
-            return UserDataDaoManager.getInstance(getContext()).getCutHistory(i, i2, str);
-        }
-        return UserDataDaoManager.getInstance(getContext()).getCollection(i, i2, str);
-    }
-
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
-    public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        int i2 = getArguments().getInt(TYPE);
-        int id = view.getId();
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
+    override fun onItemChildClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        val i2: Int = getArguments()!!.getInt(TYPE)
+        val id: Int = view.getId()
         if (id != R.id.iv_delete) {
             if (id != R.id.iv_edit) {
-                return;
+                return
             }
-            showEditDialog(baseQuickAdapter.getData().get(i), (TextView) ((View) view.getParent()).findViewById(R.id.tv_remark));
-            return;
+            showEditDialog(
+                baseQuickAdapter.getData().get(i), (view.getParent() as View).findViewById(
+                    R.id.tv_remark
+                )
+            )
+            return
         }
         if (i2 == 0) {
-            UserDataDaoManager.getInstance(getContext()).deleteCutHistory((CutHistoryData) baseQuickAdapter.getData().get(i));
+            UserDataDaoManager.getInstance(getContext())
+                .deleteCutHistory(baseQuickAdapter.getData().get(i) as CutHistoryData?)
         } else {
-            UserDataDaoManager.getInstance(getContext()).deleteCollection((CollectionData) baseQuickAdapter.getData().get(i));
+            UserDataDaoManager.getInstance(getContext())
+                .deleteCollection(baseQuickAdapter.getData().get(i) as CollectionData?)
         }
-        baseQuickAdapter.remove(i);
+        baseQuickAdapter.remove(i)
     }
 
-    private void showEditDialog(final Object obj, final TextView textView) {
-        String remark;
-        final int i = getArguments().getInt(TYPE);
+    private fun showEditDialog(obj: Any, textView: TextView) {
+        val remark: String
+        val i: Int = getArguments()!!.getInt(TYPE)
         if (i == 0) {
-            remark = ((CutHistoryData) obj).getRemark();
+            remark = (obj as CutHistoryData).getRemark()
         } else {
-            remark = ((CollectionData) obj).getRemark();
+            remark = (obj as CollectionData).getRemark()
         }
-        final String str = remark;
-        EditDialog editDialog = new EditDialog(getContext());
-        editDialog.setTip(getString(R.string.enter_remarks));
+        val str: String = remark
+        val editDialog: EditDialog = EditDialog(getContext())
+        editDialog.setTip(getString(R.string.enter_remarks))
         if (!TextUtils.isEmpty(str)) {
-            editDialog.setEditTextContent(str);
+            editDialog.setEditTextContent(str)
         }
-        editDialog.setDialogBtnCallback(new EditDialog.DialogInputFinishCallBack() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.2
-            @Override // com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
-            public void onDialogButClick(String str2) {
-                if (TextUtils.isEmpty(str2) || str2.equals(str)) {
-                    return;
-                }
-                textView.setText(str2);
-                if (i == 0) {
-                    CutHistoryData cutHistoryData = (CutHistoryData) obj;
-                    cutHistoryData.setRemark(str2);
-                    UserDataDaoManager.getInstance(UserDataFragment.this.getContext()).saveCutHistory(cutHistoryData);
-                } else {
-                    CollectionData collectionData = (CollectionData) obj;
-                    collectionData.setRemark(str2);
-                    UserDataDaoManager.getInstance(UserDataFragment.this.getContext()).collectKey(collectionData);
-                }
+
+        editDialog.setDialogBtnCallback { str2: String ->
+            if (TextUtils.isEmpty(str2) || (str2 == str)) {
+                return@setDialogBtnCallback
             }
-        });
-        editDialog.show();
+            textView.text = str2
+            if (i == 0) {
+                val cutHistoryData: CutHistoryData = obj as CutHistoryData
+                cutHistoryData.remark = str2
+                UserDataDaoManager.getInstance(this@UserDataFragment.context)
+                    .saveCutHistory(cutHistoryData)
+            } else {
+                val collectionData: CollectionData = obj as CollectionData
+                collectionData.remark = str2
+                UserDataDaoManager.getInstance(this@UserDataFragment.context)
+                    .collectKey(collectionData)
+            }
+        }
+        editDialog.show()
     }
 
-    @Override // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-    public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        if (getArguments().getInt(TYPE) == 0) {
-            start(KeyOperateFragment.newInstance(new GoOperatBean((CutHistoryData) baseQuickAdapter.getData().get(i))));
+    // com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
+    override fun onItemClick(baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int) {
+        if (getArguments()!!.getInt(TYPE) == 0) {
+            start(
+                KeyOperateFragment.newInstance(
+                    GoOperatBean(
+                        (baseQuickAdapter.getData().get(i) as CutHistoryData?)!!
+                    )
+                )
+            )
         } else {
-            start(KeyOperateFragment.newInstance(new GoOperatBean((CollectionData) baseQuickAdapter.getData().get(i))));
+            start(
+                KeyOperateFragment.newInstance(
+                    GoOperatBean(
+                        (baseQuickAdapter.getData().get(i) as CollectionData?)!!
+                    )
+                )
+            )
         }
     }
 
-    @Override // com.kkkcut.e20j.ui.fragment.BaseBackFragment
-    public String setTitleStr() {
-        if (getArguments().getInt(TYPE) == 0) {
-            return getString(R.string.cut_history);
+    // com.kkkcut.e20j.ui.fragment.BaseBackFragment
+    override fun setTitleStr(): String? {
+        if (getArguments()!!.getInt(TYPE) == 0) {
+            return getString(R.string.cut_history)
         }
-        return getString(R.string.favorites);
+        return getString(R.string.favorites)
     }
 
-    public void onViewClicked(View view) {
-        int id = view.getId();
+    fun onViewClicked(view: View) {
+        val id: Int = view.getId()
         if (id != R.id.bt_delete_all) {
             if (id != R.id.bt_get_test_data) {
-                return;
+                return
             }
-            addDisposable(((Apis) RetrofitManager.getInstance().createApi(Apis.class)).getTestData(TUitls.getTestData(SPUtils.getString("series", "E219082007"))).subscribeOn(Schedulers.io()).flatMap(new Function<GetTestData, ObservableSource<GetTestData.DataListBean>>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.8
-                @Override // io.reactivex.functions.Function
-                public ObservableSource<GetTestData.DataListBean> apply(GetTestData getTestData) throws Exception {
-                    if (!"0".equals(getTestData.getCode())) {
-                        Log.i(UserDataFragment.TAG, "getCode: 0");
-                        return null;
+
+            addDisposable(
+                RetrofitManager.getInstance().createApi(Apis::class.java)
+                    .getTestData(TUitls.getTestData(SPUtils.getString("series", "E219082007")))
+                    .subscribeOn(
+                        Schedulers.io()
+                    ).flatMap { getTestData: GetTestData ->
+                        if ("0" != getTestData.code) {
+                            Log.i(TAG, "getCode: 0")
+                        }
+                        var dataList: List<GetTestData.DataListBean>? = getTestData.data_list
+                        if (dataList == null) {
+                            Log.i(TAG, "data_list: null")
+                            dataList = ArrayList()
+                        }
+                        Observable.fromIterable(dataList)
                     }
-                    List<GetTestData.DataListBean> data_list = getTestData.getData_list();
-                    if (data_list == null) {
-                        Log.i(UserDataFragment.TAG, "data_list: null");
-                        return null;
-                    }
-                    return Observable.fromIterable(data_list);
-                }
-            }).map(new Function<GetTestData.DataListBean, CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.7
-                @Override // io.reactivex.functions.Function
-                public CollectionData apply(GetTestData.DataListBean dataListBean) throws Exception {
-                    new Random().nextInt(Integer.MAX_VALUE);
-                    CollectionData collectionData = new CollectionData();
-                    collectionData.setTitle(dataListBean.getTitle());
-                    collectionData.setToothCode(dataListBean.getTooth_Code());
-                    collectionData.setBasicDataID(Integer.parseInt(dataListBean.getBasic_data_ID()));
-                    collectionData.setCuts(dataListBean.getCuts());
-                    return collectionData;
-                }
-            }).doOnNext(new Consumer<CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.6
-                @Override // io.reactivex.functions.Consumer
-                public void accept(CollectionData collectionData) throws Exception {
-                    UserDataDaoManager.getInstance(UserDataFragment.this.getContext()).collectKey(collectionData);
-                }
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<CollectionData>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.4
-                @Override // io.reactivex.functions.Consumer
-                public void accept(CollectionData collectionData) throws Exception {
-                    Log.i(UserDataFragment.TAG, "accept: " + collectionData.getTitle());
-                    UserDataFragment.this.adapter.addData(collectionData);
-                }
-            }, new Consumer<Throwable>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.5
-                @Override // io.reactivex.functions.Consumer
-                public void accept(Throwable th) throws Exception {
-                    Log.i(UserDataFragment.TAG, "throwable: " + th.getMessage());
-                }
-            }));
+                .map { dataListBean: GetTestData.DataListBean ->
+                            Random().nextInt(Int.MAX_VALUE)
+                            val collectionData = CollectionData()
+                    collectionData.title = dataListBean.title
+                    collectionData.toothCode = dataListBean.tooth_Code
+                    collectionData.basicDataID = dataListBean.basic_data_ID.toInt()
+                    collectionData.cuts = dataListBean.cuts
+                            collectionData
+                        }
+                    .doOnNext { collectionData: CollectionData? ->
+                        UserDataDaoManager.getInstance(
+                            this@UserDataFragment.context
+                        ).collectKey(collectionData)
+                    }.observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe(
+                        { collectionData: CollectionData ->
+                            Log.i(TAG, "accept: " + collectionData.title)
+                            adapter!!.addData(collectionData)
+                        }, { th: Throwable -> Log.i(TAG, "throwable: " + th.message) }, { dismissLoadingDialog() }
+                )
+            )
         } else {
-            RemindDialog remindDialog = new RemindDialog(getContext());
-            remindDialog.setRemindMsg(getString(R.string.delete_all_recordes));
-            remindDialog.setDialogBtnCallback(new RemindDialog.DialogBtnCallBack() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.3
-                @Override // com.kkkcut.e20j.ui.dialog.RemindDialog.DialogBtnCallBack
-                public void onDialogButClick(boolean z) {
-                    if (z) {
-                        UserDataFragment.this.deleteAll();
-                    }
+            val remindDialog: RemindDialog = RemindDialog(getContext())
+            remindDialog.setRemindMsg(getString(R.string.delete_all_recordes))
+
+            remindDialog.setDialogBtnCallback(RemindDialog.DialogBtnCallBack({ z: Boolean ->
+                if (z) {
+                    this@UserDataFragment.deleteAll()
                 }
-            });
-            remindDialog.show();
+            }))
+            remindDialog.show()
         }
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void deleteAll() {
-        addDisposable(Observable.fromCallable(new Callable<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.10
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // java.util.concurrent.Callable
-            public Boolean call() throws Exception {
-                if (UserDataFragment.this.getArguments().getInt(UserDataFragment.TYPE) == 0) {
-                    return Boolean.valueOf(UserDataDaoManager.getInstance(UserDataFragment.this.getContext()).deleteAllCutHistories());
+    fun deleteAll() {
+        addDisposable(
+            Observable.fromCallable<Boolean> {
+                if (arguments!!.getInt(TYPE) == 0) {
+                    return@fromCallable UserDataDaoManager.getInstance(this@UserDataFragment.context)
+                        .deleteAllCutHistories()
                 }
-                return Boolean.valueOf(UserDataDaoManager.getInstance(UserDataFragment.this.getContext()).deleteAllCollections());
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() { // from class: com.kkkcut.e20j.ui.fragment.UserDataFragment.9
-            @Override // io.reactivex.functions.Consumer
-            public void accept(Boolean bool) throws Exception {
-                if (bool.booleanValue()) {
-                    UserDataFragment.this.adapter.setNewData(null);
+                UserDataDaoManager.getInstance(this@UserDataFragment.context)
+                    .deleteAllCollections()
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ bool: Boolean ->
+                if (bool) {
+                    adapter!!.setNewData(null)
                 }
-            }
-        }));
+            },  { dismissLoadingDialog() })
+        )
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public void afterTextChanged(Editable editable) {
-        this.pageIndex = 0;
-        getDataList(0, 50, true);
+    fun afterTextChanged(editable: Editable?) {
+        this.pageIndex = 0
+        getDataList(0, 50, true)
+    }
+
+    companion object {
+        val COLLECTION: Int = 1
+        val CUT_HISTORY: Int = 0
+        private val PAGE_SIZE: Int = 50
+        private val TYPE: String = "type"
+
+        fun nextPage(userDataFragment: UserDataFragment): Int {
+            val i: Int = userDataFragment.pageIndex
+            userDataFragment.pageIndex = i + 1
+            return i
+        }
+
+        fun newInstance(i: Int): UserDataFragment {
+            val bundle: Bundle = Bundle()
+            val userDataFragment: UserDataFragment = UserDataFragment()
+            bundle.putInt(TYPE, i)
+            userDataFragment.setArguments(bundle)
+            return userDataFragment
+        }
     }
 }

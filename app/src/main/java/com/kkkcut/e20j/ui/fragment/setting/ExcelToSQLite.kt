@@ -1,232 +1,237 @@
-package com.kkkcut.e20j.ui.fragment.setting;
+package com.kkkcut.e20j.ui.fragment.setting
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
-import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity;
-import com.liulishuo.filedownloader.model.FileDownloadModel;
-import java.io.FileInputStream;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.regex.Pattern;
-import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
+import com.kkkcut.e20j.ui.activity.BarCodeRemindActivity
+import com.liulishuo.filedownloader.model.FileDownloadModel
+import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import java.io.FileInputStream
+import java.math.BigInteger
+import java.util.Locale
+import java.util.regex.Pattern
 
 /* loaded from: classes.dex */
-public class ExcelToSQLite {
-    private static Handler handler = new Handler(Looper.getMainLooper());
-    private SQLiteDatabase database;
-    private String databasePath;
-    private String decryptKey;
-    private String excelPath;
-    private Context mContext;
+class ExcelToSQLite private constructor(
+    private val mContext: Context?,
+    private val databasePath: String?,
+    private val excelPath: String?,
+    private val decryptKey: String?
+) {
+    private var database: SQLiteDatabase? = null
 
     /* loaded from: classes.dex */
-    public interface ImportListener {
-        void onCompleted(String str);
+    interface ImportListener {
+        fun onCompleted(str: String?)
 
-        void onError(Exception exc);
+        fun onError(exc: Exception)
 
-        void onStart();
+        fun onStart()
     }
 
     /* loaded from: classes.dex */
-    public static class Builder {
-        private Context context;
-        private String dataBasePath;
-        private String decryptKey;
-        private String excelPath;
+    class Builder(private val context: Context?) {
+        private var dataBasePath: String? = null
+        private var decryptKey: String? = null
+        private var excelPath: String? = null
 
-        public Builder(Context context) {
-            this.context = context;
-        }
-
-        public ExcelToSQLite build() {
+        fun build(): ExcelToSQLite {
             if (TextUtils.isEmpty(this.dataBasePath)) {
-                throw new IllegalArgumentException("Database name must not be null.");
+                throw IllegalArgumentException("Database name must not be null.")
             }
-            return new ExcelToSQLite(this.context, this.dataBasePath, this.excelPath, this.decryptKey);
+            return ExcelToSQLite(this.context, this.dataBasePath, this.excelPath, this.decryptKey)
         }
 
-        public Builder setDataBasePath(String str) {
-            this.dataBasePath = str;
-            return this;
+        fun setDataBasePath(str: String?): Builder {
+            this.dataBasePath = str
+            return this
         }
 
-        public Builder setExcelPath(String str) {
-            this.excelPath = str;
-            return this;
+        fun setExcelPath(str: String?): Builder {
+            this.excelPath = str
+            return this
         }
 
-        public Builder setDecryptKey(String str) {
-            this.decryptKey = str;
-            return this;
+        fun setDecryptKey(str: String?): Builder {
+            this.decryptKey = str
+            return this
         }
 
-        public void start() {
-            build().start();
+        fun start() {
+            build().start()
         }
 
-        public void start(ImportListener importListener) {
-            build().start(importListener);
+        fun start(importListener: ImportListener?) {
+            build().start(importListener)
         }
     }
 
-    private ExcelToSQLite(Context context, String str, String str2, String str3) {
-        this.mContext = context;
-        this.excelPath = str2;
-        this.decryptKey = str3;
-        this.databasePath = str;
+    init {
         try {
-            this.database = SQLiteDatabase.openOrCreateDatabase(str, (SQLiteDatabase.CursorFactory) null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            this.database = SQLiteDatabase.openOrCreateDatabase(
+                (databasePath)!!, null as SQLiteDatabase.CursorFactory?
+            )
+        } catch (e: Exception) {
+            throw RuntimeException(e)
         }
     }
 
-    public boolean start() {
+    fun start(): Boolean {
         if (TextUtils.isEmpty(this.excelPath)) {
-            throw new IllegalArgumentException("Asset file or external file name must not be null.");
+            throw IllegalArgumentException("Asset file or external file name must not be null.")
         }
         try {
-            return importTables(this.excelPath);
-        } catch (Exception unused) {
-            SQLiteDatabase sQLiteDatabase = this.database;
+            return importTables(this.excelPath)
+        } catch (unused: Exception) {
+            val sQLiteDatabase: SQLiteDatabase? = this.database
             if (sQLiteDatabase == null || !sQLiteDatabase.isOpen()) {
-                return false;
+                return false
             }
-            this.database.close();
-            return false;
+            database!!.close()
+            return false
         }
     }
 
-    public void start(final ImportListener importListener) {
+    fun start(importListener: ImportListener?) {
         if (TextUtils.isEmpty(this.excelPath)) {
-            throw new IllegalArgumentException("Asset file or external file name must not be null.");
+            throw IllegalArgumentException("Asset file or external file name must not be null.")
         }
-        if (importListener != null) {
-            importListener.onStart();
-        }
-        new Thread(new Runnable() { // from class: com.kkkcut.e20j.ui.fragment.setting.ExcelToSQLite.1
-            @Override // java.lang.Runnable
-            public void run() {
-                try {
-                    ExcelToSQLite excelToSQLite = ExcelToSQLite.this;
-                    excelToSQLite.importTables(excelToSQLite.excelPath);
-                    if (importListener != null) {
-                        ExcelToSQLite.handler.post(new Runnable() { // from class: com.kkkcut.e20j.ui.fragment.setting.ExcelToSQLite.1.1
-                            @Override // java.lang.Runnable
-                            public void run() {
-                                importListener.onCompleted(ExcelToSQLite.this.databasePath);
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    if (ExcelToSQLite.this.database != null && ExcelToSQLite.this.database.isOpen()) {
-                        ExcelToSQLite.this.database.close();
-                    }
-                    if (importListener != null) {
-                        ExcelToSQLite.handler.post(new Runnable() { // from class: com.kkkcut.e20j.ui.fragment.setting.ExcelToSQLite.1.2
-                            @Override // java.lang.Runnable
-                            public void run() {
-                                importListener.onError(e);
-                            }
-                        });
-                    }
+        importListener?.onStart()
+        Thread {
+            try {
+                val excelToSQLite: ExcelToSQLite = this@ExcelToSQLite
+                excelToSQLite.importTables(excelToSQLite.excelPath)
+                if (importListener != null) {
+                    handler.post { importListener.onCompleted(this@ExcelToSQLite.databasePath) }
+                }
+            } catch (e: Exception) {
+                if (this@ExcelToSQLite.database != null && database!!.isOpen) {
+                    database!!.close()
+                }
+                if (importListener != null) {
+                    handler.post { importListener.onError(e) }
                 }
             }
-        }).start();
+        }.start()
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public boolean importTables(String str) throws Exception {
-        FileInputStream fileInputStream = new FileInputStream(str);
-        if (str.toLowerCase().endsWith(".xls")) {
+    @Throws(Exception::class)
+    fun importTables(str: String?): Boolean {
+        val fileInputStream: FileInputStream = FileInputStream(str)
+        if (str!!.lowercase(Locale.getDefault()).endsWith(".xls")) {
             if (!TextUtils.isEmpty(this.decryptKey)) {
-                Biff8EncryptionKey.setCurrentUserPassword("1234567");
+                Biff8EncryptionKey.setCurrentUserPassword("1234567")
             }
-            HSSFWorkbook hSSFWorkbook = new HSSFWorkbook(fileInputStream);
-            fileInputStream.close();
-            int numberOfSheets = hSSFWorkbook.getNumberOfSheets();
-            for (int i = 0; i < numberOfSheets; i++) {
-                createTable(hSSFWorkbook.getSheetAt(i));
+            val hSSFWorkbook: HSSFWorkbook = HSSFWorkbook(fileInputStream)
+            fileInputStream.close()
+            val numberOfSheets: Int = hSSFWorkbook.getNumberOfSheets()
+            for (i in 0 until numberOfSheets) {
+                createTable(hSSFWorkbook.getSheetAt(i))
             }
-            this.database.close();
-            return true;
+            database!!.close()
+            return true
         }
-        fileInputStream.close();
-        throw new UnsupportedOperationException("Unsupported file format!");
+        fileInputStream.close()
+        throw UnsupportedOperationException("Unsupported file format!")
     }
 
-    private void createTable(Sheet sheet) {
-        long asLong;
-        Cursor rawQuery;
-        String sheetName = sheet.getSheetName();
-        Iterator<Row> rowIterator = sheet.rowIterator();
-        Row next = rowIterator.next();
-        ArrayList arrayList = new ArrayList();
-        for (int i = 0; i < next.getPhysicalNumberOfCells(); i++) {
-            next.getCell(i).getStringCellValue();
-            next.getPhysicalNumberOfCells();
-            arrayList.add(next.getCell(i).getStringCellValue());
+    private fun createTable(sheet: Sheet) {
+        var asLong: Long
+        var rawQuery: Cursor
+        val sheetName: String = sheet.sheetName
+        val rowIterator: Iterator<Row> = sheet.rowIterator()
+        val next: Row = rowIterator.next()
+        val arrayList = ArrayList<String>()
+        for (i in 0 until next.physicalNumberOfCells) {
+            next.getCell(i).stringCellValue
+            next.physicalNumberOfCells
+            arrayList.add(next.getCell(i).getStringCellValue())
         }
         while (rowIterator.hasNext()) {
-            Row next2 = rowIterator.next();
-            ContentValues contentValues = new ContentValues();
-            for (int i2 = 0; i2 < next2.getPhysicalNumberOfCells(); i2++) {
-                if (next2.getCell(i2) != null && !((String) arrayList.get(i2)).equalsIgnoreCase(FileDownloadModel.ID) && !((String) arrayList.get(i2)).equalsIgnoreCase(BarCodeRemindActivity.ID)) {
+            val next2: Row = rowIterator.next()
+            val contentValues: ContentValues = ContentValues()
+            for (i2 in 0 until next2.getPhysicalNumberOfCells()) {
+                if ((next2.getCell(i2) != null) && !(arrayList.get(i2) as String).equals(
+                        FileDownloadModel.ID,
+                        ignoreCase = true
+                    ) && !(arrayList.get(i2) as String).equals(
+                        BarCodeRemindActivity.ID,
+                        ignoreCase = true
+                    )
+                ) {
                     if (next2.getCell(i2).getCellTypeEnum() == CellType.NUMERIC) {
-                        contentValues.put((String) arrayList.get(i2), getRealStringValueOfDouble(Double.valueOf(next2.getCell(i2).getNumericCellValue())));
+                        contentValues.put(
+                            arrayList.get(i2) as String?,
+                            getRealStringValueOfDouble(next2.getCell(i2).getNumericCellValue())
+                        )
                     } else if (next2.getCell(i2).getCellTypeEnum() == CellType.STRING) {
-                        contentValues.put((String) arrayList.get(i2), next2.getCell(i2).getStringCellValue());
+                        contentValues.put(
+                            arrayList.get(i2) as String?,
+                            next2.getCell(i2).getStringCellValue()
+                        )
                     }
                 }
             }
             if (contentValues.size() != 0) {
                 if (!contentValues.containsKey("TIME")) {
-                    asLong = 0L;
-                    contentValues.put("TIME", (Long) 0L);
+                    asLong = 0L
+                    contentValues.put("TIME", 0L as Long?)
                 } else {
-                    asLong = contentValues.getAsLong("TIME");
+                    asLong = contentValues.getAsLong("TIME")
                 }
-                String asString = contentValues.getAsString("TITLE");
-                String asString2 = contentValues.getAsString("keyname");
+                val asString: String = contentValues.getAsString("TITLE")
+                val asString2: String = contentValues.getAsString("keyname")
                 if (!TextUtils.isEmpty(asString)) {
-                    rawQuery = this.database.rawQuery("select * from " + sheetName + " where  TIME=? and TITLE=?", new String[]{String.valueOf(asLong), asString});
+                    rawQuery = database!!.rawQuery(
+                        "select * from " + sheetName + " where  TIME=? and TITLE=?",
+                        arrayOf(asLong.toString(), asString)
+                    )
                 } else if (!TextUtils.isEmpty(asString2)) {
-                    rawQuery = this.database.rawQuery("select * from " + sheetName + " where  TIME=? and keyname=?", new String[]{String.valueOf(asLong), asString2});
+                    rawQuery = database!!.rawQuery(
+                        "select * from " + sheetName + " where  TIME=? and keyname=?",
+                        arrayOf(asLong.toString(), asString2)
+                    )
                 } else {
-                    this.database.insert(sheetName, null, contentValues);
-                    return;
+                    database!!.insert(sheetName, null, contentValues)
+                    return
                 }
                 if (!rawQuery.moveToNext()) {
-                    this.database.insert(sheetName, null, contentValues);
+                    database!!.insert(sheetName, null, contentValues)
                 }
-                rawQuery.close();
+                rawQuery.close()
             }
         }
     }
 
-    private static String getRealStringValueOfDouble(Double d) {
-        String d2 = d.toString();
-        boolean contains = d2.contains("E");
-        int indexOf = d2.indexOf(46);
-        if (!contains) {
-            return Pattern.compile(".0$").matcher(d2).find() ? d2.replace(".0", "") : d2;
+    companion object {
+        private val handler: Handler = Handler(Looper.getMainLooper())
+        private fun getRealStringValueOfDouble(d: Double): String {
+            val d2: String = d.toString()
+            val contains: Boolean = d2.contains("E")
+            val indexOf: Int = d2.indexOf(46.toChar())
+            if (!contains) {
+                return if (Pattern.compile(".0$").matcher(d2).find()) d2.replace(".0", "") else d2
+            }
+            val indexOf2: Int = d2.indexOf(69.toChar())
+            var length: Int = BigInteger(
+                d2.substring(
+                    indexOf + BigInteger.ONE.toInt(),
+                    indexOf2
+                )
+            ).toByteArray().size - d2.substring(indexOf2 + BigInteger.ONE.toInt()).toInt()
+            if (length <= 0) {
+                length = 0
+            }
+            return String.format("%." + length + "f", d)
         }
-        int indexOf2 = d2.indexOf(69);
-        int length = new BigInteger(d2.substring(indexOf + BigInteger.ONE.intValue(), indexOf2)).toByteArray().length - Integer.valueOf(d2.substring(indexOf2 + BigInteger.ONE.intValue())).intValue();
-        if (length <= 0) {
-            length = 0;
-        }
-        return String.format("%." + length + "f", d);
     }
 }
