@@ -2,10 +2,7 @@ package com.kkkcut.e20j.ui.fragment.blankcut
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.cutting.machine.MachineInfo
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment

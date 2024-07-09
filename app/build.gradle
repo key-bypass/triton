@@ -17,9 +17,7 @@ android {
     defaultConfig {
         applicationId 'com.kkkcut.e20j.us'
         minSdk 28
-        //noinspection EditedTargetSdkVersion
-        targetSdk 28
-        //noinspection ExpiredTargetSdkVersion
+        targetSdk 34
         versionCode 20240229
         versionName "77.0"
         multiDexEnabled true
@@ -81,7 +79,7 @@ dependencies {
     implementation libs.gson
     implementation libs.rxbinding
     implementation libs.glide
-    implementation libs.android.core
+    implementation libs.google.android.zxing
     implementation libs.library
     implementation libs.core.ktx
     implementation libs.androidx.recyclerview
@@ -95,6 +93,7 @@ dependencies {
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
     implementation libs.zxing.core
+    implementation project(':lib:lib_zxing')
 
     runtimeOnly libs.material
 
@@ -102,4 +101,5 @@ dependencies {
     implementation project(":ext:StatusBar:barlibrary")
     implementation project(":ext:cymchad.viewadapter:library")
     implementation project(":lib:prolific_serial")
+    implementation project(":lib:cutting_lib")
 }

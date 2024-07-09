@@ -16,7 +16,7 @@ import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.us.databinding.FragmentUpdateBinding
 import com.kkkcut.e20j.utils.AppUpdateUtil
 import com.kkkcut.e20j.utils.ResUpdateUtils
-import com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
+import com.kkkcut.e20j.utils.DataBaseUpdateListener
 import com.kkkcut.e20j.utils.ThemeUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -237,9 +237,9 @@ class DataUpdateFragment() : BaseBackFragment() {
                             }
 
                             // com.kkkcut.e20j.utils.ResUpdateUtils.DataBaseUpdateListener
-                            override fun error(th: Throwable) {
+                            override fun error(th: Throwable?) {
                                 progressDialog!!.dismiss()
-                                ToastUtil.showToast(th.message)
+                                ToastUtil.showToast(th?.message)
                             }
                         },
                         z

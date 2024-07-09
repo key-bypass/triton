@@ -23,7 +23,7 @@ import com.kkkcut.e20j.ui.dialog.RemindDialog
 import com.kkkcut.e20j.ui.dialog.WarningDialog
 import com.kkkcut.e20j.ui.dialog.base.BottomInDialog
 import com.kkkcut.e20j.us.R
-import com.kkkcut.e20j.utils.SpecificParamUtils
+import com.spl.key.SpecificParamUtils
 import org.greenrobot.eventbus.EventBus
 
 /* loaded from: classes.dex */
@@ -210,9 +210,9 @@ class DimpleDuplicateCutDialog(activity: Activity?, private val ki: KeyInfo) :
         Log.i(TAG, "initCutter: $cutterSize")
         var param = SpecificParamUtils.getParam(ki.type_specific_info, "cutter")
         if (!TextUtils.isEmpty(param)) {
-            if (param.contains(",")) {
-                val split = param.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (split.size > 0) {
+            if (param!!.contains(",")) {
+                val split = param!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                if (split.isNotEmpty()) {
                     param = split[1]
                 }
             }

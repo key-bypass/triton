@@ -21,7 +21,6 @@ import com.kkkcut.e20j.androidquick.network.RetrofitManager
 import com.kkkcut.e20j.androidquick.tool.SPUtils
 import com.kkkcut.e20j.androidquick.tool.ToastUtil
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
-import com.kkkcut.e20j.bean.gsonBean.UploadCustomKey
 import com.kkkcut.e20j.dao.KeyInfoDaoManager
 import com.kkkcut.e20j.dao.UserDataDaoManager
 import com.kkkcut.e20j.net.Apis
@@ -33,10 +32,9 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment
 import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.utils.GetUUID
-import com.kkkcut.e20j.utils.SpecificParamUtils
+import com.spl.key.SpecificParamUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.Callable

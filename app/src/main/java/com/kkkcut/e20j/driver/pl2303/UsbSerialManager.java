@@ -57,12 +57,8 @@ public class UsbSerialManager implements Communication, ErrorHandle {
         public void onWriteSuccess(int i, int i2, byte[] bArr) {
         }
     };
-    private Runnable openSerial = new Runnable() { // from class: com.kkkcut.e20j.driver.pl2303.UsbSerialManager.2
-        @Override // java.lang.Runnable
-        public void run() {
-            UsbSerialManager.this.openUsbSerial();
-        }
-    };
+
+    private Runnable openSerial = () -> UsbSerialManager.this.openUsbSerial();
     private BroadcastReceiver mUsbPermissionActionReceiver = new BroadcastReceiver() { // from class: com.kkkcut.e20j.driver.pl2303.UsbSerialManager.4
         @Override // android.content.BroadcastReceiver
         public void onReceive(Context context, Intent intent) {
@@ -76,12 +72,13 @@ public class UsbSerialManager implements Communication, ErrorHandle {
                             UsbSerialManager.this.handler.postDelayed(UsbSerialManager.this.openSerial, 1000L);
                         }
                     } else {
-                        Toast.makeText(context, String.valueOf("Permission denied for device：" + String.format("%04X:%04X", Integer.valueOf(usbDevice.getVendorId()), Integer.valueOf(usbDevice.getProductId()))), 1).show();
+                        Toast.makeText(context, String.valueOf("Permission denied for device：" + String.format("%04X:%04X", Integer.valueOf(usbDevice.getVendorId()), Integer.valueOf(usbDevice.getProductId()))), Toast.LENGTH_LONG).show();
                     }
                 }
             }
         }
     };
+
     byte[] readBuffer = new byte[256];
     private ListCompositeDisposable listCompositeDisposable = new ListCompositeDisposable();
 
@@ -146,15 +143,15 @@ public class UsbSerialManager implements Communication, ErrorHandle {
     public void init(Context context) {
         context.registerReceiver(this.mUsbPermissionActionReceiver, new IntentFilter(ACTION_PL2303_PERMISSION));
         this.context = context;
-        Pl2303DriveProxy pl2303DriveProxy = new Pl2303DriveProxy((UsbManager) context.getSystemService("usb"), context, ACTION_PL2303_PERMISSION);
+        Pl2303DriveProxy pl2303DriveProxy = new Pl2303DriveProxy((UsbManager) context.getSystemService(Context.USB_SERVICE), context, ACTION_PL2303_PERMISSION);
         this.mSerial = pl2303DriveProxy;
         if (!pl2303DriveProxy.PL2303USBFeatureSupported()) {
-            Toast.makeText(context, "No Support USB host API", 0).show();
+            Toast.makeText(context, "No Support USB host API", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "No Support USB host API");
             this.mSerial = null;
         } else {
             if (!this.mSerial.enumerate()) {
-                Toast.makeText(context, "no more devices found", 0).show();
+                Toast.makeText(context, "no more devices found", Toast.LENGTH_SHORT).show();
             }
             this.handler.postDelayed(this.openSerial, 1000L);
         }
@@ -171,12 +168,12 @@ public class UsbSerialManager implements Communication, ErrorHandle {
         if (pl2303DriveProxy.isConnected()) {
             if (!this.mSerial.InitByBaudRate(700)) {
                 if (!this.mSerial.PL2303Device_IsHasPermission()) {
-                    Toast.makeText(this.context, "cannot open, maybe no permission", 0).show();
+                    Toast.makeText(this.context, "cannot open, maybe no permission", Toast.LENGTH_SHORT).show();
                 }
                 if (!this.mSerial.PL2303Device_IsHasPermission() || this.mSerial.PL2303Device_IsSupportChip()) {
                     return;
                 }
-                Toast.makeText(this.context, "cannot open, maybe this chip has no support, please use PL2303G chip.", 0).show();
+                Toast.makeText(this.context, "cannot open, maybe this chip has no support, please use PL2303G chip.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "cannot open, maybe this chip has no support, please use PL2303G chip.");
                 return;
             }
@@ -189,12 +186,12 @@ public class UsbSerialManager implements Communication, ErrorHandle {
                     ClampManager.getInstance().initClamp("", true);
                 }
             }, 100L);
-            Toast.makeText(this.context, R.string.connected, 0).show();
+            Toast.makeText(this.context, R.string.connected, Toast.LENGTH_SHORT).show();
             Log.d(TAG, "connected : OK");
             sendEventBusMessage(20, null);
             return;
         }
-        Toast.makeText(this.context, "Connected failed, Please plug in PL2303 cable again!", 0).show();
+        Toast.makeText(this.context, "Connected failed, Please plug in PL2303 cable again!", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "connected failed, Please plug in PL2303 cable again!");
     }
 

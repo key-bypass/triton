@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import com.kkkcut.e20j.DbBean.DaoMaster;
 import com.kkkcut.e20j.DbBean.DaoSession;
-import com.kkkcut.e20j.DbBean.DbVersion;
 import com.kkkcut.e20j.DbBean.KeyBasicData;
 import com.kkkcut.e20j.DbBean.KeyBasicDataDao;
 import com.kkkcut.e20j.DbBean.KeyBasicDataItem;

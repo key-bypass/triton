@@ -4,10 +4,9 @@
     android:versionCode="20240229"
     android:versionName="77.0"
     package="com.kkkcut.e20j.us">
-    <uses-sdk android:minSdkVersion="26" tools:overrideLibrary="com.gyf.barlibrary, androidx.asynclayoutinflater, androidx.swiperefreshlayout, androidx.customview, androidx.slidingpanelayout, androidx.drawerlayout, androidx.coordinatorlayout, androidx.media, androidx.multidex.instrumentation, androidx.recyclerview, me.yokeyword.fragmentation, me.yokeyword.fragmentation_components, androidx.legacy.coreui, androidx.legacy.v4, androidx.appcompat" />
+    <uses-sdk android:minSdkVersion="30" tools:overrideLibrary="com.gyf.barlibrary, androidx.asynclayoutinflater, androidx.swiperefreshlayout, androidx.customview, androidx.slidingpanelayout, androidx.drawerlayout, androidx.coordinatorlayout, androidx.media, androidx.multidex.instrumentation, androidx.recyclerview, me.yokeyword.fragmentation, me.yokeyword.fragmentation_components, androidx.legacy.coreui, androidx.legacy.v4, androidx.appcompat" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -30,6 +29,7 @@
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory">
         <activity
+            android:exported="true"
             android:name="com.kkkcut.e20j.ui.activity.WelcomeActivity"
             android:configChanges="screenSize|orientation|keyboardHidden|locale">
             <intent-filter>

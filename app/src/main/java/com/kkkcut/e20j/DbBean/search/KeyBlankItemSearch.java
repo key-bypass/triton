@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.cutting.machine.utils.KeyDataUtils;
 import com.kkkcut.e20j.utils.DesUtil;
-import com.kkkcut.e20j.utils.SpecificParamUtils;
+import com.spl.key.SpecificParamUtils;
 
 /* loaded from: classes.dex */
 public class KeyBlankItemSearch implements SearchResult {
@@ -54,7 +54,7 @@ public class KeyBlankItemSearch implements SearchResult {
             String decrypt = DesUtil.decrypt(this.parameter_info, DesUtil.DATABASE);
             this.parameter_info = decrypt;
             if (!TextUtils.isEmpty(decrypt)) {
-                str = SpecificParamUtils.getParam(this.parameter_info, SpecificParamUtils.VARIABLE_SPACE);
+                str = SpecificParamUtils.INSTANCE.getParam(this.parameter_info, SpecificParamUtils.VARIABLE_SPACE);
             }
         } catch (Exception e) {
             e.printStackTrace();

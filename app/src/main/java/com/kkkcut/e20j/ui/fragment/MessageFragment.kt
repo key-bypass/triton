@@ -16,9 +16,7 @@ import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.us.databinding.FragmentMessageBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
 class MessageFragment() : BaseBackFragment(), BaseQuickAdapter.OnItemClickListener {

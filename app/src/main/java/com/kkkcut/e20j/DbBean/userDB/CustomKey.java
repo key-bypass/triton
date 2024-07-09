@@ -11,21 +11,12 @@ import com.cutting.machine.utils.KeyDataUtils;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 
-@Entity
-public class CustomKey implements Parcelable {
-    public static final Parcelable.Creator<CustomKey> CREATOR = new Parcelable.Creator<CustomKey>() { // from class: com.kkkcut.e20j.DbBean.userDB.CustomKey.1
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public CustomKey createFromParcel(Parcel parcel) {
-            return new CustomKey(parcel);
-        }
+import kotlinx.parcelize.Parcelize;
 
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public CustomKey[] newArray(int i) {
-            return new CustomKey[i];
-        }
-    };
+@Entity
+@Parcelize
+public class CustomKey implements Parcelable {
+
     String ClampNum;
     String ClampSide;
     String ClampSlot;
@@ -48,6 +39,18 @@ public class CustomKey implements Parcelable {
     long time;
     int type;
     int width;
+
+    public static final Creator<CustomKey> CREATOR = new Creator<CustomKey>() {
+        @Override
+        public CustomKey createFromParcel(Parcel in) {
+            return new CustomKey(in);
+        }
+
+        @Override
+        public CustomKey[] newArray(int size) {
+            return new CustomKey[size];
+        }
+    };
 
     @Override // android.os.Parcelable
     public int describeContents() {

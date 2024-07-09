@@ -19,8 +19,6 @@ import com.kkkcut.e20j.androidquick.tool.ToastUtil
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
 import com.kkkcut.e20j.bean.eventbus.InputFinishBean
 import com.kkkcut.e20j.ui.dialog.WarningDialog
-import com.kkkcut.e20j.ui.fragment.duplicatekey.DuplicateKeyNewFragment.Companion.newInstance
-import com.kkkcut.e20j.ui.fragment.search.AdvanceSearchFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.us.databinding.FragmentIgnitionDoorSearchBinding
 import com.kkkcut.e20j.utils.ThemeUtils

@@ -15,7 +15,6 @@ import com.kkkcut.e20j.ui.dialog.base.BottomInDialog;
 import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator;
 import com.kkkcut.e20j.us.R;
 import com.kkkcut.e20j.us.databinding.DialogCutBinding;
-import com.kkkcut.e20j.utils.SpecificParamUtils;
 import com.kkkcut.e20j.utils.ThemeUtils;
 import com.cutting.machine.MachineInfo;
 import com.cutting.machine.ToolSizeManager;
@@ -23,6 +22,8 @@ import com.cutting.machine.bean.KeyInfo;
 import com.cutting.machine.bean.KeyType;
 import com.cutting.machine.clamp.ClampUtil;
 import com.cutting.machine.operation.cut.DataParam;
+import com.spl.key.SpecificParamUtils;
+
 import java.util.Locale;
 import org.greenrobot.eventbus.EventBus;
 
@@ -259,7 +260,7 @@ public class CutDialog extends BottomInDialog {
         }
         int cutterSize = ToolSizeManager.getCutterSize();
         Log.i(TAG, "initCutter: " + cutterSize);
-        String param = SpecificParamUtils.getParam(getKeyInfo().getType_specific_info(), "cutter");
+        String param = SpecificParamUtils.INSTANCE.getParam(getKeyInfo().getType_specific_info(), "cutter");
         if (!TextUtils.isEmpty(param)) {
             if (param.contains(",")) {
                 String[] split = param.split(",");

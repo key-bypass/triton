@@ -8,7 +8,6 @@ import android.widget.RadioGroup
 import com.cutting.machine.MachineInfo
 import com.kkkcut.e20j.DbBean.userDB.CustomKey
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
 
 /* loaded from: classes.dex */

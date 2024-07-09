@@ -1,7 +1,5 @@
 package com.kkkcut.e20j.base;
 
-import static com.kkkcut.e20j.us.R.*;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;

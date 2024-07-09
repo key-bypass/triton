@@ -21,10 +21,9 @@ import android.widget.TextView
 import com.kkkcut.e20j.DbBean.userDB.CustomKey
 import com.kkkcut.e20j.androidquick.tool.ToastUtil
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
-import com.kkkcut.e20j.utils.SpecificParamUtils
 import com.kkkcut.e20j.utils.ThemeUtils
+import com.spl.key.SpecificParamUtils
 import java.lang.reflect.Method
 
 /* loaded from: classes.dex */
@@ -150,7 +149,7 @@ class KeySpaceSetFragment : BaseBackFragment() {
 
             3 -> {
                 this.rowCount = 1
-                llSide!!.visibility = 0
+                llSide!!.visibility = View.VISIBLE
                 rbSideA!!.setCompoundDrawablesWithIntrinsicBounds(
                     null as Drawable?, resources.getDrawable(
                         R.drawable.singleoutside_down
@@ -249,7 +248,7 @@ class KeySpaceSetFragment : BaseBackFragment() {
                 if (i == 0) {
                     val param: String = SpecificParamUtils.getParam(
                         this.customKey!!.parameter_info, SpecificParamUtils.SIDE
-                    )
+                    )!!
                     if (!TextUtils.isEmpty(param) && (param == "1")) {
                         text = getText(
                             "B",
@@ -548,7 +547,7 @@ class KeySpaceSetFragment : BaseBackFragment() {
                     parameter_info = SpecificParamUtils.putParam(
                         parameter_info,
                         SpecificParamUtils.SIDE,
-                        this.side
+                        this.side!!
                     )
                 }
                 Log.i(TAG, "parameter_info: $parameter_info")

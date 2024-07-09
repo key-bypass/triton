@@ -28,6 +28,7 @@ object SpecificParamUtils {
     @JvmField
     val VARIABLE_SPACE: String = "variable_space"
 
+
     fun getParam(str: String, str2: String): String? {
         if (TextUtils.isEmpty(str) || TextUtils.isEmpty(str2)) {
             return ""

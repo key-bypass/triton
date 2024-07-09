@@ -1,9 +1,7 @@
 package com.kkkcut.e20j.ui.fragment.duplicatekey.dimple
 
-import android.content.MutableContextWrapper
 import android.os.Bundle
 import android.os.Parcelable
-import android.provider.MediaStore.Audio.Radio
 import android.text.TextUtils
 import android.view.View
 import android.widget.Button
@@ -49,7 +47,6 @@ import com.kkkcut.e20j.ui.fragment.BaseBackFragment
 import com.kkkcut.e20j.ui.fragment.clampswitch.ClampCreator.getClearClampImg
 import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.utils.CutCountHelper
-import io.reactivex.rxjava3.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import java.util.Date
 import java.util.concurrent.TimeUnit

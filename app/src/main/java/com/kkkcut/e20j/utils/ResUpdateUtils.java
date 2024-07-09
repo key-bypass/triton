@@ -61,15 +61,7 @@ public class ResUpdateUtils {
     private static final String URL_EN = "https://appinterface.kukai361.com:4433/SECAppUpgrade/SECAppUpgradeMain.ashx";
 
     /* loaded from: classes.dex */
-    public interface DataBaseUpdateListener {
-        void error(Throwable th);
 
-        void finish();
-
-        void progress(int i);
-
-        void start();
-    }
 
     public static String getLocalErrorDbName() {
         return ERROR_CODE;
@@ -204,7 +196,7 @@ public class ResUpdateUtils {
             @Override // com.liulishuo.filedownloader.FileDownloadListener
             public void pending(BaseDownloadTask baseDownloadTask, int i, int i2) {
                 Log.d(ResUpdateUtils.TAG, "pending() called with: task = [" + baseDownloadTask + "], soFarBytes = [" + i + "], totalBytes = [" + i2 + "]");
-                DataBaseUpdateListener dataBaseUpdateListener2 = (DataBaseUpdateListener)this;
+                DataBaseUpdateListener dataBaseUpdateListener2 = dataBaseUpdateListener;
                 if (dataBaseUpdateListener2 != null) {
                     dataBaseUpdateListener2.start();
                 }
@@ -214,7 +206,7 @@ public class ResUpdateUtils {
             @Override // com.liulishuo.filedownloader.FileDownloadListener
             public void progress(BaseDownloadTask baseDownloadTask, int i, int i2) {
                 Log.d(ResUpdateUtils.TAG, "progress() called with: task = [" + baseDownloadTask + "], soFarBytes = [" + i + "], totalBytes = [" + i2 + "]");
-                var dataBaseUpdateListener2 = (DataBaseUpdateListener)this;
+                var dataBaseUpdateListener2 = (DataBaseUpdateListener)baseDownloadTask;
                 if (dataBaseUpdateListener2 != null) {
                     dataBaseUpdateListener2.progress((i * 100) / i2);
                 }
@@ -252,7 +244,7 @@ public class ResUpdateUtils {
             /* JADX INFO: Access modifiers changed from: protected */
             @Override // com.liulishuo.filedownloader.FileDownloadListener
             public void completed(BaseDownloadTask baseDownloadTask) {
-                DataBaseUpdateListener dataBaseUpdateListener2 = (DataBaseUpdateListener)this;
+                DataBaseUpdateListener dataBaseUpdateListener2 = (DataBaseUpdateListener)baseDownloadTask;
                 if (dataBaseUpdateListener2 != null) {
                     dataBaseUpdateListener2.finish();
                 }
@@ -268,7 +260,7 @@ public class ResUpdateUtils {
             /* JADX INFO: Access modifiers changed from: protected */
             @Override // com.liulishuo.filedownloader.FileDownloadListener
             public void error(BaseDownloadTask baseDownloadTask, Throwable th) {
-                DataBaseUpdateListener dataBaseUpdateListener2 = (DataBaseUpdateListener)this;
+                DataBaseUpdateListener dataBaseUpdateListener2 = (DataBaseUpdateListener)baseDownloadTask;
                 if (dataBaseUpdateListener2 != null) {
                     dataBaseUpdateListener2.error(th);
                 }

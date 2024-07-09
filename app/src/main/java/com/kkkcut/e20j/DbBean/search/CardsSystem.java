@@ -2,8 +2,8 @@ package com.kkkcut.e20j.DbBean.search;
 
 import android.text.TextUtils;
 import com.kkkcut.e20j.utils.DesUtil;
-import com.kkkcut.e20j.utils.SpecificParamUtils;
 import com.cutting.machine.utils.KeyDataUtils;
+import com.spl.key.SpecificParamUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -43,7 +43,7 @@ public class CardsSystem implements SearchResult {
             String decrypt = DesUtil.decrypt(this.parameter_info, DesUtil.DATABASE);
             this.parameter_info = decrypt;
             if (!TextUtils.isEmpty(decrypt)) {
-                str = SpecificParamUtils.getParam(this.parameter_info, SpecificParamUtils.VARIABLE_SPACE);
+                str = SpecificParamUtils.INSTANCE.getParam(this.parameter_info, SpecificParamUtils.VARIABLE_SPACE);
             }
         } catch (Exception e) {
             e.printStackTrace();

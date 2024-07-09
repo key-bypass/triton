@@ -16,15 +16,11 @@ import com.kkkcut.e20j.customView.indexlib.suspension.SuspensionDecoration
 import com.kkkcut.e20j.dao.KeyInfoDaoManager
 import com.kkkcut.e20j.dao.UserDataDaoManager
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.Consumer
-import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.Locale
-import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
 class BrandSelectFragment() : BaseBackFragment() {

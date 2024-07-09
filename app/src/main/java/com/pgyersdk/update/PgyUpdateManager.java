@@ -6,6 +6,7 @@ import com.pgyersdk.utils.AsyncTaskUtils;
 import com.pgyersdk.utils.FileUtils;
 import com.pgyersdk.utils.Util;
 import com.pgyersdk.utils.Utils;
+;
 import java.io.File;
 
 /* loaded from: classes2.dex */
@@ -21,7 +22,7 @@ public class PgyUpdateManager {
     private static DownloadFileListener f706c;
 
     /* renamed from: d */
-    static AsyncTaskC2082a f707d;
+    static CheckUpdateTask f707d;
 
     /* renamed from: e */
     private boolean f708e;
@@ -117,9 +118,9 @@ public class PgyUpdateManager {
                 ((PgyerDownloadListener) downloadFileListener).m382a();
             }
             f706c = null;
-            AsyncTaskC2082a asyncTaskC2082a = f707d;
-            if (asyncTaskC2082a != null) {
-                asyncTaskC2082a.cancel(true);
+            CheckUpdateTask checkUpdateTask = f707d;
+            if (checkUpdateTask != null) {
+                checkUpdateTask.cancel(true);
                 f707d = null;
             }
         }
@@ -143,14 +144,14 @@ public class PgyUpdateManager {
 
     /* renamed from: a */
     private void m368a() {
-        AsyncTaskC2082a asyncTaskC2082a = f707d;
-        if (asyncTaskC2082a != null) {
-            asyncTaskC2082a.cancel(true);
+        CheckUpdateTask checkUpdateTask = f707d;
+        if (checkUpdateTask != null) {
+            checkUpdateTask.cancel(true);
         }
         if (Utils.m249b()) {
-            AsyncTaskC2082a asyncTaskC2082a2 = new AsyncTaskC2082a(f705b);
-            f707d = asyncTaskC2082a2;
-            AsyncTaskUtils.m194a(asyncTaskC2082a2);
+            CheckUpdateTask checkUpdateTask2 = new CheckUpdateTask(f705b);
+            f707d = checkUpdateTask2;
+            AsyncTaskUtils.m194a(checkUpdateTask2);
             return;
         }
         f705b.checkUpdateFailed(new IllegalArgumentException("net work unavailable"));

@@ -19,10 +19,9 @@ import android.widget.TextView
 import com.kkkcut.e20j.DbBean.userDB.CustomKey
 import com.kkkcut.e20j.androidquick.tool.ToastUtil
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
-import com.kkkcut.e20j.utils.SpecificParamUtils
 import com.kkkcut.e20j.utils.ThemeUtils
+import com.spl.key.SpecificParamUtils
 import java.lang.reflect.Method
 
 /* loaded from: classes.dex */
@@ -120,7 +119,7 @@ class KeyDepthSetFragment() : BaseBackFragment() {
         }
         val param: String = SpecificParamUtils.getParam(
             this.customKey!!.getParameter_info(), SpecificParamUtils.SIDE
-        )
+        )!!
         val split: Array<String> =
             this.customKey!!.getSpace().split(";".toRegex()).dropLastWhile({ it.isEmpty() })
                 .toTypedArray()

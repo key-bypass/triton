@@ -1,6 +1,5 @@
 package com.gyf.barlibrary
 
-import android.R
 import android.app.Activity
 import android.app.Dialog
 import android.graphics.Rect
@@ -16,40 +15,40 @@ import android.widget.FrameLayout
  * Created by geyifeng on 2017/5/17.
  */
 class KeyboardPatch {
-    private var mActivity: Activity
+    private var mActivity: Activity? = null
     private var mWindow: Window?
-    private var mDecorView: View
-    private var mContentView: View
+    private var mDecorView: View? = null
+    private var mContentView: View? = null
     private var mFlag = false
-    private var mBarParams: BarParams?
+    private var mBarParams: BarParams? = null
 
     private constructor(
         activity: Activity, contentView: View = (activity.window.decorView.findViewById<View>(
-            R.id.content
+            android.R.id.content
         ) as FrameLayout).getChildAt(0)
     ) : this(activity, null, "", contentView)
 
     private constructor(
         activity: Activity, dialog: Dialog?, tag: String, contentView: View? = dialog!!.window!!
-            .findViewById(R.id.content)
+            .findViewById(android.R.id.content)
     ) {
         this.mActivity = activity
         this.mWindow = if (dialog != null) dialog.window else activity.window
         this.mDecorView = activity.window.decorView
-        this.mContentView = contentView ?: mWindow!!.decorView.findViewById(R.id.content)
+        this.mContentView = contentView ?: mWindow!!.decorView.findViewById(android.R.id.content)
         this.mBarParams =
-            if (dialog != null) ImmersionBar.Companion.with(activity, dialog, tag).barParams
-            else ImmersionBar.Companion.with(activity).barParams
+            if (dialog != null) ImmersionBar.with(activity, dialog, tag).barParams
+            else ImmersionBar.with(activity).barParams
         requireNotNull(mBarParams) { "先使用ImmersionBar初始化" }
-        if (mContentView != mDecorView.findViewById(R.id.content)) this.mFlag = true
+        if (mContentView != mDecorView!!.findViewById(android.R.id.content)) this.mFlag = true
     }
 
     private constructor(activity: Activity, window: Window?, barParams: BarParams?) {
         this.mActivity = activity
         this.mWindow = window
-        this.mDecorView = activity!!.window.decorView
+        this.mDecorView = activity.window.decorView
         this.mBarParams = barParams
-        val frameLayout = mWindow!!.decorView.findViewById<View>(R.id.content) as FrameLayout
+        val frameLayout = mWindow!!.decorView.findViewById<View>(android.R.id.content) as FrameLayout
         if (frameLayout.getChildAt(0) != null && !mBarParams!!.systemWindows) {
             this.mFlag = true
         }
@@ -66,7 +65,7 @@ class KeyboardPatch {
                 or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
     ) {
         mWindow!!.setSoftInputMode(mode)
-        mDecorView.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener) //当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时，所要调用的回调函数的接口类
+        mDecorView!!.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener) //当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时，所要调用的回调函数的接口类
     }
 
     /**
@@ -78,23 +77,22 @@ class KeyboardPatch {
                 or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
     ) {
         mWindow!!.setSoftInputMode(mode)
-        mDecorView.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+        mDecorView!!.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
     }
 
     private val onGlobalLayoutListener = OnGlobalLayoutListener {
         val r = Rect()
-        this.mDecorView.getWindowVisibleDisplayFrame(r) //获取当前窗口可视区域大小的
-        val height = this.mDecorView.context.resources.displayMetrics.heightPixels //获取屏幕密度，不包含导航栏
+        this.mDecorView!!.getWindowVisibleDisplayFrame(r) //获取当前窗口可视区域大小的
+        val height = this.mDecorView!!.context.resources.displayMetrics.heightPixels //获取屏幕密度，不包含导航栏
         val diff = height - r.bottom
         if (diff >= 0) {
-            if (mFlag || ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) && !OSUtils.isEMUI3_1)
-                || !this.mBarParams!!.navigationBarEnable || !this.mBarParams!!.navigationBarWithKitkatEnable
+            if (mFlag || !OSUtils.isEMUI3_1 || !this.mBarParams!!.navigationBarEnable || !this.mBarParams!!.navigationBarWithKitkatEnable
             ) {
-                this.mContentView.setPadding(0, this.mContentView.paddingTop, 0, diff)
+                this.mContentView!!.setPadding(0, this.mContentView!!.paddingTop, 0, diff)
             } else {
-                this.mContentView.setPadding(
-                    0, mContentView.paddingTop,
-                    0, diff + ImmersionBar.Companion.getNavigationBarHeight(mActivity)
+                this.mContentView!!.setPadding(
+                    0, mContentView!!.paddingTop,
+                    0, diff + ImmersionBar.getNavigationBarHeight(mActivity)
                 )
             }
         }

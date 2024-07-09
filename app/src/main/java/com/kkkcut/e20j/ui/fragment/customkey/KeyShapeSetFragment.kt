@@ -15,11 +15,9 @@ import com.kkkcut.e20j.DbBean.userDB.CustomKey
 import com.kkkcut.e20j.androidquick.ui.eventbus.EventCenter
 import com.kkkcut.e20j.dao.UserDataDaoManager
 import com.kkkcut.e20j.ui.dialog.EditDialog
-import com.kkkcut.e20j.ui.dialog.EditDialog.DialogInputFinishCallBack
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
-import com.kkkcut.e20j.ui.fragment.KeyOperateFragment.Companion.newInstance
 import com.kkkcut.e20j.us.R
-import com.kkkcut.e20j.utils.SpecificParamUtils
+import com.spl.key.SpecificParamUtils
 import org.greenrobot.eventbus.EventBus
 import kotlin.math.min
 
@@ -217,7 +215,7 @@ class KeyShapeSetFragment() : BaseBackFragment() {
         }
         val parameter_info: String = this.customKey!!.getParameter_info()
         val param: String =
-            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.CUT_DEPTH)
+            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.CUT_DEPTH)!!
         if (!TextUtils.isEmpty(param)) {
             if (this.customKey!!.isInch()) {
                 etCutDepth!!.setText(Math.round(param.toInt() / 2.54f).toString())
@@ -225,7 +223,7 @@ class KeyShapeSetFragment() : BaseBackFragment() {
                 etCutDepth!!.setText(param)
             }
         }
-        val param2: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.GROOVE)
+        val param2: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.GROOVE)!!
         if (!TextUtils.isEmpty(param2)) {
             if (this.customKey!!.isInch()) {
                 etGroove!!.setText(Math.round(param2.toInt() / 2.54f).toString())
@@ -233,7 +231,7 @@ class KeyShapeSetFragment() : BaseBackFragment() {
                 etGroove!!.setText(param2)
             }
         }
-        val param3: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.GUIDE)
+        val param3: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.GUIDE)!!
         if (!TextUtils.isEmpty(param3)) {
             if (this.customKey!!.isInch()) {
                 etGuide!!.setText(Math.round(param3.toInt() / 2.54f).toString())
@@ -241,7 +239,7 @@ class KeyShapeSetFragment() : BaseBackFragment() {
                 etGuide!!.setText(param3)
             }
         }
-        val param4: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.NOSE)
+        val param4: String = SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.NOSE)!!
         if (!TextUtils.isEmpty(param4)) {
             if (this.customKey!!.isInch()) {
                 etNose!!.setText(Math.round(param4.toInt() / 2.54f).toString())
@@ -250,12 +248,12 @@ class KeyShapeSetFragment() : BaseBackFragment() {
             }
         }
         val param5: String =
-            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.EXTRA_CUT)
+            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.EXTRA_CUT)!!
         if (!TextUtils.isEmpty(param5) && (param5 == "1")) {
             cbExtraCut!!.setChecked(true)
         }
         val param6: String =
-            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.SINGLE_SIDE_ANGLE)
+            SpecificParamUtils.getParam(parameter_info, SpecificParamUtils.SINGLE_SIDE_ANGLE)!!
         if (!TextUtils.isEmpty(param6)) {
             if (this.customKey!!.isInch()) {
                 etAngle!!.setText(Math.round(param6.toInt() / 2.54f).toString())

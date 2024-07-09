@@ -25,9 +25,7 @@ import com.kkkcut.e20j.us.R
 import com.kkkcut.e20j.utils.ResUpdateUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.Callable
 
 /* loaded from: classes.dex */
 class SeriesSelectFragment() : BaseBackFragment() {
@@ -48,14 +46,14 @@ class SeriesSelectFragment() : BaseBackFragment() {
     // com.kkkcut.e20j.androidquick.ui.base.QuickFragment
     override fun initViewsAndEvents() {
         initView()
-        getModelYears(getArguments()!!.getInt("modelID"))
+        getModelYears(requireArguments().getInt("modelID"))
     }
 
     private fun initView() {
         val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(getContext())
         this.manager = linearLayoutManager
         rvCategoryList!!.setLayoutManager(linearLayoutManager)
-        val seriesSelectAdapter: SeriesSelectAdapter = SeriesSelectAdapter((getContext())!!)
+        val seriesSelectAdapter: SeriesSelectAdapter = SeriesSelectAdapter(requireContext())
         this.mAdapter = seriesSelectAdapter
         rvCategoryList!!.setAdapter(seriesSelectAdapter)
         rvCategoryList!!.addItemDecoration(DividerItemDecoration(getContext(), 1))
@@ -82,7 +80,7 @@ class SeriesSelectFragment() : BaseBackFragment() {
             newInstance(
                 GoOperatBean(
                     (modelSeries)!!,
-                    getArguments()!!.getString("title") + ">" + str
+                    requireArguments().getString("title") + ">" + str
                 )
             )
         )
@@ -91,94 +89,74 @@ class SeriesSelectFragment() : BaseBackFragment() {
 
     /* JADX INFO: Access modifiers changed from: package-private */ /* renamed from: lambda$initView$1$com-kkkcut-e20j-ui-fragment-keyselect-SeriesSelectFragment, reason: not valid java name */
     /* synthetic */ fun m67xebd12e5a(view: View?, i: Int, str: String?, i2: Int) {
-        val linearLayout: LinearLayout = view!!.findViewById<View>(R.id.ll_space_a) as LinearLayout
+        val linearLayout: LinearLayout = requireView().findViewById<View>(R.id.ll_space_a) as LinearLayout
         val childCount: Int = linearLayout.getChildCount()
         if (childCount == 1) {
             showSeries(view, i, str, i2)
         } else {
-            (view.findViewById<View>(R.id.iv_arrow) as ImageView).setImageResource(R.drawable.arrow_key_select)
+            (view?.findViewById<View>(R.id.iv_arrow) as ImageView).setImageResource(R.drawable.arrow_key_select)
             linearLayout.removeViews(1, childCount - 1)
         }
     }
 
     private fun showSeries(view: View?, i: Int, str: String?, i2: Int) {
-        // from class: com.kkkcut.e20j.ui.fragment.keyselect.SeriesSelectFragment$$ExternalSyntheticLambda6
-// java.util.concurrent.Callable
         addDisposable(
-            Observable.fromCallable({
-                var modelSeries: kotlin.collections.MutableList<*>?
-                modelSeries = KeyInfoDaoManager.getInstance().getModelSeries(i)
-                modelSeries
-            }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({ obj: Any ->
-                    this@SeriesSelectFragment.m69x57bdac18(i2, view, str, obj as List<*>)
-                }, { th -> this.dismissLoadingDialog() }))
+            Observable.fromCallable {
+                KeyInfoDaoManager.getInstance().getModelSeries(i)
+            }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({ list ->
+                    if (list.isEmpty()) {
+                        ToastUtil.showToast(R.string.no_data_was_found)
+                        return@subscribe
+                    }
+                    val topLinearSmoothScroller: TopLinearSmoothScroller =
+                        TopLinearSmoothScroller(activity)
+                    topLinearSmoothScroller.targetPosition = i
+                    manager!!.startSmoothScroll(topLinearSmoothScroller)
+                    (requireView().findViewById<View>(R.id.iv_arrow) as ImageView).setImageResource(R.drawable.arrow_bottom)
+                    var i2: Int = -1
+                    var view2: View? = null
+                    val linearLayout: LinearLayout = view?.findViewById(R.id.ll_space_a)!!
+                    for (modelSeries: ModelSeries in list) {
+                        if (modelSeries.fK_KeyID != i2) {
+                            view2 = getLayoutInflater().inflate(
+                                R.layout.item_years_child_us,
+                                linearLayout as ViewGroup?,
+                                false
+                            )
+                            val textView: TextView = view2.findViewById(R.id.tv_title_id)
+                            if (MachineInfo.isE20Us(context)) {
+                                textView.text = "Card"
+                            } else {
+                                textView.setText(R.string.ic_card)
+                            }
+                            (view2.findViewById<View>(R.id.tv_ic_card) as TextView).text = modelSeries.fK_KeyID.toString()
+                            (view2.findViewById<View>(R.id.tv_cuts) as TextView).text = modelSeries.cuts
+                            ResUpdateUtils.showKeyImage(
+                                context, modelSeries.fK_KeyID, view2.findViewById<View>(
+                                    R.id.iv_thumb
+                                ) as ImageView?
+                            )
+                            linearLayout.addView(view2)
+                            i2 = modelSeries.fK_KeyID
+                        }
+                        val linearLayout2: LinearLayout = view2!!.findViewById(R.id.ll_series_container)
+                        val inflate: View =
+                            getLayoutInflater().inflate(R.layout.item_serie_us, null as ViewGroup?)
+                        (inflate.findViewById<View>(R.id.tv_series) as TextView).text = modelSeries.codeSeries
+                        inflate.findViewById<TextView?>(R.id.tv_nick_name)?.text = modelSeries.name
+                        val textView3: TextView = inflate.findViewById(R.id.tv_isn)
+                        val isn: String = modelSeries.isn
+                        textView3.text = isn
+                        linearLayout2.addView(inflate)
+                        inflate.setOnClickListener { view3: View? ->
+                            this@SeriesSelectFragment.m68x51b9e0b9(str, modelSeries, isn, view3)
+                        }
+                    }
+                }, { this.dismissLoadingDialog() }))
 
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */ /* renamed from: lambda$showSeries$4$com-kkkcut-e20j-ui-fragment-keyselect-SeriesSelectFragment, reason: not valid java name */
-    @Throws(Exception::class)  /* synthetic */ fun m69x57bdac18(
-        i: Int,
-        view: View?,
-        str: String?,
-        list: List<*>
-    ) {
-        if (list.size == 0) {
-            ToastUtil.showToast(R.string.no_data_was_found)
-            return
-        }
-        val topLinearSmoothScroller: TopLinearSmoothScroller =
-            TopLinearSmoothScroller(getActivity())
-        topLinearSmoothScroller.setTargetPosition(i)
-        manager!!.startSmoothScroll(topLinearSmoothScroller)
-        (view!!.findViewById<View>(R.id.iv_arrow) as ImageView).setImageResource(R.drawable.arrow_bottom)
-        var i2: Int = -1
-        val linearLayout: LinearLayout = view.findViewById(R.id.ll_space_a)
-        val it: Iterator<*> = list.iterator()
-        var view2: View? = null
-        while (it.hasNext()) {
-            val modelSeries: ModelSeries = it.next() as ModelSeries
-            if (modelSeries.getFK_KeyID() != i2) {
-                view2 = getLayoutInflater().inflate(
-                    R.layout.item_years_child_us,
-                    linearLayout as ViewGroup?,
-                    false
-                )
-                val textView: TextView = view2.findViewById(R.id.tv_title_id)
-                if (MachineInfo.isE20Us(getContext())) {
-                    textView.setText("Card")
-                } else {
-                    textView.setText(R.string.ic_card)
-                }
-                (view2.findViewById<View>(R.id.tv_ic_card) as TextView).setText(
-                    modelSeries.getFK_KeyID().toString()
-                )
-                (view2.findViewById<View>(R.id.tv_cuts) as TextView).setText(modelSeries.getCuts())
-                ResUpdateUtils.showKeyImage(
-                    getContext(), modelSeries.getFK_KeyID(), view2.findViewById<View>(
-                        R.id.iv_thumb
-                    ) as ImageView?
-                )
-                linearLayout.addView(view2)
-                i2 = modelSeries.getFK_KeyID()
-            }
-            val linearLayout2: LinearLayout = view2!!.findViewById(R.id.ll_series_container)
-            val inflate: View =
-                getLayoutInflater().inflate(R.layout.item_serie_us, null as ViewGroup?)
-            (inflate.findViewById<View>(R.id.tv_series) as TextView).setText(modelSeries.getCodeSeries())
-            val textView2: TextView? = inflate.findViewById(R.id.tv_nick_name)
-            if (textView2 != null) {
-                textView2.setText(modelSeries.getName())
-            }
-            val textView3: TextView = inflate.findViewById(R.id.tv_isn)
-            val isn: String = modelSeries.getISN()
-            textView3.setText(isn)
-            linearLayout2.addView(inflate)
-            inflate.setOnClickListener(View.OnClickListener({ view3: View? ->
-                this@SeriesSelectFragment.m68x51b9e0b9(str, modelSeries, isn, view3)
-            }))
-        }
-    }
 
     /* JADX INFO: Access modifiers changed from: package-private */ /* renamed from: lambda$showSeries$3$com-kkkcut-e20j-ui-fragment-keyselect-SeriesSelectFragment, reason: not valid java name */
     /* synthetic */ fun m68x51b9e0b9(
@@ -188,7 +166,7 @@ class SeriesSelectFragment() : BaseBackFragment() {
         view: View?
     ) {
         val str3: String
-        val str4: String = getArguments()!!.getString("title") + ">" + str
+        val str4: String = requireArguments().getString("title") + ">" + str
         if (MachineInfo.isE20Us(getContext())) {
             str3 = str4 + "(Card:" + modelSeries.getFK_KeyID() + ")"
         } else {
@@ -233,7 +211,7 @@ class SeriesSelectFragment() : BaseBackFragment() {
 
     // com.kkkcut.e20j.ui.fragment.BaseBackFragment
     override fun setTitleStr(): String? {
-        return getArguments()!!.getString("title")
+        return requireArguments().getString("title")
     }
 
     companion object {

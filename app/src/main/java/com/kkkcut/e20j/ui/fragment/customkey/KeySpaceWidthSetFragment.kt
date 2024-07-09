@@ -20,8 +20,8 @@ import com.kkkcut.e20j.DbBean.userDB.CustomKey
 import com.kkkcut.e20j.androidquick.tool.ToastUtil
 import com.kkkcut.e20j.ui.fragment.BaseBackFragment
 import com.kkkcut.e20j.us.R
-import com.kkkcut.e20j.utils.SpecificParamUtils
 import com.kkkcut.e20j.utils.ThemeUtils
+import com.spl.key.SpecificParamUtils
 import java.lang.reflect.Method
 
 /* loaded from: classes.dex */
@@ -60,9 +60,9 @@ class KeySpaceWidthSetFragment() : BaseBackFragment() {
         var editText: EditText
         var text: TextView?
         val customKey: CustomKey? =
-            getArguments()!!.getParcelable<Parcelable>(CUSTOM_KEY) as CustomKey?
+            requireArguments().getParcelable<Parcelable>(CUSTOM_KEY) as CustomKey?
         this.customKey = customKey
-        when (customKey!!.getType()) {
+        when (customKey!!.type) {
             0 -> if (this.customKey!!.align == 0) {
                 ivSpaceWidth!!.setImageResource(R.drawable.doublekey_shoulder_space_width)
             } else {
@@ -108,7 +108,7 @@ class KeySpaceWidthSetFragment() : BaseBackFragment() {
         }
         val param: String = SpecificParamUtils.getParam(
             this.customKey!!.parameter_info, SpecificParamUtils.SIDE
-        )
+        )!!
         val spaceWidth: String = this.customKey!!.space_width
         val split: Array<String>? =
             if (!TextUtils.isEmpty(spaceWidth)) spaceWidth.split(";".toRegex())
